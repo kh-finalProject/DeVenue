@@ -27,6 +27,12 @@ public class HomeController {
 
 		
 		return "common/mainPage";
+//		return "findMember/findClient/main";
+	}
+	
+	@RequestMapping("clientList.do")
+	public String getClientList() {
+		return "findMember/findClient/mainFC";
 	}
 	
 }

@@ -4,4 +4,17 @@
 	<settings>
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
+	
+	
+	
+	<typeAliases>
+		<typeAlias type="com.kh.DeVenue.project.model.vo.Project" 
+					alias="Project"/>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="/mappers/project-mapper.xml"/>
+		
+	</mappers>
+	
 </configuration>
