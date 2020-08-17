@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace ="projectMapper">
+
+
+
+<resultMap type="Project" id="projectResultSet">
+		<id property="proId" column="PRO_ID"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="proName" column="PRO_NAME"/>
+		<result property="proMaintain" column="PRO_MAINTAIN"/>
+		<result property="proStaId" column="PRO_STA_ID"/>
+		<result property="proRecruit" column="PRO_RECRUIT"/>
+		<result property="proCreateDate" column="PRO_CREATE_DATE"/>
+		<result property="proPlan" column="PRO_PLAN"/>
+		<result property="proPlanDetail" column="PRO_PLANDETAIL"/>
+		<result property="proSummary" column="PRO_SUMMARY"/>	
+		<result property="proNeeds" column="PRO_NEEDS"/>	
+		<result property="proNeedsDetail" column="PRO_NEEDSDETAIL"/>	
+		<result property="proResource" column="PRO_RESOURCE"/>	
+		<result property="proPayment" column="PRO_PAYMENT"/>	
+		<result property="proStartDate" column="PRO_START_DATE"/>	
+		<result property="proDuration" column="PRO_DURATION"/>	
+		<result property="proREndDate" column="PRO_R_END_DATE"/>	
+		<result property="proEndDate" column="PRO_END_DATE"/>	
+		<result property="proMCId" column="MC_ID"/>	
+		<result property="proDCId" column="DC_ID"/>	
+		<result property="proWTId" column="WT_ID"/>	
+		<result property="proRecruitNum" column="PRO_RECRUIT_NUM"/>	
+		<result property="proPlanPaper" column="PRO_PLAN_PAPER"/>
+		<result property="proPlanRePaper" column="PRO_PLAN_REPAPER"/>
+		<result property="proLocation" column="PRO_LOCATION"/>
+		<result property="proHelp" column="PRO_HELP"/>
+		<result property="proManage" column="PRO_MANAGE"/>
+		<result property="proFuturePlan" column="PRO_FUTUREPLAN"/>
+		<result property="proPriority" column="PRO_PRIORTY"/>
+		<result property="proContract" column="PRO_CONTRACT"/>
+		<result property="proTypeCode" column="PRO_TYPE_CODE"/>
+		<result property="proWorkspace" column="PRO_WORKPLACE"/>
+		<result property="proSignId" column="SIG_ID"/>
+		<result property="proPayStatus" column="PRO_PAY_STATUS"/>
+		<result property="proParentId" column="PRO_PARENT_ID"/>
+		
+		
+		
+		
+	</resultMap>
+	
+	<insert id = "addProject" parameterType ="Project">
+		INSERT INTO Project VALUES(
+			SEQ_BID.NEXTVAL
+			, #{bTitle}
+			, #{bWriter}
+			, #{bContent}
+			, #{originalFileName}
+			, #{renameFileName}
+			, DEFAULT
+			, SYSDATE
+			, SYSDATE
+			, DEFAULT
+		)
+	</insert>
+
+</mapper>
