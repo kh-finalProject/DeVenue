@@ -659,7 +659,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <table width="100%" id="location_modal_table">
+                    <table style="width: 100%" id="location_modal_table">
                       <tr style="height: 1.875rem;">
                         <td>
                           <div class="form-check ml-2">
