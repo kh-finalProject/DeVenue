@@ -60,5 +60,9 @@
 			, DEFAULT
 		)
 	</insert>
+	
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*) FROM PROJECTLIST_VIEW
+	</select>
 
 </mapper>
