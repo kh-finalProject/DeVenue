@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -161,12 +162,12 @@
         </div>
           <div id="searchDiv" class="col-md-6 mt-5 px-0" style="border-bottom: 0.0625rem solid gray;">
             <div class="float-right">
-            <form autocomplete="off" action="/action_page.php">
+            <form>
               <div id="searchDiv_category" class="dropdown" style="display: inline-block;">
-                <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="searchDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   	전체
                 </button>
-                <div class="dropdown-menu text-right" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu text-right" aria-labelledby="searchDrop">
                   <a class="dropdown-item" href="#">전체</a>
                   <a class="dropdown-item" href="#">제목</a>
                   <a class="dropdown-item" href="#">관련기술</a>
@@ -174,7 +175,7 @@
                 </div>
               </div>
               <div class="autocomplete" style="width:18.75rem;">
-                <input id="search_text" type="text" name="myCountry" placeholder="검색어를 입력하세요.">
+                <input id="search_text" type="text" name="techName" placeholder="검색어를 입력하세요.">
               </div>
               <button type="button" class="btn btn-outline-info mb-1" style="width:6.25rem;height: 2.75rem;">검색</button>
             </form>
@@ -412,7 +413,7 @@
               <div class="mb-3">
               <div class="btn-group">
                 <button id="cost_btn_min" style="width:7.5rem; box-shadow: none;" class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  금액 선택
+                 	 금액 선택
                 </button>
                 <div id="cost_min_menu" class="dropdown-menu" style="max-height:7.5rem; overflow-y: auto;">
                   <a class="dropdown-item">100만원</a>
@@ -991,16 +992,16 @@
               
               </script>
               <script>
-              //찜하기 버튼 스크립트
+              //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
                                         
                 $(function(){
-                  $("#heart").click(function(){
-                    if($("#heart").hasClass("liked")){
-                      $("#heart").html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
-                      $("#heart").removeClass("liked");
+                  $(".heart").click(function(){
+                    if($(this).hasClass("liked")){
+                      $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
+                      $(this).removeClass("liked");
                     }else{
-                      $("#heart").html('<i class="fa fa-heart" aria-hidden="true"></i>');
-                      $("#heart").addClass("liked");
+                      $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+                      $(this).addClass("liked");
                     }
                   });
                 });
@@ -1008,7 +1009,8 @@
 
           <section id="projectList">
 
-              <!-- Grid row -->
+              <!-- Project List row 시작-->
+            <c:forEach items="${list}" var="p">
             <div class="row my-2" id="products">
               <div class="row mb-2 mx-auto" style="width: 100%;">
                 <div class="col-md-12 px-0">
@@ -1018,18 +1020,43 @@
 
                       <!--배지-->
                       <div class="d-inline-block mb-2">
-                        <span class="badge badge-secondary">모집중</span>
-                        <span class="badge badge-success">모집마감</span>
-                        <span class="badge badge-info">NEW</span>
+                       <c:choose>
+                       	<c:when test="${p.recruit eq 'Y'}">
+                       		<span class="badge badge-secondary">모집중</span>
+                       	</c:when>
+                       	<c:when test="${p.recruit eq 'N'}">
+                       		<span class="badge badge-success">모집마감</span>
+                       	</c:when>
+                       </c:choose>
+                       
+                       <jsp:useBean id="today" class="java.util.Date"/>
+                       
+                       <jsp:useBean id="aweekAgo" class="java.util.Date"/>
+                       <jsp:setProperty property="time" name="aweekAgo" value="${today.time-(1000*60*60*24*7)}"/>
+                       <fmt:formatDate value="${today}" pattern="yyyyMMdd" var="now"/>
+                       <fmt:formatDate value="${aweekAgo}" pattern="yyyyMMdd" var="ago"/>
+                       <fmt:formatDate value="${p.cDate}" pattern="yyyyMMdd" var="cdate"/>
+                       
+                       <c:if test="${cdate eq now}">
+                       		<span class="badge badge-info">TODAY</span>
+                       </c:if>
+                       <c:if test="${cdate lt now}">
+                       		<c:if test="${cdate gt ago}">
+                       		<span class="badge badge-info">NEW</span>
+                       		</c:if>
+                       </c:if>  
                       </div>
 
                       <!--프로젝트명과 관심추가 버튼-->
                       <div style="width:100%;">
                       <h3 class="mb-0 float-left">
-                        <a href="#">프로젝트명</a><a class="btn" data-toggle="tooltip" data-placement="right" title="이 프로젝트의 클라이언트는 신원인증을 완료했습니다."><i class="far fa-check-circle"></i></i></a>
+                        <a href="#">${p.name}</a>
+                        <c:if test="${p.identify eq 'COMPLETE'}">
+                        <a class="btn" data-toggle="tooltip" data-placement="right" title="이 프로젝트의 클라이언트는 신원인증을 완료했습니다."><i class="far fa-check-circle"></i></a>
+                     	</c:if>
                       </h3>
                         <div class="float-right mr-3">
-                          <span id ="heart"><i class="fa fa-heart-o" aria-hidden="true" ></i></span>
+                          <span class ="heart"><i class="fa fa-heart-o" aria-hidden="true" ></i></span>
                           <label for="heart">관심</label>
                         </div>
                       </div>
@@ -1040,9 +1067,35 @@
                       <div class="project_plan_progress" style="width: 20rem;">
                         <p class="text-muted progress_label" style="float: left; margin-right: 1rem; margin-bottom: 0;font-size: 0.875rem;">기획상태</p>
                         <div class="progress mt-1">
-                          <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                            50%
-                          </div>
+                        
+                        <c:choose>
+                        <c:when test="${p.planDetail eq 1}">
+                        	 <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                            	20%
+                          	</div>
+                        </c:when>
+                        <c:when test="${p.planDetail eq 2}">
+                        	 <div class="progress-bar bg-info" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                            	40%
+                          	</div>
+                        </c:when>
+                        <c:when test="${p.planDetail eq 3}">
+                        	 <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                            	60%
+                          	</div>
+                        </c:when>
+                        <c:when test="${p.planDetail eq 4}">
+                        	 <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+                            	80%
+                          	</div>
+                        </c:when>
+                        <c:when test="${p.planDetail eq 5}">
+                        	 <div class="progress-bar bg-info" role="progressbar" style="width: 98%" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100">
+                            	98%
+                          	</div>
+                        </c:when>
+                        </c:choose>
+                         
                         </div>
                       </div>
 
@@ -1051,23 +1104,29 @@
                         <div class="col-md-9">
                          <table style="width:80%;height: 100%;">
                             <tr>
-                              <td style="border-right:dashed 1px white"><label class="mr-3">예상 금액</label><label>10,000</label><label>원</label></td>
-                              <td><label class="ml-3">개발+디자인</label></td>
+                              <td style="border-right:dashed 1px white"><label class="mr-3">예상 금액</label><label>
+                              <fmt:setLocale value="ko"/><fmt:formatNumber value="${p.payment}" type="currency"/>
+                              </label><label>원</label></td>
+                              <td><label class="ml-3">${p.mCategory}</label></td>
                             </tr>
                             <tr>
-                              <td style="border-right:dashed 1px white"><label class="mr-3">예상 기간</label><label>10</label><label>일</label></td>
-                              <td><label class="ml-3">애플리케이션</label></td>
+                              <td style="border-right:dashed 1px white"><label class="mr-3">예상 기간</label><label>${p.duration}</label><label>일</label></td>
+                              <td><label class="ml-3">${p.dCategory}</label></td>
                             </tr>
                          </table>
                         </div>
                         <div class="col-md-3">
-                          
+                        
                               <div class="mt-3" style="text-align: right;">
-                                <i class="fas fa-history mr-3"></i><label>마감</label><label>7</label><label>일 전</label>
+                                <i class="fas fa-history mr-3"></i><label>마감</label><label>
+                                <fmt:parseNumber value="${(p.rEndDate.time-today.time)/(1000*60*60*24)}" integerOnly="true"/>
+                                </label><label>일 전</label>
                               </div>
                             
                               <div style="text-align: right;">
-                                <i class="fas fa-user mr-3"></i><label>총</label><label>8</label><label>명 지원</label>
+                                <i class="fas fa-user mr-3"></i><label>총</label><label>
+                                ${p.applyNum}
+                                </label><label>명 지원</label>
                               </div>
                            
                         </div>
@@ -1078,24 +1137,26 @@
                       <div class="row mb-3" style="width: 100%; height: 100%;">
                         <div class="col-md-9">
                           <div class="card-text mb-4" style="font-size:0.875rem;">
-                            <label class="ml-1">프로젝트 개요</label>
-                            <textarea readonly maxlength="100">프로젝트 개요에 대한 내용이 적힐 부분, 전체가 출력되는 것은 아니고 글자 수를 100자 이하로 제한해야 한다.</textarea>
+                            <label>프로젝트 개요</label>
+                            <textarea readonly maxlength="100">${p.summary}</textarea>
                           </div>
                           <table style="width:100%; height: 20px;">
                             <tr>
                               <td style="border-right: 1px dashed white;width:20%;">
-                                <span class="badge badge-info">외주(도급)</span>
+                                <span class="badge badge-info">${p.workType}</span>
                               </td>
                               <td style="border-right: 1px dashed white;width: 40%;padding-left: 1rem;">
-                                <a href="#" class="badge badge-secondary">JAVA</a>
-                                <a href="#" class="badge badge-secondary">ORACLE</a>
-                                <a href="#" class="badge badge-secondary">HTML5</a>
+                              <c:forEach items="${p.techName}" var="tech">
+                                <a href="#" class="badge badge-secondary">${tech.tName}</a>
+                              </c:forEach>  
                               </td>
                               <td style="width: 10%;padding-left:1rem;padding-top:0.375rem;font-size: 0.875rem;">
-                                <i class="fas fa-map-marker-alt mr-2"></i><label>서울</label>
+                                <i class="fas fa-map-marker-alt mr-2"></i><label>${p.location}</label>
                               </td>
                               <td style="width: 30%;font-size: 0.875rem;">
-                                <label class="mt-2 mr-2 ml-4 text-muted">등록일자:</label><label class="text-muted">2020-08-06</label>
+                                <label class="mt-2 mr-2 ml-4 text-muted">등록일자:</label><label class="text-muted">
+                               		${p.cDate}
+                                </label>
                               </td>
                             </tr>
                           </table>
@@ -1104,11 +1165,9 @@
                         <div class="col-md-3" style="height: 100%;border-top: 1px dashed white;">
 
                           <div class="mt-5" style="text-align: right;">
-                            <i class="far fa-comment-dots mr-1"></i></i><label>7</label>
-                            <i class="far fa-heart mr-1"></i><label>8</label>
+                            <i class="far fa-comment-dots mr-1"></i><label>${p.replyNum}</label>
+                            <i class="far fa-heart mr-1"></i><label>${p.likeNum}</label>
                           </div>
-                        
-                         
                         </div>
                       </div>
                       
@@ -1124,6 +1183,7 @@
 
 
             </div>
+            </c:forEach>
             <!-- Project list row 끝-->
 
           </section>
@@ -1138,13 +1198,37 @@
               <div class="col-12 col-md-4 text-center">
                 <nav aria-label="Page navigation example">
                   <ul class="pagination justify-content-center mb-0 text-dark">
+                  	<c:if test="${pi.currentPage eq 1 }">
                     <li class="page-item"><a class="page-link"><i class="fas fa-chevron-left"></i></a></li>
-                    <li class="page-item active"><a class="page-link">1</a></li>
-                    <li class="page-item"><a class="page-link">2</a></li>
-                    <li class="page-item"><a class="page-link">3</a></li>
-                    <li class="page-item"><a class="page-link">4</a></li>
-                    <li class="page-item"><a class="page-link">5</a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage gt 1}">
+                    <c:url var="plistBack" value="searchProjectList.do">
+                    	<c:param name="page" value="${pi.currentPage-1}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistBack}"><i class="fas fa-chevron-left"></i></a></li>
+                    </c:if>
+                    
+                    <c:forEach begin="${pi.startPage}" end="${pi.endPage}" step="1" var="pn">
+                    <c:if test="${pi.currentPage eq pn}">
+                    <li class="page-item active"><a class="page-link">${pn}</a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage ne pn}">
+                    <c:url var="plistCheck" value="searchProjectList.do">
+                    <c:param name="page" value="${pn}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistCheck}">${pn}</a></li>
+                    </c:if>
+                    </c:forEach>
+                   
+                    <c:if test="${pi.currentPage eq pi.maxPage}">
                     <li class="page-item"><a class="page-link"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
+                  	<c:if test="${pi.currentPage lt pi.maxPage}">
+                  	<c:url var="plistFront" value="searchProjectList.do">
+                    	<c:param name="page" value="${pi.currentPage+1}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistFront}"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
                   </ul>
                 </nav>
               </div>

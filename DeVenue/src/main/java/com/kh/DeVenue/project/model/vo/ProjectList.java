@@ -21,6 +21,7 @@ public class ProjectList implements Serializable {
 	private String location;
 	private String recruit;
 	private Date cDate;
+	private Date rEndDate;
 	private int applyNum;
 	private int likeNum;
 	private int replyNum;
@@ -37,8 +38,9 @@ public class ProjectList implements Serializable {
 	}
 
 	public ProjectList(int id, String name, int planDetail, int duration, String summary, int payment, String location,
-			String recruit, Date cDate, int applyNum, int likeNum, int replyNum, String mCategory, String dCategory,
-			String workType, int clientId, String identify, int evaluation, ArrayList<Tech> techName) {
+			String recruit, Date cDate, Date rEndDate, int applyNum, int likeNum, int replyNum, String mCategory,
+			String dCategory, String workType, int clientId, String identify, int evaluation,
+			ArrayList<Tech> techName) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -49,6 +51,7 @@ public class ProjectList implements Serializable {
 		this.location = location;
 		this.recruit = recruit;
 		this.cDate = cDate;
+		this.rEndDate = rEndDate;
 		this.applyNum = applyNum;
 		this.likeNum = likeNum;
 		this.replyNum = replyNum;
@@ -133,6 +136,14 @@ public class ProjectList implements Serializable {
 		this.cDate = cDate;
 	}
 
+	public Date getrEndDate() {
+		return rEndDate;
+	}
+
+	public void setrEndDate(Date rEndDate) {
+		this.rEndDate = rEndDate;
+	}
+
 	public int getApplyNum() {
 		return applyNum;
 	}
@@ -213,14 +224,20 @@ public class ProjectList implements Serializable {
 		this.techName = techName;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
 		return "ProjectList [id=" + id + ", name=" + name + ", planDetail=" + planDetail + ", duration=" + duration
 				+ ", summary=" + summary + ", payment=" + payment + ", location=" + location + ", recruit=" + recruit
-				+ ", cDate=" + cDate + ", applyNum=" + applyNum + ", likeNum=" + likeNum + ", replyNum=" + replyNum
-				+ ", mCategory=" + mCategory + ", dCategory=" + dCategory + ", workType=" + workType + ", clientId="
-				+ clientId + ", identify=" + identify + ", evaluation=" + evaluation + ", techName=" + techName + "]";
+				+ ", cDate=" + cDate + ", rEndDate=" + rEndDate + ", applyNum=" + applyNum + ", likeNum=" + likeNum
+				+ ", replyNum=" + replyNum + ", mCategory=" + mCategory + ", dCategory=" + dCategory + ", workType="
+				+ workType + ", clientId=" + clientId + ", identify=" + identify + ", evaluation=" + evaluation
+				+ ", techName=" + techName + "]";
 	}
+	
 	
 	
 	

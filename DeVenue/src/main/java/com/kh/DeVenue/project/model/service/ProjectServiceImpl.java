@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.DeVenue.project.model.dao.ProjectDao;
+import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectList;
 
 @Service("proService")
 public class ProjectServiceImpl implements ProjectService {
@@ -29,6 +31,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public int getListCount() {
 		
 		return proDao.getListCount();
+	}
+
+	@Override
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
+		
+		return proDao.selectProjectList(pi);
 	}
 	
 

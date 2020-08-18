@@ -189,7 +189,7 @@ i {
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center mr-2" href="plist.do">프로젝트찾기</a>
+					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do">프로젝트찾기</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
