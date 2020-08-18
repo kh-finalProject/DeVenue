@@ -24,6 +24,12 @@ public class ProjectServiceImpl implements ProjectService {
 		// TODO Auto-generated method stub
 		return proDao.selectList();
 	}
+
+	@Override
+	public int getListCount() {
+		
+		return proDao.getListCount();
+	}
 	
 
 }

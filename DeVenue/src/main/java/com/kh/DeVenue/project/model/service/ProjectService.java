@@ -10,5 +10,7 @@ public interface ProjectService {
 
 	ArrayList<Project> selectList();
 
+	int getListCount();
+
 
 }

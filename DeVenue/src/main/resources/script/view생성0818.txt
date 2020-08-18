@@ -1,0 +1,48 @@
+--------------------------------------------------------
+--  파일이 생성됨 - 월요일-8월-17-2020   
+--------------------------------------------------------
+--------------------------------------------------------
+--  DDL for View PROJECTLIST_VIEW
+--------------------------------------------------------
+
+--프로젝트 조회 view
+  CREATE OR REPLACE FORCE VIEW "DEVENUE"."PROJECTLIST_VIEW" ("ID", "NAME", "PLANDETAIL", "DURATION", "SUMMARY", "PAYMENT", "LOCATION", "RECRUIT", "CDATE", "APPLYNUM", "LIKENUM", "REPLYNUM", "MCATEGORY", "DCATEGORY", "WORKTYPE", "CLIENTID", "IDENTIFY", "EVALUATION", "TECHNAME") AS 
+  select pj.pro_id "ID", pj.pro_name "NAME",pj.pro_plandetail "PLANDETAIL",pj.pro_duration "DURATION",pj.pro_summary "SUMMARY",
+pj.pro_payment "PAYMENT",pj.pro_location "LOCATION",pj.pro_recruit "RECRUIT",pj.pro_create_date "CDATE",
+ap."APPLY_NUM" "APPLYNUM", lp."LIKE_NUM" "LIKENUM", rp."REPLY_NUM" "REPLYNUM",
+m.mc_type "MCATEGORY", d.dc_type "DCATEGORY", w.wt_type "WORKTYPE",
+pj.mem_id "CLIENTID", i.ide_status "IDENTIFY", pe."RATE" "EVALUATION", pt."TECH" "TECHNAME"
+from project pj
+left join(select p.pro_id "id",count(*) "APPLY_NUM"
+from project p
+left join P_APPLY a on (p.pro_id=a.pro_id)
+group by p.pro_id) ap on (pj.pro_id=ap."id")
+left join(select p.pro_id "id", count(*) "LIKE_NUM"
+from project p
+left join p_LIKE l on(p.pro_id=l.pro_id)
+group by p.pro_id) lp on (pj.pro_id=lp."id")
+left join (select p.pro_id "id", count(*) "REPLY_NUM"
+from project p
+left join p_reply r on(p.pro_id=r.pro_id)
+group by p.pro_id) rp on (pj.pro_id=rp."id")
+left join mcate m on (pj.mc_id=m.mc_id)
+left join dcate d on (pj.dc_id=d.dc_id)
+left join worktype w on (pj.wt_id=w.wt_id)
+left join identify i on (pj.mem_id=i.ide_id)
+left join (select p.mem_id "mid", avg(e.e_agv) "RATE"
+from project p
+left join eval e on (p.mem_id=e.e_target)
+group by mem_id) pe on (pj.mem_id=pe."mid")
+left join(select p.pro_id "id", t.t_name "TECH"
+from project p
+left join p_tec pt on (p.pro_id=pt.pro_id)
+left join tech t on (pt.t_id=t.t_id)) pt on (pj.pro_id=pt."id")
+where pj.pro_sta_id='PST3'
+order by "PRO_ID";
+
+--프로젝트&기술 view
+CREATE OR REPLACE FORCE VIEW "DEVENUE"."PROJECTTECH_VIEW" ("PRO_ID", "TECH_ID", "TECH_NAME") AS 
+  select p.pro_id "PRO_ID",pt.t_id "TECH_ID",t.t_name "TECH_NAME"
+from project p
+left join p_tec pt on (p.pro_id=pt.pro_id)
+left join tech t on (pt.t_id=t.t_id);

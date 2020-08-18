@@ -147,6 +147,27 @@ ProjectService pService;
 		
 		return "project/extendProjectList";
 	}
+	
+	@RequestMapping("plist.do")
+	public ModelAndView projectList(ModelAndView mv, @RequestParam(value="page",required=false) Integer page) {
+	
+		//페이지네이션 처리
+		int currentPage=1;
+		
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		//페이징 처리를 위해 게시물 수 알아오기
+		int listCount=pService.getListCount();
+	
+		
+		
+		mv.setViewName("project/projectListView");
+		
+		return mv;
+		
+	}
 }
 
 
