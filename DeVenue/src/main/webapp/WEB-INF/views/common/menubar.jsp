@@ -30,6 +30,7 @@
 body {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-family: 'Jua', sans-serif;
+	background-color: #212426;
 }
 
 h1, h2, h3, h4, h5, h6 {
