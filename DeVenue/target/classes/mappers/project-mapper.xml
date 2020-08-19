@@ -106,5 +106,5 @@
 		ORDER BY ID DESC
 	</select>
 
-	
+
 </mapper>
