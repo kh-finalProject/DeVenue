@@ -23,7 +23,7 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 
 		
-		return "member/clientMyPage";
+		return "common/pSideMenubar";
 //		return "findMember/findClient/main";
 	}
 	
