@@ -12,26 +12,26 @@ public class ProjectList implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 951063778678382462L;
-	private int id;
-	private String name;
-	private int planDetail;
-	private int duration;
-	private String summary;
-	private int payment;
-	private String location;
-	private String recruit;
-	private Date cDate;
-	private Date rEndDate;
-	private int applyNum;
-	private int likeNum;
-	private int replyNum;
-	private String mCategory;
-	private String dCategory;
-	private String workType;
-	private int clientId;
-	private String identify;
-	private int evaluation;
-	private ArrayList<Tech> techName;
+	private int id;//프로젝트 id
+	private String name;//프로젝트명
+	private int planDetail;//프로젝트 상세
+	private int duration;//프로젝트 예상 기간
+	private String summary;//프로젝트 요약
+	private int payment;//프로젝트 예상금액
+	private String location;//프로젝트 지역
+	private String recruit;//프로젝트 모집 상태
+	private Date cDate;//프로젝트 생성일
+	private Date rEndDate;//프로젝트 모집 마감일
+	private int applyNum;//프로젝트 지원 수 
+	private int likeNum;//프로젝트 관심 수
+	private int replyNum;//프로젝트 댓글 수
+	private String mCategory;//프로젝트 메인 카테고리
+	private String dCategory;//프로젝트 상세 카테고리
+	private String workType;//프로젝트 근무 형태
+	private int clientId;//프로젝트 클라이언트 아이디
+	private String identify;//프로젝트 클라이언트 인증 여부
+	private int evaluation;//프로젝트 클라이언트 평균 점수
+	private ArrayList<Tech> techName;//프로젝트 기술명
 	
 	public ProjectList() {
 		super();

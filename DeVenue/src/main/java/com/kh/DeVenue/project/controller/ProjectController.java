@@ -187,6 +187,14 @@ ProjectService pService;
 		return mv;
 		
 	}
+	
+	@RequestMapping(value="searchProjectDetail.do")
+	public ModelAndView projectDetail(ModelAndView mv,@RequestParam(value="pId") Integer pId,@RequestParam(value="page") Integer page) {
+		
+		mv.setViewName("project/findProjectDetailView");
+		return mv;
+		
+	}
 }
 
 

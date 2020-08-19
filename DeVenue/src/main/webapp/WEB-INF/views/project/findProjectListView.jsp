@@ -198,7 +198,7 @@
 
               if($(this).text()=="관련기술"){
 
-                var languages=["java","JAVA","자바","oracle","ORACLE","javascript","js","자바스크립트","css","CSS","HTML5"];
+                var languages=["java","oracle","javascript","jquery","css","html5"];
 
                 autocomplete(document.getElementById("search_text"), languages);
                 
@@ -1011,7 +1011,13 @@
 
               <!-- Project List row 시작-->
             <c:forEach items="${list}" var="p">
-            <div class="row my-2" id="products">
+            
+            <c:url var="pDetail" value="searchProjectDetail.do">
+            	<c:param name="pId" value="${p.id}"/>
+            	<c:param name="page" value="${pi.currentPage}"/>
+            	<c:param name=""/>
+            </c:url>
+            <div onclick="location.href='${pDetail}'" class="row my-2 project">
               <div class="row mb-2 mx-auto" style="width: 100%;">
                 <div class="col-md-12 px-0">
                   <div>
@@ -1184,6 +1190,7 @@
 
             </div>
             </c:forEach>
+            
             <!-- Project list row 끝-->
 
           </section>
