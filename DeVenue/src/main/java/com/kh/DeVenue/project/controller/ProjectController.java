@@ -1,5 +1,7 @@
 package com.kh.DeVenue.project.controller;
 
+import static com.kh.DeVenue.common.Pagination.getPageInfo;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -18,8 +20,7 @@ import com.kh.DeVenue.project.model.service.ProjectService;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
-
-import static com.kh.DeVenue.common.Pagination.*;
+import com.kh.DeVenue.project.model.vo.ProjectQuestion;
 
 @Controller
 public class ProjectController {
@@ -33,24 +34,28 @@ ProjectService pService;
 	}
 	
 	
-	@RequestMapping(value="pinsert.do", method=RequestMethod.POST)
-	public String projectInsert(Project p, HttpServletRequest request,
-								@RequestParam(name="uploadFile",required=false)
+	@RequestMapping(value="proinsert.do", method=RequestMethod.POST)
+	public String projectInsert(Project p, ProjectQuestion q, HttpServletRequest request,
+								@RequestParam(value="proPlanPaper1",required=false)
 								MultipartFile file) {
-		
+		System.out.println(p);
+		System.out.println(q);
 		
 		if(!file.getOriginalFilename().contentEquals("")) {
 			String savePath = saveFile(file, request);
 //			System.out.println("최종 저장 될 파일명을 포함한 경로 : " + savePath);
 			if(savePath != null) {	// 파일이 잘 저장되어 경로가 반환 된다면..
-				p.setProPlanPaper(file.getOriginalFilename());
+				p.setProPlanPaper(file.getOriginalFilename());	
+				
 			}
 		}
 		
 		int result = pService.addProject(p);
+		int result1 =pService.addQuestion(q);
+		
 		
 		if(result > 0) {
-			return "redirect:plist.do";
+			return "redirect:addProject.do";
 		}else {
 			throw new ProjectException("프로젝트 등록 실패!");
 		}

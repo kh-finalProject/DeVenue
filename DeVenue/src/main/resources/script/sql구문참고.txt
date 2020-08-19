@@ -1,0 +1,58 @@
+-- 계정 관련 코드---------------------------------------------
+--계정 삭제
+DROP USER devenue cascade;
+--계정 생성
+CREATE USER devenue IDENTIFIED BY devenue;
+GRANT CONNECT, RESOURCE TO devenue; 
+-------------------------------------------------------------------
+
+-- 테이블 관련 참고 코드--------------------------------------
+-- 테이블 삭제
+DROP TABLE TABLENAME;
+-- 모든 테이블 한번에 밀기(셀렉해온 드랍문을 복붙해서)
+SELECT 'DROP TABLE "' || TABLE_NAME || '" CASCADE CONSTRAINTS;' FROM user_tables;
+
+--데이터 타입 변경 : NUMBER(4) -> VARCHAR2(4)
+ALTER TABLE TABLENAME MODIFY editid VARCHAR2(4);
+--데이터 길이(크기) 변경 : VARCHAR2(4) -> VARCHAR2(5)
+ALTER TABLE TABLENAME MODIFY editid VARCHAR2(5);
+--컬럼명 변경 : editid -> edit_id
+ALTER TABLE TABLENAME RENAME COLUMN editid TO edit_id;
+--기본 값 지정
+ALTER TABLE TABLENAME MODIFY editid VARCHAR2(5) DEFAULT '1000';
+--NOT NULL 지정
+ALTER TABLE emp MODIFY editid VARCHAR2(5) NOT NULL;
+--NOT NULL 제거(변경)
+ALTER TABLE emp MODIFY editid VARCHAR2(5) NULL;
+--기본 값 + NOT NULL 지정
+ALTER TABLE emp MODIFY editid VARCHAR2(5) DEFAULT '1000' NOT NULL;
+
+--제약조건 추가
+ALTER TABLE 테이블명 ADD PRIMARY KEY(EMPNO);
+
+ALTER TABLE 테이블명 ADD UNIQUE(ENAME);
+
+ALTER TABLE 테이블명 ADD FOREIGN KEY(DEPTNO) REFERENCES DEPT(DEPTNO);  => 뒤에가 부모 TABLE
+
+ALTER TABLE 테이블명 MODIFY 컬럼명 NOT NULL;
+
+-- 이름 부여해서 추가
+ALTER TABLE 테이블명 ADD CONSTRAINT DEPT01_DEPTNO_PK PRIMARY KEY(DEPTNO); 
+
+-- 컬럼삭제
+ALTER TABLE 테이블명
+DROP COLUMN 컬럼명
+
+-- 제약조건 제거
+ALTER TABLE 테이블명
+DROP CONSTRAINT 제약조건명;
+
+-- DEFAULT 제약 조건 추가
+ALTER TABLE 테이블이름
+ MODIFY 필드이름  DEFAULT 기본값
+
+-- CHECK제약조건 추가
+-- 문법 ALTER TABLE [테이블명] ADD CONSTRAINT [제약조건명] [제약조건](범위)
+-- 예시
+ALTER TABLE emp ADD CONSTRAINT emp_check CHECK(salary >= 1000 AND salary <= 10000);
+ALTER TABLE emp ADD CONSTRAINT emp_check CHECK salary IN (1000, 10000, 20000, 50000);

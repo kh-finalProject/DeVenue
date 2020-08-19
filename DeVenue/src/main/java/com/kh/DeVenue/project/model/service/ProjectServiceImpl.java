@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.DeVenue.project.model.dao.ProjectDao;
+import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectList;
+import com.kh.DeVenue.project.model.vo.ProjectQuestion;
 
 @Service("proService")
-public class ProjectServerImpl implements ProjectService {
+public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	ProjectDao proDao;
 
@@ -23,6 +26,24 @@ public class ProjectServerImpl implements ProjectService {
 	public ArrayList<Project> selectList() {
 		// TODO Auto-generated method stub
 		return proDao.selectList();
+	}
+
+	@Override
+	public int getListCount() {
+		
+		return proDao.getListCount();
+	}
+
+	@Override
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
+		
+		return proDao.selectProjectList(pi);
+	}
+
+	@Override
+	public int addQuestion(ProjectQuestion q) {
+		
+		return proDao.addQuestion(q);
 	}
 	
 

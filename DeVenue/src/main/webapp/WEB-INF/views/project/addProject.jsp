@@ -295,7 +295,7 @@ padding-left:50px;
 <jsp:include page = "../common/menubar.jsp"/>
 <jsp:include page ="../common/pSubMenubar.jsp"/>
 
-<div class ="middle" style ="background-color:black;  font-family: 'Jua', sans-serif;" >
+<div class ="middle"  style ="background-color:black;  font-family: 'Jua', sans-serif;" >
  
 
   <div class ="container" >
@@ -355,7 +355,8 @@ padding-left:50px;
           
           </table>
           
-<form action ="proinsert.do" method = "post" enctype ="multipart/form-data">
+<form action ="proinsert.do" id= "regform" method = "post" enctype ="multipart/form-data">
+
 
 <div class="tab"> 
 <table style ="color: white; border:2px solid white; " width="540px;">
@@ -481,8 +482,8 @@ padding-left:50px;
  
     <tr>
     <td colspan="2"  style ="padding-bottom:50px;"><div class="filebox">
-        <label for="ex_file">+ 프로젝트 관련 자료 추가</label>
-        <input type="file" id="ex_file" name= ""> 
+        <label for="ex_file"  >+ 프로젝트 관련 자료 추가</label>
+        <input type="file" id="ex_file" name="proPlanPaper1"> 
       </div></td>
      </tr> 
     
@@ -540,7 +541,7 @@ padding-left:50px;
 <td colspan="2"  style ="padding-top:50px;"> 
 
 <li id ="mText">지출 가능 예산 <a style = "color:red">*</a></li>
-<li><input type="text" name="proPayment" value ="$"></li>
+<li><input type="text" name="proPayment" ></li>
     <li>예상 결제 금액  : 0(부가가치세 10% 포함)    </li>
 <br>
 <li id ="mText">예상 시작일<a style ="color:red">*</a></li>
@@ -552,7 +553,7 @@ padding-left:50px;
 
 <li id ="mText">예상 진행 기간<a style="color:red">*</a></li>
 <li id ="sText" style ="color:grey">프로젝트 진행 기간을 입력해 주세요.</li>
-<li style ="padding-bottom:50px;"><input type="text" name = "proDuration" value="일수를 작성해 주세요."></li>
+<li style ="padding-bottom:50px;"><input type="text" name = "proDuration"></li>
 <hr>
 
 <br><br>
@@ -576,7 +577,7 @@ padding-left:50px;
   <li id="mText" style ="padding-top:50px;" >지원자 모집 마감일<a style=color:red>*</a></li>
 <li id="sText" style ="color:grey">지원자를 모집하는 기간은 최대 14일까지 가능합니다.<br>
   지원자 모집 기간 중에도 파트너 선정과 계약 진행이 가능합니다.</li>
-  <li><input type= "date" name ="proPlanPaper"></li>
+  <li><input type= "date" name ="proREndDate"></li>
 
   <li id="mText" style ="padding-top:30px;">지원자 필수 요건</li>
   <li id ="sText" style ="color:grey">아래 조건에 맞는 파트너를  지원자로 받습니다.</li>
@@ -603,21 +604,21 @@ padding-left:50px;
       </tr>
         <tr>
 <td colspan="2" style ="padding-top:50px;"><li id = "mText">프로젝트 인력 상황<a style ="color:red">*</a></li>
-      <li><label><input type="radio" name="proHelp">IT프로젝트 경험이 있는 인력이 있습니다.</label></li>
-      <li><label><input type="radio" name ="proHelp">IT프로젝트 경험이 있는 인력이 없습니다.</label></li>
+      <li><label><input type="radio" name="proHelp" value ="1">IT프로젝트 경험이 있는 인력이 있습니다.</label></li>
+      <li><label><input type="radio" name ="proHelp" value ="2">IT프로젝트 경험이 있는 인력이 없습니다.</label></li>
 <br>
       <li id = "mText">프로젝트 매니징 경험<a style ="color:red">*</a></li>
-      <li><label><input type="radio" name="proManage">프로젝트 매니징 경험이 있습니다.</label></li>
-      <li><label><input type="radio" name= "proManage">프로젝트 매니징 경험이 없습니다.</label></li>
+      <li><label><input type="radio" name="proManage" value ="1">프로젝트 매니징 경험이 있습니다.</label></li>
+      <li><label><input type="radio" name= "proManage" value ="2">프로젝트 매니징 경험이 없습니다.</label></li>
 <br>
 
       <li id ="mText">프로젝트 우선순위</li>
       <li id ="sText" style ="color:grey">프로젝트 진행에 가장 중요한 요소 1가지를 선택해주세요.<br>
       </li>
-      <li><label><input type="radio" name= "proPriority">빠르게 진행자가 발생하는 것이 가장 중요합니다.</label></li>
-      <li><label><input type="radio" name= "proPriority">완성도 높은 산출물을 받아보는 것이 가장 중요합니다.</label></li>
-      <li><label><input type="radio" name= "proPriority">최대한 낮은 금액으로 제안받는 것이 가장 중요합니다.</label></li>
-      <li style ="padding-bottom:50px;"><label><input type="radio" name= "Propriority">프로젝트 기간 준수가 가장 중요하며, 가능하다면 기간이 단축되어야 합니다.</label></li>
+      <li><label><input type="radio" name= "proPriority" value ="1">빠르게 진행자가 발생하는 것이 가장 중요합니다.</label></li>
+      <li><label><input type="radio" name= "proPriority" value ="2">완성도 높은 산출물을 받아보는 것이 가장 중요합니다.</label></li>
+      <li><label><input type="radio" name= "proPriority" value ="3">최대한 낮은 금액으로 제안받는 것이 가장 중요합니다.</label></li>
+      <li style ="padding-bottom:50px;"><label><input type="radio" name= "Propriority" value ="4">프로젝트 기간 준수가 가장 중요하며, 가능하다면 기간이 단축되어야 합니다.</label></li>
    <
    <li id ="mText" style ="padding-top:30px;">파트너 지원 전 질문</li>
   <li id ="sText" style ="color:grey">파트너가 프로젝트에 지원할 때 답변해야 할 질문을 작성해 주세요. <br> 최대 3개까지 입력 가능합니다.<br>
@@ -683,7 +684,7 @@ function removeRow() {
     <span class="step"></span>
 </div>
 
-</form>
+
           
     </div>
     </div>
@@ -709,6 +710,10 @@ function showTab(n) {
   }
   if (n == (x.length - 1)) {
     document.getElementById("nextBtn").innerHTML = "Submit";
+   $("#nextBtn").removeAttr("onclick");
+   $("#nextBtn").attr("onclick","submit();");
+    
+
     
   } else {
     document.getElementById("nextBtn").innerHTML = "Next";
@@ -718,6 +723,7 @@ function showTab(n) {
 }
 
 function nextPrev(n) {
+	
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
@@ -726,10 +732,14 @@ function nextPrev(n) {
   x[currentTab].style.display = "none";
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
+  console.log(currentTab);
+  console.log(x.length);
+  
   // if you have reached the end of the form... :
   if (currentTab >= x.length) {
     //...the form gets submitted:
     document.getElementById("regForm").submit();
+
     return false;
   }
   // Otherwise, display the correct tab:
@@ -767,7 +777,7 @@ function validateForm() {
 	  x[n].className += " active";
 	}
 </script>
-
+</form>
 <jsp:include page = "../common/footer.jsp"/>
 </body>
 </html>

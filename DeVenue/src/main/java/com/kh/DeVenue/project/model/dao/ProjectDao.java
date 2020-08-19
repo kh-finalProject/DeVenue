@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
+import com.kh.DeVenue.project.model.vo.ProjectQuestion;
 
 @Repository("proDao")
 public class ProjectDao {
@@ -41,6 +42,11 @@ public class ProjectDao {
 		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
 		
 		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getProjectList", null, rowBounds);
+	}
+
+	public int addQuestion(ProjectQuestion q) {
+		
+		return sqlSessionTemplate.insert("projectMapper.addQuestion",q);
 	}
 
 }

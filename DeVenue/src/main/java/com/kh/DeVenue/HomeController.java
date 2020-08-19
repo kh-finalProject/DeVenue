@@ -26,7 +26,13 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 
 		
-		return "common/mainPage";
+		return "member/clientMyPage";
+//		return "findMember/findClient/main";
+	}
+	
+	@RequestMapping("clientList.do")
+	public String getClientList() {
+		return "findMember/findClient/mainFC";
 	}
 	
 }
