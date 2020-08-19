@@ -1,7 +1,4 @@
 package com.kh.DeVenue;
-
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -26,7 +23,13 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 
 		
-		return "common/mainPage";
+		return "common/pSideMenubar";
+//		return "findMember/findClient/main";
+	}
+	
+	@RequestMapping("clientList.do")
+	public String getClientList() {
+		return "findMember/findClient/mainFC";
 	}
 	
 }

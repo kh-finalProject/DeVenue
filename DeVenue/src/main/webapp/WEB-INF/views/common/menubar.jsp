@@ -30,6 +30,7 @@
 body {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-family: 'Jua', sans-serif;
+	background-color: #212426;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -189,10 +190,10 @@ i {
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트찾기</a>
+					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do">프로젝트찾기</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트등록</a>
+					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center" href="#">회원 찾기</a>

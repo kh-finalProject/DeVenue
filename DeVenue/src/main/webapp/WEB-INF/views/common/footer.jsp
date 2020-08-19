@@ -7,13 +7,13 @@
 <title>Insert title here</title>
 <style>
 footer.footer {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-    
+	padding-top: 4rem;
+	padding-bottom: 4rem;
+}
+
 .footer-link {
-      margin-top: 30px;
-    }
+	margin-top: 30px;
+}
 </style>
 
 </head>
@@ -24,7 +24,7 @@ footer.footer {
 				<div class="col-lg-6 h-100 text-center text-lg-left my-auto">
 					<ul class="list-inline mb-2">
 						<li class="list-inline-item"><a class="btn-info btn-sm"
-							href="#">고객센터</a></li>
+							href="#">공지사항</a></li>
 						<li class="list-inline-item">&sdot;</li>
 						<li class="list-inline-item"><a class="btn-info btn-sm"
 							href="#">운영시간</a></li>
@@ -33,7 +33,7 @@ footer.footer {
 							href="#">이용약관</a></li>
 						<li class="list-inline-item">&sdot;</li>
 						<li class="list-inline-item"><a class="btn-info btn-sm"
-							href="#">공지사항</a></li>
+							href="#">고객센터</a></li>
 					</ul>
 					<p class="text-muted small mb-4 mb-lg-0">&copy; Your Website
 						2020. All Rights Reserved.</p>
