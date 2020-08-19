@@ -77,22 +77,22 @@
 			            });
 			
 			            $("#clientInfo").on("click", function () {
-			              location.href = "../findUser/findClientDetail.html";
+			              location.href = "clientInfo.jsp";
 			            }).on("mouseenter", function () {
 			
 			            });
 			
 			            $("#projectHistory").on("click", function () {
-			              location.href = "projectHistory.html";
+			              location.href = "projectHistory.jsp";
 			            });
 			
 			
 			            $("#clientComment").on("click", function () {
-			              location.href = "clientComment.html";
+			              location.href = "clientComment.jsp";
 			            });
 			
 			            $("#insertCComment").on("click", function () {
-			              location.href = "insertCComment.html";
+			              location.href = "insertCComment.jsp";
 			            });
 			          </script>
 
