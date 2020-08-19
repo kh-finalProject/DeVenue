@@ -55,7 +55,6 @@
 		<result property="mCategory" column="MCATEGORY"/>
 		<result property="dCategory" column="DCATEGORY"/>
 		<result property="workType" column="WORKTYPE"/>
-		<result property="clientId" column="CLIENTID"/>
 		<result property="identify" column="IDENTIFY"/>
 		<result property="evaluation" column="EVALUATION"/>
 
@@ -96,7 +95,6 @@
 			</insert>
 		
 
-	
 	<select id="getListCount" resultType="_int">
 		SELECT COUNT(*) 
 		FROM PROJECTLIST_VIEW
@@ -109,22 +107,4 @@
 	</select>
 
 
-	
-	
-	<select id="getListCount" resultType="_int">
-		SELECT COUNT(*) 
-		FROM PROJECTLIST_VIEW
-	</select>
-	
-	<select id="getProjectList" resultMap="projectListResultSet">
-		SELECT * 
-		FROM PROJECTLIST_VIEW 
-		ORDER BY ID DESC
-	</select>
-
-
-
-	
-
-	
 </mapper>
