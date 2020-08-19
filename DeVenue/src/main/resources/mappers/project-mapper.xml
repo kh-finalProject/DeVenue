@@ -46,6 +46,35 @@
 		
 	</resultMap>
 	
+	
+	<resultMap type="ProjectList" id="projectListResultSet">
+		<id property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="planDetail" column="PLANDETAIL"/>
+		<result property="duration" column="DURATION"/>
+		<result property="summary" column="SUMMARY"/>
+		<result property="payment" column="PAYMENT"/>
+		<result property="location" column="LOCATION"/>
+		<result property="recruit" column="RECRUIT"/>
+		<result property="cDate" column="CDATE"/>
+		<result property="rEndDate" column="RENDDATE"/>
+		<result property="applyNum" column="APPLYNUM"/>
+		<result property="likeNum" column="LIKENUM"/>
+		<result property="replyNum" column="REPLYNUM"/>
+		<result property="mCategory" column="MCATEGORY"/>
+		<result property="dCategory" column="DCATEGORY"/>
+		<result property="workType" column="WORKTYPE"/>
+		<result property="clientId" column="CLIENTID"/>
+		<result property="identify" column="IDENTIFY"/>
+		<result property="evaluation" column="EVALUATION"/>
+		<collection property="techName" javaType="java.util.ArrayList" resultMap="techResultSet1"/>
+	
+	</resultMap>
+	
+	<resultMap type="Tech" id="techResultSet1">
+		<result property="tName" column="TECHNAME"/>
+	</resultMap>
+	
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO Project VALUES(
 			SEQ_BID.NEXTVAL
@@ -59,6 +88,20 @@
 			, SYSDATE
 			, DEFAULT
 		)
+
 			</insert>
-		<select id ="check"	
+		
+
+	
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*) 
+		FROM PROJECTLIST_VIEW
+	</select>
+	
+	<select id="getProjectList" resultMap="projectListResultSet">
+		SELECT * 
+		FROM PROJECTLIST_VIEW 
+		ORDER BY ID DESC
+	</select>
+
 </mapper>
