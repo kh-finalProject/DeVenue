@@ -1,0 +1,79 @@
+-- USERTYPE
+INSERT INTO USERTYPE VALUES('UT1','주관리자');
+INSERT INTO USERTYPE VALUES('UT2','관리자');
+INSERT INTO USERTYPE VALUES('UT3','클라이언트');
+INSERT INTO USERTYPE VALUES('UT4','파트너스');
+
+----------------------------------------------------------------------------------------------------------------
+-- MEMTYPE
+INSERT INTO MEMTYPE VALUES('MT1','개인');
+INSERT INTO MEMTYPE VALUES('MT2','법인');
+INSERT INTO MEMTYPE VALUES('MT3','팀');
+INSERT INTO MEMTYPE VALUES('MT4','개인사업자');
+INSERT INTO MEMTYPE VALUES('MT5','법인사업자');
+INSERT INTO MEMTYPE VALUES('MT6','기업');
+
+----------------------------------------------------------------------------------------------------------------
+-- WORKTYPE
+INSERT INTO WORKTYPE VALUES('WT1','외주');
+INSERT INTO WORKTYPE VALUES('WT2','상주');
+INSERT INTO WORKTYPE VALUES('WT3','외주+상주');
+
+----------------------------------------------------------------------------------------------------------------
+-- SC_STATUS
+INSERT INTO SC_STATUS VALUES('SS1','재학');
+INSERT INTO SC_STATUS VALUES('SS2','휴학');
+INSERT INTO SC_STATUS VALUES('SS3','졸업');
+INSERT INTO SC_STATUS VALUES('SS4','자퇴');
+
+----------------------------------------------------------------------------------------------------------------
+-- SC_GROUP
+INSERT INTO SC_GROUP VALUES('SG1','중학교');
+INSERT INTO SC_GROUP VALUES('SG2','고등학교');
+INSERT INTO SC_GROUP VALUES('SG3','전문대');
+INSERT INTO SC_GROUP VALUES('SG4','대학교');
+INSERT INTO SC_GROUP VALUES('SG5','대학원');
+INSERT INTO SC_GROUP VALUES('SG6','박사과정');
+
+----------------------------------------------------------------------------------------------------------------
+-- TECH
+INSERT INTO TECH VALUES('T1','java');
+INSERT INTO TECH VALUES('T2','oracle');
+INSERT INTO TECH VALUES('T3','html5');
+INSERT INTO TECH VALUES('T4','css');
+INSERT INTO TECH VALUES('T5','javascript');
+INSERT INTO TECH VALUES('T6','jquery');
+INSERT INTO TECH VALUES('T7','etc');
+
+----------------------------------------------------------------------------------------------------------------
+-- MCATE
+INSERT INTO MCATE VALUES('MC1','개발');
+INSERT INTO MCATE VALUES('MC2','디자인');
+INSERT INTO MCATE VALUES('MC3','개발+디자인');
+
+----------------------------------------------------------------------------------------------------------------
+-- DCATE
+INSERT INTO DCATE VALUES('DC1','웹');
+INSERT INTO DCATE VALUES('DC2','어플리케이션');
+INSERT INTO DCATE VALUES('DC3','퍼블리싱');
+INSERT INTO DCATE VALUES('DC4','기타');
+
+----------------------------------------------------------------------------------------------------------------
+-- P_STATUS
+INSERT INTO P_STATUS VALUES('PST1','검수전');
+INSERT INTO P_STATUS VALUES('PST2','검수중');
+INSERT INTO P_STATUS VALUES('PST3','결제전');
+INSERT INTO P_STATUS VALUES('PST4','진행중');
+INSERT INTO P_STATUS VALUES('PST5','완료');
+INSERT INTO P_STATUS VALUES('PST6','중단');
+INSERT INTO P_STATUS VALUES('PST7','임시저장');
+INSERT INTO P_STATUS VALUES('PST8','등록실패');
+
+----------------------------------------------------------------------------------------------------------------
+-- DECLINE
+INSERT INTO DECLINE VALUES('D1',1);
+INSERT INTO DECLINE VALUES('D2',2);
+INSERT INTO DECLINE VALUES('D3',3);
+INSERT INTO DECLINE VALUES('D4',4);
+
+COMMIT;

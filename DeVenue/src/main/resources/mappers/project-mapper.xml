@@ -88,7 +88,6 @@
 			, SYSDATE
 			, DEFAULT
 		)
-
 			</insert>
 		
 
@@ -103,5 +102,20 @@
 		FROM PROJECTLIST_VIEW 
 		ORDER BY ID DESC
 	</select>
+
+=======
+	</insert>
+	
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*) 
+		FROM PROJECTLIST_VIEW
+	</select>
+	
+	<select id="getProjectList" resultMap="projectListResultSet">
+		SELECT * 
+		FROM PROJECTLIST_VIEW 
+		ORDER BY ID DESC
+	</select>
+
 
 </mapper>

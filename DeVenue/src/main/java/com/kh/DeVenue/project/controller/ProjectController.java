@@ -20,7 +20,12 @@ import com.kh.DeVenue.project.model.service.ProjectService;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
+
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+
+
+import static com.kh.DeVenue.common.Pagination.*;
+
 
 @Controller
 public class ProjectController {
