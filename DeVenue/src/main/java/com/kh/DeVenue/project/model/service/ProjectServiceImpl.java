@@ -9,6 +9,7 @@ import com.kh.DeVenue.project.model.dao.ProjectDao;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
+import com.kh.DeVenue.project.model.vo.ProjectQuestion;
 
 @Service("proService")
 public class ProjectServiceImpl implements ProjectService {
@@ -37,6 +38,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
 		
 		return proDao.selectProjectList(pi);
+	}
+
+	@Override
+	public int addQuestion(ProjectQuestion q) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 
