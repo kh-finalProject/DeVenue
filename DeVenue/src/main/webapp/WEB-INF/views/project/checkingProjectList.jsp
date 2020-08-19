@@ -405,13 +405,14 @@ button{
        
        
         <div id ="projectbox" style ="margin-top:50px;" >
-          <table w       <c:forEach var ="p" items="${list }">
-idth="533px"   >
+       <c:forEach var ="p" items="${list }">
+          <table width="533px"   >
               <thead>
 
                   <tr >
-                      <td><li style= "color: white; padding-left                      <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
- id ="sText" style ="float:right; font-size:25px; padding-top:10px; padding-left:10px;" > 
+                      <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
+                      
+                      <td colspan="5"><a id ="sText" style ="float:right; font-size:25px; padding-top:10px; padding-left:10px;" > 
 
                      
                         
@@ -420,48 +421,51 @@ idth="533px"   >
                   
                   <tr id ="sText" style ="">
                       <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                        <span class="badge badge-primary">개발</span>
-                          <span class="badge badge-primary">${p.proMCType}</span>
+                        <span class="badge badge-primary">${p.proMCType}</span>
                         <span class="badge badge-success">${p.proDCType}</span></td>
-style= "border-bottom:2px solid #2098d1" id ="sText" >
+                      
+                  </tr>
+                  <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
                      
                       <td><img
 						src="${contextPath }/resources/images/money	.png" height="30px"
 						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>
                     </td>
-                      <td >2000000원&nbsp;&nbsp;&nbsp;</td>
-                      <td ><img                      <td > ${p.proPayment}원&nbsp;&nbsp;&nbsp;</td>
+                      <td > ${p.proPayment}원&nbsp;&nbsp;&nbsp;</td>
               
-ght="30px"
+                      <td ><img
+						src="${contextPath }/resources/images/period.png" height="30px"
 						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">예상기간   </span></td>
-                      <td>30일&nbsp;&nbsp;&nbsp;</td>
+                      <td>${p.proDuration}&nbsp;&nbsp;&nbsp;</td>
                       <td><li><img
-						src="${contextPath }/                      <td>${p.proDuration}&nbsp;&nbsp;&nbsp;</td>
-idth  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">모집마감    </span></li></td>
-                      <td><li style= "margin-right:15px;">2020년 2월 30일&nbsp;&nbsp;&nbsp;</li></td>
+						src="${contextPath }/resources/images/deadline.png" height="30px"
+						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">모집마감    </span></li></td>
+                      <td><li style= "margin-right:15px;">${p.proREndDate}&nbsp;&nbsp;&nbsp;</li></td>
                  
-                                 <td><li style= "margin-right:15px;">${p.proREndDate}&nbsp;&nbsp;&nbsp;</li></td>
-                       <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
+                  </tr>
+                  <tr >
+                      <table  id ="sText" width="534px">
+                          <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
                             
                               <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">기획상태    </span></td>
-                              <td  >서류</td>
-                              <td  style = "  margin-left:10px;"><span class="badge badge                              <td  >${p.proPlan }</td>
-; margin-left:10px;  width:80px;">매니징 경험</span></td>
-                              <td  >X</td>
-                              <td  style = "  padding:1px;" ><span class="badge badge-primary" style                               <td  >${p.proManage }</td>
+                              <td  >${p.proPlan }</td>
+                              <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">매니징 경험</span></td>
+                              <td  >${p.proManage }</td>
                               <td  style = "  padding:1px;" ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 시작일</span></td>
                               <td  >${p.proStartDate }</td>
-2098d1; height:50px;" id ="sText">
-                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 시작일</span></td>                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트 종류</span></td>
+                              
+                          </tr>
+                          <tr  align ="center" style ="border-bottom:2px solid #2098d1; height:50px;" id ="sText">
+                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트 종류</span></td>
                               <td  >${p.proMaintain }</td>
-                         <td >서울시<br>강남구</td>
+                              <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px; width:80px;">위치</span></td>
+                              <td >서울시<br>강남구</td>
                               <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">파트너스 수 </span></td>
-                              <td width="120px; " >n 명</td>
+                              <td width="120px; " >${p.proStartDate}</td>
                             
                           </tr>
                        
-                                                        <td width="120px; " >${p.proStartDate}</td>
-"30" id ="sText">
+                          <tr  align ="center" style= "border:1px solid black;" height="30" id ="sText">
                            
                               <td colspan="6">
                                   <div style= "float:right; margin-right:30px; padding:10px;">
@@ -476,10 +480,12 @@ idth  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">�
 </td>
 </tr>   
                    
+  </c:forEach>
     </table>      
     </form>
     
   </div>
+  
 </div>
 </div>
 </div>

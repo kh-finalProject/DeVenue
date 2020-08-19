@@ -286,6 +286,8 @@ padding-left:50px;
     background: #e3edfa;
     color: #2e6baa;
 
+}
+.chip-choice-client input[type="checkbox"] {display: none;}
   </style>
   
 </head>
@@ -293,22 +295,24 @@ padding-left:50px;
 <jsp:include page = "../common/menubar.jsp"/>
 <jsp:include page ="../common/pSubMenubar.jsp"/>
 
-<div class ="middle" style ="background-color:black;  font-family: 'Jua', sans-serif;" >
+<div class ="middle"  style ="background-color:black;  font-family: 'Jua', sans-serif;" >
  
 
   <div class ="container" >
     <br>
 
     <div class="row" style ="margin-top: 60px; margin-bottom:60px;">
-      <div class="col-2 text-white" style="border-right: 2px solid lightgray; margin-right:40px; margin-left:100p}
-.chip-choice-client input[type="checkbox"] {display: none;}
-x; font-family: 'Jua', sans-serif;">
+      <div class="col-2 text-white" style="border-right: 2px solid lightgray; margin-right:40px; margin-left:100px; font-family: 'Jua', sans-serif;">
           <br>
           <div style="padding-bottom: 5.5%;">
              
                 <li id ="bText" style ="color:lightslategray"> 프로젝트 등록</li>
-   <div class ="middle"  style ="background-color:black;  font-family: 'Jua', sans-serif;" >
-           <div>
+            
+              <br>
+              <br>
+              <br>
+              
+              <div>
                   <li id ="mText" style ="color:lightslategray">프로젝트 정보 등록</li>
                    <br>
                   <ul style ="margin-left:10px;" id ="sText"> 
@@ -351,7 +355,8 @@ x; font-family: 'Jua', sans-serif;">
           
           </table>
           
-<form action ="proinsert.do" method = "post" enctype ="multipart/form-data">
+<form action ="proinsert.do" id= "regform" method = "post" enctype ="multipart/form-data">
+
 
 <div class="tab"> 
 <table style ="color: white; border:2px solid white; " width="540px;">
@@ -363,43 +368,36 @@ x; font-family: 'Jua', sans-serif;">
             <tr>
             <td colspan="2" style ="padding-top:50px;"><li id ="mText"> 프로젝트 제목<i style ="color:red;">*</i></li></td>
             </tr>
-   <form action ="proinsert.do" id= "regform" method = "post" enctype ="multipart/form-data">
-
-ngth= 50></td>
+            <tr>
+            <td colspan="2" ><input type ="text" size =50 maxlength= 50 name="proName"></td>
            </tr> 
           
             <tr>
             <td colspan="2" style ="padding-top:30px;"><li id ="mText">프로젝트 종류<i style ="color:red;">*</i></li></td>
             </tr>
-            <tr>
+             <tr>
 
              <td colspan="2">
-            <label ><input type ="radio" name="type2" value ="N"> 신규 프로젝트를 진행하려 합니다.</label>
-             <label  ><input type ="radio" name="type2" value ="Y"> 운영적인 서비스의 리뉴얼 또는 유지보수를 하려 합니다.</label>
-            </            <td colspan="2" ><input type ="text" size =50 maxlength= 50 name="proName"></td>
-padding-top:30px;" ><li id ="mText">프로젝트 진행 방식<i style ="color:red;">*</i><br>
+            <label ><input type ="radio"  name ="proMaintain" " value ="N"> 신규 프로젝트를 진행하려 합니다.</label>
+             <label  ><input type ="radio"name ="proMaintain" value ="Y"> 운영적인 서비스의 리뉴얼 또는 유지보수를 하려 합니다.</label>
+            </td>
+   	         </tr>
+           
+          
+             <tr> 
+          <td colspan="2" style ="padding-top:30px;" ><li id ="mText">프로젝트 진행 방식<i style ="color:red;">*</i><br>
           <i id ="sText" style ="color:gray;" >프로젝트에 적합한 작업자를 모집하기 위해 프로젝트 진행 방식을 선택해 주세요.</li></td>
           </tr>
-               <tr>
-     <td colspan="2"><label><input            <label ><input type ="radio"  name ="proMaintain" " value ="N"> 신규 프로젝트를 진행하려 합니다.</label>
-             <label  ><input type ="radio"name ="proMaintain" value ="Y"> 운영적인 서비스의 리뉴얼 또는 유지보수를 하려 합니다.</label>
-)</label></td>
+          <tr>
+         <td colspan="2"><label><input type ="radio" name="proMCId" value ="WT1"> 프로젝트 단위로 계약(외주)</label></td>
+         </tr>
+         <tr>
+          <td colspan="2"><label> <input type ="radio" name ="proMCId" value ="WT2"> 인력을 기간 단위로 구인(상주)</label></td>
           </tr>
           <tr>
-                 
-          
-     <td colspan="2"><label> <input type ="radio" name ="type1" value ="WT3"> 상관없음</label></td>
+           <td colspan="2"><label> <input type ="radio" name ="proMCId" value ="WT3"> 상관없음</label></td>
           </tr>
-           <tr>
-              <td colspan="2" style =" padding-bottom:30px;"><li id ="sText"><img src= "!.png" width=10px; >선택하신 프로젝트 진행 방식에 따라 입력해야 하는 항목들이 변경됩니다.</li></td>
-             <td colspan="2"><label><input type ="radio" name="proMCId" value ="WT1"> 프로젝트 단위로 계약(외주)</label></td>
-i></li></td>
-           </tr>
-           <td colspan="2"><label> <input type ="radio" name ="proMCId" value ="WT2"> 인력을 기간 단위로 구인(상주)</label></td>
-n1">
-              <option value="           <td colspan="2"><label> <input type ="radio" name ="proMCId" value ="WT3"> 상관없음</label></td>
-광주광역시</option>
-                <tr>
+             <tr>
             <td colspan="2" style ="padding-top:30px;"><li id ="mText">프로젝트 분야<i style ="color:red;">*</i></li></td>
             </tr>
                <tr>
@@ -421,7 +419,21 @@ n1">
                <label class="chip-choice-client" style="display: inline-block;"><input class="theme-client wishket-chip" name="proDCId" type="checkbox" value="etc"><span>기타</span></label> 
         
             </td>
-               <option value="#">아직</option>
+            </tr>
+          <tr>
+           <td colspan="2" ><li id = "mText">클라이언트 위치 <i style ="color:red">*</i></li></td>
+           </tr>
+           <tr>
+            <td colspan="2" style ="padding-bottom:50px;"><li>
+              <select name="location1">
+              <option value="default">시/도</option>
+              <option value="#">서울특별시</option>
+              <option value="#">광주광역시</option>
+              <option value="#">대전광역시</option>
+              </select>
+              <select name="location2">
+                <option value="default" checked>시/군/구</option>
+                <option value="#">아직</option>
                 <option value="#">뺶똰</option>
                 <option value="#">못만들었음</option>
                 </select>
@@ -442,9 +454,9 @@ n1">
   <tr>
 
    <td colspan="2"> <li id ="sText" style ="color:grey">업무 산정과 예산 및 일정 상담을 위해 현재 기획 상태를 선택해 주세요.</li>
-    <label><input type ="radio" name ="condition" value ="1">아이디어만 있습니다.</label> <br>
-    <label><input type ="radio" name="condition" value ="2">필요한 내용들만 간단히 정리해 두었습니다.</label><br>
-    <label><input type ="radio" name ="condition" value ="3">상세한 기획문서가 존재합니다.</label></td>
+    <label><input type ="radio" name ="proPlan" value ="1">아이디어만 있습니다.</label> <br>
+    <label><input type ="radio" name="proPlan" value ="2">필요한 내용들만 간단히 정리해 두었습니다.</label><br>
+    <label><input type ="radio" name ="proPlan" value ="3">상세한 기획문서가 존재합니다.</label></td>
   </tr>
   
     <tr>
@@ -453,11 +465,11 @@ n1">
   
   <tr>
    <td colspan="2">
-    <label><input type ="checkbox" name ="detail0" value= "1">요구사항 정의서</label> <br>
-    <label><input type ="checkbox" name="detail1" value ="2">제안 요청서</label><br>
-    <label><input type ="checkbox" name ="detail2" value ="3">메뉴 구조도(IA)</label><br>
-    <label><input type ="checkbox" name ="detail3" value ="4">화면 설계서(스토리보드, 와이어프레임)</label><br>
-    <label><input type ="checkbox" name ="detail4" value ="5">프로토타입(프로제그 결과물의 샘플버전)</label></td>
+     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "1"><span>요구사항 정의서</span></label>
+     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="2"><span>제안 요청서</span></label>
+     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="3"><span>메뉴 구조도</span></label><br>
+     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="4"><span>화면 설계서</span></label>
+     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="5"><span>프로토타입</span></label></td>
   </tr>
   
   
@@ -470,8 +482,8 @@ n1">
  
     <tr>
     <td colspan="2"  style ="padding-bottom:50px;"><div class="filebox">
-        <label for="ex_file">+ 프로젝트 관련 자료 추가</label>
-        <input type="file" id="ex_file"> 
+        <label for="ex_file"  >+ 프로젝트 관련 자료 추가</label>
+        <input type="file" id="ex_file" name="proPlanPaper1"> 
       </div></td>
      </tr> 
     
@@ -485,7 +497,7 @@ n1">
   <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id="mText">프로젝트 상세</li></td>
 </tr>
 <tr>
- <td colspan="2"  style ="padding-top:50px;"><li id="mText">상세 업무 내용</li>
+ <td colspan="2"  style ="padding-top:50px;"><li id="mText">프로젝트 개요 </li>
  <li id = "sText" style ="color:grey">
   
     업무 내용을 상세하게 작성해주실수록, 더 적합한 파트너를 만날 수 있습니다.
@@ -497,68 +509,14 @@ n1">
 </li>
 
 <li>
-        <textarea  rows =7 cols=55></textarea>    <label><input type ="radio" name ="proPlan" value ="1">아이디어만 있습니다.</label> <br>
-    <label><input type ="radio" name="proPlan" value ="2">필요한 내용들만 간단히 정리해 두었습니다.</label><br>
-    <label><input type ="radio" name ="proPlan" value ="3">상세한 기획문서가 존재합니다.</label></td>
-	
-
-<div class="tab">
-<table style ="color: white; border:2px solid white; " width="540px;">
-<tr>
- <td colspan="2" style ="border:2px so     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "1"><span>요구사항 정의서</span></label>
-     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="2"><span>제안 요청서</span></label>
-     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="3"><span>메뉴 구조도</span></label><br>
-     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="4"><span>화면 설계서</span></label>
-     <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="5"><span>프로토타입</span></label></td>
-/a></li>
-<li><select>
-	<option>경력무관</option>
-	<option>1~2년차</option>
-	<option>3~4년차</option>
-	<option>5~9년차</option>
-	<option>10년차 이상</option>
-</select>&nbsp;
-<input type="text" value ="명">&nbsp;
-<input type ="text" value ="￦"></li>
-    <li>예상 결제 금액  : 0(부가가치세 10% 포함)    </li>
-    <li>
-        <label><input type ="checkbox">프로젝트 예산의 조율이 가능합니다.        <label for="ex_file"  >+ 프로젝트 관련 자료 추가</label>
-        <input type="file" id="ex_file" name="proPlanPaper1"> 
-"sText" style ="color:grey;"> 파트너가 프로젝트에 착수하는 날짜입니다. <br>
-    해당 날짜에 프로젝트 시작이 가능한 파트너들이 지원하게 됩니다.
-    </li>
-<li><input type ="date" ></li>
-<li>
-    <label><input type ="checkbox">프로젝트 착수 일자의 협의가 가능합니다.</label>
+        <textarea  rows =7 cols=55 maxlength =100  name="proSummary"></textarea>
 </li>
-
-<li id ="mText">예상 진행 기간<a style="color:red">*</a></li>
-<li id ="sText" style ="color:grey">프로젝트 진행 기간을 입력해 주세요.</li> <td colspan="2"  style ="padding-top:50px;"><        <label for="ex_file"  >+ 프로젝트 관련 자료 추가</label>
-        <input type="file" id="ex_file" name="proPlanPaper1"> 
- style ="color: white; border:2px solid white; " >
-<tr>
- <td colspan="2" style ="border:        <textarea  rows =7 cols=55 maxlength =100  name="proSummary"></textarea>
-m:10px;" width="540px;">
-<li id ="bText">모집 요건</li>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-  <li id="mText" style ="padding-top:50px;" >지원자 모집 마감일<a style=color:red>*</a> <td colspan="2"  style ="padding-top:50px;"><li id="mText">프로젝트 개요 </li>
-<input type= "text" name= "proNeeds">
-
-<li id ="mText"  style ="padding-top:30px;">프로젝트 요구사항</li>
+<li id ="mText"  style ="padding-top:30px;">관련 기술</li>
 <li id ="sText" style ="color:grey">
-   파트너스가 참고할수 있도록 요구사항을 명세해주세요
+    더 적합한 파트너가 프로젝트를 찾고 지원할 수 있도록  프로젝트와 관련된 기술을 <br> 입력해주세요 
 </li>
-<li        <textarea  rows =7 cols=55 maxlength =100  name="proSummary"></textarea>
-me="proNeedsDetail"></textarea> 
- 진행이 가능합니다.</li>
-  <li><input type= "date"></li>
-
-  <li id="mText" style ="padding-top:30px;">지원자 필수 요건</li>
-  <li id ="sText" style ="color:grey">아래 조건에 맞는 파트너를  지원자로 받습니다.</li>
-    <li><label><input ty    <input type= "text" name= "proNeeds">
+<li  style ="padding-bottom:50px;">
+    <input type= "text" name= "proNeeds">
 
 <li id ="mText"  style ="padding-top:30px;">프로젝트 요구사항</li>
 <li id ="sText" style ="color:grey">
@@ -566,88 +524,73 @@ me="proNeedsDetail"></textarea>
 </li>
 <li  style ="padding-bottom:50px;">
    <textarea  rows =7 cols=55 maxlength =300  name="proNeedsDetail"></textarea> 
-i><label><input type="checkbox" name ="nessesary" >자사 협력업체 등록 가능</label></li>
-    <li><label><input type="checkbox" name ="nessesary" >보증보험 발급 가능<<li><input type="text" name="proPayment" ></li>
-me="addButton" type="button" style="cursor:hand" onClick="insRow()" value="추가"></li>
-     <table id="addTable"">
-            <tr>
-              <td><input type="text" name="addText" style="width:350px; height:20px;"></td>
-              <td align="left"></td>
-            </tr>
-          </table>
-    </td>
-    </tr>
-    </table>
-</div>
-<script>
-var oTbl;
-var count=0;
-//Row 추가
-function insRow() {
-oTbl = document.getElementById("addTable");
-va<li><input type="text" name="proPayment" ></li>
+
+
+</td>
+</tr>
+</table>
+</div>	
+
+<div class="tab">
+<table style ="color: white; border:2px solid white; " width="540px;">
+<tr>
+ <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText" >예산 및 일정</li></td>
+  </tr>
+<tr>
+
+<td colspan="2"  style ="padding-top:50px;"> 
+
+<li id ="mText">지출 가능 예산 <a style = "color:red">*</a></li>
+<li><input type="text" name="proPayment" ></li>
+    <li>예상 결제 금액  : 0(부가가치세 10% 포함)    </li>
+<br>
+<li id ="mText">예상 시작일<a style ="color:red">*</a></li>
+<li id ="sText" style ="color:grey;"> 파트너가 프로젝트에 착수하는 날짜입니다. <br>
+    해당 날짜에 프로젝트 시작이 가능한 파트너들이 지원하게 됩니다.
+    </li>
 <li><input type ="date" name ="proStartDate"></li>
 
-{oTbl.clickedRowIndex=this.rowIndex}; //clickedRowIndex - 클릭한 Row의 위치를 확인;
-var oCell = oRow.insertCell();
-//삽입될 Form Tag
-if(count<2){
-var frmTag = "<input type=text n<li style ="padding-bottom:50px;"><input type="text" name = "proDuration"></li>
-='removeRow()' style='cursor:hand'>";
 
-oCell.innerHTML = frmTag;
-count ++;
-}else{
-	alert("3개이상 추가하실 수 없습니다.");
-}
+<li id ="mText">예상 진행 기간<a style="color:red">*</a></li>
+<li id ="sText" style ="color:grey">프로젝트 진행 기간을 입력해 주세요.</li>
+<li style ="padding-bottom:50px;"><input type="text" name = "proDuration"></li>
+<hr>
 
-}
-
-function removeRow() {
-	  oTbl.deleteRow(oTbl.clickedRowIndex);
-	  count --;
-	}
+<br><br>
+</td>
+</tr>
 
 
-	 
-</script>
 
-<div class ="tab">
+</table>
+</div>
+
+<div class="tab">
 <table style ="color: white; border:2px solid white; " >
-<tr>   
-     <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">추가 정보</li></td>
-      </tr>
-        <tr>
-<td colspan="2" style ="padding-top:50px;  <li><input type= "date" name ="proREndDate"></li>
-tyle ="color:red">*</a></li>
-      <li><label><input type="radio" name="exp">IT프로젝트 경험이 있는 인력이 있습니다.</label></li>
-      <li><label><input type="radio"     <li><label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "1">개인 </label></li>
+<tr>
+ <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;" width="540px;">
+<li id ="bText">모집 요건</li>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+  <li id="mText" style ="padding-top:50px;" >지원자 모집 마감일<a style=color:red>*</a></li>
+<li id="sText" style ="color:grey">지원자를 모집하는 기간은 최대 14일까지 가능합니다.<br>
+  지원자 모집 기간 중에도 파트너 선정과 계약 진행이 가능합니다.</li>
+  <li><input type= "date" name ="proREndDate"></li>
+
+  <li id="mText" style ="padding-top:30px;">지원자 필수 요건</li>
+  <li id ="sText" style ="color:grey">아래 조건에 맞는 파트너를  지원자로 받습니다.</li>
+    <li><label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "1">개인 </label></li>
    <li><label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "2">법인 </label></li>
     <li><label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "3">법인 사업자</label></li>
     <li><label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "4">업력 1년이상</label></li>
     <li><label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "5">자사 협력업체 등록 가능</label></li>
     <li><label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "6">보증보험 발급 가능</label></li>
-트 매니징 경험<a style ="color:red">*</a></li>
-      <li><label><input type="radio">프로젝트 매니징 경험이 있습니다.</label></li>
-      <li><label><input type="radio">프로젝트 매니징 경험이 없습니다.</label></li>
-<br>
 
-      <li id ="mText">프로젝트 우선순위</li>
-      <li id ="sText" style ="color:grey">프로젝트 진행에 가장 중요한 요소 1가지를 선택해주세요.<br>
-      </li>
-      <li><label><input type="radio" name= "priority">빠르게 진행자가 발생하는 것이 가장 중요합니다.</label></li>
-      <li><label><input type="radio" name= "priority">완성도 높은 산출물을 받아보는 것이 가장 중요합니다.</label></li>
-      <li><label><input type="radio" name= "priority">최대한 낮은 금액으로 제안받는 것이 가장 중요합니다.</label></li>
-      <li style ="padding-bottom:50px;"><label><input type="radio" name= "priority">프로젝트 기간 준수가 가장 중요하며, 가능하다면 기간이 단축되어야 합니다.</label></li>
-</td>
-    </tr>
-</table>
-  </div>
-<div style="overflow:auto;">
-  <div style="float:right;">
-  	<button type="button">임시 저장</button>
-    <button type="button" id="prevBtn" onclick="nextPrev(-1)">이전</button>
-    <button type="button" id="nextBtn" onclick="nextPrev(1)">다음</butto  
+    
+
+  
     </td>
     </tr>
     </table>
@@ -678,7 +621,86 @@ tyle ="color:red">*</a></li>
       <li style ="padding-bottom:50px;"><label><input type="radio" name= "Propriority" value ="4">프로젝트 기간 준수가 가장 중요하며, 가능하다면 기간이 단축되어야 합니다.</label></li>
    <
    <li id ="mText" style ="padding-top:30px;">파트너 지원 전 질문</li>
-nt.getElementsByClassName("tab");
+  <li id ="sText" style ="color:grey">파트너가 프로젝트에 지원할 때 답변해야 할 질문을 작성해 주세요. <br> 최대 3개까지 입력 가능합니다.<br>
+    클라이언트님이 파트너를 선정할 때 지원서와 함께 답변 내용을 검토할 수 있습니다.</li>
+    <li><input name="addButton" type="button" style="cursor:hand" onClick="insRow()" value="추가"></li>
+     <table id="addTable">
+            <tr>
+              <td><input type="text" name="PRO_AQ_ID" style="width:350px; height:20px;"></td>
+              
+            </tr>
+          </table>
+
+</td>
+    </tr>
+  
+   
+</table>
+  </div>
+  
+  <script>
+var oTbl;
+var count=0;
+//Row 추가
+function insRow() {
+oTbl = document.getElementById("addTable");
+var oRow = oTbl.insertRow();
+oRow.onmouseover=function(){oTbl.clickedRowIndex=this.rowIndex}; //clickedRowIndex - 클릭한 Row의 위치를 확인;
+var oCell = oRow.insertCell();
+//삽입될 Form Tag
+if(count<2){
+var frmTag = "<input type=text name=addText style=width:350px; height:20px;><input type=button value='삭제' onClick='removeRow()' style='cursor:hand'>";
+
+oCell.innerHTML = frmTag;
+count ++;
+}else{
+	alert("3개이상 추가하실 수 없습니다.");
+}
+
+}
+
+function removeRow() {
+	  oTbl.deleteRow(oTbl.clickedRowIndex);
+	  count --;
+	}
+
+
+	 
+</script>
+<div style="overflow:auto;">
+  <div style="float:right;">
+  	<button type="button" >임시 저장</button>
+    <button type="button" id="prevBtn" onclick="nextPrev(-1)">이전</button>
+    <button type="button" id="nextBtn" onclick="nextPrev(1)">다음</button>
+  </div>
+</div>
+
+<!-- Circles which indicates the steps of the form: -->
+<div style="text-align:center;margin-top:40px;">
+  <span class="step"></span>
+  <span class="step"></span>
+  <span class="step"></span>
+  <span class="step"></span>
+    <span class="step"></span>
+</div>
+
+
+          
+    </div>
+    </div>
+    </div>
+    
+   <div>
+   </div>
+ <script>
+ 
+
+var currentTab = 0; // Current tab is set 	to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form ...
+  var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
   // ... and fix the Previous/Next buttons:
   if (n == 0) {
@@ -688,6 +710,11 @@ nt.getElementsByClassName("tab");
   }
   if (n == (x.length - 1)) {
     document.getElementById("nextBtn").innerHTML = "Submit";
+   $("#nextBtn").removeAttr("onclick");
+   $("#nextBtn").attr("onclick","submit();");
+    
+
+    
   } else {
     document.getElementById("nextBtn").innerHTML = "Next";
   }
@@ -696,6 +723,7 @@ nt.getElementsByClassName("tab");
 }
 
 function nextPrev(n) {
+	
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
@@ -704,10 +732,14 @@ function nextPrev(n) {
   x[currentTab].style.display = "none";
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
+  console.log(currentTab);
+  console.log(x.length);
+  
   // if you have reached the end of the form... :
   if (currentTab >= x.length) {
     //...the form gets submitted:
     document.getElementById("regForm").submit();
+
     return false;
   }
   // Otherwise, display the correct tab:
@@ -722,24 +754,13 @@ function validateForm() {
 	  for (i = 0; i < y.length; i++) {
 	    // If a field is empty...
 	    if (y[i].value == "") {
-	      // add an "invalid" class to the field     <table id="addTable">
-:
-	      y[i].className +=               <td><input type="text" name="PRO_AQ_ID" style="width:350px; height:20px;"></td>
-              
-" invalid";
+	      // add an "invalid" class to the field:
+	      y[i].className += " invalid";
 	      // and set the current valid status to false:
 	      valid = false;
 	    }
 	  }
-	  // I
-</td>
-f the val  
-   
-</table>
-  </div>
-  
-  <script>
-id status is true, mark the step as finished and valid:
+	  // If the valid status is true, mark the step as finished and valid:
 	  if (valid) {
 	    document.getElementsByClassName("step")[currentTab].className += " finish";
 	  }
@@ -756,7 +777,7 @@ id status is true, mark the step as finished and valid:
 	  x[n].className += " active";
 	}
 </script>
-
+</form>
 <jsp:include page = "../common/footer.jsp"/>
 </body>
 </html>

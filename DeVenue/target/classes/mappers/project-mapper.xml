@@ -49,15 +49,6 @@
 	
 	<resultMap type="ProjectList" id="projectListResultSet">
 		<id property="id" column="ID"/>
-		<result property="name" column="NAME"/>
-		<result property="planDetail" column="PLANDETAIL"/>
-		<result property="duration" column="DURATION"/>
-		<result property="summary" column="SUMMARY"/>
-		<result property="payment" column="PAYMENT"/>
-		<result property="location" column="LOCATION"/>
-		<result property="recruit" column="RECRUIT"/>
-		<result property="cDate" column="CDATE"/>
-		<result property="rEndDate" column="RENDDATE"/>
 		<result property="applyNum" column="APPLYNUM"/>
 		<result property="likeNum" column="LIKENUM"/>
 		<result property="replyNum" column="REPLYNUM"/>
@@ -67,7 +58,21 @@
 		<result property="clientId" column="CLIENTID"/>
 		<result property="identify" column="IDENTIFY"/>
 		<result property="evaluation" column="EVALUATION"/>
-		<collection property="techName" javaType="java.util.ArrayList" resultMap="techResultSet1"/>
+
+	<association property="project" javaType="Project">
+		<result property="proName" column="NAME"/>
+		<result property="proPlanDetail" column="PLANDETAIL"/>
+		<result property="proDuration" column="DURATION"/>
+		<result property="proSummary" column="SUMMARY"/>
+		<result property="proPayment" column="PAYMENT"/>
+		<result property="proLocation" column="LOCATION"/>
+		<result property="proRecruit" column="RECRUIT"/>
+		<result property="proCreateDate" column="CDATE"/>
+		<result property="proREndDate" column="RENDDATE"/>
+		<result property="memId" column="CLIENTID"/>
+	</association>	
+			
+	<collection property="techName" javaType="java.util.ArrayList" resultMap="techResultSet1"/>
 	
 	</resultMap>
 	
@@ -103,8 +108,8 @@
 		ORDER BY ID DESC
 	</select>
 
-=======
-	</insert>
+
+	
 	
 	<select id="getListCount" resultType="_int">
 		SELECT COUNT(*) 
@@ -118,4 +123,8 @@
 	</select>
 
 
+
+	
+
+	
 </mapper>
