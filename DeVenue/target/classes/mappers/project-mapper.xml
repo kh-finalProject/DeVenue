@@ -60,9 +60,5 @@
 			, DEFAULT
 		)
 			</insert>
-		<select id ="checkingProjectList" parameterType ="Project">
-			SELECT *
-		FROM P_CENCOR
-		ORDER BY PRO_CID DESC
-		</select>	
+		
 </mapper>

@@ -60,5 +60,5 @@
 			, DEFAULT
 		)
 			</insert>
-		<select id ="check"	
+		
 </mapper>

@@ -15,7 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.DeVenue.project.model.exception.ProjectException;
 import com.kh.DeVenue.project.model.service.ProjectService;
+import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectList;
+
+import static com.kh.DeVenue.common.Pagination.*;
 
 @Controller
 public class ProjectController {
@@ -30,7 +34,7 @@ ProjectService pService;
 	
 	
 	@RequestMapping(value="pinsert.do", method=RequestMethod.POST)
-	public String noticeInsert(Project p, HttpServletRequest request,
+	public String projectInsert(Project p, HttpServletRequest request,
 								@RequestParam(name="uploadFile",required=false)
 								MultipartFile file) {
 		
@@ -146,6 +150,42 @@ ProjectService pService;
 	public String extendProjectListView() {
 		
 		return "project/extendProjectList";
+	}
+	
+	@RequestMapping("searchProjectList.do")
+	public ModelAndView projectList(ModelAndView mv, @RequestParam(value="page",required=false) Integer page) {
+	
+		//페이지네이션 처리
+		int currentPage=1;
+		
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		//페이징 처리를 위해 게시물 수 알아오기
+		int listCount=pService.getListCount();
+		
+		//현재페이지+전체 게시물 수>>페이지네이션 정보 추출
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		
+		//게시물 가져오기
+		ArrayList<ProjectList> list=pService.selectProjectList(pi);
+		
+		System.out.println("화면단 가기 전, 프로젝트 페이지네이션:"+pi);
+		System.out.println("화면단 가기 전, 프로젝트 리스트:"+list);
+		
+		if(list!=null) {
+			mv.addObject("list",list);
+			mv.addObject("pi", pi);
+			mv.setViewName("project/findProjectListView");
+			
+		}else {
+			throw new ProjectException("프로젝트 전체 조회 실패");
+		}
+	
+		return mv;
+		
 	}
 }
 
