@@ -1,5 +1,7 @@
 package com.kh.DeVenue.project.controller;
 
+import static com.kh.DeVenue.common.Pagination.getPageInfo;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -15,7 +17,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.DeVenue.project.model.exception.ProjectException;
 import com.kh.DeVenue.project.model.service.ProjectService;
+import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectList;
+
+import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+
+
+
+
+import static com.kh.DeVenue.common.Pagination.*;
+
 
 @Controller
 public class ProjectController {
@@ -29,24 +41,28 @@ ProjectService pService;
 	}
 	
 	
-	@RequestMapping(value="pinsert.do", method=RequestMethod.POST)
-	public String noticeInsert(Project p, HttpServletRequest request,
-								@RequestParam(name="uploadFile",required=false)
+	@RequestMapping(value="proinsert.do", method=RequestMethod.POST)
+	public String projectInsert(Project p, ProjectQuestion q, HttpServletRequest request,
+								@RequestParam(value="proPlanPaper1",required=false)
 								MultipartFile file) {
-		
+		System.out.println(p);
+		System.out.println(q);
 		
 		if(!file.getOriginalFilename().contentEquals("")) {
 			String savePath = saveFile(file, request);
 //			System.out.println("최종 저장 될 파일명을 포함한 경로 : " + savePath);
 			if(savePath != null) {	// 파일이 잘 저장되어 경로가 반환 된다면..
-				p.setProPlanPaper(file.getOriginalFilename());
+				p.setProPlanPaper(file.getOriginalFilename());	
+				
 			}
 		}
 		
 		int result = pService.addProject(p);
+		int result1 =pService.addQuestion(q);
+		
 		
 		if(result > 0) {
-			return "redirect:plist.do";
+			return "redirect:addProject.do";
 		}else {
 			throw new ProjectException("프로젝트 등록 실패!");
 		}
@@ -148,7 +164,7 @@ ProjectService pService;
 		return "project/extendProjectList";
 	}
 	
-	@RequestMapping("plist.do")
+	@RequestMapping("searchProjectList.do")
 	public ModelAndView projectList(ModelAndView mv, @RequestParam(value="page",required=false) Integer page) {
 	
 		//페이지네이션 처리
@@ -160,11 +176,34 @@ ProjectService pService;
 		
 		//페이징 처리를 위해 게시물 수 알아오기
 		int listCount=pService.getListCount();
+		
+		//현재페이지+전체 게시물 수>>페이지네이션 정보 추출
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		
+		//게시물 가져오기
+		ArrayList<ProjectList> list=pService.selectProjectList(pi);
+		
+		System.out.println("화면단 가기 전, 프로젝트 페이지네이션:"+pi);
+		System.out.println("화면단 가기 전, 프로젝트 리스트:"+list);
+		
+		if(list!=null) {
+			mv.addObject("list",list);
+			mv.addObject("pi", pi);
+			mv.setViewName("project/findProjectListView");
+			
+		}else {
+			throw new ProjectException("프로젝트 전체 조회 실패");
+		}
 	
+		return mv;
 		
+	}
+	
+	@RequestMapping(value="searchProjectDetail.do")
+	public ModelAndView projectDetail(ModelAndView mv,@RequestParam(value="pId") Integer pId,@RequestParam(value="page") Integer page) {
 		
-		mv.setViewName("project/projectListView");
-		
+		mv.setViewName("project/findProjectDetailView");
 		return mv;
 		
 	}

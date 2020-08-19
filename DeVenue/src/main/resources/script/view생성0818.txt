@@ -8,7 +8,7 @@
 --프로젝트 조회 view
   CREATE OR REPLACE FORCE VIEW "DEVENUE"."PROJECTLIST_VIEW" ("ID", "NAME", "PLANDETAIL", "DURATION", "SUMMARY", "PAYMENT", "LOCATION", "RECRUIT", "CDATE", "APPLYNUM", "LIKENUM", "REPLYNUM", "MCATEGORY", "DCATEGORY", "WORKTYPE", "CLIENTID", "IDENTIFY", "EVALUATION", "TECHNAME") AS 
   select pj.pro_id "ID", pj.pro_name "NAME",pj.pro_plandetail "PLANDETAIL",pj.pro_duration "DURATION",pj.pro_summary "SUMMARY",
-pj.pro_payment "PAYMENT",pj.pro_location "LOCATION",pj.pro_recruit "RECRUIT",pj.pro_create_date "CDATE",
+pj.pro_payment "PAYMENT",pj.pro_location "LOCATION",pj.pro_recruit "RECRUIT",pj.pro_create_date "CDATE",pj.pro_r_end_date "RENDDATE",
 ap."APPLY_NUM" "APPLYNUM", lp."LIKE_NUM" "LIKENUM", rp."REPLY_NUM" "REPLYNUM",
 m.mc_type "MCATEGORY", d.dc_type "DCATEGORY", w.wt_type "WORKTYPE",
 pj.mem_id "CLIENTID", i.ide_status "IDENTIFY", pe."RATE" "EVALUATION", pt."TECH" "TECHNAME"

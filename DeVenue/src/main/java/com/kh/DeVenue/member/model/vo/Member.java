@@ -2,6 +2,9 @@ package com.kh.DeVenue.member.model.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+
+import com.kh.DeVenue.project.model.vo.ProjectList;
 
 public class Member implements Serializable {
 
@@ -31,6 +34,9 @@ public class Member implements Serializable {
 	private Date memModifyDate;		// 수정일
 	private String memStatus;		// 사용자 탈퇴상태
 	private String memTypeName;		// 회원 소속명
+	private ArrayList<Signature> sigs;//날인 리스트
+	private ArrayList<ProjectList> likeList;//관심 프로젝트 리스트
+	private ArrayList<ProjectList> applyList;//지원 프로젝트 리스트
 	
 	public Member() {
 		super();
@@ -39,7 +45,8 @@ public class Member implements Serializable {
 	public Member(int memId, String userType, String memType, String memEmail, String memNick, String memName,
 			String memPwd, String address1, String address2, String address3, int phone, int cellphone, int faxNo,
 			String taxEmail, int decCount, String memAction, String isAdvertise, Date memCreateDate, Date memModifyDate,
-			String memStatus, String memTypeName) {
+			String memStatus, String memTypeName, ArrayList<Signature> sigs, ArrayList<ProjectList> likeList,
+			ArrayList<ProjectList> applyList) {
 		super();
 		this.memId = memId;
 		this.userType = userType;
@@ -62,6 +69,17 @@ public class Member implements Serializable {
 		this.memModifyDate = memModifyDate;
 		this.memStatus = memStatus;
 		this.memTypeName = memTypeName;
+		this.sigs = sigs;
+		this.likeList = likeList;
+		this.applyList = applyList;
+	}
+	
+	
+
+	public Member(String memEmail, String memPwd) {
+		super();
+		this.memEmail = memEmail;
+		this.memPwd = memPwd;
 	}
 
 	public int getMemId() {
@@ -232,6 +250,30 @@ public class Member implements Serializable {
 		this.memTypeName = memTypeName;
 	}
 
+	public ArrayList<Signature> getSigs() {
+		return sigs;
+	}
+
+	public void setSigs(ArrayList<Signature> sigs) {
+		this.sigs = sigs;
+	}
+
+	public ArrayList<ProjectList> getLikeList() {
+		return likeList;
+	}
+
+	public void setLikeList(ArrayList<ProjectList> likeList) {
+		this.likeList = likeList;
+	}
+
+	public ArrayList<ProjectList> getApplyList() {
+		return applyList;
+	}
+
+	public void setApplyList(ArrayList<ProjectList> applyList) {
+		this.applyList = applyList;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -243,8 +285,12 @@ public class Member implements Serializable {
 				+ ", address2=" + address2 + ", address3=" + address3 + ", phone=" + phone + ", cellphone=" + cellphone
 				+ ", faxNo=" + faxNo + ", taxEmail=" + taxEmail + ", decCount=" + decCount + ", memAction=" + memAction
 				+ ", isAdvertise=" + isAdvertise + ", memCreateDate=" + memCreateDate + ", memModifyDate="
-				+ memModifyDate + ", memStatus=" + memStatus + ", memTypeName=" + memTypeName + "]";
+				+ memModifyDate + ", memStatus=" + memStatus + ", memTypeName=" + memTypeName + ", sigs=" + sigs
+				+ ", likeList=" + likeList + ", applyList=" + applyList + "]";
 	}
+	
+	
+	
 	
 	
 

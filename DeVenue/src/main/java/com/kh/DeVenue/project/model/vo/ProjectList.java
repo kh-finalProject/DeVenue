@@ -12,50 +12,33 @@ public class ProjectList implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 951063778678382462L;
-	private int id;
-	private String name;
-	private int planDetail;
-	private int duration;
-	private String summary;
-	private int payment;
-	private String location;
-	private String recruit;
-	private Date cDate;
-	private int applyNum;
-	private int likeNum;
-	private int replyNum;
-	private String mCategory;
-	private String dCategory;
-	private String workType;
-	private int clientId;
-	private String identify;
-	private int evaluation;
-	private ArrayList<Tech> techName;
+	private int id;//프로젝트 id
+	private Project project;//프로젝트
+	private int applyNum;//프로젝트 지원 수 
+	private int likeNum;//프로젝트 관심 수
+	private int replyNum;//프로젝트 댓글 수
+	private String mCategory;//프로젝트 메인 카테고리
+	private String dCategory;//프로젝트 상세 카테고리
+	private String workType;//프로젝트 근무 형태
+	private String identify;//프로젝트 클라이언트 인증 여부
+	private int evaluation;//프로젝트 클라이언트 평균 점수
+	private ArrayList<Tech> techName;//프로젝트 기술명
 	
 	public ProjectList() {
 		super();
 	}
 
-	public ProjectList(int id, String name, int planDetail, int duration, String summary, int payment, String location,
-			String recruit, Date cDate, int applyNum, int likeNum, int replyNum, String mCategory, String dCategory,
-			String workType, int clientId, String identify, int evaluation, ArrayList<Tech> techName) {
+	public ProjectList(int id, Project project, int applyNum, int likeNum, int replyNum, String mCategory,
+			String dCategory, String workType, String identify, int evaluation, ArrayList<Tech> techName) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.planDetail = planDetail;
-		this.duration = duration;
-		this.summary = summary;
-		this.payment = payment;
-		this.location = location;
-		this.recruit = recruit;
-		this.cDate = cDate;
+		this.project = project;
 		this.applyNum = applyNum;
 		this.likeNum = likeNum;
 		this.replyNum = replyNum;
 		this.mCategory = mCategory;
 		this.dCategory = dCategory;
 		this.workType = workType;
-		this.clientId = clientId;
 		this.identify = identify;
 		this.evaluation = evaluation;
 		this.techName = techName;
@@ -69,68 +52,12 @@ public class ProjectList implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getPlanDetail() {
-		return planDetail;
-	}
-
-	public void setPlanDetail(int planDetail) {
-		this.planDetail = planDetail;
-	}
-
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	public int getPayment() {
-		return payment;
-	}
-
-	public void setPayment(int payment) {
-		this.payment = payment;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public String getRecruit() {
-		return recruit;
-	}
-
-	public void setRecruit(String recruit) {
-		this.recruit = recruit;
-	}
-
-	public Date getcDate() {
-		return cDate;
-	}
-
-	public void setcDate(Date cDate) {
-		this.cDate = cDate;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public int getApplyNum() {
@@ -181,14 +108,6 @@ public class ProjectList implements Serializable {
 		this.workType = workType;
 	}
 
-	public int getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(int clientId) {
-		this.clientId = clientId;
-	}
-
 	public String getIdentify() {
 		return identify;
 	}
@@ -213,14 +132,18 @@ public class ProjectList implements Serializable {
 		this.techName = techName;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
-		return "ProjectList [id=" + id + ", name=" + name + ", planDetail=" + planDetail + ", duration=" + duration
-				+ ", summary=" + summary + ", payment=" + payment + ", location=" + location + ", recruit=" + recruit
-				+ ", cDate=" + cDate + ", applyNum=" + applyNum + ", likeNum=" + likeNum + ", replyNum=" + replyNum
-				+ ", mCategory=" + mCategory + ", dCategory=" + dCategory + ", workType=" + workType + ", clientId="
-				+ clientId + ", identify=" + identify + ", evaluation=" + evaluation + ", techName=" + techName + "]";
+		return "ProjectList [id=" + id + ", project=" + project + ", applyNum=" + applyNum + ", likeNum=" + likeNum
+				+ ", replyNum=" + replyNum + ", mCategory=" + mCategory + ", dCategory=" + dCategory + ", workType="
+				+ workType + ", identify=" + identify + ", evaluation=" + evaluation + ", techName=" + techName + "]";
 	}
+	
+	
 	
 	
 	
