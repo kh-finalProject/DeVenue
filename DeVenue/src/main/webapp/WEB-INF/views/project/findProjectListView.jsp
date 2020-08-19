@@ -1027,10 +1027,10 @@
                       <!--배지-->
                       <div class="d-inline-block mb-2">
                        <c:choose>
-                       	<c:when test="${p.recruit eq 'Y'}">
+                       	<c:when test="${p.project.proRecruit eq 'Y'}">
                        		<span class="badge badge-secondary">모집중</span>
                        	</c:when>
-                       	<c:when test="${p.recruit eq 'N'}">
+                       	<c:when test="${p.project.proRecruit eq 'N'}">
                        		<span class="badge badge-success">모집마감</span>
                        	</c:when>
                        </c:choose>
@@ -1041,7 +1041,7 @@
                        <jsp:setProperty property="time" name="aweekAgo" value="${today.time-(1000*60*60*24*7)}"/>
                        <fmt:formatDate value="${today}" pattern="yyyyMMdd" var="now"/>
                        <fmt:formatDate value="${aweekAgo}" pattern="yyyyMMdd" var="ago"/>
-                       <fmt:formatDate value="${p.cDate}" pattern="yyyyMMdd" var="cdate"/>
+                       <fmt:formatDate value="${p.project.proCreateDate}" pattern="yyyyMMdd" var="cdate"/>
                        
                        <c:if test="${cdate eq now}">
                        		<span class="badge badge-info">TODAY</span>
@@ -1056,7 +1056,7 @@
                       <!--프로젝트명과 관심추가 버튼-->
                       <div style="width:100%;">
                       <h3 class="mb-0 float-left">
-                        <a href="#">${p.name}</a>
+                        <a href="#">${p.project.proName}</a>
                         <c:if test="${p.identify eq 'COMPLETE'}">
                         <a class="btn" data-toggle="tooltip" data-placement="right" title="이 프로젝트의 클라이언트는 신원인증을 완료했습니다."><i class="far fa-check-circle"></i></a>
                      	</c:if>
@@ -1075,27 +1075,27 @@
                         <div class="progress mt-1">
                         
                         <c:choose>
-                        <c:when test="${p.planDetail eq 1}">
+                        <c:when test="${p.project.proPlanDetail eq 1}">
                         	 <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                             	20%
                           	</div>
                         </c:when>
-                        <c:when test="${p.planDetail eq 2}">
+                        <c:when test="${p.project.proPlanDetail eq 2}">
                         	 <div class="progress-bar bg-info" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
                             	40%
                           	</div>
                         </c:when>
-                        <c:when test="${p.planDetail eq 3}">
+                        <c:when test="${p.project.proPlanDetail eq 3}">
                         	 <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
                             	60%
                           	</div>
                         </c:when>
-                        <c:when test="${p.planDetail eq 4}">
+                        <c:when test="${p.project.proPlanDetail eq 4}">
                         	 <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
                             	80%
                           	</div>
                         </c:when>
-                        <c:when test="${p.planDetail eq 5}">
+                        <c:when test="${p.project.proPlanDetail eq 5}">
                         	 <div class="progress-bar bg-info" role="progressbar" style="width: 98%" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100">
                             	98%
                           	</div>
@@ -1111,12 +1111,12 @@
                          <table style="width:80%;height: 100%;">
                             <tr>
                               <td style="border-right:dashed 1px white"><label class="mr-3">예상 금액</label><label>
-                              <fmt:setLocale value="ko"/><fmt:formatNumber value="${p.payment}" type="currency"/>
+                              <fmt:setLocale value="ko"/><fmt:formatNumber value="${p.project.proPayment}" type="currency"/>
                               </label><label>원</label></td>
                               <td><label class="ml-3">${p.mCategory}</label></td>
                             </tr>
                             <tr>
-                              <td style="border-right:dashed 1px white"><label class="mr-3">예상 기간</label><label>${p.duration}</label><label>일</label></td>
+                              <td style="border-right:dashed 1px white"><label class="mr-3">예상 기간</label><label>${p.project.proDuration}</label><label>일</label></td>
                               <td><label class="ml-3">${p.dCategory}</label></td>
                             </tr>
                          </table>
@@ -1125,7 +1125,7 @@
                         
                               <div class="mt-3" style="text-align: right;">
                                 <i class="fas fa-history mr-3"></i><label>마감</label><label>
-                                <fmt:parseNumber value="${(p.rEndDate.time-today.time)/(1000*60*60*24)}" integerOnly="true"/>
+                                <fmt:parseNumber value="${(p.project.proREndDate.time-today.time)/(1000*60*60*24)}" integerOnly="true"/>
                                 </label><label>일 전</label>
                               </div>
                             
@@ -1144,7 +1144,7 @@
                         <div class="col-md-9">
                           <div class="card-text mb-4" style="font-size:0.875rem;">
                             <label>프로젝트 개요</label>
-                            <textarea readonly maxlength="100">${p.summary}</textarea>
+                            <textarea readonly maxlength="100">${p.project.proSummary}</textarea>
                           </div>
                           <table style="width:100%; height: 20px;">
                             <tr>
@@ -1157,11 +1157,11 @@
                               </c:forEach>  
                               </td>
                               <td style="width: 10%;padding-left:1rem;padding-top:0.375rem;font-size: 0.875rem;">
-                                <i class="fas fa-map-marker-alt mr-2"></i><label>${p.location}</label>
+                                <i class="fas fa-map-marker-alt mr-2"></i><label>${p.project.proLocation}</label>
                               </td>
                               <td style="width: 30%;font-size: 0.875rem;">
                                 <label class="mt-2 mr-2 ml-4 text-muted">등록일자:</label><label class="text-muted">
-                               		${p.cDate}
+                               		${p.project.proCreateDate}
                                 </label>
                               </td>
                             </tr>
