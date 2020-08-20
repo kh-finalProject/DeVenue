@@ -73,6 +73,14 @@ public class Member implements Serializable {
 		this.likeList = likeList;
 		this.applyList = applyList;
 	}
+	
+	
+
+	public Member(String memEmail, String memPwd) {
+		super();
+		this.memEmail = memEmail;
+		this.memPwd = memPwd;
+	}
 
 	public int getMemId() {
 		return memId;

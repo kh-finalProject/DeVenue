@@ -23,13 +23,17 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 
 		
-		return "member/clientMyPage";
+<<<<<<< HEAD
+		return "findMember/clientProjectHistory";
+=======
+		return "common/pSideMenubar";
 //		return "findMember/findClient/main";
+>>>>>>> refs/remotes/origin/master
 	}
 	
 	@RequestMapping("clientList.do")
 	public String getClientList() {
-		return "findMember/findClient/mainFC";
+		return "findMember/findClient";
 	}
 	
 }

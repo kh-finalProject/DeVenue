@@ -22,13 +22,21 @@ hr {
 	margin-left: 5%;
 	margin-right: 10%;
 }
+
+#firstStar{
+	margin-right:0;
+}
+
+.fas{
+	margin-right:0;
+}
 </style>
 
 </head>
 <body>
-	<jsp:include page="../../common/menubar.jsp"/>
+	<jsp:include page="../common/menubar.jsp"/>
 	
-	<div class="container-fluid">
+	<div class="container">
         <div class="row text-white" style="border-bottom: 1px solid lightgray;">
             <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
                 회원찾기
@@ -36,13 +44,12 @@ hr {
             <div class="col-10" style="padding:3%; ">
                 <div style="float:right; margin-right: 2%;">
                     <div class="input-group">
-                        <!-- <div class="input-group-prepend"> -->
-                        <button id="clientSelect" class="btn btn-outline-light dropdown-toggle" type="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-----</button>
-                        <div class="dropdown-menu">
-                            <a id="selectNickname" class="dropdown-item">닉네임</a>
-                            <a id="selectProject" class="dropdown-item">프로젝트</a>
-                        </div>
+                        <select class="btn btn-outline-light">
+                            <option class="dropdown-item">-----</option>
+                            <option id="selectNickname" class="dropdown-item">닉네임</option>
+                            <option id="selectProject" class="dropdown-item">프로젝트</option>
+                        </select>
+
                         <!-- </div> -->
                         <input type="search" class="form-control">
                         <div class="input-group-append">
@@ -228,7 +235,7 @@ hr {
                                             </li>
                                             <li>
                                                 kh_Bclass(소속)&emsp;
-                                                <a class="btn btn-info" style="padding:0.5%; border-radius: 20%;">개인</a>
+                                                <a class="badge badge-info">개인</a>
                                             </li>
                                             <li>
                                                 예아! 호우! 예예예~
@@ -269,7 +276,84 @@ hr {
                                     </div>
                                     <div class="point">
                                         <b>자주 진행한 프로젝트</b>
-                                        <a class="btn btn-info" style="float:right; padding:1%;">WEB</a>
+                                        <a class="badge badge-info" style="float:right;">WEB</a>
+                                    </div>
+                                    <hr style="width:90%; margin:0px auto;">
+                                    <div class="point" align="center">
+                                        <a class="badge badge-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
+                                        <a class="badge badge-info" style="padding:1%;">연락처 등록</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="userBoard">
+                    &emsp;
+                    <input type="hidden" value="선택한 회원 ID">
+                    <ul style="list-style: none;">
+                        <li>
+                            <div class="row" style="margin-left:3%; margin-right:3%;border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
+                                <div class="col-8">
+                                    <div style="float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;" >
+                                        <div>
+                                            <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                                            <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                            <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <ul style="list-style: none; margin-top: 2%;">
+                                            <li>
+                                                qwer01(닉네임)
+                                            </li>
+                                            <li>
+                                                kh_Bclass(소속)&emsp;
+                                                <a class="badge badge-info">개인</a>
+                                            </li>
+                                            <li>
+                                                예아! 호우! 예예예~
+                                                싹쓰리 인더 하우스
+                                                커커커커커몬! 싹!쓰리!투 렛츠고!
+
+                                                나 다시 또 설레어
+                                                이렇게 너를 만나서
+                                                함께 하고 있는 지금 이 공기가
+
+                                                다시는 널 볼 순 없을 거라고
+                                                추억일 뿐이라
+                                                서랍 속에 꼭 넣어뒀는데
+
+                                                흐르는 시간 속에서
+                                                너와 내 기억은
+                                                점점 희미해져만 가
+                                                끝난 줄 알았
+                                                <br><br>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div id="starPoint" class="point">
+                                        <i id="firstStar" class="far fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        
+                                        <b>4.5 / 평가 4개</b> 
+                                    </div>
+                                    <hr style="width:90%; margin:0px auto;">
+                                    <div class="point">
+                                        <b>진행한 프로젝트 수</b>
+                                        <b style="float:right">22개</b>
+                                    </div>
+                                    <div class="point">
+                                        <b>자주 진행한 프로젝트</b>
+                                        <a class="badge badge-info" style="float:right;">WEB</a>
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
                                     <div class="point" align="center">
@@ -305,7 +389,7 @@ hr {
                                             </li>
                                             <li>
                                                 kh_Bclass(소속)&emsp;
-                                                <a class="btn btn-info" style="padding:0.5%; border-radius: 20%;">개인</a>
+                                                <a class="badge badge-info">개인</a>
                                             </li>
                                             <li>
                                                 예아! 호우! 예예예~
@@ -346,84 +430,7 @@ hr {
                                     </div>
                                     <div class="point">
                                         <b>자주 진행한 프로젝트</b>
-                                        <a class="btn btn-info" style="float:right; padding:1%;">WEB</a>
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    <div class="point" align="center">
-                                        <a class="btn btn-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
-                                        <a class="btn btn-info" style="padding:1%;">연락처 등록</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="userBoard">
-                    &emsp;
-                    <input type="hidden" value="선택한 회원 ID">
-                    <ul style="list-style: none;">
-                        <li>
-                            <div class="row" style="margin-left:3%; margin-right:3%;border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
-                                <div class="col-8">
-                                    <div style="float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;" >
-                                        <div>
-                                            <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-                                            <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                            <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <ul style="list-style: none; margin-top: 2%;">
-                                            <li>
-                                                qwer01(닉네임)
-                                            </li>
-                                            <li>
-                                                kh_Bclass(소속)&emsp;
-                                                <a class="btn btn-info" style="padding:0.5%; border-radius: 20%;">개인</a>
-                                            </li>
-                                            <li>
-                                                예아! 호우! 예예예~
-                                                싹쓰리 인더 하우스
-                                                커커커커커몬! 싹!쓰리!투 렛츠고!
-
-                                                나 다시 또 설레어
-                                                이렇게 너를 만나서
-                                                함께 하고 있는 지금 이 공기가
-
-                                                다시는 널 볼 순 없을 거라고
-                                                추억일 뿐이라
-                                                서랍 속에 꼭 넣어뒀는데
-
-                                                흐르는 시간 속에서
-                                                너와 내 기억은
-                                                점점 희미해져만 가
-                                                끝난 줄 알았
-                                                <br><br>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div id="starPoint" class="point">
-                                        <i id="firstStar" class="far fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        
-                                        <b>4.5 / 평가 4개</b> 
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    <div class="point">
-                                        <b>진행한 프로젝트 수</b>
-                                        <b style="float:right">22개</b>
-                                    </div>
-                                    <div class="point">
-                                        <b>자주 진행한 프로젝트</b>
-                                        <a class="btn btn-info" style="float:right; padding:1%;">WEB</a>
+                                        <a class="badge badge-info" style="float:right;">WEB</a>
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
                                     <div class="point" align="center">
@@ -440,7 +447,7 @@ hr {
         </div>
 
     </div>
-		
-	<jsp:include page="../../common/footer.jsp"></jsp:include>
+			
+	<jsp:include page="../common/footer.jsp"></jsp:include>
 </body>
 </html>

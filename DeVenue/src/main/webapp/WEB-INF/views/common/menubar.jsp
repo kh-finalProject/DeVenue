@@ -141,6 +141,43 @@ i {
 	font-family: 'Jua', sans-serif;
 }
 /* 메뉴바 폰트 끝 */
+
+/* 회원찾기 드롭다운 메뉴 */
+.dropbtn {
+  color: white;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
 </style>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -195,9 +232,13 @@ i {
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center" href="#">회원 찾기</a>
-				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>
+					<div class="dropdown-content">
+						<a href="clientList.do ">클라이언트 찾기</a>
+						<a href="#">파트너스 찾기</a>
+					</div>
+		        </li>
 			</ul>
 
 			<ul class="navbar-nav ml-auto">
