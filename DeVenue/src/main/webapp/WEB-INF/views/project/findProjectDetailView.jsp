@@ -197,6 +197,7 @@
       #applyDiv{
 
         position: fixed;
+        top:10rem;
         width: 18rem;
 
       }
@@ -603,7 +604,7 @@
                         <div class="card-body">
 
                             <div class="form-group">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="프로젝트 문의를 2000자 이내로 작성해주세요."></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" maxlength="2000" placeholder="프로젝트 문의를 2000자 이내로 작성해주세요."></textarea>
                             </div>
                           
                             <div class="card-text">
@@ -843,8 +844,8 @@
                         <i class="far fa-user-circle fa-2x mr-2"></i><label>닉네임</label><span class="badge badge-info ml-2">클라이언트</span>
                     </div>
                     <div class="col-md-12" id="clientInfo">
-                        공학 기술을 IT 기술과 접목하여 공학솔루션 개발 및 전문가 시스템 구축, 컨설팅에 이르기까지 산업 현장에서 필요로 하는
-                        전문화된 시스템 개발, 공급하는 안전 종합 IT 서비스 회사입니다.
+		                        공학 기술을 IT 기술과 접목하여 공학솔루션 개발 및 전문가 시스템 구축, 컨설팅에 이르기까지 산업 현장에서 필요로 하는
+		                        전문화된 시스템 개발, 공급하는 안전 종합 IT 서비스 회사입니다.
                     </div>
 
                     <div class="col-md-12 mt-3" id="clientRate">

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,9 +23,7 @@ import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
-
-
-
+import com.kh.DeVenue.project.model.vo.Tech;
 
 import static com.kh.DeVenue.common.Pagination.*;
 
@@ -187,9 +186,13 @@ ProjectService pService;
 		System.out.println("화면단 가기 전, 프로젝트 페이지네이션:"+pi);
 		System.out.println("화면단 가기 전, 프로젝트 리스트:"+list);
 		
+		//프로젝트 기술 가져오기
+		ArrayList<Tech> tech=pService.selectTechList();
+		
 		if(list!=null) {
 			mv.addObject("list",list);
 			mv.addObject("pi", pi);
+			mv.addObject("tech", tech);
 			mv.setViewName("project/findProjectListView");
 			
 		}else {
@@ -201,7 +204,7 @@ ProjectService pService;
 	}
 	
 	@RequestMapping(value="searchProjectDetail.do")
-	public ModelAndView projectDetail(ModelAndView mv,@RequestParam(value="pId") Integer pId,@RequestParam(value="page") Integer page) {
+	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="memId") String memId,@RequestParam(value="page") Integer page) {
 		
 		mv.setViewName("project/findProjectDetailView");
 		return mv;

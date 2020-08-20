@@ -70,13 +70,13 @@
 		<result property="proREndDate" column="RENDDATE"/>
 		<result property="memId" column="CLIENTID"/>
 	</association>	
-			
-	<collection property="techName" javaType="java.util.ArrayList" resultMap="techResultSet1"/>
-	
+				
 	</resultMap>
 	
-	<resultMap type="Tech" id="techResultSet1">
-		<result property="tName" column="TECHNAME"/>
+	<resultMap type="Tech" id="techResultSet">
+		<result property="pId" column="PRO_ID"/>
+		<result property="tId" column="TECH_ID"/>
+		<result property="tName" column="TECH_NAME"/>
 	</resultMap>
 	
 	<insert id = "addProject" parameterType ="Project">
@@ -96,14 +96,16 @@
 		
 
 	<select id="getListCount" resultType="_int">
-		SELECT COUNT(*) 
+		SELECT COUNT(DISTINCT(ID)) 
 		FROM PROJECTLIST_VIEW
 	</select>
 	
 	<select id="getProjectList" resultMap="projectListResultSet">
-		SELECT * 
-		FROM PROJECTLIST_VIEW 
-		ORDER BY ID DESC
+		SELECT * FROM PROJECTLIST_VIEW ORDER BY 1 DESC
+	</select>
+	
+	<select id="getTechList" resultMap="techResultSet">
+		SELECT * FROM PROJECTTECH_VIEW
 	</select>
 
 

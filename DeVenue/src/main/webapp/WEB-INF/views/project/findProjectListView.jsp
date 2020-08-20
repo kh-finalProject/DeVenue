@@ -3,6 +3,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -937,7 +938,7 @@
         <!--Grid column 프로젝트 리스트 시작-->
         <div class="col-md-6 mb-4">
 
-          <h4><strong>25,716</strong>개의 프로젝트</h4>
+          <h4><strong>${pi.listCount}</strong>개의 프로젝트</h4>
           <button class="btn btn-outline-info" style="box-shadow: none;" type="button" data-toggle="collapse" data-target="#sortingDiv">정렬하기</button>
 
           <!-- 정렬하기 Section: Block Content -->
@@ -991,21 +992,7 @@
               })
               
               </script>
-              <script>
-              //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
-                                        
-                $(function(){
-                  $(".heart").click(function(){
-                    if($(this).hasClass("liked")){
-                      $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
-                      $(this).removeClass("liked");
-                    }else{
-                      $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-                      $(this).addClass("liked");
-                    }
-                  });
-                });
-              </script>
+              
 
           <section id="projectList">
 
@@ -1013,11 +1000,13 @@
             <c:forEach items="${list}" var="p">
             
             <c:url var="pDetail" value="searchProjectDetail.do">
-            	<c:param name="pId" value="${p.id}"/>
+            	<c:param name="id" value="${p.id}"/>
             	<c:param name="page" value="${pi.currentPage}"/>
-            	<c:param name=""/>
+            	<c:param name="mCategory" value="${p.mCategory}"/>
+            	<c:param name="dCategory" value="${p.dCategory}"/>
+            	<c:param name="memId" value="${p.project.memId}"/>
             </c:url>
-            <div onclick="location.href='${pDetail}'" class="row my-2 project">
+            <div class="row my-2 project">
               <div class="row mb-2 mx-auto" style="width: 100%;">
                 <div class="col-md-12 px-0">
                   <div>
@@ -1064,6 +1053,7 @@
                         <div class="float-right mr-3">
                           <span class ="heart"><i class="fa fa-heart-o" aria-hidden="true" ></i></span>
                           <label for="heart">관심</label>
+                          <input type="hidden" name="like" value="${p.id}">
                         </div>
                       </div>
                       
@@ -1152,8 +1142,10 @@
                                 <span class="badge badge-info">${p.workType}</span>
                               </td>
                               <td style="border-right: 1px dashed white;width: 40%;padding-left: 1rem;">
-                              <c:forEach items="${p.techName}" var="tech">
+                              <c:forEach items="${tech}" var="tech">
+                              	<c:if test="${p.id eq tech.pId}">
                                 <a href="#" class="badge badge-secondary">${tech.tName}</a>
+                                </c:if>
                               </c:forEach>  
                               </td>
                               <td style="width: 10%;padding-left:1rem;padding-top:0.375rem;font-size: 0.875rem;">
@@ -1190,6 +1182,32 @@
 
             </div>
             </c:forEach>
+            
+            <script>
+              
+              //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
+                                        
+                $(function(){
+                  $(".heart").click(function(){
+                    if($(this).hasClass("liked")){
+                      $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
+                      $(this).removeClass("liked");
+                      
+                    }else{
+                      $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+                      $(this).addClass("liked");
+                      
+                    }
+                  });
+                });
+              </script>
+              <script>
+              
+        		$(".card").click(function(){
+        			alert("카드클릭");
+        		})
+              
+              </script>
             
             <!-- Project list row 끝-->
 

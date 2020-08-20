@@ -10,6 +10,7 @@ import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.Tech;
 
 @Service("proService")
 public class ProjectServiceImpl implements ProjectService {
@@ -44,6 +45,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public int addQuestion(ProjectQuestion q) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public ArrayList<Tech> selectTechList() {
+		
+		return proDao.selectTechList();
 	}
 	
 
