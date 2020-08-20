@@ -6,6 +6,7 @@ import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.Tech;
 
 
 public interface ProjectService {
@@ -19,6 +20,8 @@ public interface ProjectService {
 	ArrayList<ProjectList> selectProjectList(PageInfo pi);
 
 	int addQuestion(ProjectQuestion q);
+
+	ArrayList<Tech> selectTechList();
 
 
 	

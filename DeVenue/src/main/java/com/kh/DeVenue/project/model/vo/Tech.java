@@ -8,9 +8,9 @@ public class Tech implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7148907688144373749L;
-	private int pId;
-	private String tId;
-	private String tName;
+	private int pId; //프로젝트 id
+	private String tId; //기술 id
+	private String tName; //기술 이름
 	
 	public Tech() {
 		super();

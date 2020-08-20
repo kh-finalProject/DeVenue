@@ -11,6 +11,7 @@ import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.Tech;
 
 
  
@@ -49,6 +50,11 @@ public class ProjectDao {
 	public int addQuestion(ProjectQuestion q) {
 		
 		return sqlSessionTemplate.insert("projectMapper.addQuestion",q);
+	}
+
+	public ArrayList<Tech> selectTechList() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getTechList");
 	}
 
 
