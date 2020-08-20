@@ -70,10 +70,31 @@ public class Member implements Serializable{
 		this.memEmail = memEmail;
 		this.memPwd = memPwd;
 	}
+	
+	// 회원가입용
+	public Member(String userType, String memType, String memEmail, String memNick, String memName, String memPwd,
+			String address1, String address2, String address3, int phone) {
+		super();
+		this.userType = userType;
+		this.memType = memType;
+		this.memEmail = memEmail;
+		this.memNick = memNick;
+		this.memName = memName;
+		this.memPwd = memPwd;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.address3 = address3;
+		this.phone = phone;
+	}
+	
+	
 
 	public int getMemId() {
 		return memId;
 	}
+
+
+
 
 	public void setMemId(int memId) {
 		this.memId = memId;

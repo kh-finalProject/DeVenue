@@ -351,7 +351,7 @@
     section {
       background-color: #212426;
       width: 100%;
-      height: 1300px;
+      height: 1500px;
       padding: 50px 0 30px 0;
       color: white;
     }
@@ -557,7 +557,7 @@
         </div>
       </div>
       <div class="area" style="height: 100px;">
-        <form method="GET" action="#">
+        <form method="GET" action="meminsert.do">
           <div class="form-submit" style="height: 200px;">
             <div class="form-label">
               <label>* 이용목적</label>
@@ -565,19 +565,35 @@
             <div class="form-input" style="margin-left: 300px;">
               <div class="client-radio">
                 <br>
-                <input type="radio" id="client" name="purpose" required value="client">&nbsp;&nbsp;&nbsp;클라이언트
+                <input type="radio" id="client" name="purpose" required value="UT3">&nbsp;&nbsp;&nbsp;클라이언트
                 <p>프로젝트를 의뢰하고<br>싶습니다.</p>
                 <img src="../image/client.png">
               </div>
               <div class="partnes-radio">
                 <br>
-                <input type="radio" id="partnes" name="purpose" required value="partnes">&nbsp;&nbsp;&nbsp;파트너스
+                <input type="radio" id="partnes" name="purpose" required value="UT4">&nbsp;&nbsp;&nbsp;파트너스
                 <p>프리랜서가 일거리를<br>찾고 있습니다.</p>
                 <img src="../image/client.png">
               </div>
             </div>
           </div>
           <br>
+          <div class="form-submit">
+            <div class="form-label">
+              <label for="name">* 회원형태</label>
+            </div>
+            <div class="form-input">
+              <select name="memtype" class="input-size" required>
+              	<option value="MT1">개인</option>
+              	<option value="MT2">법인</option>
+              	<option value="MT3">팀</option>
+              	<option value="TT4">개인사업자</option>
+              	<option value="MT5">개인</option>
+              	<option value="MT6">법인사업자</option>
+              	<option value="MT7">기업</option>
+              </select>
+            </div>
+          </div>
           <div class="form-submit">
             <div class="form-label">
               <label for="name">* 이름</label>
@@ -607,7 +623,7 @@
               <label for="email">* 이메일</label>
             </div>
             <div class="form-input">
-              <input type="email" class="input-size" id="email" name="emial" required placeholder="ex)email@.naver.com">
+              <input type="email" class="input-size" id="email" name="email" required placeholder="ex)email@.naver.com">
             </div>
           </div>
           <div class="form-submit">
@@ -647,29 +663,84 @@
           </div>
           <div class="form-submit">
             <div class="form-label">
-              <label for="address1">* 우편번호</label>
+              <label for="post">* 우편번호</label>
             </div>
             <div class="form-input">
-              <input type="text" class="input-size" id="address1" name="address1" style="width: 200px;">
-              <button type="button" id="select_btn" class="btn btn-info btn-lg" style="margin-left: 30px;">검색</button>
+              <!-- <input type="text" class="input-size" id="address1" name="address1" style="width: 200px;">
+              <button type="button" id="select_btn" class="btn btn-info btn-lg" style="margin-left: 30px;">검색</button> -->
+              <input type="text" class="input-size" id="sample6_postcode" name="address1" style="width: 200px;">
+              <button type="button" id="select_btn" class="btn btn-info btn-lg" onclick="sample6_execDaumPostcode()" style="margin-left: 30px;">검색</button>
             </div>
           </div>
           <div class="form-submit">
             <div class="form-label">
-              <label for="address2">* 도로명</label>
+              <label for="address1">* 도로명</label>
             </div>
             <div class="form-input">
-              <input type="text" class="input-size" id="address2" name="address2">
+              <!-- <input type="text" class="input-size" id="address2" name="address2"> -->
+              <input type="text" class="input-size" id="sample6_address" name="address2">
             </div>
           </div>
           <div class="form-submit">
             <div class="form-label">
-              <label for="address3">* 상세주소</label>
+              <label for="address2">* 상세주소</label>
             </div>
             <div class="form-input">
-              <input type="text" class="input-size" id="address3" name="address3">
+              <!-- <input type="text" class="input-size" id="address3" name="address3"> -->
+              <!-- <input type="text" id="sample6_detailAddress" placeholder="상세주소" hidden="hidden"> -->
+              <input type="text" class="input-size" id="sample6_extraAddress" name="address3">
             </div>
           </div>
+          <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+			<script>
+			    function sample6_execDaumPostcode() {
+			        new daum.Postcode({
+			            oncomplete: function(data) {
+			                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+			
+			                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+			                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+			                var addr = ''; // 주소 변수
+			                var extraAddr = ''; // 참고항목 변수
+			
+			                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+			                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+			                    addr = data.roadAddress;
+			                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+			                    addr = data.jibunAddress;
+			                }
+			
+			                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+			                if(data.userSelectedType === 'R'){
+			                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+			                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+			                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+			                        extraAddr += data.bname;
+			                    }
+			                    // 건물명이 있고, 공동주택일 경우 추가한다.
+			                    if(data.buildingName !== '' && data.apartment === 'Y'){
+			                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+			                    }
+			                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+			                    if(extraAddr !== ''){
+			                        extraAddr = ' (' + extraAddr + ')';
+			                    }
+			                    // 조합된 참고항목을 해당 필드에 넣는다.
+			                    document.getElementById("sample6_extraAddress").value = extraAddr;
+			                
+			                } else {
+			                    document.getElementById("sample6_extraAddress").value = '';
+			                }
+			
+			                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+			                document.getElementById('sample6_postcode').value = data.zonecode;
+			                document.getElementById("sample6_address").value = addr;
+			                // 커서를 상세주소 필드로 이동한다.
+			                document.getElementById("sample6_extraAddress").focus();
+			            }
+			        }).open();
+			    }
+			</script>
           <div class="input-subtitle" style="width: 400px;  margin-left: 340px;">
             <input type="checkbox" id="agree">&nbsp;&nbsp;&nbsp;<label for="agree"><a href="https://www.wishket.com/terms-of-service/">이용약관</a> 및 <a href="https://www.wishket.com/privacy/">개인정보 처리방침</a> 에 동의합니다.</label>
           </div>
@@ -690,7 +761,7 @@
         </div>
       </div>
     </div>
-
+	
     <script>
       // 클라이언트/파트너스 div 클릭시 라디오 체크
       // 테두리 색도 변경

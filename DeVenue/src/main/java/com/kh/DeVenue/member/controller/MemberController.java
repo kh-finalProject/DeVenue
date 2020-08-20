@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.service.MemberService;
 import com.kh.DeVenue.member.model.vo.Member;
 
@@ -35,6 +36,8 @@ public class MemberController {
 	public String forgetPwd() {
 		return "member/forgetPwd";
 	}
+	
+	
 	
 	// 메인페이지로 돌아가기
 	
@@ -91,6 +94,38 @@ public class MemberController {
 		
 	}
 	
+	// 회원 가입
+	@RequestMapping("meminsert.do")
+	public String memberInsert(HttpServletRequest request) {
+		
+//		if(userType == "client") {
+//			userType = "UT3";
+//		}else {
+//			userType = "UT4";
+//		}
+		String userType = request.getParameter("purpose");	// 사용자 분류(클라이언트/파트너스)
+		String memType = request.getParameter("memtype");	// 사용자 형태(개인,팀,기업,개인사업자,법인사업자..)
+		String memName = request.getParameter("name");		// 사용자 이름
+		String phonechange = request.getParameter("phone");	// 사용자 핸드폰 번호
+		int phone = Integer.parseInt(phonechange);
+		String memNick =request.getParameter("nickname");	// 사용자 닉네임
+		String memEmail = request.getParameter("email");	// 사용자 이메일
+		String memPwd = request.getParameter("pwd");		// 사용자 비밀번호
+		String address1 = request.getParameter("address1");	// 사용자 우편번호
+		String address2 = request.getParameter("address2");	// 사용자 주소
+		String address3 = request.getParameter("address3");	// 사용자 상세 주소
+		
+		Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phone);
+		System.out.println(m);
+		int result = mService.insertMember(m);
+		
+		if(result > 0) {
+			return "common/mainPage";
+		}else {
+			throw new MemberException("회원가입실패!");
+		}
+		
+	}
 	
 	
 

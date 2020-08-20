@@ -35,4 +35,32 @@
 	AND MEM_STATUS='Y'
   </select>
 
+  <!-- 회원가입 -->
+  <insert id="insertMember" parameterType="Member">
+  	INSERT INTO MEMBER
+  	VALUES(
+  		SEQ_MEMID.NEXTVAL
+  		,#{userType}
+  		,#{memType}
+  		,#{memEmail}
+  		,#{memNick}
+  		,#{memName}
+  		,#{memPwd}
+  		,#{address1}
+  		,#{address2}
+  		,#{address3}
+  		,#{phone}
+  		,null
+  		,null
+  		,null
+  		,null
+  		,DEFAULT
+  		,DEFAULT
+  		,SYSDATE
+  		,SYSDATE
+  		,DEFAULT
+  		,null
+  		)
+  </insert>
+
 </mapper>
