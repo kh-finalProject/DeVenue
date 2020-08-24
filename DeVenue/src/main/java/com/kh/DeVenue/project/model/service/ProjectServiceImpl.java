@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.DeVenue.project.model.dao.ProjectDao;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectDetail;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
 import com.kh.DeVenue.project.model.vo.Tech;
@@ -52,6 +53,26 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return proDao.selectTechList();
 	}
+
+	@Override
+	public ProjectDetail selectProjectDetail(int id) {
+		
+		return proDao.selectProjectDetail(id);
+	}
+
+	@Override
+	public ProjectDetail selectAllNumber(int memId) {
+		
+		return proDao.selectAllNumber(memId);
+	}
+
+	@Override
+	public ArrayList<ProjectList> selectRecommend(ProjectList project) {
+		
+		return proDao.selectRecommend(project);
+	}
+
+	
 	
 
 }

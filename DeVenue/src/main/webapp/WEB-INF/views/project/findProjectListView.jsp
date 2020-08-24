@@ -104,7 +104,7 @@
       }
 
       #projectList .card:hover{
-        background-color: gray;
+        border: solid #2793F2 1px;
       }
 
       #projectList .card a{
@@ -999,13 +999,13 @@
               <!-- Project List row 시작-->
             <c:forEach items="${list}" var="p">
             
-            <c:url var="pDetail" value="searchProjectDetail.do">
+            <c:url var="pdetail" value="searchProjectDetail.do">
             	<c:param name="id" value="${p.id}"/>
             	<c:param name="page" value="${pi.currentPage}"/>
             	<c:param name="mCategory" value="${p.mCategory}"/>
             	<c:param name="dCategory" value="${p.dCategory}"/>
-            	<c:param name="memId" value="${p.project.memId}"/>
             </c:url>
+            
             <div class="row my-2 project">
               <div class="row mb-2 mx-auto" style="width: 100%;">
                 <div class="col-md-12 px-0">
@@ -1045,7 +1045,7 @@
                       <!--프로젝트명과 관심추가 버튼-->
                       <div style="width:100%;">
                       <h3 class="mb-0 float-left">
-                        <a href="#">${p.project.proName}</a>
+                        <a href="${pdetail}">${p.project.proName}</a>
                         <c:if test="${p.identify eq 'COMPLETE'}">
                         <a class="btn" data-toggle="tooltip" data-placement="right" title="이 프로젝트의 클라이언트는 신원인증을 완료했습니다."><i class="far fa-check-circle"></i></a>
                      	</c:if>
@@ -1115,7 +1115,7 @@
                         
                               <div class="mt-3" style="text-align: right;">
                                 <i class="fas fa-history mr-3"></i><label>마감</label><label>
-                                <fmt:parseNumber value="${(p.project.proREndDate.time-today.time)/(1000*60*60*24)}" integerOnly="true"/>
+                                <fmt:parseNumber value="${(p.project.proREndDate.time-today.time)/(1000*60*60*24)+1}" integerOnly="true"/>
                                 </label><label>일 전</label>
                               </div>
                             
@@ -1192,6 +1192,7 @@
                     if($(this).hasClass("liked")){
                       $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
                       $(this).removeClass("liked");
+                 
                       
                     }else{
                       $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
@@ -1200,14 +1201,9 @@
                     }
                   });
                 });
-              </script>
-              <script>
-              
-        		$(".card").click(function(){
-        			alert("카드클릭");
-        		})
               
               </script>
+                         
             
             <!-- Project list row 끝-->
 

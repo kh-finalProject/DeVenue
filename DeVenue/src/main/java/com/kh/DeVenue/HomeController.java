@@ -22,13 +22,13 @@ public class HomeController {
 	@RequestMapping(value = "home.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 
-		
-<<<<<<< HEAD
-		return "findMember/clientProjectHistory";
-=======
-		return "common/pSideMenubar";
+	
+//		return "findMember/clientProjectHistory";
+//		return "common/pSideMenubar";
 //		return "findMember/findClient/main";
->>>>>>> refs/remotes/origin/master
+		
+		return "common/mainPage";
+
 	}
 	
 	@RequestMapping("clientList.do")
