@@ -6,16 +6,16 @@ import com.kh.DeVenue.member.model.vo.Member;
 
 public class Reply {
 
-	private int rId;
-	private int pId;
-	private Member writer;
-	private String rContent;
-	private Date rCreateDate;
-	private Date rModifyDate;
-	private String rAnswerStatus;
-	private String rStatus;
-	private int parentRId;
-	private String rSecret;
+	private int rId;//댓글 아이디
+	private int pId;//프로젝트 아이디
+	private Member writer;//작성자 
+	private String rContent;//내용
+	private Date rCreateDate;//등록일
+	private Date rModifyDate;//수정일
+	private String rAnswerStatus;//답변상태
+	private String rStatus;//삭제상태
+	private int parentRId;//부모댓글아이디
+	private String rSecret;//비밀글여부
 	
 	public Reply() {
 		super();

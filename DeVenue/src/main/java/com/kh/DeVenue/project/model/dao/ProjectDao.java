@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.SQLErrorCodes;
 import org.springframework.stereotype.Repository;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectDetail;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
 import com.kh.DeVenue.project.model.vo.Tech;
@@ -55,6 +56,22 @@ public class ProjectDao {
 	public ArrayList<Tech> selectTechList() {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getTechList");
+	}
+
+	public ProjectDetail selectProjectDetail(int id) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getProjectDetail",id);
+	}
+
+
+	public ProjectDetail selectAllNumber(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getProjectNumber",memId);
+	}
+
+	public ArrayList<ProjectList> selectRecommend(ProjectList project) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getRecommend", project);
 	}
 
 

@@ -111,8 +111,15 @@
 								</td>
 								<td>&emsp;&emsp;</td>
 								<td>
-									user01(닉네임)&emsp;<a class="badge badge-info">개인</a><br>
+									<!-- user01(닉네임)&emsp;
+									<a class="badge badge-info">개인</a><br>
 									<p>user01@google.com</p>
+									<i class="far fa-address-card"></i>&nbsp;신원인증
+									&emsp;<i class="fas fa-phone-alt"></i>연락처등록<br> -->
+									
+									${loginUser.memNick }&emsp;
+									<a class="badge badge-info">${loginUser.memType}</a><br>
+									<p>${loginUser.memEmail }</p>
 									<i class="far fa-address-card"></i>&nbsp;신원인증
 									&emsp;<i class="fas fa-phone-alt"></i>연락처등록<br>
 								</td>

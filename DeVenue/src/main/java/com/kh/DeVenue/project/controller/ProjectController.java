@@ -20,6 +20,7 @@ import com.kh.DeVenue.project.model.exception.ProjectException;
 import com.kh.DeVenue.project.model.service.ProjectService;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectDetail;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
@@ -204,12 +205,36 @@ ProjectService pService;
 	}
 	
 	@RequestMapping(value="searchProjectDetail.do")
-	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="memId") String memId,@RequestParam(value="page") Integer page) {
+	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="page", required=false) Integer page) {
 		
+		System.out.println("parameter 뭐 넘어왔나?"+project);
+		//프로젝트 디테일 가져오기
+		System.out.println(project);
+		ProjectDetail detail=pService.selectProjectDetail(project.getId());
+		
+		// 클라이언트의 전체 프로젝트 수 
+		ProjectDetail number=pService.selectAllNumber(detail.getProject().getMemId());
+		detail.setAllProject(number.getAllProject());
+		detail.setProcessProject(number.getProcessProject());
+		detail.setCompleteProject(number.getCompleteProject());
+		detail.setTotal(number.getTotal());
+		
+		System.out.println("화면단 가기 전, 프로젝트 디테일:"+detail);
+		
+		//추천 프로젝트 리스트 가져오기
+		ArrayList<ProjectList> candidate=pService.selectRecommend(project);
+		System.out.println("화면단 가기 전, 추천 프로젝트 리스트"+candidate);
+		
+		
+		mv.addObject("detail", detail);
+		mv.addObject("candidate", candidate);
 		mv.setViewName("project/findProjectDetailView");
 		return mv;
 		
 	}
+
+
+	
 }
 
 
