@@ -1,15 +1,25 @@
 package com.kh.DeVenue.member.controller;
 
+import java.util.Map;
+import java.util.Random;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -88,7 +98,6 @@ public class MemberController {
 	public String logout(HttpSession session) {
 		
 		session.invalidate();
-		System.out.println("실행함까?");
 		
 		return "common/mainPage";
 		
@@ -98,11 +107,8 @@ public class MemberController {
 	@RequestMapping("meminsert.do")
 	public String memberInsert(HttpServletRequest request) {
 		
-//		if(userType == "client") {
-//			userType = "UT3";
-//		}else {
-//			userType = "UT4";
-//		}
+		
+		
 		String userType = request.getParameter("purpose");	// 사용자 분류(클라이언트/파트너스)
 		String memType = request.getParameter("memtype");	// 사용자 형태(개인,팀,기업,개인사업자,법인사업자..)
 		String memName = request.getParameter("name");		// 사용자 이름
@@ -116,7 +122,7 @@ public class MemberController {
 		String address3 = request.getParameter("address3");	// 사용자 상세 주소
 		
 		Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phone);
-		System.out.println(m);
+//		System.out.println(m);
 		int result = mService.insertMember(m);
 		
 		if(result > 0) {
@@ -126,7 +132,6 @@ public class MemberController {
 		}
 		
 	}
-	
 	
 
 }

@@ -501,7 +501,7 @@
             </div>
             <div class="area" style="height: 500px; position: relative;">
                 <div class="area-left" style="width: 100%; position: absolute;">
-                <form method="GET" action="#">
+                <form method="GET" action="findPwd.do">
                     <div class="form-title">
                         <div class="form-label">
                             <label for="email">* 이메일</label>

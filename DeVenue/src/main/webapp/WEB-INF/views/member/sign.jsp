@@ -36,6 +36,9 @@
 
   <!--jQuery-->
   <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.js"></script> -->
+  <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script> -->
+  <!-- <script type="text/javascript" src="https://1cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
 
   <style>
     body {
@@ -557,7 +560,8 @@
         </div>
       </div>
       <div class="area" style="height: 100px;">
-        <form method="GET" action="meminsert.do">
+        <form method="GET" action="meminsert.do" >
+        <!-- autocomplete="off" : 전에 입력한 input태그 쿠키제거 -->
           <div class="form-submit" style="height: 200px;">
             <div class="form-label">
               <label>* 이용목적</label>
@@ -623,7 +627,9 @@
               <label for="email">* 이메일</label>
             </div>
             <div class="form-input">
-              <input type="email" class="input-size" id="email" name="email" required placeholder="ex)email@.naver.com">
+              <input type="email" class="input-size" id="email" name="email" required placeholder="ex)email@.naver.com" style="width: 200px;">
+              <button type="button" id="email-confirm" class="btn btn-info btn-lg" style="margin-left: 30px;">인증번호
+                받기</button>
             </div>
           </div>
           <div class="form-submit">
@@ -632,10 +638,54 @@
             </div>
             <div class="form-input">
               <input type="text" class="input-size" id="emailcheck"  style="width: 200px;">
-              <button type="button" id="email-confirm" class="btn btn-info btn-lg" style="margin-left: 30px;">인증번호
-                받기</button>
+                <button type="button" id="email-chk" class="btn btn-info btn-lg" style="margin-left: 30px;">인증번호
+               확인</button>
             </div>
           </div>
+          <a href="go.do">이동</a>
+          <!-- 이메일 인증 AJAX -->
+          <script>
+	       // 인증번호 받기 클릭시 인증번화 확인으로 바뀜
+	       $("#email-chk").on("click",function(){
+	    	   var check = $("#emailcheck").val();
+	    	   if(!check){
+	    		   alert("인증번호를 재대로 입력해주세요");
+	    	   }else{
+	    		   alert("입력번호가 확인 되었습니다.");
+	    		   $("#email-chk").prop("disabled",true);
+	    		   $("#emailcheck").prop("readonly",true);
+	    		   $("#email-confirm").html("인증번호 재발송");
+	    	   }
+	       })
+	          
+	          // 아니 왜 modelandview가 실행이안됨????
+
+	          
+          	// 메일 보내기
+				$("#email-confirm").on("click",function(){
+					alert("실행함다.");
+            	var name = $("#name").val();
+				var email = $("#email").val();
+            	$.ajax({
+    				url:"email.do",
+    				data:{name:name,email:email},
+    				// 다시 화면에 안뿌려줘도 되는데 굳이 에러가 나오는걸 수정해야하나?
+    				success:function(data){
+	    					alert("ajax실행합니다.");
+
+    					/* if(data == "certified"){
+    					} */
+    					
+    				},error:function(request, status, errorData){
+    					// 왜 어째서 email.jsp를 설정을 안했는데 왜 못찾는다고 하냐?
+    					alert("error code: " + request.status + "\n"
+    							+"message: " + request.responseText
+    							+"error: " + errorData);
+    						
+    				}
+    			}) 
+            })
+          </script>
           <div class="form-submit">
             <div class="form-label">
               <label for="pwd">* 비밀번호</label>
@@ -691,6 +741,7 @@
               <input type="text" class="input-size" id="sample6_extraAddress" name="address3">
             </div>
           </div>
+          <!-- 다음 지도 API -->
           <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 			<script>
 			    function sample6_execDaumPostcode() {
@@ -860,15 +911,15 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+<!--   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    crossorigin="anonymous"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
 </body>
 
 </html>
