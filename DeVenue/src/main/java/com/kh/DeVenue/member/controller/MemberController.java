@@ -76,6 +76,8 @@ public class MemberController {
 		
 	}
 	
+	
+	
 	// 로그 아웃
 	@RequestMapping(value="logout.do")
 	public String logout(HttpSession session) {
