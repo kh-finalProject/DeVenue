@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
 
@@ -346,12 +345,11 @@
 
         /* 메뉴바 폰트 끝 */
 
-        /*--------------------- Section -----------------------------*/
-
+        /* 글자색 */
         section {
             background-color: #212426;
             width: 100%;
-            height: 600px;
+            height: 1600px;
             padding: 50px 0 30px 0;
             color: white;
         }
@@ -362,87 +360,279 @@
             height: 50px;
             margin-left: 40px;
         }
-
-        /* label div */
-        .form-label {
-            width: 200px;
-            margin-left: 100px;
-            text-align: right;
-            font-size: x-large;
-            position: absolute;
-        }
-
-        /* 가로 각 div 크기 */
-        .form-title{
-            height: 80px;
-            margin-top: 10px;
-        }
-
-        /* input div */
-        .form-input{
-            position: absolute;
-            margin-left: 300px;
-        }
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
     <!--font-->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
 <body>
-    <!-- menubar -->
-    <jsp:include page="../common/menubar.jsp"/>
-    
+    <!--Top Button-->
+    <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i class="fas fa-chevron-up"
+            style="margin:0"></i></a>
+    <script>
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 10) {
+                    $('#back-to-top').css("display", "block")
+
+                } else {
+                    $('#back-to-top').css("display", "none")
+
+                }
+            });
+            // scroll body to 0px on click
+            $('#back-to-top').click(function () {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 400);
+                return false;
+            });
+        });
+    </script>
+
+    <!--navigation bar 1-->
+    <nav class="navbar navbar-expand-lg" style="background-color: black;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain"
+            aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><img src="logo.png" height="80px"
+                            style="padding-bottom: 0;padding-top: 0;margin-top: 0;margin-bottom: 0;"><span
+                            class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트찾기</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트등록</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link hvr-underline-from-center" href="#">파트너스찾기</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary">LOGIN</button>
+                    <button type="button" class="btn btn-info">SIGNIN</button>
+                </div>
+            </ul>
+        </div>
+    </nav>
+
+    <script>
+        $(function () {
+            $("#navbarMain .nav-link").mouseenter(function () {
+                $(this).css("font-size", "105%");
+            })
+
+            $("#navbarMain .nav-link").mouseleave(function () {
+                $(this).css("font-size", "100%");
+            })
+        })
+    </script>
+
+    <!--navigation bar2-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSub" style="margin-left: 3%;">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">검수 중</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">지원자 모집 중</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">진행 중인 프로젝트</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">종료된 프로젝트</a>
+                </li>
+            </ul>
+    </nav>
+
+
     <!-- Section -->
     <br>
     <section>
         <!-- 왼쪽 공백 -->
-        <div class="left-null" style="width: 20%; float: left;"></div>
+        <!-- <div class="left-null" style="width: 15%; height: 1600px; border: 1px solid yellow; float: left;"></div> -->
         <!-- 실제 들어갈 값 -->
-        <div class="login" style="width: 1140px; margin: auto; text-align: center;">
-            <!-- 제목 -->
-            <div class="login-title">
-                <div class="title">
-                    <h1>비밀번호 찾기</h1>
-                    <h5>DEVENUE에 계정을 잊으셨나요?</h5>
-                    <br>
+        <!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
+        <div class="container">
+            <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
+                <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+                    마이페이지
                 </div>
+
             </div>
-            <div class="area" style="height: 500px; position: relative;">
-                <div class="area-left" style="width: 100%; position: absolute;">
-                <form method="GET" action="#">
-                    <div class="form-title">
-                        <div class="form-label">
-                            <label for="email">* 이메일</label>
-                        </div>
-                        <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email">
-                        </div>
+            <div class="row">
+                <div class="col-2 text-white"
+                    style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
+                    <br>
+                    <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
+                        파트너스
                     </div>
-                </form>
-                    <div class="form-title" style="margin-left: 40px;">
-                        <div class="form-input">
-                            <button type="submit" class="btn btn-info btn-lg"
-                            style="font-size: 25px; width: 400px;">비밀번호 찾기</button>
-                        </div>
+                    <!-- 이미지 들어갈 공간 -->
+                    <br>
+                    <div class="partnes-img"
+                        style="width: 90%; height: 150px; border: 1px solid white; margin: auto; border-radius: 50px 50px 50px 50px;">
+                        이미지 넣자
                     </div>
-            </div>
-                <div class="area-right" style="margin-left: 900px; margin-top: 50px;">
-                    <div class="img">
-                        <img src="../image/pwdforget.png" style="width: 100%; height: auto;">
+                    <br>
+                    <!-- 닉네임 -->
+                    <div class="partnes-nickname"
+                        style="width: 100%; height: 30px; border: 1px solid white; margin: auto; text-align: center;">
+                        <span>키미노나마에와</span>
+                    </div>
+                    <br>
+                    <div style="padding-bottom: 5.5%;">
+                        <div>
+                            <p id="infoMenu">정보 관리<i style="float: right; margin-right: 5%;"
+                                    class="fas fa-angle-down"></i></p>
+                            <div id="subInfoMenu" style="display:none; margin-left: 5%;">
+                            	<P id="myPageDetail"><a href="mtPage.do">전체보기</a></P>
+                                <p id="partnesInfo"><a href="partInfo.do">파트너스 정보</a></p>
+                                <p id="pPR"><a href="PR.do">자기소개</a></p>
+                                <p id="pPortfolio"><a href="portfolio.do">포트폴리오</a></p>
+                                <p id="pSkill"><a href="skill.do">보유기술</a></p>
+                                <p id="pCareer"><a href="career.do">경력</a></p>
+                                <p id="pLicense"><a href="academic.do">학력</a></p>
+                                <p id="pStack"><a href="certificate.do">자격증</a></p>
+                                <p id="pProjectHistory"><a href="PH.do">프로젝트 히스토리</a></p>
+                            </div>
+                            <p id="accountMenu">계정 관리<i style="float: right; margin-right: 5%;"
+                                    class="fas fa-angle-down"></i></p>
+                            <div id="subAccountMenu" style="display:none; margin-left: 5%;">
+                                <p id="clientComment">기본 정보 수정</p>
+                                <p id="insertCComment">신원 인증</p>
+                                <p id="insertCComment">날인 방법 관리</p>
+                                <p id="insertCComment">비밀번호 변경</p>
+                                <p id="insertCComment">회원 탈퇴</p>
+                            </div>
+                            <p id="pEvaluate">내게 온 제안</p>
+                        </div>
+                        <script>
+                            $("#infoMenu").click(function () {
+
+                                $("#subInfoMenu").toggle();
+                            });
+
+                            $("#accountMenu").click(function () {
+
+                                $("#subAccountMenu").toggle();
+                            });
+
+                            $("#clientInfo").on("click", function () {
+                                location.href = "../findUser/findClientDetail.html";
+                            }).on("mouseenter", function () {
+
+                            });
+
+                            $("#projectHistory").on("click", function () {
+                                location.href = "projectHistory.html";
+                            });
+
+
+                            $("#clientComment").on("click", function () {
+                                location.href = "clientComment.html";
+                            });
+
+                            $("#insertCComment").on("click", function () {
+                                location.href = "insertCComment.html";
+                            });
+                        </script>
+
+                    </div>
+                </div>
+                <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+                    <br>
+                    <div class="row">
+                        <div class="col-12"
+                            style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
+                            <p style="float: left; font-size: 30px;">마이페이지 - 학력</p>
+                            <a href="mypagePortfolioAll.html" class="btn btn-info" style="float: right;">전체포트폴리오 보기</a>
+                        </div>
+                        <div class="col-12" style="margin-left: 5%; margin-top: 5%;">
+                            <h3>학력
+                                <button class="btn btn-info" style="float: right;">추가하기</button>
+                            </h3>
+                        </div>
+                        <div class="col-12" style="margin-left: 5%; margin-top: 2%;">
+                            <table class="table">
+                                <tr class="table-secondary" style="text-align: center;">
+                                    <td>학교명</td>
+                                    <td>전공</td>
+                                    <td>분류</td>
+                                    <td>상태</td>
+                                    <td>입학일</td>
+                                    <td>졸업일</td>
+                                    <td>도구</td>
+                                </tr>
+                                <tr class="table-light" style="text-align: center; vertical-align: middle;">
+                                    <td>한국복지대학교</td>
+                                    <td>컴퓨터정보보안과</td>
+                                    <td>전문대</td>
+                                    <td>퇴학</td>
+                                    <td>2020년 1월</td>
+                                    <td>2020년 9월</td>
+                                    <td>
+                                        <a href="academicUpdate.html" class="btn btn-info">수정</a>
+                                        <a href="#" class="btn btn-info">삭제</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table">
+                                <tr class="table-secondary" style="text-align: center;">
+                                    <td>학교명</td>
+                                    <td>전공</td>
+                                    <td>분류</td>
+                                    <td>상태</td>
+                                    <td>입학일</td>
+                                    <td>졸업일</td>
+                                    <td>도구</td>
+                                </tr>
+                                <tr class="table-light" style="text-align: center; vertical-align: middle;">
+                                    <td>한국복지대학교</td>
+                                    <td>컴퓨터정보보안과</td>
+                                    <td>전문대</td>
+                                    <td>퇴학</td>
+                                    <td>2020년 1월</td>
+                                    <td>2020년 9월</td>
+                                    <td>
+                                        <a href="academicUpdate.html" class="btn btn-info">수정</a>
+                                        <a href="#" class="btn btn-info">삭제</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        </div>
+        </div>
+        <!-- </div> -->
+
         <!-- 오른쪽 공백 -->
-        <div class="right-null" style="width: 20%; float: right;"></div>
+        <!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
     </section>
+    <br>
 
 
     <!-- Footer -->
-    <footer class="footer" style="background-color: #212426; border-top: 1px solid white;">
+    <footer class="footer" style="background-color: #212426;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 h-100 text-center text-lg-left my-auto">

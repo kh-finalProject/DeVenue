@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
 
@@ -346,12 +345,11 @@
 
         /* 메뉴바 폰트 끝 */
 
-        /*--------------------- Section -----------------------------*/
-
+        /* 글자색 */
         section {
             background-color: #212426;
             width: 100%;
-            height: 600px;
+            height: 1600px;
             padding: 50px 0 30px 0;
             color: white;
         }
@@ -362,87 +360,137 @@
             height: 50px;
             margin-left: 40px;
         }
-
-        /* label div */
-        .form-label {
-            width: 200px;
-            margin-left: 100px;
-            text-align: right;
-            font-size: x-large;
-            position: absolute;
-        }
-
-        /* 가로 각 div 크기 */
-        .form-title{
-            height: 80px;
-            margin-top: 10px;
-        }
-
-        /* input div */
-        .form-input{
-            position: absolute;
-            margin-left: 300px;
+        
+        /* a 태그 밑줄없애기 */
+        #subInfoMenu p a{
+            text-decoration-line: none;
+            color: white;
         }
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
     <!--font-->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
 <body>
-    <!-- menubar -->
-    <jsp:include page="../common/menubar.jsp"/>
-    
+    <!-- munubar -->
+	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sidebar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
+
+
     <!-- Section -->
     <br>
     <section>
         <!-- 왼쪽 공백 -->
-        <div class="left-null" style="width: 20%; float: left;"></div>
+        <!-- <div class="left-null" style="width: 15%; height: 1600px; border: 1px solid yellow; float: left;"></div> -->
         <!-- 실제 들어갈 값 -->
-        <div class="login" style="width: 1140px; margin: auto; text-align: center;">
-            <!-- 제목 -->
-            <div class="login-title">
-                <div class="title">
-                    <h1>비밀번호 찾기</h1>
-                    <h5>DEVENUE에 계정을 잊으셨나요?</h5>
-                    <br>
+        <!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
+        <div class="container">
+            <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
+                <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+                    마이페이지
                 </div>
+
             </div>
-            <div class="area" style="height: 500px; position: relative;">
-                <div class="area-left" style="width: 100%; position: absolute;">
-                <form method="GET" action="#">
-                    <div class="form-title">
-                        <div class="form-label">
-                            <label for="email">* 이메일</label>
-                        </div>
-                        <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email">
-                        </div>
-                    </div>
-                </form>
-                    <div class="form-title" style="margin-left: 40px;">
-                        <div class="form-input">
-                            <button type="submit" class="btn btn-info btn-lg"
-                            style="font-size: 25px; width: 400px;">비밀번호 찾기</button>
-                        </div>
-                    </div>
+            <div class="row">
+            	<jsp:include page="../common/myPageMenubar.jsp"/>
             </div>
-                <div class="area-right" style="margin-left: 900px; margin-top: 50px;">
-                    <div class="img">
-                        <img src="../image/pwdforget.png" style="width: 100%; height: auto;">
+                <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+                    <br>
+                    <div class="row">
+                        <div class="col-12"
+                            style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
+                            <p style="float: left; font-size: 30px;">마이페이지 - 파트너스 정보 수정</p>
+                        </div>
+                        <div class="col-12">
+                            <form method="GET" action="partInfoUp.do">
+                            <input type="hidden" name="memId" value="${loginUser.memId }">
+                                <div class="col-12"
+                                    style="margin-left: 5%; height: 20px; margin-top: 5%;  position: relative;">
+                                    <div class="col-3" style="position: absolute; margin-left: 5%; text-align: right;">
+                                        <span>* 직종</span>
+                                    </div>
+                                    <div class="col-4" style="position: absolute; margin-left: 30%; ">
+                                        <select name="Mcate" style="width: 150px; height: 30px;">
+                                            <option value="MC1">개발</option>
+                                            <option value="MC2">디자인</option>
+                                            <option value="MC3">개발/디자인</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12"
+                                    style="margin-left: 5%; height: 100px; margin-top: 5%;  position: relative;">
+                                    <div class="col-3" style="position: absolute; margin-left: 5%; text-align: right;">
+                                        <span>* 선호 프로젝트 형태</span>
+                                    </div>
+                                    <div class="col-9" style="width: 100%; position: absolute; margin-left: 30%;">
+                                        <select name="workType" id="workType" style="width: 150px; height: 30px;">
+                                            <option value="WT1">외주 프로젝트</option>
+                                            <option value="WT2">상주 프로젝트</option>
+                                            <option value="WT3">상주+외주 프로젝트</option>
+                                        </select>
+                                            <div style="width: 100%; height: auto; padding-top: 10px;">
+                                            <p id="1"></p>
+                                            <p id="2" style="margin-top: -15px;"></p>
+                                            </div>
+                                        <script>
+                                            $("#workType").on("click",function(){
+                                                var a = $("#workType option:selected").val();
+
+                                                if(a == "WT1"){
+                                                    $("#1").text("프로젝트 단위로 금액을 지급하고 원하는 장소에서 프로젝트를 진행합니다.");
+                                                    $("#2").text("");
+                                                }else if(a == "WT2"){
+                                                    $("#1").text("월 단위로 금액을 지급받고 클라이언트가 요청한 장소에서 프로젝트를 진행합니다.");
+                                                    $("#2").text("");
+                                                }else if(a == "WT3"){
+                                                    $("#1").text("프로젝트 단위로 금액을 지급하고 원하는 장소에서 프로젝트를 진행하거나");
+                                                    $("#2").text("월 단위로 금액을 지급받고 클라이언트가 요청한 장소에서 프로젝트를 진행합니다.");
+                                                    
+                                                }
+                                            })
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-left: 5%; height: 80px; position: relative;">
+                                    <div class="col-3" style="position: absolute; margin-left: 5%; text-align: right;">
+                                        <span>* 활동 가능성</span>
+                                    </div>
+                                    <div class="col-4" style="position: absolute; margin-left: 30%; ">
+                                        <select name="jobtype" style="width: 150px; height: 30px;">
+                                            <option value="1">활동 가능</option>
+                                            <option value="2">협의 필요</option>
+                                            <option value="3">활동 불가능</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-left: 5%;  position: relative; text-align: right;">
+                                    <a href="mypagePartnesInfo.html" class="btn btn-info">취소</a>
+                                    <button type="submit" class="btn btn-info">수정완료</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        </div>
+        </div>
+        <!-- </div> -->
+
         <!-- 오른쪽 공백 -->
-        <div class="right-null" style="width: 20%; float: right;"></div>
+        <!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
     </section>
+    <br>
 
 
     <!-- Footer -->
-    <footer class="footer" style="background-color: #212426; border-top: 1px solid white;">
+    <footer class="footer" style="background-color: #212426;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 h-100 text-center text-lg-left my-auto">

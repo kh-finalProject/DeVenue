@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
 
@@ -346,12 +346,11 @@
 
         /* 메뉴바 폰트 끝 */
 
-        /*--------------------- Section -----------------------------*/
-
+        /* 글자색 */
         section {
             background-color: #212426;
             width: 100%;
-            height: 600px;
+            height: 1600px;
             padding: 50px 0 30px 0;
             color: white;
         }
@@ -362,87 +361,102 @@
             height: 50px;
             margin-left: 40px;
         }
-
-        /* label div */
-        .form-label {
-            width: 200px;
-            margin-left: 100px;
-            text-align: right;
-            font-size: x-large;
-            position: absolute;
-        }
-
-        /* 가로 각 div 크기 */
-        .form-title{
-            height: 80px;
-            margin-top: 10px;
-        }
-
-        /* input div */
-        .form-input{
-            position: absolute;
-            margin-left: 300px;
+        
+        /* a태그 밑줄없애기 */
+        #subInfoMenu p a{
+            text-decoration-line: none;
+            color: white;
         }
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
     <!--font-->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
 <body>
-    <!-- menubar -->
-    <jsp:include page="../common/menubar.jsp"/>
-    
+	<!-- munubar -->
+	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sidebar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
+
     <!-- Section -->
+    
     <br>
     <section>
         <!-- 왼쪽 공백 -->
-        <div class="left-null" style="width: 20%; float: left;"></div>
+        <!-- <div class="left-null" style="width: 15%; height: 1600px; border: 1px solid yellow; float: left;"></div> -->
         <!-- 실제 들어갈 값 -->
-        <div class="login" style="width: 1140px; margin: auto; text-align: center;">
-            <!-- 제목 -->
-            <div class="login-title">
-                <div class="title">
-                    <h1>비밀번호 찾기</h1>
-                    <h5>DEVENUE에 계정을 잊으셨나요?</h5>
-                    <br>
+        <!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
+        <div class="container">
+            <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
+                <div class="col-12" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+                    ${loginUser.memNick } 마이페이지
                 </div>
             </div>
-            <div class="area" style="height: 500px; position: relative;">
-                <div class="area-left" style="width: 100%; position: absolute;">
-                <form method="GET" action="#">
-                    <div class="form-title">
-                        <div class="form-label">
-                            <label for="email">* 이메일</label>
-                        </div>
-                        <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email">
-                        </div>
-                    </div>
-                </form>
-                    <div class="form-title" style="margin-left: 40px;">
-                        <div class="form-input">
-                            <button type="submit" class="btn btn-info btn-lg"
-                            style="font-size: 25px; width: 400px;">비밀번호 찾기</button>
-                        </div>
-                    </div>
+            <div class="row">
+            	<jsp:include page="../common/myPageMenubar.jsp"/>
             </div>
-                <div class="area-right" style="margin-left: 900px; margin-top: 50px;">
-                    <div class="img">
-                        <img src="../image/pwdforget.png" style="width: 100%; height: auto;">
+                <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+                    <br>
+                    <div class="row">
+                        <div class="col-12"
+                            style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
+                            <p style="float: left; font-size: 30px;">마이페이지 - 파트너스 정보</p>
+                            <a href="mypageDetaillnfo.html" class="btn btn-info" style="float: right;">내 프로필에서 보기</a>
+                        </div>
+                        <div class="col-12" style="margin-left: 5%; margin-top: 5%;">
+                            <form method="GET" action="#">
+                                <div class="col-12" style="width: 100%; height: 30px; position: relative;">
+                                    <div class="col-2" style="position: absolute; text-align: right;">
+                                        <label>* 직종</label>
+                                    </div>
+                                    <div class="col-8" style="position: absolute; margin-left: 120px;">
+                                        <span><i class="fa fa-keyboard-o"></i>개발자</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="width: 100%; height: 70px; position: relative;">
+                                    <div class="col-2" style="width: 200px; position: absolute; text-align: right;">
+                                        <label>* 선호프로젝트 형태<label>
+                                    </div>
+                                    <div class="col-10" style="position: absolute; margin-left: 120px;">
+                                        <span>상주</span>
+                                        <br>
+                                        <span>월 단위로 금액을 지급받고 클라이언트가 요청한 장소에서 프로젝트를 진행합니다.</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="width: 100%; height: 30px; position: relative;">
+                                    <div class="col-2" style="position: absolute; text-align: right;">
+                                        <label>* 활동 가능성</label>
+                                    </div>
+                                    <div class="col-8" style="position: absolute; margin-left: 120px;">
+                                        <p>활동가능</p>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="width: 90%; height: 50px; text-align: right;">
+                                    <a href="partInfoUpdate.do" class="btn btn-info">수정</a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        </div>
+        </div>
+        <!-- </div> -->
+
         <!-- 오른쪽 공백 -->
-        <div class="right-null" style="width: 20%; float: right;"></div>
+        <!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
     </section>
+    <br>
 
 
     <!-- Footer -->
-    <footer class="footer" style="background-color: #212426; border-top: 1px solid white;">
+    <footer class="footer" style="background-color: #212426;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
