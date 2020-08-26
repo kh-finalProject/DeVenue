@@ -706,20 +706,22 @@
         <!--프로젝트 문의시작-->
         <div class="row mt-5 projectDetail partnerQuestion">
             <div class="mt-2 col-md-12">
-                <h5>프로젝트 문의<span class="badge badge-info">${detail.rpList.size()}</span></h5>
+                <h5>프로젝트 문의<span class="badge badge-info ml-2" id="replyNum">${detail.rpList.size()}</span></h5>
 				
-				<c:forEach items="${detail.rpList}" var="r">
-				<c:forEach items="${detail.rcList}" var="rc">
+				
                 <div id="partnerQuestion_list">
-
-						
-                   		
-                        <div class="card question">
+				<c:forEach items="${detail.rpList}" var="r">
+				
+                   		<div class="replyItem">
+                        <div class="card question mt-4">
                             <div class="card-body">
                               <div class="card-title">
                                 <i class="fas fa-user-circle"></i>
-                                <label>${r.writer.memNick}</label>
+                                <label class="toWhom">${r.writer.memNick}</label>
+                                <input type="hidden" class="writer" value="${r.writer.memId}">
                                 <div class="float-right">
+                                	<input type="hidden" class="myRId" value="${r.rId}">
+                                    <input type="hidden" class="myRPId" value="${r.parentRId}">
                                     <a class="replyModify mr-2">수정</a>
                                     <a class="replyCancel"><i class="fas fa-times"></i></a>
                                 </div>
@@ -747,11 +749,12 @@
                                 <a class="showAnswer">답글보기</a>
                                 </c:if>
                                 <c:if test="${r.rAnswerStatus eq 'N'}">
-                                <a class="writeAnswer">답글쓰기</a>
+                                <a class="writeAnswer">답변하기</a>
                                 </c:if>
                             </div>
                         </div>
-                      
+                      <c:forEach items="${detail.rcList}" var="rc">
+						
                         <c:if test="${r.rId eq rc.parentRId}">
                        	
                         <div class="answerList">
@@ -759,8 +762,11 @@
                             <div class="card-body">
                                 <div class="card-title">
                                     <i class="fas fa-user-circle"></i>
-                                    <label>${rc.writer.memNick}</label>
+                                    <label class="toWhom">${rc.writer.memNick}</label>
+                                    <input type="hidden" class="writer" value="${r.writer.memId}">
                                     <div class="float-right">
+                                    	<input type="hidden" class="myRId" value="${rc.rId}">
+                                    	<input type="hidden" class="myRPId" value="${rc.parentRId}">
                                         <a class="replyModify mr-2">수정</a>
                                         <a class="replyCancel"><i class="fas fa-times"></i></a>
                                     </div>
@@ -786,12 +792,13 @@
                             </div>
                         </div>
                         </c:if>
+                        </c:forEach>  
+                        </div>
                         
-                       
-
+                </c:forEach>  
                 </div>
-                </c:forEach>
-                </c:forEach>
+
+                
 
                 <div id="partnerQuestion_compose">
 
@@ -824,8 +831,10 @@
                                   	비밀글
                                 </label>
                               </div>
-
-                          <button class="btn btn-info float-right">작성하기</button>
+							
+							<div id="submitReply">
+                          	<button class="btn btn-info float-right" id="rSubmit">작성하기</button>
+                          	</div>
                         </div>
                       </div>
                 </div>
@@ -835,15 +844,18 @@
         </div>
         <script>
             //답글 클릭 시 답글 보기
-            $(".card-footer .showAnswer").click(function(){
-                
-                var answer=$(this).parent().parent().parent().children().eq(1);
+           
+            
+            $(document).on("click",".showAnswer",function(){
+            	
+            	var answer=$(this).parent().parent().parent().find(".answerList");
 
                 if(answer.css("display")=="none"){
                     answer.css("display","block");
                 }else{
                     answer.css("display","none");
                 }
+            	
             })
             
             //댓글 입력 글자 수 세기
@@ -853,6 +865,424 @@
                 $("#reply_textCount").children("strong").text(length);
              })
                 
+        </script>
+        <script>
+        	//댓글 리스트 가져오기
+        	function getProjectReply(){
+        		
+        		var pId=${detail.pId};
+        		
+        		$.ajax({
+        			
+        			
+        			url:"getProjectReply.do",
+        			data:{pId:pId},
+        			dataType:"json",
+        			type:"post",
+        			success:function(data){
+        				
+        				$questionList=$("#partnerQuestion_list");
+        				$questionList.html("");
+        				var $reply;
+        				var $card;
+        				var $body;
+        				var $title;
+        				var $userImg;
+        				var $userName;
+        				var $userId;
+        				var $edit;
+        				var $hidden;
+        				var $hiddenp;
+        				var $modify;
+        				var $delete;
+        				var $text;
+        				var $date;
+        				var $foot;
+        				var $isAnswer;
+        				
+        				var $answerList;
+        				var $acard;
+        				var $abody;
+        				var $atitle;
+        				var $auserImg;
+        				var $auserName;
+        				var $auserId;
+        				var $aedit;
+        				var $ahidden;
+        				var $ahiddenp;
+        				var $amodify;
+        				var $adelete;
+        				var $atext;
+        				var $adate;
+        				var $afoot;
+        				
+        				$parent=data[0];//부모 댓글
+        				$child=data[1];//자식 댓글
+        				
+        				$("#replyNum").text($parent.length);
+        				
+        				if($parent.length>0){
+        					
+        					for(var i in $parent){
+        						
+        						console.log(i);
+        						//질문 댓글 영역
+        						$reply=$("<div>").addClass("replyItem");
+        						$card=$("<div>").addClass("card").addClass("question mt-4");
+        						$body=$("<div>").addClass("card-body");
+        						$title=$("<div>").addClass("card-title");
+        						$userImg=$("<i>").addClass("fas fa-user-circle");
+        						$userName=$("<label>").addClass("toWhom").text($parent[i].writer.memNick);
+        						$userId=$("<input type='hidden'>").addClass("writer").val($parent[i].writer.memId);
+        						$edit=$("<div>").addClass("float-right");
+        						$hidden=$("<input type='hidden'>").addClass("myRId").val($parent[i].rId);
+        						$hiddenp=$("<input type='hidden'>").addClass("myRPId").val($parent[i].parentRId);
+        						$modify=$("<a>").addClass("replyModify mr-2").text("수정");
+        						$delete=$("<a>").addClass("replyCancel").html("<i class='fas fa-times'/>");
+        						
+        						$edit.append($hidden);
+        						$edit.append($hiddenp);
+        						$edit.append($modify);
+        						$edit.append($delete);
+        						$title.append($userImg);
+        						$title.append($userName);
+        						$title.append($userId);
+        						$title.append($edit);
+        						$body.append($title);
+        						
+        						
+        						$text=$("<p>").addClass("card-text");
+        						
+        						if($parent[i].rSecret=="N"){
+        							$text.text($parent[i].rContent);
+        						}else{
+        							//나중에 당사자에게만 보이도록 수정할 것! + else if
+        							$text.text("비밀글입니다.");
+        						}
+        						
+        						$body.append($text);
+        						
+        						$date=$("<p>").addClass("text-muted");
+        						
+        						if($parent[i].rModifyDate>=$parent[i].rCreateDate){
+        							$date.text($parent[i].rModifyDate)
+        						}else{
+        							$date.text($parent[i].rCreateDate)
+        						}
+        						
+        						$body.append($date);
+        						
+        						$foot=$("<div>").addClass("card-footer");
+        						$isAnswer=$("<a>")
+        						
+        						if($parent[i].rAnswerStatus=='Y'){
+        							$isAnswer.addClass("showAnswer").text("답글보기");
+        						}else{
+        							$isAnswer.addClass("writeAnswer").text("답글쓰기");
+        						}
+        						
+        						$foot.append($isAnswer);
+        						$body.append($foot);
+        						
+        						$card.append($body);
+        						$card.append($foot);
+        						$reply.append($card);
+        						
+        						
+        						
+        						if($child.length>0){
+        						for(var j in $child){
+        							//답 댓글 영역
+        							
+        							if($parent[i].rId==$child[j].parentRId){
+        								
+        								
+        								$answerList=$("<div>").addClass("answerList");
+        								$acard=$("<div>").addClass("card answer");
+        								$abody=$("<div>").addClass("card-body");
+        								$atitle=$("<div>").addClass("card-title");
+        								$auserImg=$("<i>").addClass("fas fa-user-circle");
+        								$auserName=$("<label>").addClass("toWhom").text($child[j].writer.memNick);
+        								$auserId=$("<input type='hidden'>").addClass("writer").val($child[j].writer.memId);
+        								$aedit=$("<div>").addClass("float-right");
+        								$ahidden=$("<input type='hidden'>").addClass("myRId").val($child[j].rId);
+        								$ahiddenp=$("<input type='hidden'>").addClass("myRPId").val($child[j].parentRId);
+        								$amodify=$("<a>").addClass("replyModify mr-2").text("수정");
+        								$adelete=$("<a>").addClass("replyCancel").html("<i class='fas fa-times'/>")
+        								
+        								$aedit.append($ahidden);
+        								$aedit.append($ahiddenp);
+        								$aedit.append($amodify);
+        								$aedit.append($adelete);
+        								
+        								$atitle.append($auserImg);
+        								$atitle.append($auserName);
+        								$atitle.append($auserId);
+        								$atitle.append($aedit);
+        								$abody.append($atitle);
+        								
+        								$atext=$("<p>").addClass("card-text");
+        								if($child[j].rSecret=='N'){
+        									$atext.text($child[j].rContent);
+        								}else{
+        									//작성자만 볼 수 있게 수정하자.
+        									$atext.text("비밀글입니다.");
+        								}
+        								
+        								$abody.append($atext);
+        								
+        								$adate=$("<p>").addClass("text-muted");
+        								
+        								if($child[j].rModifyDate>=$child[j].rCreateDate){
+        									$adate.text($child[j].rModifyDate);
+        								}else{
+        									$adate.text($child[j].rCreateDate);
+        								}
+        								
+        								$abody.append($adate);
+        								
+        								$acard.append($abody);
+        								$answerList.append($acard);
+        								$reply.append($answerList);
+        							}//부모댓글에 자식댓글 매칭하는 if문 끝
+        							
+        							
+        						}//자식 댓글 for문 끝
+        						
+        						}//자식 댓글 if문 끝
+        						
+        						$questionList.append($reply);
+        						
+        					}//부모댓글 for문 끝
+        					
+        				}//부모댓글 if문 끝
+        				
+        				
+        				
+        				
+        			},
+        			error:function(request, status, errorData){
+                        alert("error code: " + request.status + "\n"
+                              +"message: " + request.responseText
+                              +"error: " + errorData);
+                     }  
+        		})
+        		
+        		
+        	}
+        	
+        
+        
+        
+        	//댓글 작성
+        	
+        	$(function(){
+        		
+        		
+        		
+        		$("#rSubmit").on("click",function(){
+        			
+        			var rContent=$("#reply_textarea").val();
+        			var pId=${detail.pId};
+        			var memId=4;
+        			
+        			var rSecret="";
+        			if($("#reply_private").prop("checked")){
+        				rSecret='Y';
+        			}else{
+        				rSecret='N';
+        			}
+        			
+        			$.ajax({
+        				url:"addProjectReply.do",
+        				data:{pId:pId,rContent:rContent,memId:memId,rSecret:rSecret},
+        				type:"post",
+        				success:function(data){
+        					
+        					if(data=="success"){
+        						
+        					$("#reply_textarea").val("");
+        					$("#reply_textCount").children("strong").text("0");
+        					getProjectReply();
+        					
+        					}
+        				},
+        				error:function(request, status, errorData){
+                            alert("error code: " + request.status + "\n"
+                                  +"message: " + request.responseText
+                                  +"error: " + errorData);
+                         }  
+        			})
+        		})
+        	})
+        	
+        	
+        	//답변 작성
+        	
+        	$(document).on("click","#rAnswer",function(){
+        		
+        		var rContent=$("#reply_textarea").val();
+    			var pId=${detail.pId};
+    			var parent=$(this).parent().find(".myRId").val();
+    			var memId=3;
+        		
+    			var rSecret="";
+    			if($("#reply_private").prop("checked")){
+    				rSecret='Y';
+    			}else{
+    				rSecret='N';
+    			}
+    			
+    			
+    			$.ajax({
+    				url:"answerProjectReply.do",
+    				data:{pId:pId,rContent:rContent,memId:memId,rSecret:rSecret,parentRId:parent},
+    				type:"post",
+    				success:function(data){
+    					
+    					if(data=="success"){
+    						
+    					$("#reply_textarea").val("");
+    					$("#reply_textCount").children("strong").text("0");
+    					getProjectReply();
+    					
+    					}
+    				},
+    				error:function(request, status, errorData){
+                        alert("error code: " + request.status + "\n"
+                              +"message: " + request.responseText
+                              +"error: " + errorData);
+                     }  
+    			})
+    			
+        		
+        	})
+        
+        	
+        	//댓글 수정
+        		$(document).on("click","#rModify",function(){
+        			var rid=$(this).parent().find(".myRId").val();
+        			var rpid=$(this).parent().find(".myRPId").val();
+        			var modifyContent=$("#reply_textarea").val();
+        			var pId=${detail.pId};
+        			var memId=4;
+        			var isSecret="";
+        			
+        			if($("#reply_private").prop("checked")){
+        				isSecret='Y';
+        			}else{
+        				isSecret='N';
+        			}
+        			
+        			$.ajax({
+        				url:"updateProjectReply.do",
+        				data:{pId:pId,rContent:modifyContent,memId:memId,rId:rid,parentRId:rpid,rSecret:isSecret},
+        				type:"post",
+        				success:function(data){
+        					if(data=="success"){
+        						$("#reply_textarea").val();
+        						$("#reply_textCount").children("strong").text("0");
+        						getProjectReply();
+        					}
+        				},
+        				error:function(request, status, errorData){
+                            alert("error code: " + request.status + "\n"
+                                  +"message: " + request.responseText
+                                  +"error: " + errorData);
+                         }  
+        			})
+        			
+        		})
+        		
+        		
+        	//댓글 삭제하기
+        	$(document).on("click",".replyCancel",function(){
+        		
+        		var rId=$(this).parent().find(".myRId").val();
+        		var rpId=$(this).parent().find(".myRPId").val();
+        		
+        		var agree;
+        		if(rId==rpId){
+        			agree=confirm("문의를 삭제하시겠습니까?");
+        		}else{
+        			agree=confirm("답변을 삭제하시겠습니까?");
+        		}
+        		
+        		console.log(agree);
+        		
+        		if(agree==true){
+        			$.ajax({
+        				url:"deleteProjectReply.do",
+        				data:{rId:rId,parentRId:rpId},
+        				type:"post",
+        				success:function(data){
+        					if(data=="success"){
+        						getProjectReply();
+        					}
+        				},
+        				error:function(request, status, errorData){
+                            alert("error code: " + request.status + "\n"
+                                  +"message: " + request.responseText
+                                  +"error: " + errorData);
+                         }  
+        			})
+        		}
+        		
+        		
+        	})
+        	
+        	
+        
+        </script>
+        <script>
+        	//댓글 수정하기 준비
+        	//로그인 유저가 작성자와 같은지 확인
+        	
+        	$(document).on("click",".replyModify",function(){
+        		
+        		var rId=$(this).parent().find(".myRId").val();
+        		var rpId=$(this).parent().find(".myRPId").val();
+        		
+        		var content=$(this).parents(".card-body").find(".card-text").text();
+        		$("#reply_textarea").val(content);
+        		
+        		var $btnArea=$("#submitReply");
+        		$btnArea.html("");
+        		
+        		var $btn=$("<button>").addClass("btn btn-info float-right").attr("id","rModify").text("수정하기");
+        		var $hiddenRId=$("<input type='hidden'>").addClass("myRId").val(rId);
+        		var $hiddenRpId=$("<input type='hidden'>").addClass("myRPId").val(rpId);
+        		
+        		
+        		$btnArea.append($btn);
+        		$btnArea.append($hiddenRId);
+        		$btnArea.append($hiddenRpId);
+        	
+        	})
+        	
+        	
+        	//답글 작성하기 준비
+        	
+        	$(document).on("click",".writeAnswer",function(){
+        		var target=$(this).parent().parent().children(".card-body").find(".myRId").val();
+        		
+        		
+        		var toWhom=$(this).parent().parent().children(".card-body").find(".toWhom").text();
+        		
+        		$("#reply_textarea").attr("placeholder","#"+toWhom+"에게 답변합니다.");
+        		
+        		var $btnArea=$("#submitReply");
+        		$btnArea.html("");
+        		
+        		var $btn=$("<button>").addClass("btn btn-info float-right").attr("id","rAnswer").text("답변하기");
+        		var $hiddenTarget=$("<input type='hidden'>").addClass("myRId").val(target);
+        		
+        		$btnArea.append($btn);
+        		$btnArea.append($hiddenTarget);
+        		
+        		
+        	})
+        	
         </script>
         <!--프로젝트 문의 끝-->
 
@@ -1093,7 +1523,7 @@
             <div class="ml-3" id="applyBtnArea">
                 
                 <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="applyProjectBtn">프로젝트 지원하기</button>
-                <button type="button" class="btn btn-outline-light btn-lg btn-block mt-3 mb-3">관심 프로젝트 등록</button>
+                <button type="button" id="likeThisProject" class="btn btn-outline-light btn-lg btn-block mt-3 mb-3">관심 프로젝트 등록</button>
                 <div style="width: 100%; border-top: 1px solid white;"></div>
                 <div style="text-align: center;" id="likedNum">
                     <i class="far fa-heart"></i> <strong>${detail.pList.likeNum}</strong>
@@ -1150,7 +1580,7 @@
                         	</c:when>
                         </c:choose>
                         
-                        <label>${detail.pList.evaluation}</label><label>/5점</label>
+                        <label>${detail.pList.evaluation}</label><label>/5점(${detail.evalCount})</label>
                         </div>
                     </div>
 
@@ -1174,6 +1604,33 @@
             </div>
             
         </div>
+        <script>
+        	$(document).on("click","#likeThisProject",function(){
+        		
+        		var thisProject=${detail.pId};
+        		var whoLike=4;
+        		
+        		alert("나는 이 프로젝트가 좋아요"+thisProject);
+        		
+        		//이미 관심등록을 했는지 확인하자.
+        		$.ajax({
+        			url:"checkLikeNum.do",
+        			data:{pId:thisProject,memId:whoLike},
+        			success:function(data){
+        				
+        				alert(data);
+        			},
+        			error:function(request, status, errorData){
+                        alert("error code: " + request.status + "\n"
+                              +"message: " + request.responseText
+                              +"error: " + errorData);
+                     }  
+        		})
+        		
+        	})
+        	
+        
+        </script>
         <script>
             //지원하기 조건 제한 : 임시저장 여부/날인 여부/신고 여부
             $("#applyProjectBtn").click(function(){
@@ -1202,8 +1659,6 @@
   
   
   
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script>
+
 </body>
 </html>

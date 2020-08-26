@@ -138,7 +138,6 @@
 		<id property="proAQId" column="PRO_AQ_ID"/>
 		<result property="proAQContent" column="PRO_AQ_CONTENT"/>
 		<result property="proAQCDate" column="PRO_AQC_DATE"/>
-		<result property="proId" column="PRO_ID"/>
 	</resultMap>
 	
 	<resultMap type="Reply" id="pReplyResultSet">
@@ -153,7 +152,8 @@
 		<result property="rSecret" column="RP_SECRET"/>
 		
 		<association property="writer" javaType="Member">
-			<result property="memName" column="RP_MNAME"/>
+			<id property="memId" column="RP_MID"/>
+			<result property="memNick" column="RP_MNICK"/>
 		</association>
 			
 	</resultMap>
@@ -170,7 +170,8 @@
 		<result property="rSecret" column="RC_SECRET"/>
 		
 		<association property="writer" javaType="Member">
-			<result property="memName" column="RC_MNAME"/>
+			<id property="memId" column="RC_MID"/>
+			<result property="memNick" column="RC_MNICK"/>
 		</association>
 			
 	</resultMap>
@@ -243,9 +244,11 @@
 	<select id="getProjectDetail" parameterType="int" resultMap="detailResultSet">
 		SELECT P.*,PJ.*,INTRODUCTION,PRO_AQ_ID,PRO_AQ_CONTENT,PRO_AQC_DATE,
 		RP.PRO_RID AS "RP_RID",RP.PRO_ID AS "RP_PID",RP.PRO_RCONTENT AS "RP_CONTENT",RP.PRO_RCREATE_DATE AS "RP_CDATE",RP.PRO_RMODIFY_DATE AS "RP_MDATE",
-		RP.PRO_RANSWER AS "RP_RANSWER",RP.PRO_RSTATUS AS "RP_STATUS",RP.PRO_PARENT_RID AS "RP_P_RID",RP.PRO_RSECRET AS "RP_SECRET",MP.MEM_NAME AS "RP_MNAME",
+		RP.PRO_RANSWER AS "RP_RANSWER",RP.PRO_RSTATUS AS "RP_STATUS",RP.PRO_PARENT_RID AS "RP_P_RID",RP.PRO_RSECRET AS "RP_SECRET",
+		MP.MEM_NICK AS "RP_MNICK",MP.MEM_ID AS "RP_MID",
 		RC.PRO_RID AS "RC_RID",RC.PRO_ID AS "RC_PID",RC.PRO_RCONTENT AS "RC_CONTENT",RC.PRO_RCREATE_DATE AS "RC_CDATE",RC.PRO_RMODIFY_DATE AS "RC_MDATE",
-		RC.PRO_RANSWER AS "RC_RANSWER",RC.PRO_RSTATUS AS "RC_STATUS",RC.PRO_PARENT_RID AS "RC_P_RID",RC.PRO_RSECRET AS "RC_SECRET",MC.MEM_NAME AS "RC_MNAME",
+		RC.PRO_RANSWER AS "RC_RANSWER",RC.PRO_RSTATUS AS "RC_STATUS",RC.PRO_PARENT_RID AS "RC_P_RID",RC.PRO_RSECRET AS "RC_SECRET",
+		MC.MEM_NICK AS "RC_MNICK",MC.MEM_ID AS "RC_MID",
 		T_NAME AS "TECH_NAME"
 		FROM PROJECTLIST_VIEW P
 		LEFT JOIN PROJECT PJ ON (P.ID=PJ.PRO_ID)
@@ -291,5 +294,77 @@
 		WHERE MCATEGORY=#{mCategory} AND DCATEGORY=#{dCategory} AND ID !=#{id}
 		ORDER BY CDATE DESC
 	</select>
+	
+	<insert id="insertProjectReply" parameterType="Reply">
+	
+		INSERT INTO P_REPLY VALUES
+		(SEQ_RID.NEXTVAL,#{pId},#{writer.memId},#{rContent},SYSDATE,SYSDATE,'N','N',SEQ_RID.CURRVAL,#{rSecret})
+	
+	</insert>
+	
+	<select id="selectPReply" parameterType="int" resultMap="pReplyResultSet">
+		SELECT RP.PRO_RID AS "RP_RID",
+		RP.PRO_ID AS "RP_PID",
+		RP.PRO_RCONTENT AS "RP_CONTENT",
+		RP.PRO_RCREATE_DATE AS "RP_CDATE",
+		RP.PRO_RMODIFY_DATE AS "RP_MDATE",
+		RP.PRO_RANSWER AS "RP_RANSWER",
+		RP.PRO_RSTATUS AS "RP_STATUS",
+		RP.PRO_PARENT_RID AS "RP_P_RID",
+		RP.PRO_RSECRET AS "RP_SECRET",
+		M.MEM_NICK AS "RP_MNICK",
+		M.MEM_ID AS "RP_MID"
+		FROM P_REPLY RP
+		LEFT JOIN MEMBER M ON (RP.MEM_ID=M.MEM_ID) 
+		WHERE PRO_ID=#{pId} AND PRO_RID = PRO_PARENT_RID AND PRO_RSTATUS='N'
+	</select>
+	
+	<select id="selectCReply" parameterType="int" resultMap="cReplyResultSet" >
+		SELECT RC.PRO_RID AS "RC_RID",
+		RC.PRO_ID AS "RC_PID",
+		RC.PRO_RCONTENT AS "RC_CONTENT",
+		RC.PRO_RCREATE_DATE AS "RC_CDATE",
+		RC.PRO_RMODIFY_DATE AS "RC_MDATE",
+		RC.PRO_RANSWER AS "RC_RANSWER",
+		RC.PRO_RSTATUS AS "RC_STATUS",
+		RC.PRO_PARENT_RID AS "RC_P_RID",
+		RC.PRO_RSECRET AS "RC_SECRET",
+		M.MEM_NICK AS "RC_MNICK",
+		M.MEM_ID AS "RC_MID"
+		FROM P_REPLY RC
+		LEFT JOIN MEMBER M ON (RC.MEM_ID=M.MEM_ID) 
+		WHERE PRO_ID=#{pId} AND PRO_RID != PRO_PARENT_RID AND PRO_RSTATUS='N'
+	
+	</select>
+	
+	<update id="updateProjectReply" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RCONTENT=#{rContent},PRO_RMODIFY_DATE=SYSDATE,
+		PRO_RSECRET=#{rSecret}
+		WHERE PRO_RID=#{rId}
+	</update>
+	
+	<update id="deleteProjectReply" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RSTATUS='Y'
+		WHERE PRO_RID=#{rId}
+	</update>
+	
+	<update id="updateAnswerStatus" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RANSWER='N'
+		WHERE PRO_RID=#{parentRId}
+	</update>
+	
+	<insert id="answerProjectReply" parameterType="Reply">
+		INSERT INTO P_REPLY VALUES
+		(SEQ_RID.NEXTVAL,#{pId},#{writer.memId},#{rContent},SYSDATE,SYSDATE,'N','N',#{parentRId},#{rSecret})
+	</insert>
+	
+	<update id="changeAnswerStatus" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RANSWER='Y'
+		WHERE PRO_RID=#{parentRId}
+	</update>
 
 </mapper>
