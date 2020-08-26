@@ -17,6 +17,7 @@
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ProjectQuestion" alias="Question"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.Reply" alias="Reply"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.Profile" alias="Profile"/>
+	    <typeAlias type="com.kh.DeVenue.member.model.vo.FindClient" alias="FindClient"/>
 	</typeAliases>
 
 	<mappers>

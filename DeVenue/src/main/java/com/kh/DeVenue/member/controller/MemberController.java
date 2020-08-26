@@ -1,5 +1,8 @@
 package com.kh.DeVenue.member.controller;
 
+import java.util.ArrayList;
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -8,9 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.service.MemberService;
+import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.member.model.vo.PageInfo;
+
+import static com.kh.DeVenue.common.Pagination.*;
 
 @Controller
 public class MemberController {
@@ -87,7 +97,31 @@ public class MemberController {
 		
 	}
 	
-	
+	// 클라이언트 찾기
+	@RequestMapping(value="clientList.do")
+	public ModelAndView boardList(ModelAndView mv,
+			@RequestParam(value="page",required=false) Integer page) {
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		int listCount=mService.getListCount();
+		
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		ArrayList<FindClient> list=mService.selectList(pi);
+		
+		if(list != null) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			mv.setViewName("board/boardListView");
+		}else {
+			throw new MemberException("게시글 전체 조회 실패!");
+		}
+		
+		return mv;
+	}
 	
 
 }
