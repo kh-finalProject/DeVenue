@@ -663,7 +663,6 @@
 	          
           	// 메일 보내기
 				$("#email-confirm").on("click",function(){
-					alert("실행함다.");
             	var name = $("#name").val();
 				var email = $("#email").val();
             	$.ajax({

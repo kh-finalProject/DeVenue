@@ -26,6 +26,11 @@
   	<result property="memStatus" column="MEM_STATUS"/>
   	<result property="memTypeName" column="MEM_TYPE_NAME"/>
   </resultMap>
+ 
+ <!-- <resultMap type="UserType" id="UserType">
+ 	<id property="utCode" column="UT_CODE"/>
+ 	<result property="utName" column="UT_NAME"/>
+ </resultMap> -->
   
   <!-- 로그인 -->
   <select id="selectOne" parameterType="Member" resultMap="memberResultSet">
@@ -62,5 +67,16 @@
   		,null
   		)
   </insert>
+  
+  <!-- 비밀번호 찾기후 비밀번호만 update -->
+  <update id="updatePwdMember"  parameterType="Member">
+  	UPDATE MEMBER
+  	SET MEM_PWD = #{memPwd} 
+	WHERE MEM_EMAIL=#{memEmail}
+  </update>
+  
+  <!-- 사용자 타입(클라이언트/파트너스) -->
+  
+  
 
 </mapper>

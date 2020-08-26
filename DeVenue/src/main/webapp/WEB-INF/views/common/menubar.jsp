@@ -234,7 +234,7 @@ i {
 							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
 							  </button>
 							  <div class="dropdown-menu">
-							    <a class="dropdown-item" href="#">profile</a>
+							    <a href="profile.do" class="dropdown-item">profile</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>
 							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
@@ -242,8 +242,6 @@ i {
 							</div>
 						</h3>
 					</c:if>
-					
-					
 				</c:if>
 				</div>
 			</ul>

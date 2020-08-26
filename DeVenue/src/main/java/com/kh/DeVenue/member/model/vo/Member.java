@@ -34,6 +34,13 @@ public class Member implements Serializable{
 	public Member() {
 		super();
 	}
+	
+	// 로그인용
+		public Member(String memEmail, String memPwd) {
+			super();
+			this.memEmail = memEmail;
+			this.memPwd = memPwd;
+		}
 
 	public Member(int memId, String userType, String memType, String memEmail, String memNick, String memName,
 			String memPwd, String address1, String address2, String address3, int phone, int cellPhone, int faxNo,
@@ -63,14 +70,7 @@ public class Member implements Serializable{
 		this.memTypeName = memTypeName;
 	}
 	
-	
-	// 로그인용
-	public Member(String memEmail, String memPwd) {
-		super();
-		this.memEmail = memEmail;
-		this.memPwd = memPwd;
-	}
-	
+
 	// 회원가입용
 	public Member(String userType, String memType, String memEmail, String memNick, String memName, String memPwd,
 			String address1, String address2, String address3, int phone) {

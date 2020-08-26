@@ -23,4 +23,12 @@ public class MemberServiceImpl implements MemberService{
 		
 		return mDao.insertMember(m);
 	}
+
+	@Override
+	public int pwdChangeMember(Member pwdchange) {
+
+		return mDao.updatePwdMember(pwdchange);
+	}
+
+
 }

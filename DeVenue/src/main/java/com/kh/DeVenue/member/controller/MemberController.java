@@ -69,8 +69,8 @@ public class MemberController {
 		Member m = new Member(memEmail,memPwd);
 
 		Member loginUser = mService.loginUserMember(m);
-		System.out.println(loginUser);
-		System.out.println(loginUser.getUserType());
+//		System.out.println(loginUser);
+//		System.out.println(loginUser.getUserType());
 		
 		
 
@@ -130,6 +130,16 @@ public class MemberController {
 		}else {
 			throw new MemberException("회원가입실패!");
 		}
+		
+	}
+	
+	@RequestMapping(value="usertype.do")
+	public String userType(HttpServletRequest request, String userType){
+		
+		System.out.println("실행함까");
+		System.out.println(userType);
+		
+		return null;
 		
 	}
 	

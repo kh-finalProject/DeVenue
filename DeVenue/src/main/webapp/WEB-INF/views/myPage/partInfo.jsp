@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
 
@@ -346,12 +346,11 @@
 
         /* 메뉴바 폰트 끝 */
 
-        /*--------------------- Section -----------------------------*/
-
+        /* 글자색 */
         section {
             background-color: #212426;
             width: 100%;
-            height: 600px;
+            height: 1600px;
             padding: 50px 0 30px 0;
             color: white;
         }
@@ -362,36 +361,17 @@
             height: 50px;
             margin-left: 40px;
         }
-
-        /* label div */
-        .form-label {
-            width: 200px;
-            margin-left: 100px;
-            text-align: right;
-            font-size: x-large;
-            position: absolute;
-        }
-
-        /* 가로 각 div 크기 */
-        .form-title{
-            height: 80px;
-            margin-top: 10px;
-        }
-
-        /* input div */
-        .form-input{
-            position: absolute;
-            margin-left: 300px;
-        }
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
     <!--font-->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
 <body>
-    <!--Top Button-->
+<!--Top Button-->
     <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i class="fas fa-chevron-up"
             style="margin:0"></i></a>
     <script>
@@ -443,12 +423,49 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
-                <div class="btn-group" role="group" aria-label="Basic example">
-		         	<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
-					<a href="login.do" class="btn btn-secondary">LOGIN</a>
+                <!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
+				<c:if test="${empty sessionScope.loginUser }">
+					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
+					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
 					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
-					<a href="sign.do" class="btn btn-info">SIGNIN</a>
-                </div>
+					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
+				</c:if>
+				<c:if test="${!empty sessionScope.loginUser }">
+				<!-- 관리자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }관리자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  </button>
+							  <div class="dropdown-menu">
+							    <a class="dropdown-item" href="#">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+					<!-- 사용자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }사용자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  </button>
+							  <div class="dropdown-menu">
+							    <a href="profile.do" class="dropdown-item">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+				</c:if>
             </ul>
         </div>
     </nav>
@@ -484,55 +501,159 @@
             </ul>
     </nav>
 
+
     <!-- Section -->
+    
     <br>
     <section>
         <!-- 왼쪽 공백 -->
-        <div class="left-null" style="width: 20%; float: left;"></div>
+        <!-- <div class="left-null" style="width: 15%; height: 1600px; border: 1px solid yellow; float: left;"></div> -->
         <!-- 실제 들어갈 값 -->
-        <div class="login" style="width: 1140px; margin: auto; text-align: center;">
-            <!-- 제목 -->
-            <div class="login-title">
-                <div class="title">
-                    <h1>비밀번호 찾기</h1>
-                    <h5>DEVENUE에 계정을 잊으셨나요?</h5>
-                    <br>
+        <!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
+        <div class="container">
+            <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
+                <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+                    ${loginUser.memNick } 마이페이지
                 </div>
+
             </div>
-            <div class="area" style="height: 500px; position: relative;">
-                <div class="area-left" style="width: 100%; position: absolute;">
-                <form method="GET" action="findPwd.do">
-                    <div class="form-title">
-                        <div class="form-label">
-                            <label for="email">* 이메일</label>
-                        </div>
-                        <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email">
-                        </div>
+            <div class="row">
+                <div class="col-2 text-white"
+                    style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
+                    <br>
+                    <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
+                        파트너스
                     </div>
-                    <div class="form-title" style="margin-left: 40px;">
-                        <div class="form-input">
-                            <button type="submit" class="btn btn-info btn-lg"
-                            style="font-size: 25px; width: 400px;">비밀번호 찾기</button>
-                        </div>
+                    <!-- 이미지 들어갈 공간 -->
+                    <br>
+                    <div class="partnes-img"
+                        style="width: 90%; height: 150px; border: 1px solid white; margin: auto; border-radius: 50px 50px 50px 50px;">
+                        이미지 넣자
                     </div>
-                </form>
-            	</div>
-                <div class="area-right" style="margin-left: 900px; margin-top: 50px;">
-                    <div class="img">
-                        <img src="../image/pwdforget.png" style="width: 100%; height: auto;">
+                    <br>
+                    <!-- 닉네임 -->
+                    <div class="partnes-nickname"
+                        style="width: 100%; height: 30px; border: 1px solid white; margin: auto; text-align: center;">
+                        <span>키미노나마에와</span>
+                    </div>
+                    <br>
+                    <div style="padding-bottom: 5.5%;">
+                        <div>
+                            <p id="infoMenu">정보 관리<i style="float: right; margin-right: 5%;"
+                                    class="fas fa-angle-down"></i></p>
+                            <div id="subInfoMenu" style="display:none; margin-left: 5%;">
+                            	<P id="myPageDetail"><a href="mtPage.do">전체보기</a></P>
+                                <p id="partnesInfo"><a href="partInfo.do">파트너스 정보</a></p>
+                                <p id="pPR"><a href="PR.do">자기소개</a></p>
+                                <p id="pPortfolio"><a href="portfolio.do">포트폴리오</a></p>
+                                <p id="pSkill"><a href="skill.do">보유기술</a></p>
+                                <p id="pCareer"><a href="career.do">경력</a></p>
+                                <p id="pLicense"><a href="academic.do">학력</a></p>
+                                <p id="pStack"><a href="certificate.do">자격증</a></p>
+                                <p id="pProjectHistory"><a href="PH.do">프로젝트 히스토리</a></p>
+                            </div>
+                            <p id="accountMenu">계정 관리<i style="float: right; margin-right: 5%;"
+                                    class="fas fa-angle-down"></i></p>
+                            <div id="subAccountMenu" style="display:none; margin-left: 5%;">
+                                <p id="clientComment">기본 정보 수정</p>
+                                <p id="insertCComment">신원 인증</p>
+                                <p id="insertCComment">날인 방법 관리</p>
+                                <p id="insertCComment">비밀번호 변경</p>
+                                <p id="insertCComment">회원 탈퇴</p>
+                            </div>
+                            <p id="pEvaluate">내게 온 제안</p>
+                        </div>
+                        <script>
+                            $("#infoMenu").click(function () {
+
+                                $("#subInfoMenu").toggle();
+                            });
+
+                            $("#accountMenu").click(function () {
+
+                                $("#subAccountMenu").toggle();
+                            });
+
+                            $("#clientInfo").on("click", function () {
+                                location.href = "../findUser/findClientDetail.html";
+                            }).on("mouseenter", function () {
+
+                            });
+
+                            $("#projectHistory").on("click", function () {
+                                location.href = "projectHistory.html";
+                            });
+
+
+                            $("#clientComment").on("click", function () {
+                                location.href = "clientComment.html";
+                            });
+
+                            $("#insertCComment").on("click", function () {
+                                location.href = "insertCComment.html";
+                            });
+                        </script>
+
+                    </div>
+                </div>
+                <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+                    <br>
+                    <div class="row">
+                        <div class="col-12"
+                            style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
+                            <p style="float: left; font-size: 30px;">마이페이지 - 파트너스 정보</p>
+                            <a href="mypageDetaillnfo.html" class="btn btn-info" style="float: right;">내 프로필에서 보기</a>
+                        </div>
+                        <div class="col-12" style="margin-left: 5%; margin-top: 5%;">
+                            <form method="GET" action="#">
+                                <div class="col-12" style="width: 100%; height: 30px; position: relative;">
+                                    <div class="col-2" style="position: absolute; text-align: right;">
+                                        <label>* 직종</label>
+                                    </div>
+                                    <div class="col-8" style="position: absolute; margin-left: 120px;">
+                                        <span><i class="fa fa-keyboard-o"></i>${loginUser.userType }</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="width: 100%; height: 70px; position: relative;">
+                                    <div class="col-2" style="width: 200px; position: absolute; text-align: right;">
+                                        <label>* 선호프로젝트 형태<label>
+                                    </div>
+                                    <div class="col-10" style="position: absolute; margin-left: 120px;">
+                                        <span>상주</span>
+                                        <br>
+                                        <span>월 단위로 금액을 지급받고 클라이언트가 요청한 장소에서 프로젝트를 진행합니다.</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="width: 100%; height: 30px; position: relative;">
+                                    <div class="col-2" style="position: absolute; text-align: right;">
+                                        <label>* 활동 가능성</label>
+                                    </div>
+                                    <div class="col-8" style="position: absolute; margin-left: 120px;">
+                                        <p>활동가능</p>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="width: 90%; height: 50px; text-align: right;">
+                                    <a href="PartnesInfoUpdate.html" class="btn btn-info">수정</a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        </div>
+        </div>
+        <!-- </div> -->
+
         <!-- 오른쪽 공백 -->
-        <div class="right-null" style="width: 20%; float: right;"></div>
+        <!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
     </section>
+    <br>
 
 
     <!-- Footer -->
-    <footer class="footer" style="background-color: #212426; border-top: 1px solid white;">
+    <footer class="footer" style="background-color: #212426;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
