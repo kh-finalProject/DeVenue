@@ -179,6 +179,8 @@ span.round-tab i {
 <body>
 	<!-- 메뉴바 -->
 	<jsp:include page="menubar.jsp" />
+	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
 	
 	<!-- 클라이언트 계정 로그인 -->
 	<jsp:include page="cSubMenubar.jsp" />

@@ -20,6 +20,12 @@ public class Profile {
 		this.url = url;
 		this.proImg = proImg;
 	}
+	
+	/* 회원가입할떄 프로필도 바로 생성 */
+	public Profile(int memId) {
+		super();
+		this.memId = memId;
+	}
 
 	public int getProId() {
 		return proId;

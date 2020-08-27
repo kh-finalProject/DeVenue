@@ -31,6 +31,12 @@ public class PageInfo implements Serializable {
 		this.startPage = startPage;
 		this.endPage = endPage;
 		this.boardLimit = boardLimit;
+	}	
+
+	public PageInfo(int currentPage, int listCount) {
+		super();
+		this.currentPage = currentPage;
+		this.listCount = listCount;
 	}
 
 	public int getCurrentPage() {

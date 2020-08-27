@@ -36,6 +36,9 @@
 
   <!--jQuery-->
   <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.js"></script> -->
+  <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script> -->
+  <!-- <script type="text/javascript" src="https://1cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
 
   <style>
     body {
@@ -351,7 +354,7 @@
     section {
       background-color: #212426;
       width: 100%;
-      height: 1300px;
+      height: 1500px;
       padding: 50px 0 30px 0;
       color: white;
     }
@@ -446,101 +449,8 @@
 </head>
 
 <body>
-  <!--Top Button-->
-  <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i class="fas fa-chevron-up"
-      style="margin:0"></i></a>
-  <script>
-    $(document).ready(function () {
-      $(window).scroll(function () {
-        if ($(this).scrollTop() > 10) {
-          $('#back-to-top').css("display", "block")
-
-        } else {
-          $('#back-to-top').css("display", "none")
-
-        }
-      });
-      // scroll body to 0px on click
-      $('#back-to-top').click(function () {
-        $('body,html').animate({
-          scrollTop: 0
-        }, 400);
-        return false;
-      });
-    });
-  </script>
-
-  <!--navigation bar 1-->
-  <nav class="navbar navbar-expand-lg" style="background-color: black;">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain"
-      aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#"><img src="logo.png" height="80px"
-              style="padding-bottom: 0;padding-top: 0;margin-top: 0;margin-bottom: 0;"><span
-              class="sr-only">(current)</span></a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트찾기</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트등록</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center" href="#">파트너스찾기</a>
-        </li>
-      </ul>
-
-      <ul class="navbar-nav ml-auto">
-        <div class="btn-group" role="group" aria-label="Basic example">
-         	<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
-			<a href="login.do" class="btn btn-secondary">LOGIN</a>
-			<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
-			<a href="sign.do" class="btn btn-info">SIGNIN</a>
-        </div>
-        <script>
-
-        </script>
-      </ul>
-    </div>
-  </nav>
-
-  <script>
-    $(function () {
-      $("#navbarMain .nav-link").mouseenter(function () {
-        $(this).css("font-size", "105%");
-      })
-
-      $("#navbarMain .nav-link").mouseleave(function () {
-        $(this).css("font-size", "100%");
-      })
-    })
-  </script>
-
-  <!--navigation bar2-->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse" id="navbarSub" style="margin-left: 3%;">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link ml-4 hvr-underline-from-center" href="#">검수 중</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link ml-4 hvr-underline-from-center" href="#">지원자 모집 중</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link ml-4 hvr-underline-from-center" href="#">진행 중인 프로젝트</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link ml-4 hvr-underline-from-center" href="#">종료된 프로젝트</a>
-        </li>
-      </ul>
-  </nav>
+ <!-- menubar -->
+ <jsp:include page="../common/menubar.jsp"/>
 
   <!-- Section -->
   <br>
@@ -557,7 +467,8 @@
         </div>
       </div>
       <div class="area" style="height: 100px;">
-        <form method="GET" action="#">
+        <form method="GET" action="meminsert.do" >
+        <!-- autocomplete="off" : 전에 입력한 input태그 쿠키제거 -->
           <div class="form-submit" style="height: 200px;">
             <div class="form-label">
               <label>* 이용목적</label>
@@ -565,19 +476,35 @@
             <div class="form-input" style="margin-left: 300px;">
               <div class="client-radio">
                 <br>
-                <input type="radio" id="client" name="purpose" required value="client">&nbsp;&nbsp;&nbsp;클라이언트
+                <input type="radio" id="client" name="purpose" required value="UT3">&nbsp;&nbsp;&nbsp;클라이언트
                 <p>프로젝트를 의뢰하고<br>싶습니다.</p>
                 <img src="../image/client.png">
               </div>
               <div class="partnes-radio">
                 <br>
-                <input type="radio" id="partnes" name="purpose" required value="partnes">&nbsp;&nbsp;&nbsp;파트너스
+                <input type="radio" id="partnes" name="purpose" required value="UT4">&nbsp;&nbsp;&nbsp;파트너스
                 <p>프리랜서가 일거리를<br>찾고 있습니다.</p>
                 <img src="../image/client.png">
               </div>
             </div>
           </div>
           <br>
+          <div class="form-submit">
+            <div class="form-label">
+              <label for="name">* 회원형태</label>
+            </div>
+            <div class="form-input">
+              <select name="memtype" class="input-size" required>
+              	<option value="MT1">개인</option>
+              	<option value="MT2">법인</option>
+              	<option value="MT3">팀</option>
+              	<option value="TT4">개인사업자</option>
+              	<option value="MT5">개인</option>
+              	<option value="MT6">법인사업자</option>
+              	<option value="MT7">기업</option>
+              </select>
+            </div>
+          </div>
           <div class="form-submit">
             <div class="form-label">
               <label for="name">* 이름</label>
@@ -607,7 +534,9 @@
               <label for="email">* 이메일</label>
             </div>
             <div class="form-input">
-              <input type="email" class="input-size" id="email" name="emial" required placeholder="ex)email@.naver.com">
+              <input type="email" class="input-size" id="email" name="email" required placeholder="ex)email@.naver.com" style="width: 200px;">
+              <button type="button" id="email-confirm" class="btn btn-info btn-lg" style="margin-left: 30px;">인증번호
+                받기</button>
             </div>
           </div>
           <div class="form-submit">
@@ -616,10 +545,53 @@
             </div>
             <div class="form-input">
               <input type="text" class="input-size" id="emailcheck"  style="width: 200px;">
-              <button type="button" id="email-confirm" class="btn btn-info btn-lg" style="margin-left: 30px;">인증번호
-                받기</button>
+                <button type="button" id="email-chk" class="btn btn-info btn-lg" style="margin-left: 30px;">인증번호
+               확인</button>
             </div>
           </div>
+          <!-- 이메일 인증 AJAX -->
+          <script>
+	       // 인증번호 받기 클릭시 인증번화 확인으로 바뀜
+	       $("#email-chk").on("click",function(){
+	    	   var check = $("#emailcheck").val();
+	    	   if(!check){
+	    		   alert("인증번호를 재대로 입력해주세요");
+	    	   }else{
+	    		   alert("입력번호가 확인 되었습니다.");
+	    		   $("#email-chk").prop("disabled",true);
+	    		   $("#emailcheck").prop("readonly",true);
+	    		   $("#email-confirm").html("인증번호 재발송");
+	    	   }
+	       })
+	          
+	          // 아니 왜 modelandview가 실행이안됨????
+
+	          
+          	// 메일 보내기
+				$("#email-confirm").on("click",function(){
+            	var name = $("#name").val();
+				var email = $("#email").val();
+            	$.ajax({
+    				url:"email.do",
+    				data:{name:name,email:email},
+    				// 다시 화면에 안뿌려줘도 되는데 굳이 에러가 나오는걸 수정해야하나?
+    				success:function(data){
+	    					alert("ajax실행합니다.");
+
+    					/* if(data == "certified"){
+    					} */
+    					
+    				},error:function(request, status, errorData){
+    					// 왜 어째서 email.jsp를 설정을 안했는데 왜 못찾는다고 하냐?
+    					/* alert("error code: " + request.status + "\n"
+    							+"message: " + request.responseText
+    							+"error: " + errorData); */
+    					alert("이메일이 발송했습니다.");
+    						
+    				}
+    			}) 
+            })
+          </script>
           <div class="form-submit">
             <div class="form-label">
               <label for="pwd">* 비밀번호</label>
@@ -647,29 +619,85 @@
           </div>
           <div class="form-submit">
             <div class="form-label">
-              <label for="address1">* 우편번호</label>
+              <label for="post">* 우편번호</label>
             </div>
             <div class="form-input">
-              <input type="text" class="input-size" id="address1" name="address1" style="width: 200px;">
-              <button type="button" id="select_btn" class="btn btn-info btn-lg" style="margin-left: 30px;">검색</button>
+              <!-- <input type="text" class="input-size" id="address1" name="address1" style="width: 200px;">
+              <button type="button" id="select_btn" class="btn btn-info btn-lg" style="margin-left: 30px;">검색</button> -->
+              <input type="text" class="input-size" id="sample6_postcode" name="address1" style="width: 200px;">
+              <button type="button" id="select_btn" class="btn btn-info btn-lg" onclick="sample6_execDaumPostcode()" style="margin-left: 30px;">검색</button>
             </div>
           </div>
           <div class="form-submit">
             <div class="form-label">
-              <label for="address2">* 도로명</label>
+              <label for="address1">* 도로명</label>
             </div>
             <div class="form-input">
-              <input type="text" class="input-size" id="address2" name="address2">
+              <!-- <input type="text" class="input-size" id="address2" name="address2"> -->
+              <input type="text" class="input-size" id="sample6_address" name="address2">
             </div>
           </div>
           <div class="form-submit">
             <div class="form-label">
-              <label for="address3">* 상세주소</label>
+              <label for="address2">* 상세주소</label>
             </div>
             <div class="form-input">
-              <input type="text" class="input-size" id="address3" name="address3">
+              <!-- <input type="text" class="input-size" id="address3" name="address3"> -->
+              <!-- <input type="text" id="sample6_detailAddress" placeholder="상세주소" hidden="hidden"> -->
+              <input type="text" class="input-size" id="sample6_extraAddress" name="address3">
             </div>
           </div>
+          <!-- 다음 지도 API -->
+          <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+			<script>
+			    function sample6_execDaumPostcode() {
+			        new daum.Postcode({
+			            oncomplete: function(data) {
+			                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+			
+			                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+			                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+			                var addr = ''; // 주소 변수
+			                var extraAddr = ''; // 참고항목 변수
+			
+			                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+			                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+			                    addr = data.roadAddress;
+			                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+			                    addr = data.jibunAddress;
+			                }
+			
+			                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+			                if(data.userSelectedType === 'R'){
+			                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+			                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+			                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+			                        extraAddr += data.bname;
+			                    }
+			                    // 건물명이 있고, 공동주택일 경우 추가한다.
+			                    if(data.buildingName !== '' && data.apartment === 'Y'){
+			                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+			                    }
+			                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+			                    if(extraAddr !== ''){
+			                        extraAddr = ' (' + extraAddr + ')';
+			                    }
+			                    // 조합된 참고항목을 해당 필드에 넣는다.
+			                    document.getElementById("sample6_extraAddress").value = extraAddr;
+			                
+			                } else {
+			                    document.getElementById("sample6_extraAddress").value = '';
+			                }
+			
+			                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+			                document.getElementById('sample6_postcode').value = data.zonecode;
+			                document.getElementById("sample6_address").value = addr;
+			                // 커서를 상세주소 필드로 이동한다.
+			                document.getElementById("sample6_extraAddress").focus();
+			            }
+			        }).open();
+			    }
+			</script>
           <div class="input-subtitle" style="width: 400px;  margin-left: 340px;">
             <input type="checkbox" id="agree">&nbsp;&nbsp;&nbsp;<label for="agree"><a href="https://www.wishket.com/terms-of-service/">이용약관</a> 및 <a href="https://www.wishket.com/privacy/">개인정보 처리방침</a> 에 동의합니다.</label>
           </div>
@@ -690,7 +718,7 @@
         </div>
       </div>
     </div>
-
+	
     <script>
       // 클라이언트/파트너스 div 클릭시 라디오 체크
       // 테두리 색도 변경
@@ -789,15 +817,15 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+<!--   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    crossorigin="anonymous"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
 </body>
 
 </html>

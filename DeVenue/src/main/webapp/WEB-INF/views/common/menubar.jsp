@@ -243,10 +243,52 @@ i {
 			</ul>
 
 			<ul class="navbar-nav ml-auto">
-				<div class="btn-group" role="group" aria-label="Basic example">
-					<button type="button" class="btn btn-secondary">LOGIN</button>
-					<button type="button" class="btn btn-info">SIGNIN</button>
+				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
+				<c:if test="${empty sessionScope.loginUser }">
+					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
+					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
+					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
+					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
+				</c:if>
+				<c:if test="${!empty sessionScope.loginUser }">
+				<!-- 관리자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }관리자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  </button>
+							  <div class="dropdown-menu">
+							    <a class="dropdown-item" href="#">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+					<!-- 사용자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }사용자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  </button>
+							  <div class="dropdown-menu">
+							    <a href="profile.do" class="dropdown-item">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+				</c:if>
 				</div>
+			</ul>
+		</div>
 			</ul>
 		</div>
 	</nav>
