@@ -287,7 +287,7 @@ padding-left:50px;
     color: #2e6baa;
 
 }
-.chip-choice-client input[type="radio"] {display: none;}
+.chip-choice-client input[type="checkbox"] {display: none;}
   </style>
   
 </head>
@@ -404,9 +404,9 @@ padding-left:50px;
             </tr>
                <tr>
             <td colspan="2">
- 				 <label><input type ="radio" class="theme-client wishket-chip" name ="proMCId" value ="MC1"><span>개발</span></label> <br>
-   				 <label><input type ="radio" class="theme-client wishket-chip" name="proMCId" value ="MC2"><span>디자인</span></label><br>
-    			<label><input type ="radio" class="theme-client wishket-chip" name ="proMCId" value ="MC3"><span>개발+디자인</span></label></td>
+ 				 <label><input type ="radio" name ="proMCId" value ="MC1">개발</label> <br>
+   				 <label><input type ="radio" name="proMCId" value ="MC2">디자인</label><br>
+    			<label><input type ="radio" name ="proMCId" value ="MC3">개발+디자인</label></td>
         
             </td>
             </tr>
@@ -443,33 +443,7 @@ padding-left:50px;
           </tr>
           </table>
 </div>
-<script>
-var selected=$("input[name='proDCId']:checked");
-var values=[];
-var ids=[];
 
-console.log(selected);
-
-//체크한 요소들의 value와 id를 뽑아내어 배열에 담는다.
-for (var index = 0; index < selected.length; index++) {
-  values.push(selected[index].value);
-  String values += values.push(selected[index].value);
-  console.log(values);
-}
-
-
-$.ajax({
-	url:'proDCId'
-	,type:'post'
-	,dataType:'text'
-	,data:{
-		valueArrTest:values
-	}
-});
-
-console.log(values);
-console.log(ids);
-</script>
 <div class="tab">
 <table style ="color: white; border:2px solid white; width:540px;">
     <tr >
@@ -499,8 +473,13 @@ console.log(ids);
      <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="4"><span>화면 설계서</span></label>
      <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox" class="theme-client wishket-chip" name="proPlanDetail" value ="5"><span>프로토타입</span></label></td>
   </tr>
-  
-  
+  <script>
+  function checkboxArr() {
+    var checkArr = [];     // 배열 초기화
+    $("input[name='proPlanDetail']:checked").each(function(i)) {
+        checkArr.push($(this).val());     // 체크된 것만 값을 뽑아서 배열에 push
+    }
+ </script>
 
 
 <tr>
@@ -611,10 +590,10 @@ console.log(ids);
 
   <li id="mText" style ="padding-top:30px;">지원자 필수 요건</li>
   <li id ="sText" style ="color:grey">아래 조건에 맞는 파트너를  지원자로 받습니다.</li>
-    <label class="chip-choice-client" style="display: inline-block;"><input type ="radio"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT1"><span>개인</span> </label>
-   	<label class="chip-choice-client" style="display: inline-block;"><input type ="radio"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT2"><span>법인</span> </label>
-    <label class="chip-choice-client" style="display: inline-block;"><input type ="radio"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT3"><span>팀</span></label>
-    <label class="chip-choice-client" style="display: inline-block;"><input type ="radio"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT4"><span>기업</span></label>
+    <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT1"><span>개인</span> </label>
+   	<label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT2"><span>법인</span> </label>
+    <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT3"><span>팀</span></label>
+    <label class="chip-choice-client" style="display: inline-block;"><input type ="checkbox"  class="theme-client wishket-chip" name="proPlanDetail" value= "MT4"><span>기업</span></label>
     
 
 
@@ -627,7 +606,15 @@ console.log(ids);
     </table>
 </div>
 <script>
+var sumVal ="||";
 
+
+
+$("input:checkbox[name=proPlanDetail]:checked").each(function(){
+
+sumVal += $(this).val()+"||                
+
+}
 
 
 

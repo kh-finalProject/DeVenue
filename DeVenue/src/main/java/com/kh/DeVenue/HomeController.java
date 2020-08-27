@@ -25,8 +25,8 @@ public class HomeController {
 
 		
 
-		return "common/mainPage";
-//		return "member/login";
+//		return "common/mainPage";
+		return "member/login";
 //		return "common/pSideMenubar";
 //		return "findMember/findClient/main";
 	}
