@@ -22,11 +22,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return proDao.addProject(p);
 	}
 
-	@Override
-	public ArrayList<Project> selectList() {
-		// TODO Auto-generated method stub
-		return proDao.selectList();
-	}
+
 
 	@Override
 	public int getListCount() {
@@ -42,9 +38,42 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public int addQuestion(ProjectQuestion q) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return  proDao.addQuestion(q);
 	}
+
+	@Override
+	public ArrayList<Project> selectCheckList() {
+		
+		return proDao.selectCheckList();
+
+	}
+
+
+
+	@Override
+	public ArrayList<Project> selectunderwayList() {
+		
+		return proDao.selectunderwayList();
+	}
+
+
+
+	@Override
+	public ArrayList<Project> selectrecruitList() {
+		
+		return proDao.selectrecruitList();
+	}
+
+
+
+	@Override
+	public ArrayList<Project> selectendList() {
+		
+		return proDao.selectendList();
+	}
+
+
 	
 
 }

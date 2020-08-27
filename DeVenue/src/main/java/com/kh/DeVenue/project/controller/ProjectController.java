@@ -4,6 +4,7 @@ import static com.kh.DeVenue.common.Pagination.getPageInfo;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,13 +21,7 @@ import com.kh.DeVenue.project.model.service.ProjectService;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectList;
-
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
-
-
-
-
-import static com.kh.DeVenue.common.Pagination.*;
 
 
 @Controller
@@ -43,10 +38,12 @@ ProjectService pService;
 	
 	@RequestMapping(value="proinsert.do", method=RequestMethod.POST)
 	public String projectInsert(Project p, ProjectQuestion q, HttpServletRequest request,
-								@RequestParam(value="proPlanPaper1",required=false)
-								MultipartFile file) {
-		System.out.println(p);
-		System.out.println(q);
+								@RequestParam(value="proPlanPaper1",required=false) MultipartFile file , 
+								@RequestParam(value="chk", required=false) List<String> valueArr) {
+	
+	
+		
+	
 		
 		if(!file.getOriginalFilename().contentEquals("")) {
 			String savePath = saveFile(file, request);
@@ -56,10 +53,13 @@ ProjectService pService;
 				
 			}
 		}
-		
+		System.out.println(p);	
 		int result = pService.addProject(p);
-		int result1 =pService.addQuestion(q);
+		int result1 = pService.addQuestion(q);
+		System.out.println(p);			
+		System.out.println(q);	
 		
+	
 		
 		if(result > 0) {
 			return "redirect:addProject.do";
@@ -70,6 +70,42 @@ ProjectService pService;
 		// DB에 공지사항이 잘 들어갔으면 noticeListView.jsp로 가서
 		// 별표시 수정하자
 	}
+	
+	
+	
+	@RequestMapping(value="temStore.do", method=RequestMethod.POST)
+	public String temStore(Project p, ProjectQuestion q, HttpServletRequest request,
+								@RequestParam(value="proPlanPaper1",required=false)
+								MultipartFile file) {
+	
+	
+		
+		if(!file.getOriginalFilename().contentEquals("")) {
+			String savePath = saveFile(file, request);
+//			System.out.println("최종 저장 될 파일명을 포함한 경로 : " + savePath);
+			if(savePath != null) {	// 파일이 잘 저장되어 경로가 반환 된다면..
+				p.setProPlanPaper(file.getOriginalFilename());	
+				
+			}
+		}
+		System.out.println(p);	
+		int result = pService.addProject(p);
+		int result1 = pService.addQuestion(q);
+		System.out.println(p);			
+		System.out.println(q);	
+		
+	
+		
+		if(result > 0) {
+			return "redirect:addProject.do";
+		}else {
+			throw new ProjectException("프로젝트 등록 실패!");
+		}
+		
+		// DB에 공지사항이 잘 들어갔으면 noticeListView.jsp로 가서
+		// 별표시 수정하자
+	}
+
 
 	// 파일이 저장 될 경로를 설정하는 메소드
 	private String saveFile(MultipartFile file, HttpServletRequest request) {
@@ -102,16 +138,47 @@ ProjectService pService;
 		return filePath;
 	}
 	
-	@RequestMapping("check.do")
+	@RequestMapping("checkList.do")
 	public ModelAndView checkProjectList(ModelAndView mv) {
-		ArrayList<Project> list = pService.selectList();
-		
+		ArrayList<Project> list = pService.selectCheckList();
+		System.out.println(list);
 		if(!list.isEmpty()) {
-			mv.addObject("list",list);
+			mv.addObject("list1",list);
 			mv.setViewName("project/checkingProjectList");
 			
 		}else {
-			throw new ProjectException("검수중인 프로젝트 목록 조회 실패");
+			mv.setViewName("project/checkingProjectList");
+		}
+		
+		return mv;
+		
+	}
+	@RequestMapping("recruitProjectList.do")
+	public ModelAndView recruitProjectList(ModelAndView mv) {
+		ArrayList<Project> list = pService.selectrecruitList();
+		System.out.println(list);
+		if(!list.isEmpty()) {
+			mv.addObject("list1",list);
+			mv.setViewName("project/recruitProjectList");
+			
+		}else {
+			mv.setViewName("project/recruitProjectList");
+		}
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping("endProjectList.do")
+	public ModelAndView endProjectList(ModelAndView mv) {
+		ArrayList<Project> list = pService.selectendList();
+		System.out.println(list);
+		if(!list.isEmpty()) {
+			mv.addObject("list1",list);
+			mv.setViewName("project/endProjectList");
+			
+		}else {
+			mv.setViewName("project/endProjectList");
 		}
 		
 		return mv;
@@ -119,19 +186,24 @@ ProjectService pService;
 	}
 	
 	
-	
 	@RequestMapping("underwayProjectList.do")
-	public String projectUnderwayView() {
+	public ModelAndView underwayProjectList(ModelAndView mv) {
+		ArrayList<Project> list = pService.selectunderwayList();
+		System.out.println(list);
+		if(!list.isEmpty()) {
+			mv.addObject("list1",list);
+			mv.setViewName("project/underwayProjectList");
+			
+		}else {
+			mv.setViewName("project/underwayProjectList");
+		}
 		
-		return "project/underwayProjectList";
+		return mv;
+		
 	}
 	
 
-	@RequestMapping("recruitProjectList.do")
-	public String recruitProjectView() {
-		
-		return "project/recruitProjectList";
-	}
+
 	
 	@RequestMapping("temporaryStoreList.do")
 	public String temporaryStoreListView() {
@@ -145,11 +217,7 @@ ProjectService pService;
 		return "project/addFailProjectList";
 	}
 	
-	@RequestMapping("endProjectList.do")
-	public String endProjectListView() {
-		
-		return "project/endProjectList";
-	}
+
 	
 
 	@RequestMapping("stopProjectList.do")

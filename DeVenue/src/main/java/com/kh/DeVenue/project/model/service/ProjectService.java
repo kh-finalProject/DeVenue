@@ -12,13 +12,29 @@ public interface ProjectService {
 
 	int addProject(Project p);
 
-	ArrayList<Project> selectList();
+	
+	ArrayList<Project> selectCheckList();
 
 	int getListCount();
 
 	ArrayList<ProjectList> selectProjectList(PageInfo pi);
 
 	int addQuestion(ProjectQuestion q);
+
+
+	ArrayList<Project> selectunderwayList();
+
+
+	ArrayList<Project> selectrecruitList();
+
+
+	ArrayList<Project> selectendList();
+
+
+
+
+
+
 
 
 	
