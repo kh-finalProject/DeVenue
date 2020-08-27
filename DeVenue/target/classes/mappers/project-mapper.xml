@@ -438,6 +438,9 @@
 		UPDATE P_REPLY SET
 		PRO_RANSWER='Y'
 		WHERE PRO_RID=#{parentRId}
+
 	</update>
+
+
 
 </mapper>

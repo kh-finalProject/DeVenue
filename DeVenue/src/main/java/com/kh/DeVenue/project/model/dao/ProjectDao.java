@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.SQLErrorCodes;
 import org.springframework.stereotype.Repository;
+
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
+import com.kh.DeVenue.project.model.vo.ProjectDetail;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.Reply;
+import com.kh.DeVenue.project.model.vo.Tech;
 
 
  
@@ -44,6 +47,7 @@ public class ProjectDao {
 		
 		return sqlSessionTemplate.insert("projectMapper.addQuestion",q);
 	}
+
 
 	public ArrayList<Project> selectCheckList() {
 		ArrayList list =new ArrayList();
@@ -141,6 +145,9 @@ public ArrayList<Tech> selectTechList() {
 		
 		return sqlSessionTemplate.selectOne("projectMapper.checkLikeNum");
 	}
+
+
+
 
 
 

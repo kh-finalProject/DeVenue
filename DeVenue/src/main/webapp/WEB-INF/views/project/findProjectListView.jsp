@@ -3,6 +3,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,7 +104,7 @@
       }
 
       #projectList .card:hover{
-        background-color: gray;
+        border: solid #2793F2 1px;
       }
 
       #projectList .card a{
@@ -937,7 +938,7 @@
         <!--Grid column 프로젝트 리스트 시작-->
         <div class="col-md-6 mb-4">
 
-          <h4><strong>25,716</strong>개의 프로젝트</h4>
+          <h4><strong>${pi.listCount}</strong>개의 프로젝트</h4>
           <button class="btn btn-outline-info" style="box-shadow: none;" type="button" data-toggle="collapse" data-target="#sortingDiv">정렬하기</button>
 
           <!-- 정렬하기 Section: Block Content -->
@@ -991,33 +992,21 @@
               })
               
               </script>
-              <script>
-              //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
-                                        
-                $(function(){
-                  $(".heart").click(function(){
-                    if($(this).hasClass("liked")){
-                      $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
-                      $(this).removeClass("liked");
-                    }else{
-                      $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-                      $(this).addClass("liked");
-                    }
-                  });
-                });
-              </script>
+              
 
           <section id="projectList">
 
               <!-- Project List row 시작-->
             <c:forEach items="${list}" var="p">
             
-            <c:url var="pDetail" value="searchProjectDetail.do">
-            	<c:param name="pId" value="${p.id}"/>
+            <c:url var="pdetail" value="searchProjectDetail.do">
+            	<c:param name="id" value="${p.id}"/>
             	<c:param name="page" value="${pi.currentPage}"/>
-            	<c:param name=""/>
+            	<c:param name="mCategory" value="${p.mCategory}"/>
+            	<c:param name="dCategory" value="${p.dCategory}"/>
             </c:url>
-            <div onclick="location.href='${pDetail}'" class="row my-2 project">
+            
+            <div class="row my-2 project">
               <div class="row mb-2 mx-auto" style="width: 100%;">
                 <div class="col-md-12 px-0">
                   <div>
@@ -1056,7 +1045,7 @@
                       <!--프로젝트명과 관심추가 버튼-->
                       <div style="width:100%;">
                       <h3 class="mb-0 float-left">
-                        <a href="#">${p.project.proName}</a>
+                        <a href="${pdetail}">${p.project.proName}</a>
                         <c:if test="${p.identify eq 'COMPLETE'}">
                         <a class="btn" data-toggle="tooltip" data-placement="right" title="이 프로젝트의 클라이언트는 신원인증을 완료했습니다."><i class="far fa-check-circle"></i></a>
                      	</c:if>
@@ -1064,6 +1053,7 @@
                         <div class="float-right mr-3">
                           <span class ="heart"><i class="fa fa-heart-o" aria-hidden="true" ></i></span>
                           <label for="heart">관심</label>
+                          <input type="hidden" name="like" value="${p.id}">
                         </div>
                       </div>
                       
@@ -1125,7 +1115,7 @@
                         
                               <div class="mt-3" style="text-align: right;">
                                 <i class="fas fa-history mr-3"></i><label>마감</label><label>
-                                <fmt:parseNumber value="${(p.project.proREndDate.time-today.time)/(1000*60*60*24)}" integerOnly="true"/>
+                                <fmt:parseNumber value="${(p.project.proREndDate.time-today.time)/(1000*60*60*24)+1}" integerOnly="true"/>
                                 </label><label>일 전</label>
                               </div>
                             
@@ -1152,8 +1142,10 @@
                                 <span class="badge badge-info">${p.workType}</span>
                               </td>
                               <td style="border-right: 1px dashed white;width: 40%;padding-left: 1rem;">
-                              <c:forEach items="${p.techName}" var="tech">
+                              <c:forEach items="${tech}" var="tech">
+                              	<c:if test="${p.id eq tech.pId}">
                                 <a href="#" class="badge badge-secondary">${tech.tName}</a>
+                                </c:if>
                               </c:forEach>  
                               </td>
                               <td style="width: 10%;padding-left:1rem;padding-top:0.375rem;font-size: 0.875rem;">
@@ -1190,6 +1182,28 @@
 
             </div>
             </c:forEach>
+            
+            <script>
+              
+              //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
+                                        
+                $(function(){
+                  $(".heart").click(function(){
+                    if($(this).hasClass("liked")){
+                      $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
+                      $(this).removeClass("liked");
+                 
+                      
+                    }else{
+                      $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+                      $(this).addClass("liked");
+                      
+                    }
+                  });
+                });
+              
+              </script>
+                         
             
             <!-- Project list row 끝-->
 

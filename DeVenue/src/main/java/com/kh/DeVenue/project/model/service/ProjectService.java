@@ -25,6 +25,7 @@ public interface ProjectService {
 	int addQuestion(ProjectQuestion q);
 
 
+
 	ArrayList<Project> selectunderwayList();
 
 
@@ -32,8 +33,6 @@ public interface ProjectService {
 
 
 	ArrayList<Project> selectendList();
-
-
 	ArrayList<Tech> selectTechList();
 
 	ProjectDetail selectProjectDetail(int id);

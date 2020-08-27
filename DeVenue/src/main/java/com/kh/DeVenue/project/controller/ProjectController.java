@@ -35,6 +35,7 @@ import com.kh.DeVenue.project.model.vo.Reply;
 import com.kh.DeVenue.project.model.vo.Tech;
 
 
+
 @Controller
 public class ProjectController {
 @Autowired
@@ -452,6 +453,7 @@ ProjectService pService;
 		int likeNum=0;
 		likeNum=pService.checkLikeNum(pId,memId);
 	}
+
 
 }
 
