@@ -1,6 +1,7 @@
 package com.kh.DeVenue.project.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -115,9 +116,33 @@ public class ProjectDao {
 		return sqlSessionTemplate.update("projectMapper.changeAnswerStatus", r);
 	}
 
-	public int checkLikeNum(Integer pId, Integer memId) {
+
+	public int checkLikeNum(HashMap ids) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.checkLikeNum");
+		return sqlSessionTemplate.selectOne("projectMapper.checkLikeNum", ids);
+	}
+
+	public int addLikeProject(HashMap ids) {
+		
+		return sqlSessionTemplate.insert("projectMapper.addLikeProject",ids );
+	}
+
+	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
+		
+		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getLikeList", memId, rowBounds);
+	}
+
+	public int getLikeListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getLikeCount", memId);
+	}
+
+	public int deleteLikeProject(Integer lId) {
+		
+		return sqlSessionTemplate.delete("projectMapper.deleteLikeProject", lId);
 	}
 
 

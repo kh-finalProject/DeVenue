@@ -6,11 +6,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -204,7 +206,7 @@ ProjectService pService;
 			mv.addObject("list",list);
 			mv.addObject("pi", pi);
 			mv.addObject("tech", tech);
-			mv.setViewName("project/findProjectListView");
+			mv.setViewName("project/find/findProjectListView");
 			
 		}else {
 			throw new ProjectException("프로젝트 전체 조회 실패");
@@ -239,7 +241,7 @@ ProjectService pService;
 		
 		mv.addObject("detail", detail);
 		mv.addObject("candidate", candidate);
-		mv.setViewName("project/findProjectDetailView");
+		mv.setViewName("project/find/findProjectDetailView");
 		return mv;
 		
 	}
@@ -378,10 +380,124 @@ ProjectService pService;
 
 	
 	@RequestMapping(value = "checkLikeNum.do")
-	public void checkLikeNum(HttpServletResponse response, @RequestParam(value="pId") Integer pId, @RequestParam(value="memId") Integer memId) {
+	public void checkLikeNum(HttpServletResponse response, @RequestParam(value="pId") Integer pId, @RequestParam(value="memId") Integer memId) throws IOException {
 		
 		int likeNum=0;
-		likeNum=pService.checkLikeNum(pId,memId);
+		HashMap ids=new HashMap();
+		ids.put("pId", pId);
+		ids.put("memId",memId);
+		System.out.println("관심 여부 확인 parameter:"+ids);
+		likeNum=pService.checkLikeNum(ids);
+		
+		JSONObject like=new JSONObject();
+		like.put("likeNum", likeNum);
+		
+		PrintWriter out=response.getWriter();
+		out.print(like);
+		out.flush();
+		out.close();
+		
+	}
+	
+	@RequestMapping(value = "addLikeProject.do")
+	public void addLikeProject(HttpServletResponse response,@RequestParam(value="pId") Integer pId, @RequestParam(value="memId") Integer memId) throws IOException {
+		
+		
+		int result=0;
+		HashMap ids=new HashMap();
+		ids.put("pId",pId);
+		ids.put("memId",memId);
+		
+		System.out.println("관심 등록하기 parameter"+ids);
+		
+		result=pService.addLikeProject(ids);
+		
+		PrintWriter out=response.getWriter();
+		
+		if(result>0) {
+			out.append("success");
+			out.flush();
+			out.close();
+		}else {
+			out.append("fail");
+			out.flush();
+			out.close();
+		}
+		
+	}
+	
+	@RequestMapping(value = "likeProjectList.do")
+	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page) {
+		
+		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
+		int memId=4;
+		
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		//전체 관심프로젝트 수
+		int listCount=pService.getLikeListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		//프로젝트 리스트를 가져오자
+		ArrayList<ProjectList> likeList=pService.selectLikeProject(memId,pi);
+		
+		System.out.println("화면단 가기전 관심 등록 리스트:"+likeList);
+		
+		mv.addObject("like", likeList);
+		mv.addObject("pi", pi);
+		mv.setViewName("partnerSubMenu/likeProjectView");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "deleteLikeProject.do")
+	public void deleteLikeProject(HttpServletResponse response, @RequestParam(value = "lId") Integer lId) throws IOException {
+		
+		System.out.println("관심프로젝트 삭제 전:"+lId);
+		
+		PrintWriter out=response.getWriter();
+		int result=0;
+		result=pService.deleteLikeProject(lId);
+		
+	}
+	
+	@RequestMapping(value = "projectListTest.do")
+	public ModelAndView projectListTest(ModelAndView mv) {
+		
+		mv.setViewName("project/find/findProjectFilterView");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "sortingProjectList.do")
+	public ModelAndView sortingProjectList(HttpServletRequest request, ModelAndView mv,@RequestParam(value="page",required = false) Integer page) {
+		
+		String sorting=request.getParameter("sorting");
+		System.out.println("정렬기준:"+sorting);
+		System.out.println("정렬,현재페이지"+page);
+		
+		mv.setViewName("project/find/findProjectListView");
+		return mv;
+		
+	}
+	
+	@RequestMapping(value="applyThisProject.do")
+	public ModelAndView applyProjectDetail(ModelAndView mv, @RequestParam(value="pId") Integer pId) {
+		
+		//프로젝트 디테일 정보 가져오기
+		ProjectDetail detail=pService.selectProjectDetail(pId);
+		
+		mv.addObject("detail", detail);
+		mv.setViewName("project/apply/applyProjectDetailView");
+		
+		//로그인 유저의 포트폴리오 가져오기
+		
+		
+		return mv;
 	}
 
 	

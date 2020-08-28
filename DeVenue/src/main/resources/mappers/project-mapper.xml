@@ -212,6 +212,37 @@
 
 	</resultMap>
 	
+	<resultMap type="Like" id="likeResultSet">
+	
+		<id property="proLId" column="PRO_LID"/>
+		
+		<association property="partner" javaType="Member">
+			<id property="memId" column="MEM_ID"/>
+			<result property="memNick" column="MEM_NICK"/>
+			<result property="memEmail" column="MEM_EMAIL"/>
+		</association>
+		
+		<association property="pList" javaType="ProjectList">
+			<id property="id" column="ID"/>
+			<result property="mCategory" column="MCATEGORY"/>
+			<result property="dCategory" column="DCATEGORY"/>
+			<result property="workType" column="WORKTYPE"/>
+			<result property="identify" column="IDENTIFY"/>
+			
+			<association property="project" javaType="Project">
+				<result property="proName" column="NAME"/>
+				<result property="proDuration" column="DURATION"/>
+				<result property="proSummary" column="SUMMARY"/>
+				<result property="proPayment" column="PAYMENT"/>
+				<result property="proLocation" column="LOCATION"/>
+				<result property="proRecruit" column="RECRUIT"/>
+				<result property="proCreateDate" column="CDATE"/>
+			</association>
+			
+		</association>
+	
+	</resultMap>
+	
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO Project VALUES(
 			SEQ_BID.NEXTVAL
@@ -366,5 +397,37 @@
 		PRO_RANSWER='Y'
 		WHERE PRO_RID=#{parentRId}
 	</update>
+	
+	<select id="checkLikeNum" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+        FROM P_LIKE
+        WHERE PRO_ID=#{pId} AND MEM_ID=#{memId}
+	</select>
+	
+	<insert id="addLikeProject">
+		INSERT INTO P_LIKE VALUES
+		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
+	</insert>
+	
+	<select id="getLikeCount" parameterType="int" resultType="_int">
+		SELECT COUNT(*)
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		WHERE L.MEM_ID=#{memId}
+	</select>
+	
+	<select id="getLikeList" parameterType="int" resultMap="likeResultSet">
+		SELECT L.*,P.*,M.MEM_NICK,M.MEM_EMAIL
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
+		WHERE L.MEM_ID=#{memId}
+	
+	</select>
+	
+	<delete id="deleteLikeProject" parameterType="int">
+		DELETE FROM P_LIKE
+		WHERE PRO_LID=#{lId}
+	</delete>
 
 </mapper>

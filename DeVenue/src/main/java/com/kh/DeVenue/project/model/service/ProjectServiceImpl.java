@@ -1,6 +1,7 @@
 package com.kh.DeVenue.project.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,10 +123,37 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int checkLikeNum(Integer pId, Integer memId) {
+	public int checkLikeNum(HashMap ids) {
 		
-		return proDao.checkLikeNum(pId,memId);
+		return proDao.checkLikeNum(ids);
 	}
+
+	@Override
+	public int addLikeProject(HashMap ids) {
+		
+		return proDao.addLikeProject(ids);
+	}
+
+
+	@Override
+	public int getLikeListCount(int memId) {
+		
+		return proDao.getLikeListCount(memId);
+	}
+
+	@Override
+	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
+		
+		return proDao.selectLikeProject(memId,pi);
+	}
+
+	@Override
+	public int deleteLikeProject(Integer lId) {
+		
+		return proDao.deleteLikeProject(lId);
+	}
+
+	
 
 	
 	

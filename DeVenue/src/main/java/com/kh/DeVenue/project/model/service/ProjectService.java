@@ -1,6 +1,7 @@
 package com.kh.DeVenue.project.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
@@ -47,7 +48,15 @@ public interface ProjectService {
 
 	int changeAnswerStatus(Reply r);
 
-	int checkLikeNum(Integer pId, Integer memId);
+	int checkLikeNum(HashMap ids);
+
+	int addLikeProject(HashMap ids);
+
+	ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi);
+
+	int getLikeListCount(int memId);
+
+	int deleteLikeProject(Integer lId);
 
 
 	
