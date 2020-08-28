@@ -4,6 +4,7 @@
 
 
 
+
 <resultMap type="Project" id="projectResultSet">
 		<id property="proId" column="PRO_ID"/>
 		<result property="memId" column="MEM_ID"/>
@@ -42,6 +43,13 @@
 		<result property="proParentId" column="PRO_PARENT_ID"/>
 		
 		
+	</resultMap>
+	
+	<resultMap type="ProjectQuestion" id="projectQuestionResultSet">
+		<id property ="proAQId" column ="PRO_AQ_ID"/>
+		<result property ="proAQContent" column="PRO_AQ_CONTENT"/>
+		<result property ="proAQCDate" column ="PRO_AQC_DATE"/>
+		<result property ="proId" column ="PRO_ID"/>
 		
 		
 	</resultMap>
@@ -244,19 +252,84 @@
 	</resultMap>
 	
 	<insert id = "addProject" parameterType ="Project">
-		INSERT INTO Project VALUES(
-			SEQ_BID.NEXTVAL
-			, #{bTitle}
-			, #{bWriter}
-			, #{bContent}
-			, #{originalFileName}
-			, #{renameFileName}
-			, DEFAULT
-			, SYSDATE
-			, SYSDATE
-			, DEFAULT
+		INSERT INTO PROJECT VALUES(
+			SEQ_PRO_ID.NEXTVAL
+			,2
+			,#{proName}
+			,#{proMaintain}
+			,'PST1'
+			,'Y'
+			,SYSDATE
+			,#{proPlan}
+			,#{proPlanDetail}
+			,#{proSummary}
+			,#{proNeeds}
+			,#{proNeedsDetail}
+			,'리소스'
+			,#{proPayment}
+			,#{proStartDate}
+			,#{proDuration}
+			,#{proREndDate}
+			,'2018-02-08'
+			,#{proMCId}
+			,#{proDCId}
+			,#{proWTId}
+			,#{proRecruitNum}
+			,#{proPlanPaper}
+			,NULL
+			,'강남구'
+			,#{proHelp}
+			,#{proManage}
+			,#{proFuturePlan}
+			,#{proPriority}
+			,NULL
+			,'MT1' <!-- 삭제예상 -->
+			,'no'
+			,1  <!-- 날인ID -->
+			,'Y'
+			,SEQ_PRO_ID.CURRVAL
+			,'Y'
+			
 		)
 			</insert>
+
+<insert id ="addQuestion" parameterType ="ProjectQuestion">
+	INSERT INTO P_QUESTION VALUES (
+	SEQ_PRO_AQ_ID.NEXTVAL
+	,#{proAQContent}
+	,SYSDATE
+	,(SELECT MAX(PRO_ID) FROM PROJECT)
+	,'Y'
+	)
+	
+	</insert>
+	
+<select id = "selectCheckList" resultMap="projectResultSet">
+	SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST2'
+	ORDER BY PRO_ID DESC
+</select>
+<select id ="selectrecruitList" resultMap="projectResultSet">
+	SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST2'
+	ORDER BY PRO_ID DESC
+</select>
+
+<select id ="selectunderwayList" resultMap = "projectResultSet">
+		SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST4'
+	ORDER BY PRO_ID DESC
+</select>
+
+<select id = "selectendList" resultMap = "projectResultSet">
+	SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST5'
+	ORDER BY PRO_ID DESC
+</select>
 		
 
 	<select id="getListCount" resultType="_int">
@@ -429,5 +502,6 @@
 		DELETE FROM P_LIKE
 		WHERE PRO_LID=#{lId}
 	</delete>
+
 
 </mapper>

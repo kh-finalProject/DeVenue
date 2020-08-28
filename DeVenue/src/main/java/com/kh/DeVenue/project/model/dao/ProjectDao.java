@@ -6,8 +6,8 @@ import java.util.HashMap;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.SQLErrorCodes;
 import org.springframework.stereotype.Repository;
+
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -29,13 +29,7 @@ public class ProjectDao {
 		
 	}
 
-	public ArrayList<Project> selectList() {
-		ArrayList list =new ArrayList();
-		
-		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectList");
-		return list;
-	}
-
+	
 	public int getListCount() {
 		
 		return sqlSessionTemplate.selectOne("projectMapper.getListCount");
@@ -55,7 +49,39 @@ public class ProjectDao {
 		return sqlSessionTemplate.insert("projectMapper.addQuestion",q);
 	}
 
-	public ArrayList<Tech> selectTechList() {
+
+	public ArrayList<Project> selectCheckList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList");
+		return list;
+	}
+
+
+	public ArrayList<Project> selectunderwayList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectunderwayList");
+		return list;
+	}
+
+
+	public ArrayList<Project> selectrecruitList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectrecruitList");
+		return list;
+	}
+
+
+	public ArrayList<Project> selectendList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectendList");
+		return list;
+	}
+
+public ArrayList<Tech> selectTechList() {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getTechList");
 	}
@@ -144,6 +170,10 @@ public class ProjectDao {
 		
 		return sqlSessionTemplate.delete("projectMapper.deleteLikeProject", lId);
 	}
+
+
+
+
 
 
 

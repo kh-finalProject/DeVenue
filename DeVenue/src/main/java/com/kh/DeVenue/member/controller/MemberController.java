@@ -9,36 +9,34 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.biimport org.springframework.ui.Model;
-nd.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-importimport org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.member.model.exception.MemberException;
+import com.kh.DeVenue.member.model.service.MemberService;
+import com.kh.DeVenue.member.model.vo.FindClient;
+import com.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.member.model.vo.PageInfo;
+import com.kh.DeVenue.member.model.vo.Profile;
 
 @Controller
 public class MemberController {
 	
 	// 회원가입페이지으로 이동
-	@RequestMimport com.kh.DeVenue.member.model.exception.MemberException;
-apping("signpage.do")
+	@RequestMapping("signpage.do")
 	public String signview() {
 		return "member/sign";
 	}
 	
 	// 로그인으로 이동
-	@RequestMapping("loginpimport com.kh.DeVenue.member.model.vo.FindClient;
-age.do")
+	@RequestMapping("loginpage.do")
 	public String loginview() {
 		return "member/login";
 	}
 	// 비밀번호 찾기로 이동
-	@RequestMaimport com.kh.DeVenue.member.model.vo.PageInfo;
-import com.kh.DeVenue.member.model.vo.Profile;
-
-pping("forgetPwd.do")
+	@RequestMapping("forgetPwd.do")
 	public String forgetPwd() {
 		return "member/forgetPwd";
 	}
@@ -53,36 +51,31 @@ pping("forgetPwd.do")
 	// 로그인 유지할때 request와 session으로 넘겨버리면???
 	// 로그인 값 받아오기
 	@RequestMapping(value="login.do", method=RequestMethod.POST)
-	public String memberLogin(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	public String memberLogin(HttpSession session, HttpServletRequest request, Model model, ModelAndView mv) {
 
-		// 자동로그인 checkbox 선택했는지
-		String logincheck = request.getParameter("logincheck");
-		System.out.println(logincheck); // true or null(value를 true로 설정했기때문에)
-		String memEmail = request.getParameter("email");
-		String memPwd = request.getParameter("pwd");
-		Member m = new Member(mem	public String memberLogin(HttpSession session, HttpServletRequest request, Model model, ModelAndView mv) {
-em//		// 자동로그인 checkbox 선택했는지
+//		// 자동로그인 checkbox 선택했는지
 //		String logincheck = request.getParameter("logincheck");
 //		System.out.println(logincheck); // true or null(value를 true로 설정했기때문에)
 		
-	}else { // 로그인 유지 체크 안할시
-//				
-//			}
-			session.setAttribute("loginUser", loginUser);				
-			return "common/mainPage";
-		}else { // 로그인 실패시
-			///		System.out.println(m);
+		String memEmail = request.getParameter("email");
+		String memPwd = request.getParameter("pwd");
+
+
+		Member m = new Member(memEmail,memPwd);
+//		System.out.println(m);
 		Member loginUser = mService.loginUserMember(m);
-/ 아이디랑 비밀번호 잘못 입력했다는 창
-			if(memEmail.equals(loginUser.getMemEmail())) {
-				
+
 //		System.out.println(loginUser);
 //		System.out.println(loginUser.getMemId());
-pping(value="logout.do")
-	public String logout(HttpSession session) {
 		
-		session.invalidate();
-		System.ou			
+		
+		if(loginUser != null) { // 로그인 할 멤버 객체가 조회 되었을 시
+//			if(logincheck != null) { // true이냐(로그인 유지 선택시)
+//			}else { // 로그인 유지 체크 안할시
+
+//				
+//			}
+			
 			// 로그인하면서 회원번호로 포트폴리오의 값을 확인한다.
 			Profile memId = new Profile(loginUser.getMemId());
 			Profile profile = mService.profile(memId);
@@ -117,9 +110,63 @@ pping(value="logout.do")
 			
 //			return mv;
 			
-uestMapping(value="clientList.do")
-	public ModelAndView boardList(ModelAndView mv,
-			@RequestParam(value="page",required=false) Integer page) {
+		}else { // 로그인 실패시
+
+			// 아이디랑 비밀번호 잘못 입력했다는 창
+//			if(memEmail.equals(loginUser.getMemEmail())) {
+//				
+//			}else if(memPwd.equals(loginUser.getMemPwd())){
+//				
+//			}
+//			return mv;
+		}
+		return "common/mainPage";
+		
+	}
+	
+	// 회원 가입
+		@RequestMapping("meminsert.do")
+		public String memberInsert(HttpServletRequest request) {
+			
+			
+			
+			String userType = request.getParameter("purpose");	// 사용자 분류(클라이언트/파트너스)
+			String memType = request.getParameter("memtype");	// 사용자 형태(개인,팀,기업,개인사업자,법인사업자..)
+			String memName = request.getParameter("name");		// 사용자 이름
+			String phonechange = request.getParameter("phone");	// 사용자 핸드폰 번호
+			int phone = Integer.parseInt(phonechange);
+			String memNick =request.getParameter("nickname");	// 사용자 닉네임
+			String memEmail = request.getParameter("email");	// 사용자 이메일
+			String memPwd = request.getParameter("pwd");		// 사용자 비밀번호
+			String address1 = request.getParameter("address1");	// 사용자 우편번호
+			String address2 = request.getParameter("address2");	// 사용자 주소
+			String address3 = request.getParameter("address3");	// 사용자 상세 주소
+			
+			Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phone);
+//			System.out.println(m);
+			int result = mService.insertMember(m);
+			if(result > 0) {
+				return "member/login";
+			}else {
+				throw new MemberException("회원가입실패!");
+			}
+			
+		}
+	
+	// 로그 아웃
+	@RequestMapping(value="logout.do")
+
+	public String logout(HttpSession session) {
+		
+		session.invalidate();
+
+		return "common/mainPage";
+	}
+	
+
+	// 클라이언트 찾기
+	@RequestMapping(value="clientList.do")
+	public ModelAndView boardList(ModelAndView mv,@RequestParam(value="page",required=false) Integer page) {
 		int currentPage=1;
 		if(page!=null) {
 			currentPage=page;
@@ -142,5 +189,6 @@ uestMapping(value="clientList.do")
 		return mv;
 	}
 	
+
 
 }

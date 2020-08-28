@@ -13,38 +13,40 @@ public class Member implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6563273375076952851L;
-	
-	private int memId;				// 회원 기본키
-	private String userType;		// 사용자 분류
-	private String memType;			// 회원 형태
-	private String memEmail;		// 회원 이메일
-	private String memNick;			// 회원 닉네임
-	private String memName;			// 회원 이름
-	private String memPwd;			// 회원 비밀번호
-	private String address1;		// 회원 우편번호
-	private String address2;		// 화원 주소
-	private String address3;		// 회원 상세주소
-	private int phone;				// 회원 전화번호
-	private int cellphone;			// 회원 핸드폰번호
-	private int faxNo;				// 회원 팩스번호
-	private String taxEmail;		// 세금관리용 이메일
-	private int decCount;			// 신고 당한 횟수
-	private String memAction;		// 사용자 활동여부
-	private String isAdvertise;		// 마케팅메시지 수신 여부
-	private Date memCreateDate;		// 가입일
-	private Date memModifyDate;		// 수정일
-	private String memStatus;		// 사용자 탈퇴상태
-	private String memTypeName;		// 회원 소속명
-	private ArrayList<Signature> sigs;//날인 리스트
+
+
+	private int memId; // 회원 기본키
+	private String userType; // 사용자 분류
+	private String memType; // 회원 형태
+	private String memEmail; // 회원 이메일
+	private String memNick; // 회원 닉네임
+	private String memName; // 회원 이름
+	private String memPwd; // 회원 비밀번호
+	private String address1; // 회원 우편번호
+	private String address2; // 화원 주소
+	private String address3; // 회원 상세주소
+	private int phone; // 회원 전화번호
+	private int cellPhone; // 회원 핸드폰번호
+	private int faxNo; // 회원 팩스번호
+	private String taxEmail; // 세금관리용 이메일
+	private int decCount; // 신고 당한 횟수
+	private String memAction; // 사용자 활동여부
+	private String isAdvertise; // 마케팅메시지 수신 여부
+	private Date memCreateDate; // 가입일
+	private Date memModifyDate; // 수정일
+	private String memStatus; // 사용자 탈퇴상태
+	private String memTypeName; // 회원 소속명
+	private ArrayList<Signature> sigs;// 날인 리스트
 	private ArrayList<ProjectLike> likeList;//관심 프로젝트 리스트
-	private ArrayList<ProjectList> applyList;//지원 프로젝트 리스트
-	
+	private ArrayList<ProjectList> applyList;// 지원 프로젝트 리스트
+
+
 	public Member() {
 		super();
 	}
 
 	public Member(int memId, String userType, String memType, String memEmail, String memNick, String memName,
-			String memPwd, String address1, String address2, String address3, int phone, int cellphone, int faxNo,
+			String memPwd, String address1, String address2, String address3, int phone, int cellPhone, int faxNo,
 			String taxEmail, int decCount, String memAction, String isAdvertise, Date memCreateDate, Date memModifyDate,
 			String memStatus, String memTypeName, ArrayList<Signature> sigs, ArrayList<ProjectLike> likeList,
 			ArrayList<ProjectList> applyList) {
@@ -60,7 +62,7 @@ public class Member implements Serializable {
 		this.address2 = address2;
 		this.address3 = address3;
 		this.phone = phone;
-		this.cellphone = cellphone;
+		this.cellPhone = cellPhone;
 		this.faxNo = faxNo;
 		this.taxEmail = taxEmail;
 		this.decCount = decCount;

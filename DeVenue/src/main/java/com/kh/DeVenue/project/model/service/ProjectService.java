@@ -16,7 +16,8 @@ public interface ProjectService {
 
 	int addProject(Project p);
 
-	ArrayList<Project> selectList();
+	
+	ArrayList<Project> selectCheckList();
 
 	int getListCount();
 
@@ -24,6 +25,15 @@ public interface ProjectService {
 
 	int addQuestion(ProjectQuestion q);
 
+
+
+	ArrayList<Project> selectunderwayList();
+
+
+	ArrayList<Project> selectrecruitList();
+
+
+	ArrayList<Project> selectendList();
 	ArrayList<Tech> selectTechList();
 
 	ProjectDetail selectProjectDetail(int id);
