@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +53,7 @@ public class MemberController {
 	// 로그인 유지할때 request와 session으로 넘겨버리면???
 	// 로그인 값 받아오기
 	@RequestMapping(value="login.do", method=RequestMethod.POST)
-	public String memberLogin(HttpSession session, HttpServletRequest request, ModelAndView mv) {
+	public String memberLogin(HttpSession session, HttpServletRequest request, Model model, ModelAndView mv) {
 
 //		// 자동로그인 checkbox 선택했는지
 //		String logincheck = request.getParameter("logincheck");
@@ -74,30 +75,40 @@ public class MemberController {
 //				
 //			}
 			
-			// 로그인하면서 포트폴리오가 있는지 확인하고 없으면 기본으로 생성
-//			Profile memId = new Profile(loginUser.getMemId());
-//			Profile pf = mService.profile(memId);
-//			System.out.println(pf.getProId());
-			// 프로필번호가 있으면 자기소개로 던져~
+			// 로그인하면서 회원번호로 포트폴리오의 값을 확인한다.
+			Profile memId = new Profile(loginUser.getMemId());
+			Profile profile = mService.profile(memId);
+			// 프로필이 있으면
+			if(profile != null) {
+				System.out.println(profile);
+//				mv.setViewName("myPage/introduction");
+//				mv.addObject("profile", profile);
+//				model.addAttribute("profile", profile);
+//				return "myPage/introduction";
+			// 프로필이 없으면 프로필을 생성
+			}else {
+				System.out.println("프로필없음");
+				int proId = mService.profileInsert(loginUser.getMemId());
+				// 프로필 생성
+				if(proId > 0) {
+					System.out.println("프로필 생성 ");
+//					Profile pf1 = mService.profile(memId);
+//					System.out.println("pf1 : "+pf1);
+				// 프로필 생성 실패
+				}else {
+					throw new MemberException("프로필 생성 실패!");
+				}
+			}
+//			model.addAttribute("profile", profile);
+			// session으로 보내는것이 맞는 것인가??
+			session.setAttribute("profile", profile);
+			session.setAttribute("loginUser", loginUser);
+//			mv.setViewName("common/mainPage");
+//			mv.addObject("loginUser", loginUser);
 			
-//			if(pf.getProId() > 0) {	 
-//				System.out.println("자기소개로 넘겨~");
-//				mv.setViewName("myPage/selfIntroduction");
-//				
-//			// 프로필가 없으면 생성
-//			}else{			
-//				System.out.println("프로필생성");
-//				int proId = mService.profileInsert(loginUser.getMemId());
-//			
-////				if(proId >0) {
-////					// 생성하는데 성공하면 뭐함????
-////				}else {
-////					throw new MemberException("프로필 생성 실패!");
-////				}
-//			}
 			
-			session.setAttribute("loginUser", loginUser);				
-			return "common/mainPage";
+//			return mv;
+			
 		}else { // 로그인 실패시
 			// 아이디랑 비밀번호 잘못 입력했다는 창
 //			if(memEmail.equals(loginUser.getMemEmail())) {
@@ -105,8 +116,9 @@ public class MemberController {
 //			}else if(memPwd.equals(loginUser.getMemPwd())){
 //				
 //			}
-			return "member/login";
+//			return mv;
 		}
+		return "common/mainPage";
 		
 	}
 	

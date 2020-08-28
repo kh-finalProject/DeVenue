@@ -15,9 +15,9 @@ public interface MemberService {
 
 	int pwdChangeMember(Member pwdchange);
 
-	int profileInsert(int memId);
-
 	Profile profile(Profile memId);
+
+	int profileInsert(int memId);
 
 	int getListCount();
 
