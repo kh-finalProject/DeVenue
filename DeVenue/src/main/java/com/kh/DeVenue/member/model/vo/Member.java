@@ -75,6 +75,30 @@ public class Member implements Serializable {
 		this.applyList = applyList;
 	}
 
+
+	// 로그인용
+	public Member(String memEmail, String memPwd) {
+		super();
+		this.memEmail = memEmail;
+		this.memPwd = memPwd;
+	}
+
+	// 회원가입용
+	public Member(String userType, String memType, String memEmail, String memNick, String memName, String memPwd,
+			String address1, String address2, String address3, int phone) {
+		super();
+		this.userType = userType;
+		this.memType = memType;
+		this.memEmail = memEmail;
+		this.memNick = memNick;
+		this.memName = memName;
+		this.memPwd = memPwd;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.address3 = address3;
+		this.phone = phone;
+	}
+
 	public int getMemId() {
 		return memId;
 	}
@@ -163,12 +187,12 @@ public class Member implements Serializable {
 		this.phone = phone;
 	}
 
-	public int getCellphone() {
-		return cellphone;
+	public int getCellPhone() {
+		return cellPhone;
 	}
 
-	public void setCellphone(int cellphone) {
-		this.cellphone = cellphone;
+	public void setCellphone(int cellPhone) {
+		this.cellPhone = cellPhone;
 	}
 
 	public int getFaxNo() {
@@ -275,19 +299,11 @@ public class Member implements Serializable {
 	public String toString() {
 		return "Member [memId=" + memId + ", userType=" + userType + ", memType=" + memType + ", memEmail=" + memEmail
 				+ ", memNick=" + memNick + ", memName=" + memName + ", memPwd=" + memPwd + ", address1=" + address1
-				+ ", address2=" + address2 + ", address3=" + address3 + ", phone=" + phone + ", cellphone=" + cellphone
+				+ ", address2=" + address2 + ", address3=" + address3 + ", phone=" + phone + ", cellPhone=" + cellPhone
 				+ ", faxNo=" + faxNo + ", taxEmail=" + taxEmail + ", decCount=" + decCount + ", memAction=" + memAction
 				+ ", isAdvertise=" + isAdvertise + ", memCreateDate=" + memCreateDate + ", memModifyDate="
 				+ memModifyDate + ", memStatus=" + memStatus + ", memTypeName=" + memTypeName + ", sigs=" + sigs
 				+ ", likeList=" + likeList + ", applyList=" + applyList + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
