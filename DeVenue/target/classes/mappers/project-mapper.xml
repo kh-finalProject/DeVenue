@@ -4,6 +4,7 @@
 
 
 
+
 <resultMap type="Project" id="projectResultSet">
 		<id property="proId" column="PRO_ID"/>
 		<result property="memId" column="MEM_ID"/>
@@ -42,6 +43,13 @@
 		<result property="proParentId" column="PRO_PARENT_ID"/>
 		
 		
+	</resultMap>
+	
+	<resultMap type="ProjectQuestion" id="projectQuestionResultSet">
+		<id property ="proAQId" column ="PRO_AQ_ID"/>
+		<result property ="proAQContent" column="PRO_AQ_CONTENT"/>
+		<result property ="proAQCDate" column ="PRO_AQC_DATE"/>
+		<result property ="proId" column ="PRO_ID"/>
 		
 		
 	</resultMap>
@@ -70,41 +78,430 @@
 		<result property="proREndDate" column="RENDDATE"/>
 		<result property="memId" column="CLIENTID"/>
 	</association>	
-			
-	<collection property="techName" javaType="java.util.ArrayList" resultMap="techResultSet1"/>
-	
+				
 	</resultMap>
 	
-	<resultMap type="Tech" id="techResultSet1">
-		<result property="tName" column="TECHNAME"/>
+	<resultMap type="Tech" id="techResultSet">
+		<result property="pId" column="PRO_ID"/>
+		<result property="tId" column="TECH_ID"/>
+		<result property="tName" column="TECH_NAME"/>
+	</resultMap>
+	
+	<resultMap type="ProjectDetail" id="detailResultSet">
+		<id property="pId" column="ID"/>
+		
+		<association property="pList" javaType="ProjectList">
+		<result property="applyNum" column="APPLYNUM"/>
+		<result property="likeNum" column="LIKENUM"/>
+		<result property="replyNum" column="REPLYNUM"/>
+		<result property="mCategory" column="MCATEGORY"/>
+		<result property="dCategory" column="DCATEGORY"/>
+		<result property="workType" column="WORKTYPE"/>
+		<result property="identify" column="IDENTIFY"/>
+		<result property="evaluation" column="EVALUATION"/>
+		
+		<collection property="techName" javaType="java.util.ArrayList" resultMap="techResultSet"/>		
+		</association>
+		
+		<association property="project" javaType="Project">
+		<result property="memId" column="MEM_ID"/>
+		<result property="proName" column="PRO_NAME"/>
+		<result property="proMaintain" column="PRO_MAINTAIN"/>
+		<result property="proStaId" column="PRO_STA_ID"/>
+		<result property="proRecruit" column="PRO_RECRUIT"/>
+		<result property="proCreateDate" column="PRO_CREATE_DATE"/>
+		<result property="proPlan" column="PRO_PLAN"/>
+		<result property="proPlanDetail" column="PRO_PLANDETAIL"/>
+		<result property="proSummary" column="PRO_SUMMARY"/>	
+		<result property="proNeeds" column="PRO_NEEDS"/>	
+		<result property="proNeedsDetail" column="PRO_NEEDSDETAIL"/>	
+		<result property="proResource" column="PRO_RESOURCE"/>	
+		<result property="proPayment" column="PRO_PAYMENT"/>	
+		<result property="proStartDate" column="PRO_START_DATE"/>	
+		<result property="proDuration" column="PRO_DURATION"/>	
+		<result property="proREndDate" column="PRO_R_END_DATE"/>	
+		<result property="proRecruitNum" column="PRO_RECRUIT_NUM"/>	
+		<result property="proPlanPaper" column="PRO_PLAN_PAPER"/>
+		<result property="proPlanRePaper" column="PRO_PLAN_REPAPER"/>
+		<result property="proLocation" column="PRO_LOCATION"/>
+		<result property="proHelp" column="PRO_HELP"/>
+		<result property="proManage" column="PRO_MANAGE"/>
+		<result property="proFuturePlan" column="PRO_FUTUREPLAN"/>
+		<result property="proPriority" column="PRO_PRIORTY"/>
+		<result property="proContract" column="PRO_CONTRACT"/>
+		<result property="proTypeCode" column="PRO_TYPE_CODE"/>
+		</association>	
+		
+		<association property="profile" javaType="Profile">
+		<result property="introduction" column="INTRODUCTION"/>
+		</association>
+		
+		<collection property="question" javaType="java.util.ArrayList" resultMap="questionResultSet"/>
+		<collection property="rpList" javaType="java.util.ArrayList" resultMap="pReplyResultSet"/>
+		<collection property="rcList" javaType="java.util.ArrayList" resultMap="cReplyResultSet"/>
+		
+	</resultMap>
+	
+	<resultMap type="Question" id="questionResultSet">
+		<id property="proAQId" column="PRO_AQ_ID"/>
+		<result property="proAQContent" column="PRO_AQ_CONTENT"/>
+		<result property="proAQCDate" column="PRO_AQC_DATE"/>
+	</resultMap>
+	
+	<resultMap type="Reply" id="pReplyResultSet">
+		<id property="rId" column="RP_RID"/>
+		<result property="pId" column="RP_PID"/>
+		<result property="rContent" column="RP_CONTENT"/>
+		<result property="rCreateDate" column="RP_CDATE"/>
+		<result property="rModifyDate" column="RP_MDATE"/>
+		<result property="rAnswerStatus" column="RP_RANSWER"/>
+		<result property="rStatus" column="RP_STATUS"/>
+		<result property="parentRId" column="RP_P_RID"/>
+		<result property="rSecret" column="RP_SECRET"/>
+		
+		<association property="writer" javaType="Member">
+			<id property="memId" column="RP_MID"/>
+			<result property="memNick" column="RP_MNICK"/>
+		</association>
+			
+	</resultMap>
+	
+	<resultMap type="Reply" id="cReplyResultSet">
+		<id property="rId" column="RC_RID"/>
+		<result property="pId" column="RC_PID"/>
+		<result property="rContent" column="RC_CONTENT"/>
+		<result property="rCreateDate" column="RC_CDATE"/>
+		<result property="rModifyDate" column="RC_MDATE"/>
+		<result property="rAnswerStatus" column="RC_RANSWER"/>
+		<result property="rStatus" column="RC_STATUS"/>
+		<result property="parentRId" column="RC_P_RID"/>
+		<result property="rSecret" column="RC_SECRET"/>
+		
+		<association property="writer" javaType="Member">
+			<id property="memId" column="RC_MID"/>
+			<result property="memNick" column="RC_MNICK"/>
+		</association>
+			
+	</resultMap>
+	
+	<resultMap type="projectDetail" id="pNumberResultSet">
+		<result property="allProject" column="ALL"/>
+		<result property="processProject" column="PROCESS"/>
+		<result property="completeProject" column="COMPLETE"/>
+		<result property="total" column="TOTAL"/>
+		<result property="evalCount" column="EVALCOUNT"/>
+	</resultMap>
+	
+	<resultMap type="ProjectList" id="RecommendResultSet">
+		<id property="id" column="ID"/>
+		<result property="applyNum" column="APPLYNUM"/>
+		<result property="likeNum" column="LIKENUM"/>
+		<result property="replyNum" column="REPLYNUM"/>
+		<result property="mCategory" column="MCATEGORY"/>
+		<result property="dCategory" column="DCATEGORY"/>
+		<result property="workType" column="WORKTYPE"/>
+		<result property="identify" column="IDENTIFY"/>
+		<result property="evaluation" column="EVALUATION"/>
+
+	<association property="project" javaType="Project">
+		<result property="proName" column="NAME"/>
+		<result property="proPlanDetail" column="PLANDETAIL"/>
+		<result property="proDuration" column="DURATION"/>
+		<result property="proSummary" column="SUMMARY"/>
+		<result property="proPayment" column="PAYMENT"/>
+		<result property="proLocation" column="LOCATION"/>
+		<result property="proRecruit" column="RECRUIT"/>
+		<result property="proCreateDate" column="CDATE"/>
+		<result property="proREndDate" column="RENDDATE"/>
+		<result property="memId" column="CLIENTID"/>
+	</association>	
+	
+	<collection property="techName" javaType="java.util.ArrayList" resultMap="techResultSet"/>
+
+	</resultMap>
+	
+	<resultMap type="Like" id="likeResultSet">
+	
+		<id property="proLId" column="PRO_LID"/>
+		
+		<association property="partner" javaType="Member">
+			<id property="memId" column="MEM_ID"/>
+			<result property="memNick" column="MEM_NICK"/>
+			<result property="memEmail" column="MEM_EMAIL"/>
+		</association>
+		
+		<association property="pList" javaType="ProjectList">
+			<id property="id" column="ID"/>
+			<result property="mCategory" column="MCATEGORY"/>
+			<result property="dCategory" column="DCATEGORY"/>
+			<result property="workType" column="WORKTYPE"/>
+			<result property="identify" column="IDENTIFY"/>
+			
+			<association property="project" javaType="Project">
+				<result property="proName" column="NAME"/>
+				<result property="proDuration" column="DURATION"/>
+				<result property="proSummary" column="SUMMARY"/>
+				<result property="proPayment" column="PAYMENT"/>
+				<result property="proLocation" column="LOCATION"/>
+				<result property="proRecruit" column="RECRUIT"/>
+				<result property="proCreateDate" column="CDATE"/>
+			</association>
+			
+		</association>
+	
 	</resultMap>
 	
 	<insert id = "addProject" parameterType ="Project">
-		INSERT INTO Project VALUES(
-			SEQ_BID.NEXTVAL
-			, #{bTitle}
-			, #{bWriter}
-			, #{bContent}
-			, #{originalFileName}
-			, #{renameFileName}
-			, DEFAULT
-			, SYSDATE
-			, SYSDATE
-			, DEFAULT
+		INSERT INTO PROJECT VALUES(
+			SEQ_PRO_ID.NEXTVAL
+			,2
+			,#{proName}
+			,#{proMaintain}
+			,'PST1'
+			,'Y'
+			,SYSDATE
+			,#{proPlan}
+			,#{proPlanDetail}
+			,#{proSummary}
+			,#{proNeeds}
+			,#{proNeedsDetail}
+			,'리소스'
+			,#{proPayment}
+			,#{proStartDate}
+			,#{proDuration}
+			,#{proREndDate}
+			,'2018-02-08'
+			,#{proMCId}
+			,#{proDCId}
+			,#{proWTId}
+			,#{proRecruitNum}
+			,#{proPlanPaper}
+			,NULL
+			,'강남구'
+			,#{proHelp}
+			,#{proManage}
+			,#{proFuturePlan}
+			,#{proPriority}
+			,NULL
+			,'MT1' <!-- 삭제예상 -->
+			,'no'
+			,1  <!-- 날인ID -->
+			,'Y'
+			,SEQ_PRO_ID.CURRVAL
+			,'Y'
+			
 		)
 			</insert>
+
+<insert id ="addQuestion" parameterType ="ProjectQuestion">
+	INSERT INTO P_QUESTION VALUES (
+	SEQ_PRO_AQ_ID.NEXTVAL
+	,#{proAQContent}
+	,SYSDATE
+	,(SELECT MAX(PRO_ID) FROM PROJECT)
+	,'Y'
+	)
+	
+	</insert>
+	
+<select id = "selectCheckList" resultMap="projectResultSet">
+	SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST2'
+	ORDER BY PRO_ID DESC
+</select>
+<select id ="selectrecruitList" resultMap="projectResultSet">
+	SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST2'
+	ORDER BY PRO_ID DESC
+</select>
+
+<select id ="selectunderwayList" resultMap = "projectResultSet">
+		SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST4'
+	ORDER BY PRO_ID DESC
+</select>
+
+<select id = "selectendList" resultMap = "projectResultSet">
+	SELECT * 
+	FROM PROJECT
+	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST5'
+	ORDER BY PRO_ID DESC
+</select>
 		
 
 	<select id="getListCount" resultType="_int">
-		SELECT COUNT(*) 
+		SELECT COUNT(DISTINCT(ID)) 
 		FROM PROJECTLIST_VIEW
 	</select>
 	
 	<select id="getProjectList" resultMap="projectListResultSet">
-		SELECT * 
-		FROM PROJECTLIST_VIEW 
-		ORDER BY ID DESC
+		SELECT * FROM PROJECTLIST_VIEW ORDER BY 1 DESC
 	</select>
+	
+	<select id="getTechList" resultMap="techResultSet">
+		SELECT * FROM PROJECTTECH_VIEW
+	</select>
+	
+	<select id="getProjectDetail" parameterType="int" resultMap="detailResultSet">
+		SELECT P.*,PJ.*,INTRODUCTION,PRO_AQ_ID,PRO_AQ_CONTENT,PRO_AQC_DATE,
+		RP.PRO_RID AS "RP_RID",RP.PRO_ID AS "RP_PID",RP.PRO_RCONTENT AS "RP_CONTENT",RP.PRO_RCREATE_DATE AS "RP_CDATE",RP.PRO_RMODIFY_DATE AS "RP_MDATE",
+		RP.PRO_RANSWER AS "RP_RANSWER",RP.PRO_RSTATUS AS "RP_STATUS",RP.PRO_PARENT_RID AS "RP_P_RID",RP.PRO_RSECRET AS "RP_SECRET",
+		MP.MEM_NICK AS "RP_MNICK",MP.MEM_ID AS "RP_MID",
+		RC.PRO_RID AS "RC_RID",RC.PRO_ID AS "RC_PID",RC.PRO_RCONTENT AS "RC_CONTENT",RC.PRO_RCREATE_DATE AS "RC_CDATE",RC.PRO_RMODIFY_DATE AS "RC_MDATE",
+		RC.PRO_RANSWER AS "RC_RANSWER",RC.PRO_RSTATUS AS "RC_STATUS",RC.PRO_PARENT_RID AS "RC_P_RID",RC.PRO_RSECRET AS "RC_SECRET",
+		MC.MEM_NICK AS "RC_MNICK",MC.MEM_ID AS "RC_MID",
+		T_NAME AS "TECH_NAME"
+		FROM PROJECTLIST_VIEW P
+		LEFT JOIN PROJECT PJ ON (P.ID=PJ.PRO_ID)
+		LEFT JOIN P_QUESTION Q ON(P.ID=Q.PRO_ID)
+		LEFT JOIN (SELECT *
+		FROM P_REPLY
+		WHERE PRO_RID = PRO_PARENT_RID AND PRO_RSTATUS='N') RP ON (P.ID=RP.PRO_ID)
+		LEFT JOIN (SELECT *
+		FROM P_REPLY
+		WHERE PRO_RID != PRO_PARENT_RID AND PRO_RSTATUS='N') RC ON (P.ID=RC.PRO_ID)
+		LEFT JOIN MEMBER MP ON (RP.MEM_ID=MP.MEM_ID)
+		LEFT JOIN MEMBER MC ON (RC.MEM_ID=MC.MEM_ID)
+		LEFT JOIN PROFILE F ON (PJ.MEM_ID=F.MEM_ID)
+		LEFT JOIN P_TEC PT ON (P.ID=PT.PRO_ID)
+		LEFT JOIN TECH T ON (PT.T_ID=T.T_ID)
+		WHERE P.ID=#{id}
+	</select>
+	
+	<select id="getProjectNumber" parameterType="int" resultMap="pNumberResultSet">
+		SELECT *
+		FROM(SELECT COUNT(*) AS "ALL"
+		FROM PROJECT
+		WHERE MEM_ID=#{memId})
+		CROSS JOIN (SELECT COUNT(*) AS "PROCESS"
+		FROM PROJECT
+		WHERE MEM_ID=#{memId} AND PRO_STA_ID='PST4')
+		CROSS JOIN (SELECT COUNT(*) AS "COMPLETE"
+		FROM PROJECT
+		WHERE MEM_ID=#{memId} AND PRO_STA_ID IN ('PST5','PST6'))
+		CROSS JOIN (SELECT SUM(PRO_PAYMENT) AS "TOTAL"
+		FROM PROJECT
+		WHERE MEM_ID=#{memId} AND PRO_STA_ID IN ('PST5','PST6'))
+		CROSS JOIN (SELECT COUNT(*) AS "EVALCOUNT"
+		FROM EVAL
+		WHERE E_TARGET=#{memId})
+	</select>
+	
+	<select id="getRecommend" parameterType="ProjectList" resultMap="RecommendResultSet">
+		SELECT P.*,T_NAME AS "TECH_NAME"
+		FROM PROJECTLIST_VIEW P
+		LEFT JOIN P_TEC PT ON (P.ID=PT.PRO_ID)
+		LEFT JOIN TECH T ON (PT.T_ID=T.T_ID)
+		WHERE MCATEGORY=#{mCategory} AND DCATEGORY=#{dCategory} AND ID !=#{id}
+		ORDER BY CDATE DESC
+	</select>
+	
+	<insert id="insertProjectReply" parameterType="Reply">
+	
+		INSERT INTO P_REPLY VALUES
+		(SEQ_RID.NEXTVAL,#{pId},#{writer.memId},#{rContent},SYSDATE,SYSDATE,'N','N',SEQ_RID.CURRVAL,#{rSecret})
+	
+	</insert>
+	
+	<select id="selectPReply" parameterType="int" resultMap="pReplyResultSet">
+		SELECT RP.PRO_RID AS "RP_RID",
+		RP.PRO_ID AS "RP_PID",
+		RP.PRO_RCONTENT AS "RP_CONTENT",
+		RP.PRO_RCREATE_DATE AS "RP_CDATE",
+		RP.PRO_RMODIFY_DATE AS "RP_MDATE",
+		RP.PRO_RANSWER AS "RP_RANSWER",
+		RP.PRO_RSTATUS AS "RP_STATUS",
+		RP.PRO_PARENT_RID AS "RP_P_RID",
+		RP.PRO_RSECRET AS "RP_SECRET",
+		M.MEM_NICK AS "RP_MNICK",
+		M.MEM_ID AS "RP_MID"
+		FROM P_REPLY RP
+		LEFT JOIN MEMBER M ON (RP.MEM_ID=M.MEM_ID) 
+		WHERE PRO_ID=#{pId} AND PRO_RID = PRO_PARENT_RID AND PRO_RSTATUS='N'
+	</select>
+	
+	<select id="selectCReply" parameterType="int" resultMap="cReplyResultSet" >
+		SELECT RC.PRO_RID AS "RC_RID",
+		RC.PRO_ID AS "RC_PID",
+		RC.PRO_RCONTENT AS "RC_CONTENT",
+		RC.PRO_RCREATE_DATE AS "RC_CDATE",
+		RC.PRO_RMODIFY_DATE AS "RC_MDATE",
+		RC.PRO_RANSWER AS "RC_RANSWER",
+		RC.PRO_RSTATUS AS "RC_STATUS",
+		RC.PRO_PARENT_RID AS "RC_P_RID",
+		RC.PRO_RSECRET AS "RC_SECRET",
+		M.MEM_NICK AS "RC_MNICK",
+		M.MEM_ID AS "RC_MID"
+		FROM P_REPLY RC
+		LEFT JOIN MEMBER M ON (RC.MEM_ID=M.MEM_ID) 
+		WHERE PRO_ID=#{pId} AND PRO_RID != PRO_PARENT_RID AND PRO_RSTATUS='N'
+	
+	</select>
+	
+	<update id="updateProjectReply" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RCONTENT=#{rContent},PRO_RMODIFY_DATE=SYSDATE,
+		PRO_RSECRET=#{rSecret}
+		WHERE PRO_RID=#{rId}
+	</update>
+	
+	<update id="deleteProjectReply" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RSTATUS='Y'
+		WHERE PRO_RID=#{rId}
+	</update>
+	
+	<update id="updateAnswerStatus" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RANSWER='N'
+		WHERE PRO_RID=#{parentRId}
+	</update>
+	
+	<insert id="answerProjectReply" parameterType="Reply">
+		INSERT INTO P_REPLY VALUES
+		(SEQ_RID.NEXTVAL,#{pId},#{writer.memId},#{rContent},SYSDATE,SYSDATE,'N','N',#{parentRId},#{rSecret})
+	</insert>
+	
+	<update id="changeAnswerStatus" parameterType="Reply">
+		UPDATE P_REPLY SET
+		PRO_RANSWER='Y'
+		WHERE PRO_RID=#{parentRId}
+	</update>
+	
+	<select id="checkLikeNum" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+        FROM P_LIKE
+        WHERE PRO_ID=#{pId} AND MEM_ID=#{memId}
+	</select>
+	
+	<insert id="addLikeProject">
+		INSERT INTO P_LIKE VALUES
+		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
+	</insert>
+	
+	<select id="getLikeCount" parameterType="int" resultType="_int">
+		SELECT COUNT(*)
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		WHERE L.MEM_ID=#{memId}
+	</select>
+	
+	<select id="getLikeList" parameterType="int" resultMap="likeResultSet">
+		SELECT L.*,P.*,M.MEM_NICK,M.MEM_EMAIL
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
+		WHERE L.MEM_ID=#{memId}
+	
+	</select>
+	
+	<delete id="deleteLikeProject" parameterType="int">
+		DELETE FROM P_LIKE
+		WHERE PRO_LID=#{lId}
+	</delete>
 
 
 </mapper>

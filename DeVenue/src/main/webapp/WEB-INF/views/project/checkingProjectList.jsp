@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -402,39 +404,35 @@ button{
             </li>
         </div>
         <br>
-       
-       
+           <c:choose>
+       <c:when test="${!empty list1}">
+       <c:forEach var ="p" items="${list1}">
         <div id ="projectbox" style ="margin-top:50px;" >
-       <c:forEach var ="p" items="${list }">
           <table width="533px"   >
               <thead>
 
                   <tr >
                       <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
                       
-                      <td colspan="5"><a id ="sText" style ="float:right; font-size:25px; padding-top:10px; padding-left:10px;" > 
-
-                     
-                        
-    </td>
+                      
                   </tr>
                   
-                  <tr id ="sText" style ="">
+                  <tr id ="sText" >
                       <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                        <span class="badge badge-primary">${p.proMCType}</span>
-                        <span class="badge badge-success">${p.proDCType}</span></td>
+                        <span class="badge badge-primary">${p.proMCId}</span>
+                        <span class="badge badge-success">${p.proDCId}</span></td>
                       
                   </tr>
                   <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
                      
                       <td><img
-						src="${contextPath }/resources/images/money	.png" height="30px"
+						src="${contextPath}/resources/images/money	.png" height="30px"
 						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>
                     </td>
                       <td > ${p.proPayment}원&nbsp;&nbsp;&nbsp;</td>
               
                       <td ><img
-						src="${contextPath }/resources/images/period.png" height="30px"
+						src="${contextPath}/resources/images/period.png" height="30px"
 						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">예상기간   </span></td>
                       <td>${p.proDuration}&nbsp;&nbsp;&nbsp;</td>
                       <td><li><img
@@ -448,17 +446,17 @@ button{
                           <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
                             
                               <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">기획상태    </span></td>
-                              <td  >${p.proPlan }</td>
+                              <td  >${p.proPlan}</td>
                               <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">매니징 경험</span></td>
-                              <td  >${p.proManage }</td>
+                              <td  >${p.proManage}</td>
                               <td  style = "  padding:1px;" ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 시작일</span></td>
-                              <td  >${p.proStartDate }</td>
+                              <td  >${p.proStartDate}</td>
                               
                           </tr>
                           <tr  align ="center" style ="border-bottom:2px solid #2098d1; height:50px;" id ="sText">
                               <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트 종류</span></td>
                               <td  >${p.proMaintain }</td>
-                              <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px; width:80px;">위치</span></td>
+                              <td style   ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px; width:80px;">위치</span></td>
                               <td >서울시<br>강남구</td>
                               <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">파트너스 수 </span></td>
                               <td width="120px; " >${p.proStartDate}</td>
@@ -470,8 +468,26 @@ button{
                               <td colspan="6">
                                   <div style= "float:right; margin-right:30px; padding:10px;">
                                   <button class="btn/middle btn-info" style= "color:black; width:90px;">취소</button>
-                                  <button class="btn/middle btn-info" style= "color:black; width:90px;">수정</button>
-                                  
+                                  <button class="btn/middle btn-info" style= "color:black; width:90px;" id ="btnUpdate">수정</button>
+                                  </tr>
+
+<script>
+$(document).on('click', '#btnUpdate', function(){
+
+		var url = "${pageContext.request.contextPath}/project/addProject";
+
+		url = url + "?proId="+${addPorject.proid};
+
+		url = url + "&mode=edit";
+
+
+
+		location.href = url;
+
+	});
+
+</script>
+
 
     </div>
   </div>
@@ -480,9 +496,24 @@ button{
 </td>
 </tr>   
                    
-  </c:forEach>
-    </table>      
-    </form>
+            </table>      
+      </form>
+      </div>
+     </c:forEach>
+      </c:when>
+    <c:when test="${empty list1}">
+    <br>
+ <div id= "explainbox" style ="padding:30px;">
+              
+              <li id ="sText" style ="margin-left:80px; font-size:20px;">
+              	종료된 프로젝트를 찾을 수 없습니다!
+                
+              </li>
+          </div>
+    
+    </c:when>
+    </c:choose>
+           
     
   </div>
   

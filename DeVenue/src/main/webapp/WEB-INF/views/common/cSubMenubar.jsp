@@ -14,7 +14,7 @@
 			style="margin-left: 3%;">
 			<ul class="navbar-nav">
 				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="check.do">검수 중</a></li>
+					class="nav-link ml-4 hvr-underline-from-center" href="checkList.do">검수 중</a></li>
 				<li class="nav-item"><a
 					class="nav-link ml-4 hvr-underline-from-center" href="recruitProjectList.do">지원자 모집
 						중</a></li>

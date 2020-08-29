@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -141,6 +142,43 @@ i {
 	font-family: 'Jua', sans-serif;
 }
 /* 메뉴바 폰트 끝 */
+
+/* 회원찾기 드롭다운 메뉴 */
+.dropbtn {
+  color: white;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
 </style>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -195,16 +233,62 @@ i {
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center" href="#">회원 찾기</a>
-				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>
+					<div class="dropdown-content">
+						<a href="clientList.do ">클라이언트 찾기</a>
+						<a href="#">파트너스 찾기</a>
+					</div>
+		        </li>
 			</ul>
 
 			<ul class="navbar-nav ml-auto">
-				<div class="btn-group" role="group" aria-label="Basic example">
-					<button type="button" class="btn btn-secondary">LOGIN</button>
-					<button type="button" class="btn btn-info">SIGNIN</button>
+				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
+				<c:if test="${empty sessionScope.loginUser }">
+					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
+					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
+					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
+					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
+				</c:if>
+				<c:if test="${!empty sessionScope.loginUser }">
+				<!-- 관리자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }관리자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  </button>
+							  <div class="dropdown-menu">
+							    <a class="dropdown-item" href="#">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+					<!-- 사용자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }사용자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  </button>
+							  <div class="dropdown-menu">
+							    <a href="profile.do" class="dropdown-item">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+				</c:if>
 				</div>
+			</ul>
+		</div>
 			</ul>
 		</div>
 	</nav>
@@ -223,9 +307,7 @@ i {
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
