@@ -10,8 +10,15 @@ public interface MemberService {
 
 	Member loginUserMember(Member m);
 
+	int insertMember(Member m);
+
+	int pwdChangeMember(Member pwdchange);
+
+	int profileInsert(int memId);
+
 	int getListCount();
 
 	ArrayList<FindClient> selectList(PageInfo pi);
 
+	FindClient selectClientDetail(Integer cId);
 }

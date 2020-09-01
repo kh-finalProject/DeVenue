@@ -64,7 +64,7 @@ public class EmailController {
 	        }catch(MessagingException e) {
 	            e.printStackTrace();
 	        }
-	        mv.setViewName("member/emailSuccess.jsp");
+	        mv.setViewName("member/emailSuccess");
 	        return mv;
 	    }
 	
@@ -91,16 +91,17 @@ public class EmailController {
 	            String memPwd = Integer.toString(randomPwd);
 	            Member pwdchange = new Member(memEmail,memPwd);
 
-	            System.out.println(pwdchange);
+//	            System.out.println(pwdchange);
 	            // 실행이 안된다?
-//	            int result = mService.pwdChangeMember(pwdchange);
+	            int result = mService.pwdChangeMember(pwdchange);
 //	            System.out.println(result);
-//
-//	            if(result > 0) { 
-//	            	mv.setViewName("member/login");	
-//	            }else {
-//	            	throw new MemberException("회원가입실패!"); 
-//	            }
+
+	            if(result > 0) { 
+	            	
+	            	mv.setViewName("member/login");	
+	            }else {
+	            	throw new MemberException("회원가입실패!"); 
+	            }
 			 
 	            
 	        }catch(MessagingException e) {

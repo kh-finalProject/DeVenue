@@ -18,17 +18,45 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member loginUserMember(Member m) {
-		
-		return mDao.selectMember(m);
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertMember(Member m) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int pwdChangeMember(Member pwdchange) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int profileInsert(int memId) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getListCount() {
-		return mDao.getListCount();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public ArrayList<FindClient> selectList(PageInfo pi) {
-		return mDao.selectList(pi);
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public FindClient selectClientDetail(Integer cId) {
+		// TODO Auto-generated method stub
+		return mDao.selectClientDetail(cId);
+	}
+
+
 }
