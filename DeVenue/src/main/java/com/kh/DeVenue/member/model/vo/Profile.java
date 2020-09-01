@@ -2,7 +2,7 @@ package com.kh.DeVenue.member.model.vo;
 
 public class Profile {
 	
-	private int proId;//프로필 id
+	private int profileId;//프로필 id
 	private int memId; //멤버 아이디
 	private String introduction;//자기소개
 	private String url;//홈페이지
@@ -12,21 +12,35 @@ public class Profile {
 		super();
 	}
 
-	public Profile(int proId, int memId, String introduction, String url, String proImg) {
+	public Profile(int profileId, int memId, String introduction, String url, String proImg) {
 		super();
-		this.proId = proId;
+		this.profileId = profileId;
 		this.memId = memId;
 		this.introduction = introduction;
 		this.url = url;
 		this.proImg = proImg;
 	}
-
-	public int getProId() {
-		return proId;
+	
+	/* 회원가입할떄 프로필도 바로 생성 */
+	public Profile(int memId) {
+		super();
+		this.memId = memId;
+	}
+	
+	/* 자기소개 수정 */
+	public Profile(int profileId, String introduction) {
+		super();
+		this.profileId = profileId;
+		this.introduction = introduction;
 	}
 
-	public void setProId(int proId) {
-		this.proId = proId;
+	public int getProfileId() {
+		return profileId;
+	}
+
+
+	public void setProfileId(int profileId) {
+		this.profileId = profileId;
 	}
 
 	public int getMemId() {
@@ -63,7 +77,7 @@ public class Profile {
 
 	@Override
 	public String toString() {
-		return "Profile [proId=" + proId + ", memId=" + memId + ", introduction=" + introduction + ", url=" + url
+		return "Profile [profileId=" + profileId + ", memId=" + memId + ", introduction=" + introduction + ", url=" + url
 				+ ", proImg=" + proImg + "]";
 	}
 	

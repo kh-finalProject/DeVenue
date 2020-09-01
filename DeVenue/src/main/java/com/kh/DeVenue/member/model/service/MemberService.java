@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 
 public interface MemberService {
@@ -12,10 +13,21 @@ public interface MemberService {
 
 	int insertMember(Member m);
 
+<<<<<<< HEAD
+	int insertMember(Member m);
+
 	int pwdChangeMember(Member pwdchange);
 
 	int profileInsert(int memId);
 
+=======
+	int pwdChangeMember(Member pwdchange);
+
+	Profile profile(Profile memId);
+
+	int profileInsert(int memId);
+
+>>>>>>> refs/remotes/origin/master
 	int getListCount();
 
 	ArrayList<FindClient> selectList(PageInfo pi);

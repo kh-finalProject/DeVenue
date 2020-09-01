@@ -25,8 +25,44 @@
   	<result property="memModifyDate" column="MEM_MODIFY_DATE"/>
   	<result property="memStatus" column="MEM_STATUS"/>
   	<result property="memTypeName" column="MEM_TYPE_NAME"/>
+
+  	
+  </resultMap>
+
+  <resultMap type="Profile" id="profileResultSet">
+  	<id property="profileId" column="PROFILE_ID"/>
+  	
+  	<result property="memId" column="MEM_ID"/>
+  	<result property="introduction" column="INTRODUCTION"/>
+  	<result property="url" column="URL"/>
+  	<result property="proImg" column="PROFILE_IMG"/>
+  
+  	<!-- <association property="memId" javaType="Member">
+  		<result property="memId" column="MEM_ID"/>
+  	</association> -->
   </resultMap>
   
+  
+  
+  <!-- 프로필조회 -->
+  <select id="selectProfile" parameterType="Profile" resultMap="profileResultSet">
+  	SELECT * FROM PROFILE
+	WHERE MEM_ID = #{memId}
+  </select>
+  
+  <!-- 로그인하면서 프로필 없으면 생성 -->
+  <insert id="insertProfile" parameterType="Profile">
+  	INSERT INTO PROFILE
+  	VALUES(PROFILE_SEQ.nextval,#{memId},NULL,NULL,NULL)
+  </insert>
+  
+  <!-- 자기소개 수정 -->
+  <update id="profileUpdate" parameterType="Profile">
+  	UPDATE PROFILE SET
+	INTRODUCTION = #{introduction}
+	WHERE PROFILE_ID=#{profileId}
+  </update>
+
   <!-- 클라이언트 찾기 리스트 -->
   <resultMap type="FindClient" id="findCLient">
   	<id property="memId" column="MEM_ID"/>
@@ -48,15 +84,56 @@
   	
   </resultMap>
   
+
   
   <!-- 로그인 -->
-  <select id="selectOne" parameterType="Member" resultMap="memberResultSet">
+  <select id="selectMember" parameterType="Member" resultMap="memberResultSet">
   	SELECT * FROM MEMBER
 	WHERE MEM_EMAIL = #{memEmail}
 	AND MEM_PWD = #{memPwd}
 	AND MEM_STATUS='Y'
   </select>
+
   
+
+  <!-- 회원가입 -->
+  <insert id="insertMember" parameterType="Member">
+  	INSERT INTO MEMBER
+  	VALUES(
+  		MEMID_SEQ.NEXTVAL
+  		,#{userType}
+  		,#{memType}
+  		,#{memEmail}
+  		,#{memNick}
+  		,#{memName}
+  		,#{memPwd}
+  		,#{address1}
+  		,#{address2}
+  		,#{address3}
+  		,#{phone}
+  		,null
+  		,null
+  		,null
+  		,null
+  		,DEFAULT
+  		,DEFAULT
+  		,SYSDATE
+  		,SYSDATE
+  		,DEFAULT
+  		,null
+  		)
+  </insert>
+
+  
+  
+  <!-- 비밀번호 찾기후 비밀번호만 update -->
+  <update id="updatePwdMember"  parameterType="Member">
+  	UPDATE MEMBER
+  	SET MEM_PWD = #{memPwd} 
+	WHERE MEM_EMAIL=#{memEmail}
+  </update>
+
+
   <!-- 클라이언트 찾기(클라이언트 수) -->
   <select id="getListCount" resultType="_int">
   	SELECT COUNT(*)
@@ -75,4 +152,5 @@
   <select id="selectClientDetail" resultMap="findClientDetail">
   	<!-- 쿼리 결과 2개 나오는거 수정하고 -->
   </select>
+
 </mapper>

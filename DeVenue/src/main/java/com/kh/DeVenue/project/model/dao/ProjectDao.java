@@ -1,12 +1,13 @@
 package com.kh.DeVenue.project.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.SQLErrorCodes;
 import org.springframework.stereotype.Repository;
+
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -28,13 +29,7 @@ public class ProjectDao {
 		
 	}
 
-	public ArrayList<Project> selectList() {
-		ArrayList list =new ArrayList();
-		
-		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectList");
-		return list;
-	}
-
+	
 	public int getListCount() {
 		
 		return sqlSessionTemplate.selectOne("projectMapper.getListCount");
@@ -54,7 +49,39 @@ public class ProjectDao {
 		return sqlSessionTemplate.insert("projectMapper.addQuestion",q);
 	}
 
-	public ArrayList<Tech> selectTechList() {
+
+	public ArrayList<Project> selectCheckList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList");
+		return list;
+	}
+
+
+	public ArrayList<Project> selectunderwayList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectunderwayList");
+		return list;
+	}
+
+
+	public ArrayList<Project> selectrecruitList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectrecruitList");
+		return list;
+	}
+
+
+	public ArrayList<Project> selectendList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectendList");
+		return list;
+	}
+
+public ArrayList<Tech> selectTechList() {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getTechList");
 	}
@@ -115,10 +142,38 @@ public class ProjectDao {
 		return sqlSessionTemplate.update("projectMapper.changeAnswerStatus", r);
 	}
 
-	public int checkLikeNum(Integer pId, Integer memId) {
+
+	public int checkLikeNum(HashMap ids) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.checkLikeNum");
+		return sqlSessionTemplate.selectOne("projectMapper.checkLikeNum", ids);
 	}
+
+	public int addLikeProject(HashMap ids) {
+		
+		return sqlSessionTemplate.insert("projectMapper.addLikeProject",ids );
+	}
+
+	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
+		
+		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getLikeList", memId, rowBounds);
+	}
+
+	public int getLikeListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getLikeCount", memId);
+	}
+
+	public int deleteLikeProject(Integer lId) {
+		
+		return sqlSessionTemplate.delete("projectMapper.deleteLikeProject", lId);
+	}
+
+
+
+
 
 
 

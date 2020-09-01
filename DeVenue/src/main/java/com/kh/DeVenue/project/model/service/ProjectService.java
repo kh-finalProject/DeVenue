@@ -1,6 +1,7 @@
 package com.kh.DeVenue.project.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
@@ -15,7 +16,8 @@ public interface ProjectService {
 
 	int addProject(Project p);
 
-	ArrayList<Project> selectList();
+	
+	ArrayList<Project> selectCheckList();
 
 	int getListCount();
 
@@ -23,6 +25,15 @@ public interface ProjectService {
 
 	int addQuestion(ProjectQuestion q);
 
+
+
+	ArrayList<Project> selectunderwayList();
+
+
+	ArrayList<Project> selectrecruitList();
+
+
+	ArrayList<Project> selectendList();
 	ArrayList<Tech> selectTechList();
 
 	ProjectDetail selectProjectDetail(int id);
@@ -47,7 +58,15 @@ public interface ProjectService {
 
 	int changeAnswerStatus(Reply r);
 
-	int checkLikeNum(Integer pId, Integer memId);
+	int checkLikeNum(HashMap ids);
+
+	int addLikeProject(HashMap ids);
+
+	ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi);
+
+	int getLikeListCount(int memId);
+
+	int deleteLikeProject(Integer lId);
 
 
 	
