@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member loginUserMember(Member m) {
 		// TODO Auto-generated method stub
-		return null;
+		return mDao.selectMember(m);
 	}
 
 	
@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService{
 	
 	public int getListCount() {
 		
-		return 0;
+		return mDao.getListCount();
 	}
 
 	@Override

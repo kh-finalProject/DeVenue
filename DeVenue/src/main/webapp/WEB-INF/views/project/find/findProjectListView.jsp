@@ -1197,8 +1197,20 @@
             </div>
             </c:forEach>
             
+            <c:choose>
+            <c:when test="${empty loginUser}">
             <script>
-              
+            $(function(){
+                $(".heart").click(function(){
+              	  
+              		location.href="loginpage.do";
+                });
+              });
+            
+            </script>
+            </c:when>
+            <c:when test="${not empty loginUser}">
+             <script>
               //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
                                         
                 $(function(){
@@ -1239,6 +1251,9 @@
               
               
               </script>
+            </c:when>
+            </c:choose>
+           
                          
             
             <!-- Project list row 끝-->
