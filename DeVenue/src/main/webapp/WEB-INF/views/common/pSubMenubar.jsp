@@ -19,7 +19,7 @@
 					class="nav-link ml-4 hvr-underline-from-center" href="#">지원 요청
 				</a></li>
 				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="#">지원 내역
+					class="nav-link ml-4 hvr-underline-from-center" href="selectApplyProject.do">지원 내역
 				</a></li>
 				<li class="nav-item"><a
 					class="nav-link ml-4 hvr-underline-from-center" href="#">진행중인 프로젝트

@@ -19,6 +19,11 @@
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.Profile" alias="Profile"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ProjectLike" alias="Like"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FindClient" alias="FindClient"/>
+	    <typeAlias type="com.kh.DeVenue.member.model.vo.Portfolio" alias="Portfolio"/>
+	    <typeAlias type="com.kh.DeVenue.member.model.vo.Image" alias="Image"/>
+	    <typeAlias type="com.kh.DeVenue.project.model.vo.Application" alias="Application"/>
+	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyAnswer" alias="Answer"/>
+	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyPortfolio" alias="ApplyPF"/>
 
 	</typeAliases>
 

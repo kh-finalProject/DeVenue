@@ -1614,8 +1614,11 @@
         			url:"addLikeProject.do",
         			data:{pId:pId,memId:memId},
         			success:function(data){
+        				var likeNum=0;
         				if(data=="success"){
-    						alert("관심 등록 되었습니다.")
+    						alert("관심 등록 되었습니다.");
+    						likeNum=$("#likeNum").find("strong").text();
+    						$("#likeNum").find("strong").text(likeNum+1);
         				}
         			},
         			error:function(request, status, errorData){
@@ -1670,10 +1673,9 @@
             	
             	var thisProject=${detail.pId};
         		var whoLike=4;
+        		var page=${page};
         		
-        		
-        		
-        		location.href="applyThisProject.do?pId="+thisProject;
+        		location.href="applyThisProject.do?pId="+thisProject+"&page="+page;
             })
         </script>
         <!--Grid column 사이드바 column 끝-->

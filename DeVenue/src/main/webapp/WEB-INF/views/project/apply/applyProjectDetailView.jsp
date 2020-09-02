@@ -318,6 +318,11 @@
         .uploadBox i {
             vertical-align: middle;
         }
+        
+        .preview>img{
+        	width:100%;
+        	height:5.875rem;
+        }
 
         /*포트폴리오 업로드 모달*/
 
@@ -526,6 +531,7 @@
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <h4>${detail.project.proName}</h4>
+                            
                         </div>
                     </div>
                     <!--프로젝트명 끝-->
@@ -918,7 +924,8 @@
 
                     <!--지원 양식 시작-->
                     <div class="row mt-5 applicationForm">
-                        <form id="application">
+                        <form id="application" method="post" action="submitApplication.do" enctype="multipart/form-data">
+                        	<input type="hidden" name="pId" value="${detail.pId}">
                             <div class="mt-4 col-md-12">
                                 <h5>지원 금액<i class="fas fa-star-of-life"></i></h5>
                                 <p>실제 진행이 가능한 금액을 제안해주세요.</p>
@@ -931,8 +938,8 @@
                                                     class="fas fa-won-sign"></i></span>
                                         </div>
                                         <input id="nego_price_input" type="text" class="form-control"
-                                            placeholder="금액을 입력하세요." aria-label="Username"
-                                            aria-describedby="basic-addon1">
+                                            placeholder="금액을 입력하세요." 
+                                            required name="aPayment">
                                         <button type="button" class="btn btn-outline-info ml-3" data-toggle="modal"
                                             data-target="#priceCalculator">이용요금 계산기</button>
                                     </div>
@@ -1000,31 +1007,31 @@
                                                         <div class="row">
                                                             <div class="col-md-8 mr-auto modal-text">프로젝트 지원 금액</div>
                                                             <div class="col-md-4 ml-auto modal-text"><label
-                                                                    id="nego_receipt_price">10000</label>원</div>
+                                                                    id="nego_receipt_price">0</label>원</div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-8 mr-auto modal-text">DEVENUE 이용요금(5%)
                                                             </div>
                                                             <div class="col-md-4 ml-auto modal-text"><label
-                                                                    id="nego_receipt_fare">10000</label>원</div>
+                                                                    id="nego_receipt_fare">0</label>원</div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-8 mr-auto modal-text">이용요금 제외 금액</div>
                                                             <div class="col-md-4 ml-auto modal-text"><label
-                                                                    id="nego_receipt_deduct">10000</label>원</div>
+                                                                    id="nego_receipt_deduct">0</label>원</div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-8 mr-auto modal-text"
                                                                 id="nego_receipt_tax_title">세금</div>
                                                             <div class="col-md-4 ml-auto modal-text"><label
-                                                                    id="nego_receipt_tax_value">10000</label>원</div>
+                                                                    id="nego_receipt_tax_value">0</label>원</div>
                                                         </div>
                                                         <div class="row" id="calResult">
                                                             <div class="col-md-8 mr-auto">
                                                                 <h6>파트너 수령 금액</h6>
                                                             </div>
                                                             <div class="col-md-4 ml-auto">
-                                                                <div class="modal-text" id="calResultCost">10000원</div>
+                                                                <div class="modal-text" id="calResultCost">0원</div>
                                                             </div>
 
                                                         </div>
@@ -1130,7 +1137,7 @@
                                 <div id="calendarDisplay">
                                     <label>시작일</label><input id="startDate" type="date" class="form-control">
                                     <label>종료일</label><input id="endDate" type="date" class="form-control">
-                                    <label>기간</label><input id="duration" type="text" class="form-control">
+                                    <label>기간</label><input id="duration" type="text" class="form-control" required name="aDuration">
                                 </div>
                                 <script>
                                     $("#startDate").change(function () {
@@ -1174,7 +1181,7 @@
                                     	이메일, 전화번호 등을 게시해 직거래를 유도하는 경우 서비스 이용에 제재를 받을 수 있습니다.</p>
                                 <div>
                                     <textarea id="apply_textarea" rows="10" class="form-control"
-                                        style="width: 100%;"></textarea>
+                                        style="width: 100%;" required name="aContent"></textarea>
                                     <div id="textareaAppendix">'지원 내용이 파트너님의 첫인상에 큰 영향을 미칩니다."
                                         <span id="apply_textCount"><strong>0</strong>자</span>
                                     </div>
@@ -1201,10 +1208,11 @@
                                 <div class="mt-4 applyQuestion">
 				                	<i class="fas fa-question float-left mt-1" style="color: #2793F2;"></i>
 				                	<p>${q.proAQContent}</p>
+				                	<input type="hidden" name="aqId" value="${q.proAQId}">
 				                </div>
 				                	
 				                <div class="applyAnswer">
-                                    <textarea id="${q.proAQId}" maxlength="10" rows="3" class="form-control apply_answer_textarea" style="width: 100%;"></textarea>
+                                    <textarea id="${q.proAQId}" maxlength="500" rows="3" class="form-control apply_answer_textarea" style="width: 100%;" required name="aaContent"></textarea>
                                     <p class="float-left apply_answer_warning">500자 이내로 작성해주세요.</p>
                                     <label class="float-right apply_answer_count"><span>0</span>/500</label>
                                 </div>
@@ -1238,7 +1246,7 @@
                                 <h5>관련 포트폴리오<i class="fas fa-star-of-life"></i></h5>
                                 <p>지원하려는 프로젝트와 관련된 포트폴리오를 선택하거나 설명을 입력해주세요.<br>
                                     	관련 포트폴리오를 첨부하시면, 클라이언트가 수락할 확률이 60% 높아집니다.</p>
-
+								
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-check portfolio">
@@ -1268,19 +1276,24 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                               
 
                                 <!--포트폴리오 존재 시, 업로드 디테일 시작-->
                                 <div class="row mt-5" id="portfolio_upload_detail" style="display:none;">
                                     <div class="col-md-12">
 
                                         <h6>관련 포트폴리오 선택</h6>
+                                        
                                         <div class="row mt-3" id="portfolio_upload">
                                             <div class="col-md-4">
                                                 <div class="uploadBox">
                                                     <table style="width: 100%; height: 100%;">
                                                         <tr>
-                                                            <td class="align-middle">
-                                                                <i class="fas fa-plus fa-2x"></i>
+                                                            <td class="align-middle preview">
+                                                            	
+                                                                <i class="fas fa-plus fa-2x ml-2"></i>
+                                                            	
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -1290,8 +1303,10 @@
                                                 <div class="uploadBox">
                                                     <table style="width: 100%; height: 100%;">
                                                         <tr>
-                                                            <td class="align-middle">
-                                                                <i class="fas fa-plus fa-2x"></i>
+                                                            <td class="align-middle preview">
+                                                               
+                                                                <i class="fas fa-plus fa-2x ml-2"></i>
+                                                            	
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -1301,14 +1316,17 @@
                                                 <div class="uploadBox">
                                                     <table style="width: 100%; height: 100%;">
                                                         <tr>
-                                                            <td class="align-middle">
-                                                                <i class="fas fa-plus fa-2x"></i>
+                                                            <td class="align-middle preview">
+                                                     
+                                                                <i class="fas fa-plus fa-2x ml-2"></i>
+                                                            	
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="row mt-3">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn btn-outline-info btn-block"
@@ -1321,11 +1339,13 @@
                                                 <h6>관련 포트폴리오 설명</h6>
                                                 <div>
                                                     <textarea id="portfolio_describe_textarea" class="form-control"
-                                                        rows="10" maxlength="2000"></textarea>
+                                                        rows="10" maxlength="2000" name="portContent">${app.portfolio[0].apContent}</textarea>
                                                     <p class="float-left" id="portfolio_describe_warning">2000자 이내로
                                                         													작성해주세요.</p>
                                                     <label class="float-right"
-                                                        id="portfolio_describe_count"><span>0</span>/2000</label>
+                                                        id="portfolio_describe_count">
+                                                        <c:set var="pfContent" value="${app.portfolio[0].apContent}"/>
+                                                        <span>${fn:length(pfContent)}</span>/2000</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1407,176 +1427,343 @@
                                                         <div class="row">
                                                             <div class="col-md-12">
 
+																<c:forEach items="${pofol}" var="pf">
                                                                 <div class="row portfolioList">
                                                                     <div class="col-md-7">
 
                                                                         <div class="custom-control custom-checkbox">
                                                                             <input type="checkbox"
                                                                                 class="custom-control-input"
-                                                                                id="check1">
+                                                                                id="${pf.portId}" value="${pf.portId}">
                                                                             <label class="custom-control-label"
-                                                                                for="check1">차량동작센서 이용 안전 관리
-                                                                                				애플리케이션</label>
+                                                                                for="${pf.portId}">${pf.portName}</label>
                                                                         </div>
                                                                         <textarea class="form-control" readonly>
-                                                               				 포트폴리오 설명
+                                                               				 ${pf.portContent}
                                                             			</textarea>
-                                                                        <p>참여기간<span>2018년 03월~2018년09월</span></p>
-                                                                        <p>참여율<span>100</span>%</p>
+                                                                        <p>참여기간<span>${pf.startDate}~${pf.endDate}</span></p>
+                                                                        <p>참여율<span>${pf.portJoin}</span>%</p>
                                                                     </div>
                                                                     <div class="col-md-5">
                                                                         <div class="portfolioPreview"
                                                                             style="width:100%;height:10rem;background-color: lightpink;">
-                                                                            <img src="${contextPath}/resources/images/teamProject.jpg"
-                                                                                style="width: 100%;height:100%;" />
+                                                                          
+                                                                            <img src="${contextPath}/resources/projectUpload/${pf.image[0].imgContent}" style="width: 100%;height:100%;"/>
+                                                                            <input type="hidden" id="img${pf.portId}" value="${pf.image[0].imgContent}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
+																</c:forEach>
+                                                               
 
-                                                                <div class="row portfolioList">
-                                                                    <div class="col-md-7">
-
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                id="check2">
-                                                                            <label class="custom-control-label"
-                                                                                for="check2">차량동작센서 이용 안전 관리
-                                                                                				애플리케이션</label>
-                                                                        </div>
-                                                                        <textarea class="form-control"
-                                                                            style="width: 100%;background:none;"
-                                                                            readonly>
-                                                                			포트폴리오 설명
-                                                            			</textarea>
-                                                                        <p>참여기간<span>2018년 03월~2018년09월</span></p>
-                                                                        <p>참여율<span>100</span>%</p>
-                                                                    </div>
-                                                                    <div class="col-md-5">
-                                                                        <div class="portfolioPreview"
-                                                                            style="width:100%;height:10rem;background-color: lightpink;">
-                                                                            <img src="${contextPath}/resources/images/teamProject.jpg"
-                                                                                style="width: 100%;height:100%;" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row portfolioList">
-                                                                    <div class="col-md-7">
-
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                id="check3">
-                                                                            <label class="custom-control-label"
-                                                                                for="check3">차량동작센서 이용 안전 관리
-                                                                                				애플리케이션</label>
-                                                                        </div>
-                                                                        <textarea class="form-control"
-                                                                            style="width: 100%;background:none;"
-                                                                            readonly>
-                                                                			포트폴리오 설명
-                                                            			</textarea>
-                                                                        <p>참여기간<span>2018년 03월~2018년09월</span></p>
-                                                                        <p>참여율<span>100</span>%</p>
-                                                                    </div>
-                                                                    <div class="col-md-5">
-                                                                        <div class="portfolioPreview"
-                                                                            style="width:100%;height:10rem;background-color: lightpink;">
-                                                                            <img src="${contextPath}/resources/images/teamProject.jpg"
-                                                                                style="width: 100%;height:100%;" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row portfolioList">
-                                                                    <div class="col-md-7">
-
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                id="check4">
-                                                                            <label class="custom-control-label"
-                                                                                for="check3">차량동작센서 이용 안전 관리
-                                                                               							 애플리케이션</label>
-                                                                        </div>
-                                                                        <textarea class="form-control"
-                                                                            style="width: 100%;background:none;"
-                                                                            readonly>
-                                                                			포트폴리오 설명
-                                                            			</textarea>
-                                                                        <p>참여기간<span>2018년 03월~2018년09월</span></p>
-                                                                        <p>참여율<span>100</span>%</p>
-                                                                    </div>
-                                                                    <div class="col-md-5">
-                                                                        <div class="portfolioPreview"
-                                                                            style="width:100%;height:10rem;background-color: lightpink;">
-                                                                            <img src="${contextPath}/resources/images/teamProject.jpg"
-                                                                                style="width: 100%;height:100%;" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                
+                                                               
 
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                 </div>
-                                                <script>
-                                                    $(".portfolioList").click(function () {
-
-                                                        var check = $(this).children().eq(0).children().children("input");
-
-                                                        var allCheck = $(this).parent().children().children().children().children("input");
-                                                        console.log(allCheck);
-                                                        var count = 0;
-
-                                                        if (check.prop("checked")) {
-                                                            check.prop("checked", false);
-                                                        } else {
-                                                            check.prop("checked", true);
-                                                        }
-
-                                                        for (var i = 0; i < allCheck.length; i++) {
-
-                                                            if (allCheck[i].checked) {
-                                                                count++
-                                                            }
-                                                        }
-
-                                                        if (count > 3) {
-                                                            alert("포트폴리오는 3개까지 업로드할 수 있습니다.");
-                                                            check.prop("checked", false);
-
-                                                        }
-
-
-                                                        $("#portfolio_upload_modal_count").children("span").text(count);
-
-                                                    })
-
-                                                </script>
+                                                
                                                 <!--포트폴리오 리스트 끝-->
 
                                             </div>
                                             <div class="modal-footer">
                                                 <p class="mr-auto">등록한 포트폴리오 중 선택이 가능하며, <a href="#">[프로필 정보 관리]</a>에서 추가 가능합니다.</p>
-                                                <button type="button" class="btn btn-secondary btn-block"
+                                                <button type="button" class="btn btn-secondary btn-block" id="closePortfolioDetail"
                                                     data-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn btn-info btn-block">선택완료</button>
+                                                <button type="button" class="btn btn-info btn-block" id="selectPortfolio">선택완료</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <script>
+                                
+                                
+                                $(document).on("click",".portfolioList",function(){
+                                
+                                	//포트폴리오 체크를 3개로 제한한다.
+                                	var check = $(this).children().eq(0).children().children("input");
+
+                                    var allCheck = $(this).parent().children().children().children().children("input");
+
+                                    var count = 0;
+
+                                    if (check.prop("checked")) {
+                                        check.prop("checked", false);
+                                    } else {
+                                        check.prop("checked", true);
+                                    }
+
+                                    for (var i = 0; i < allCheck.length; i++) {
+
+                                        if (allCheck[i].checked) {
+                                            count++
+                                        }
+                                    }
+
+                                    if (count > 3) {
+                                        alert("포트폴리오는 3개까지 업로드할 수 있습니다.");
+                                        check.prop("checked", false);
+
+                                    }
+
+
+                                    $("#portfolio_upload_modal_count").children("span").text(count);
+
+                                	
+                                	
+                                	
+                                });
+                                
+                                $(document).on("click","#selectPortfolio",function(){
+                                
+                                //포트폴리오 선택을 하면 선택한 포트폴리오 정보를 가지고 돌아간다
+                                 var checks=$("#portfolio_upload_modal_list").find("input[type='checkbox']");
+                               	 var checked=[];
+                               	
+                               	 var image;
+                               	 var images=[];
+                               	 
+                               	 for(var i=0;i<checks.length;i++){
+                               		 
+                               		 if(checks[i].checked){
+                               			 checked.push(checks[i].value);
+                               			 
+                               			 image=document.getElementById("img"+checks[i].value).value;
+                               			 images.push(image);
+
+                               			 
+                               		 }
+                               	 }
+                               	 
+                               	 $("#closePortfolioDetail").trigger("click");
+                               	 showSelectedPortfolio(checked,images);
+                                	
+                                	
+                                	
+                                })
+                                
+                               
+                                                	
+                                                	function showSelectedPortfolio(checked,images){
+                                                		
+                                                		//최대 3개일 것..
+                                                		var ids=checked;//체크된 포트폴리오 아이디 담긴 배열
+                                                		var box=$(".preview");//프리뷰를 띄울 div
+                                                		
+                                                		//포트폴리오 이미지를 담은 배열
+                                                		var images=images;
+                                                		console.log("ids:"+ids+"images:"+images)
+                                          				
+                               
+                                                		var img;
+                                                		var hiddenId;//제출 시 사용할 포트폴리오 아이디 저장
+                                                	
+                                                		
+                                                		for(var i=0;i<ids.length;i++){
+                                                			
+                                                			
+                                                        			img=document.createElement('img');
+                                                        			img.src="/DeVenue/resources/projectUpload/"+images[i];
+                                                        			
+                                                        			hiddenId=document.createElement('input');
+                                                        			hiddenId.setAttribute('type','hidden');
+                                                        			hiddenId.setAttribute('name','portId');
+                                                        			hiddenId.value=ids[i];
+                                                        			
+                                                        			
+                                                        			box[i].innerHTML="";
+                                                        			box[i].appendChild(img);
+                                                        			box[i].appendChild(hiddenId);
+                                                			
+                                                		}
+                                                	}
+                                                	
+                                                   
+
+                                                </script>
                                 <script>
                                     //카테고리 변경 시 
-                                    $("#portfolio_upload_modal_main_category").children().children().click(function () {
-                                        $(this).parent().parent().children().eq(0).text($(this).text());
-                                    })
+                                    
+                                    $(function(){
+                                    	
+                                    	$("#portfolio_upload_modal_main_category").find("a").click(function () {
+                                    		var choice=$(this).text();
+                                    		
+                                    		
+                                            $("#portfolio_main_category_btn").text(choice);
+                                            
+                                            var main="";
+                                            var sub="";
+                                            
+                                            main=$("#portfolio_main_category_btn").text();
+                                            sub=$("#portfolio_sub_category_btn").text();
+                                            
+                                            var mCate="";
+                                            var dCate="";
+                                            
+                                            if(main=="전체"){
+                                            	mCate="MC3";
+                                            }else if(main=="개발"){
+                                            	mCate="MC1";
+                                            }else if(main=="디자인"){
+                                            	mCate="MC2";
+                                            }else{
+                                            	mCate="";
+                                            }
+                                            
+                                            if(sub=="웹"){
+                                            	dCate="DC1";
+                                            }else if(sub=="앱"){
+                                            	dCate="DC2";
+                                            }else if(sub=="퍼블리싱"){
+                                            	dCate="DC3";
+                                            }else if(sub=="기타"){
+                                            	dCate="DC4";
+                                            }else{
+                                            	dCate="";
+                                            }
+                                            
+                                            findPortfolio(mCate,dCate);
+                                            
+                                        })
 
-                                    $("#portfolio_upload_modal_sub_category").children().children().click(function () {
-                                        $(this).parent().parent().children().eq(0).text($(this).text());
+                                        $("#portfolio_upload_modal_sub_category").find("a").click(function () {
+                                        	var choice=$(this).text();
+                                        	$("#portfolio_sub_category_btn").text(choice);
+                                        	
+                                        	var main="";
+                                            var sub="";
+                                            
+                                            main=$("#portfolio_main_category_btn").text();
+                                            sub=$("#portfolio_sub_category_btn").text();
+                                            
+                                            var mCate="";
+                                            var dCate="";
+                                            
+                                            if(main=="전체"){
+                                            	mCate="MC3";
+                                            }else if(main=="개발"){
+                                            	mCate="MC1";
+                                            }else if(main=="디자인"){
+                                            	mCate="MC2";
+                                            }else{
+                                            	mCate="";
+                                            }
+                                            
+                                            if(sub=="웹"){
+                                            	dCate="DC1";
+                                            }else if(sub=="앱"){
+                                            	dCate="DC2";
+                                            }else if(sub=="퍼블리싱"){
+                                            	dCate="DC3";
+                                            }else if(sub=="기타"){
+                                            	dCate="DC4";
+                                            }else{
+                                            	dCate="";
+                                            }
+                                            
+                                            findPortfolio(mCate,dCate);	
+                                        
+                                        })
+                                    	
                                     })
+                                    
+                                    function findPortfolio(mCate,dCate){
+                                    	
+                                    	var mCate=mCate;
+                                    	var dCate=dCate;
+                                    	
+                                    	alert("메인:"+mCate+"서브:"+dCate);
+                                    	
+                                    	$.ajax({
+                                    		url:"findPortfolio.do",
+                                    		data:{mCate:mCate,dCate:dCate},
+                                    		dataType:"json",
+                                    		success:function(data){
+                                    			
+                                    			var $pf=data;
+                                    			console.log($pf);
+                                    			
+                                    			var $area;
+                                    			
+                                    			var $row;
+                                    			var $column7;
+                                    			var $column5;
+                                    			
+                                    			var $control;
+                                    			var $check;
+                                    			var $label;
+                                    			
+                                    			var $textarea;
+                                    			var $p1;
+                                    			var $p2;
+                                    			var $span1;
+                                    			var $span2;
+                                    			
+                                    			var $preview;
+                                    			var $img;
+                                    			var $src;
+                                    			var $hidden;
+                                    			
+                                    			$area=$("#portfolio_upload_modal_list").children().find(".col-md-12");
+                                    			$area.html("");
+                                    			
+                                    			for(var i in $pf){
+                                    			
+                                    			$row=$("<div>").addClass("row portfolioList");
+                                    			$column7=$("<div>").addClass("col-md-7");
+                                    			$column5=$("<div>").addClass("col-md-5");
+                                    			$control=$("<div>").addClass("custom-control custom-checkbox");
+                                    			$check=$("<input type='checkbox'>").addClass("custom-control-input").attr("id",$pf[i].portId).val($pf[i].portId);
+                                    			$label=$("<label>").addClass("custom-control-label").attr("for",$pf[i].portId).text($pf[i].portName);
+                                    			
+                                    			$control.append($check);
+                                    			$control.append($label);
+                                    			$column7.append($control);
+                                    			
+                                    			$textarea=$("<textarea>").addClass("form-control").attr("readonly",true).val($pf[i].portContent);
+                                    			$column7.append($textarea);
+                                    			
+                                    			$p1=$("<p>").text("참여기간");
+                                    			$span1=$("<span>").text($pf[i].startDate+"~"+$pf[i].endDate);
+                                    			$p1.append($span1);
+                                    			$column7.append($p1);
+                                    			
+                                    			$p2=$("<p>").text("참여율");
+                                    			$span2=$("<span>").text($pf[i].portJoin+"%");
+                                    			$p2.append($span2);
+                                    			$column7.append($p2);
+                                    			
+                                    			$row.append($column7);
+                                    			
+                                    			$preview=$("<div>").addClass("portfolioPreview").css("width","100%").css("height","10rem").css("background-color","lightpink");
+                                    			$src="/DeVenue/resources/projectUpload/"+$pf[i].image[0].imgContent;
+                                    			$img=$("<img>").attr("src",$src).css("width","100%").css("height","100%");
+                                    			$hidden=$("<input type='hidden'>").attr("id","img"+$pf[i].portId).val($pf[i].image[0].imgContent);
+                                    			
+                                    			$preview.append($img);
+                                    			$preview.append($hidden);
+                                    			$column5.append($preview);
+                                    			
+                                    			$row.append($column5);
+                                    			
+                                    			$area.append($row);
+                                    			
+                                    			}
+                                    			
+                                    		},
+                                    		error:function(request, status, errorData){
+                                                alert("error code: " + request.status + "\n"
+                                                      +"message: " + request.responseText
+                                                      +"error: " + errorData);
+                                             } 
+                                    		
+                                    	})
+                                    }
+                                    
                                 </script>
                                 <!-- 포트폴리오 업로드 모달 끝-->
 
@@ -1595,7 +1782,15 @@
                                     if ($("#portfolioExist").prop("checked")) {
                                         $("#portfolio_upload_detail").css("display", "block");
                                     }else{
+                                    	
+                                    	//관련 포트폴리오 없음을 체크하면 기존에 등록했던 포트폴리오가 있을 경우 지워줘야 함
                                         $("#portfolio_upload_detail").css("display", "none");
+                                    	
+                                    	var $box=$(".preview");
+                                    	for(var i=0;i<$box.length;i++){
+                                    		$box[i].innerHTML="<i class='fas fa-plus fa-2x ml-2'></i>";
+                                    	}
+                                    	
                                     }
                                 })
 
@@ -1651,6 +1846,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                
 
                                 <!--이력서 존재 시, 업로드 디테일 시작-->
                                 <div class="row mt-5" id="resume_upload_detail" style="display:none;">
@@ -1661,14 +1858,14 @@
 
                                         <div class="row mt-4" id="resume_upload">
                                             <div class="col-md-12">
-
+												
                                                 <div class="input-group">
                                                     <div class="custom-file">
-                                                      <input type="file" class="custom-file-input" id="resumeUpload" aria-describedby="inputGroupFileAddon04">
+                                                      <input type="file" class="custom-file-input" id="resumeUpload" name="resume">
                                                       <label class="custom-file-label" for="resumeUpload">이력서 선택</label>
                                                     </div>
                                                 </div>
-                                                <p>.pdf,.dock,.doc,.hwp 파일만 업로드 되며, 최대 40MB까지 가능합니다.<label>5</label>MB/40MB</p>
+                                                <p>.pdf,.dock,.doc,.hwp 파일만 업로드 되며, 최대 40MB까지 가능합니다.<label id="resumeSize">5</label>MB/40MB</p>
                                                 
                                             </div>
                                             
@@ -1688,34 +1885,214 @@
                                 if ($("#resumeExist").prop("checked")) {
                                     $("#resume_upload_detail").css("display", "block");
                                 }else{
+                                	
+                                	//이력서 없음 체크 시, 기존에 업로드한 파일이 있다? 지워야 함
                                     $("#resume_upload_detail").css("display", "none");
+                                	$("#resumeUpload").val("");
                                 }
                                 })
 
                                 //이력서 업로드 시, 
-                                $("#resumeUpload").change(function(){
-                                    var file=$(this).val();
-                                    alert(file);      
-
-                                    $(this).parent().children().eq(1).text(file);
+                                
+                                $(document).ready(function(){
+                                	
+                                	 $("#resumeUpload").change(function(){
+                                         
+                                         var fd=new FormData();
+                                         var files=$("#resumeUpload")[0].files[0];
+                                         var name=files.name;
+                                         var label=$(this).parent().children().eq(1);
+                                         label.text(name);
+                                         
+                                         var size=0;
+                                         
+                                         fd.append("file",files);
+                                         
+                                         //크기를 제한하자
+                                         $.ajax({
+                                         	url:"notifyFileSize.do",
+                                         	type:"post",
+                                         	data:fd,
+                                         	contentType:false,
+                                         	processData:false,
+                                         	dataType:"json",
+                                         	success:function(data){
+                                         		
+                                         
+                                         		size=(data.size/(1024*1024)).toFixed(2);
+                                         		
+                                         		if(size>5){
+                                         			alert("5MB가 넘는데요? 다시 업로드하세요.");
+                                         			$("#resumeSize").text(size).css("color","red");
+                                         			$("#resumeUpload").val("");
+                                         			
+                                         		}else{
+                                         			$("#resumeSize").text(size).css("color","grey");
+                                         		}
+                                         	},
+                                         	error:function(request, status, errorData){
+                                                alert("error code: " + request.status + "\n"
+                                                      +"message: " + request.responseText
+                                                      +"error: " + errorData);
+                                             } 
+                                         	
+                                         	
+                                         })
+                                         
+                                     })
                                 })
+                                
+                               
                             </script>
                             <!--이력서 업로드 끝-->
 
                             <!--지원하기 버튼-->
                             <div id="applicationSubmitArea" class="mt-5 mb-5 col-md-12" style="width:100%;">
+                            	<p class="float-left text-white" id="saveTimeStamp" style="display:none">임시 저장 되었습니다.</p>
                                 <div class="float-right">
                                     <button class="btn btn-secondary" type="button" id="applyCancelBtn">취소</button>
-                                    <button class="btn btn-info" type="button" id="applySubmitBtn">지원하기</button>
+                                    <button class="btn btn-info" type="submit" id="applySubmitBtn">지원하기</button>
                                 </div>
                             </div>
 
                         </form>
                     </div>
                     <script>
+                    
+                    	//작성 취소 시 화면 전환
                         $("#applyCancelBtn").click(function(){
-                            confirm("작성중인 지원서를 임시 저장 하시겠습니까?");
+                        	var agree=true;
+                        	var page=${page};
+                            agree=confirm("작성을 취소합니다.");
+                            
+                            if(agree){
+                            	location.href="searchProjectList.do?page="+page;
+                            }
+                            
                         })
+                    </script>
+                    <script>
+                    	//임시저장
+                    	
+                    	$(
+						function() {
+							
+							setInterval(function() {
+								
+								var pId=$("input[name='pId']").val();
+								
+								var aPayment=$("input[name='aPayment']").val();
+								
+								
+								var aDuration=$("input[name='aDuration']").val();
+								
+								
+								var aContent=$("#apply_textarea").val();
+								
+								
+								var aqId=[];
+								var question=$("input[name='aqId']");
+							
+								if(question.length!=0){
+								for(var j=0;j<question.length;j++){
+									aqId.push(question[j].value);
+								}
+								}
+								
+								
+								var aaContent=[];
+								var answer=$("input[name='aaContent']");
+								
+								
+								if(answer.length!=0){
+								
+								for(var a=0;a<answer.length;a++){
+									aaContent.push(answer[a].value);
+								}
+								}
+								
+								var portId=[];
+								var port=$("input[name='portId']");
+								
+								
+								if(port.length!=0){
+								for(var i=0;i<port.length;i++){
+									portId.push(port[i].value);
+								}
+								}
+								
+								var portContent=$("#portfolio_describe_textarea").val();
+								
+								var resume;
+								if($("#resumeUpload").val()!=null){
+									resume=$("#resumeUpload")[0].files[0];
+								}
+								
+								var form=new FormData();
+								
+								
+								form.append("pId",pId);
+						
+								
+								if(aPayment!=null){
+								form.append("aPayment",aPayment);
+								}
+								
+								if(aDuration!=null){
+								form.append("aDuration",aDuration);
+								}
+								
+								if(aContent!=null){
+								form.append("aContent",aContent);
+								}
+								
+								if(aqId!=null){
+								form.append("aqId",aqId);
+								}
+								
+								if(aaContent!=null){
+								form.append("aaContent",aaContent);
+								}
+								
+								if(portId!=null){
+								form.append("portId",portId);
+								}
+								
+								if(portContent!=null){
+								form.append("portContent",portContent);
+								}
+								
+								if(resume!=null){
+								form.append("resume",resume);
+								}
+								
+								$.ajax({
+									url:"saveTempApplication.do",
+									type:"post",
+									data:form,
+									contentType:false,
+									processData:false,
+									success:function(data){
+										
+										if(data=="success"){
+										var date=new Date();
+										var area=document.getElementById("saveTimeStamp");
+										area.innerHTML="지원서가 임시 저장 되었습니다("+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()+")";
+										$("#saveTimeStamp").css("display","block");
+										}
+										
+									},
+									error:function(request, status, errorData){
+                                        alert("error code: " + request.status + "\n"
+                                              +"message: " + request.responseText
+                                              +"error: " + errorData);
+                                     } 
+									
+								})
+								
+							
+							}, 30000);
+					})
                     </script>
                     <!--지원 양식 끝-->
 
