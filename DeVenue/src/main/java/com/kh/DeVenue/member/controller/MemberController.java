@@ -18,8 +18,10 @@ import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.service.MemberService;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
+import static com.kh.DeVenue.common.Pagination.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
+
 
 @Controller
 public class MemberController {
@@ -167,6 +169,7 @@ public class MemberController {
 	// 클라이언트 찾기
 	@RequestMapping(value="clientList.do")
 	public ModelAndView boardList(ModelAndView mv,@RequestParam(value="page",required=false) Integer page) {
+
 		int currentPage=1;
 		if(page!=null) {
 			currentPage=page;
@@ -181,9 +184,27 @@ public class MemberController {
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
-			mv.setViewName("board/boardListView");
+			mv.setViewName("findMember/findClient");
 		}else {
 			throw new MemberException("게시글 전체 조회 실패!");
+		}
+		
+		return mv;
+	}
+	
+
+	@RequestMapping(value="cDetail.do")
+	public ModelAndView clientDetail(ModelAndView mv, Integer cId,
+					@RequestParam(value="page") Integer page) {
+		int currentPage=page;
+		
+		FindClient fc=mService.selectClientDetail(cId);
+		if(fc!=null) {
+			mv.addObject("fc", fc)
+			.addObject("currentPage", currentPage)
+			.setViewName("board/boardDetailView");
+		}else {
+			throw new MemberException("게시글 조회 실패!");
 		}
 		
 		return mv;

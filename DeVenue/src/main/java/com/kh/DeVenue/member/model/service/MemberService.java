@@ -23,4 +23,5 @@ public interface MemberService {
 
 	ArrayList<FindClient> selectList(PageInfo pi);
 
+	FindClient selectClientDetail(Integer cId);
 }
