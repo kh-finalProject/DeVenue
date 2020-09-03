@@ -9,9 +9,11 @@ import com.kh.DeVenue.member.model.dao.MemberDao;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 
 @Service("mService")
+
 public class MemberServiceImpl implements MemberService{
 
 	@Autowired
@@ -57,4 +59,13 @@ public class MemberServiceImpl implements MemberService{
 	public ArrayList<FindClient> selectList(PageInfo pi) {
 		return mDao.selectList(pi);
 	}
+
+	@Override
+	public int insertPartInfo(PartInfo partInfo) {
+		
+		return mDao.insertPartInfo(partInfo);
+	}
+
+
+
 }

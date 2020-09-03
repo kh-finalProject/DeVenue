@@ -2,7 +2,7 @@ package com.kh.DeVenue.myPage.model.vo;
 
 import java.io.Serializable;
 
-public class Partinfo implements Serializable{
+public class PartInfo implements Serializable{
 
 	/**
 	 * 
@@ -14,11 +14,11 @@ public class Partinfo implements Serializable{
 	private String mcId;	//대표카테고리(개발/디자인/개발+디자인)
 	private int piType;		//활동가능성(1~3 활동가능성/협의필요/활동불가능)
 	private int profileId;	//프로필 번호
-	public Partinfo() {
+	public PartInfo() {
 		super();
 	}
 	
-	public Partinfo(int piId, String wtId, String mcId, int piType, int profileId) {
+	public PartInfo(int piId, String wtId, String mcId, int piType, int profileId) {
 		super();
 		this.piId = piId;
 		this.wtId = wtId;
@@ -26,18 +26,26 @@ public class Partinfo implements Serializable{
 		this.piType = piType;
 		this.profileId = profileId;
 	}
-		
+	
+	// 파트너스 정보 검색용
+	public PartInfo(int profileId) {
+		super();
+		this.profileId = profileId;
+	}
+
 	// 파트너스 정보 업데이트용
-	public Partinfo(String wtId, String mcId, int piType) {
+	public PartInfo(String wtId, String mcId, int piType, int profileId) {
 		super();
 		this.wtId = wtId;
 		this.mcId = mcId;
 		this.piType = piType;
+		this.profileId = profileId;
 	}
 	
 	public int getPiId() {
 		return piId;
 	}
+
 	public void setPiId(int piId) {
 		this.piId = piId;
 	}

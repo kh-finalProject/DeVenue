@@ -366,6 +366,7 @@
             text-decoration-line: none;
             color: white;
         }
+        
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
@@ -377,9 +378,9 @@
 
 <body>
     <!-- munubar -->
-	<jsp:include page="../common/menubar.jsp" />
+	<jsp:include page="../common/menubar.jsp"/>
 	<!-- sidebar -->
-	<jsp:include page="../common/sideMenubarAll.jsp" />
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
 
 
     <!-- Section -->
@@ -392,50 +393,141 @@
         <div class="container">
             <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
                 <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-                  ${loginUser.memNick } 마이페이지</div>
-			</div>
-			<div class="row">
-				<jsp:include page="../common/myPageMenubar.jsp" />
-			</div>
+                     ${loginUser.memNick } 마이페이지
+                </div>
+            </div>
+            <div class="row">
+            	<jsp:include page="../common/myPageMenubar.jsp"/>
+            </div>
                 <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
                     <br>
                     <div class="row">
                         <div class="col-12"
                             style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
-                            <p style="float: left; font-size: 30px;">마이페이지 - 보유 기술</p>
-                            <a href="profile.do" class="btn btn-info" style="float: right;">내 프로필에서 보기</a>
+                            <p style="float: left; font-size: 30px;">마이페이지 - 경력 등록</p>
                         </div>
-                        <div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-                            <table class="table">
-                                <tr class="table-secondary" style="font-size: 20px; text-align: center;">
-                                    <td colspan="2">종류</td>
-                                    <td>숙련도</td>
-                                    <td>경험</td>
-                                    <td>도구</td>
-                                </tr>
-                                <tr class="skill">
-                                	<td class="checkbox"><input type="checkbox" id="checkbox" name="checkbox"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="1"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="2"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="3"></td>
-                                    <td><button type="button" class="btn btn-info">삭제</button></td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <script type="text/javascript">
-	                        // 행 삭제
-	                        // 왜 전체 삭제가...?
-	                       $("#DelSkill").on("click",function(){
-	                            var checkRows = $("[input='checkbox']:checked");
-	                            for(var a=checkRows.length-1;a>-1;a--){
-	                                checkRows.eq(a).closeset(".skill").remove();
-	                            }
-	                       })
-                        </script>
-                        
-                        <div class="col-12" style="width: 100%; height: 50px; text-align: right;">
-                            <a href="skillUpdate.do" class="btn btn-info" style="float: left; margin-left: 30px;">+ 추가하기</a>
+                        <div class="col-12">
+                            <form method="GET" action="careerInsert.do">
+                            	<input type="hidden" name="profileId" value=${profile.profileId }>
+                                <div class="col-12" style="margin-left: 5%; height: 20px; margin-top: 5%;  position: relative;">
+                                    <div class="col-4" style="position: absolute; margin-left: 5%; font-size: 20px;">
+                                        <label for="company-name">* 회사명</label>
+                                    </div>
+                                    <div class="col-4" style="position: absolute; margin-left: 20%;">
+                                        <input type="text" id="company-name" name="company-name" style="width: 400px; height: 40px;">
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-left: 5%; height: 20px; margin-top: 5%;  position: relative;">
+                                    <div class="col-4" style="position: absolute; margin-left: 5%; font-size: 20px;">
+                                        <label for="company-department">* 근무부서</label>
+                                    </div>
+                                    <div class="col-4" style="position: absolute; margin-left: 20%;">
+                                        <input type="text" id="company-department" name="company-department" style="width: 400px; height: 40px;">
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-left: 5%; height: 20px; margin-top: 5%;  position: relative;">
+                                    <div class="col-4" style="position: absolute; margin-left: 5%; font-size: 20px;">
+                                        <label for="company-position">* 직위</label>
+                                    </div>
+                                    <div class="col-4" style="position: absolute; margin-left: 20%;">
+                                        <input type="text" id="company-position" name="company-position" style="width: 400px; height: 40px;">
+                                    </div>
+                                </div>
+                                <div class="col-12"
+                                    style="margin-left: 5%; height: 50px; margin-top: 5%;  position: relative;">
+                                    <div class="col-4" style="position: absolute; margin-left: 5%; font-size: 20px;">
+                                        <label for="start-date">* 입사일</label>
+                                    </div>
+                                    <div class="col-10" style="position: absolute; margin-left: 20%;">
+                                        <!-- <input type="text" id="start-date" name="start-date" placeholder="년도" style="width: 200px; height: 40px;"> -->
+                                        <select name="start-year" style="width: 150px; height: 40px;">
+                                            <option value="year">년</option>
+                                            <option value="2010">2010</option>
+                                            <option value="2011">2011</option>
+                                            <option value="2012">2012</option>
+                                            <option value="2013">2013</option>
+                                            <option value="2014">2014</option>
+                                            <option value="2015">2015</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                        <select name="start-month" style="width: 150px; height: 40px;">
+                                            <option value="month">월</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 working" style="height: 30px; margin-left: 27%; color: grey; ">
+                                    <input type="checkbox" class="working-check">&nbsp;&nbsp;&nbsp;
+                                    <label>현재 재직중 입니다.</label>
+                                  </div>
+                                <div class="col-12 end-date" style="margin-left: 5%; height: 50px; margin-top: 5%;  position: relative;">
+                                    <div class="col-4" style="position: absolute; margin-left: 5%; font-size: 20px;">
+                                        <label for="end-date">* 퇴사일</label>
+                                    </div>
+                                    <div class="col-10" style="position: absolute; margin-left: 20%;">
+                                        <select name="end-year" style="width: 150px; height: 40px;">
+                                            <option value="0">년</option>
+                                            <option value="2010">2010</option>
+                                            <option value="2011">2011</option>
+                                            <option value="2012">2012</option>
+                                            <option value="2013">2013</option>
+                                            <option value="2014">2014</option>
+                                            <option value="2015">2015</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                        <select name="end-month" style="width: 150px; height: 40px;">
+                                            <option value="0">월</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-left: 5%; height: 300px; margin-top: 5%;  position: relative;">
+                                    <div class="col-4" style="position: absolute; margin-left: 5%; font-size: 20px;">
+                                        <label for="content">* 설명</label>
+                                    </div>
+                                    <div class="col-4" style="position: absolute; margin-left: 20%;">
+                                        <textarea name="content" cols="70" rows="12"></textarea>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-left: 27%; color: grey;">
+                                    <span>한글 기준 5,000자 이하로 작성해주세요</span>
+                                </div>
+                                <div class="col-12" style="width: 100%; height: 50px; text-align: right;">
+                                    <a href="career.html" class="btn btn-info">취소</a>
+                                    <button type="submit" class="btn btn-info">등록 완료</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -445,15 +537,33 @@
         </div>
         </div>
         <!-- </div> -->
+        <script>
+            // div 클릭시 퇴사일 숨기고 보이게 하기
 
+            $(".working").on("click",function(){
+                var checked = $(".working-check").prop("checked");
+                if(checked == true){
+                    $(".end-date").show();
+                    $(".working-check").prop("checked",false);
+                    
+                }else{
+                    $(".end-date").hide();
+                    $(".working-check").prop("checked",true);
+                }
+            })
+
+
+            
+            
+        </script>
         <!-- 오른쪽 공백 -->
         <!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
     </section>
     <br>
 
-
-    <!-- Footer -->
+	<!-- Footer -->
 	<jsp:include page="../common/footer.jsp" />
+   
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

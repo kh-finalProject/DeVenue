@@ -360,48 +360,11 @@
             height: 50px;
             margin-left: 40px;
         }
-
-        /* 어느페이지인지 보여줄 div */
-        .main-title{
-            width: 100%;
-            height: 60px;
-            margin-left:5%;
-            padding-right: 0;
-            border-bottom: 2px dashed white;
-        }
         
-        /* 포트폴리오전부를 보여줄 div*/
-        .portfolio-view{
-            width: 100%;
-            height: 350px;
-            margin-left: 5%;
-            margin-top: 2%;
-            border-bottom: 2px dashed grey;
-            position: relative;
-        }
-
-        /* 포트폴리오의 각 div */
-        .portfolio-view .portfolio-info{
-            width: 220px;
-            height: 310px;
-            margin-left: 2%;
-            border: 2px solid white;
-            display: inline-block;
-        }
-
-        /* 포트폴리오의 카테고리 */
-        .portfolio-category{
-            position: absolute;
-            text-align: center;
-            margin: auto;
-        }
-
-        /* 포트폴리오의 제목 */
-        .portfolio-title{
-            position: absolute;
-            text-align: left;
-            margin: auto;
-            margin-top: 10px;
+        /* a태그 밑줄없애기 */
+        #subInfoMenu p a{
+            text-decoration-line: none;
+            color: white;
         }
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
@@ -413,96 +376,10 @@
 </head>
 
 <body>
-    <!--Top Button-->
-    <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i class="fas fa-chevron-up"
-            style="margin:0"></i></a>
-    <script>
-        $(document).ready(function () {
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 10) {
-                    $('#back-to-top').css("display", "block")
-
-                } else {
-                    $('#back-to-top').css("display", "none")
-
-                }
-            });
-            // scroll body to 0px on click
-            $('#back-to-top').click(function () {
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 400);
-                return false;
-            });
-        });
-    </script>
-
-    <!--navigation bar 1-->
-    <nav class="navbar navbar-expand-lg" style="background-color: black;">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain"
-            aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#"><img src="logo.png" height="80px"
-                            style="padding-bottom: 0;padding-top: 0;margin-top: 0;margin-bottom: 0;"><span
-                            class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트찾기</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트등록</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link hvr-underline-from-center" href="#">파트너스찾기</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ml-auto">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary">LOGIN</button>
-                    <button type="button" class="btn btn-info">SIGNIN</button>
-                </div>
-            </ul>
-        </div>
-    </nav>
-
-    <script>
-        $(function () {
-            $("#navbarMain .nav-link").mouseenter(function () {
-                $(this).css("font-size", "105%");
-            })
-
-            $("#navbarMain .nav-link").mouseleave(function () {
-                $(this).css("font-size", "100%");
-            })
-        })
-    </script>
-
-    <!--navigation bar2-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSub" style="margin-left: 3%;">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">검수 중</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">지원자 모집 중</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">진행 중인 프로젝트</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ml-4 hvr-underline-from-center" href="#">종료된 프로젝트</a>
-                </li>
-            </ul>
-    </nav>
+    <!-- munubar -->
+	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sidebar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
 
 
     <!-- Section -->
@@ -515,145 +392,135 @@
         <div class="container">
             <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
                 <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-                    마이페이지
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-2 text-white"
-                    style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-                    <br>
-                    <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
-                        파트너스
-                    </div>
-                    <!-- 이미지 들어갈 공간 -->
-                    <br>
-                    <div class="partnes-img"
-                        style="width: 90%; height: 150px; border: 1px solid white; margin: auto; border-radius: 50px 50px 50px 50px;">
-                        이미지 넣자
-                    </div>
-                    <br>
-                    <!-- 닉네임 -->
-                    <div class="partnes-nickname"
-                        style="width: 100%; height: 30px; border: 1px solid white; margin: auto; text-align: center;">
-                        <span>키미노나마에와</span>
-                    </div>
-                    <br>
-                    <div style="padding-bottom: 5.5%;">
-                        <div>
-                            <p id="infoMenu">정보 관리<i style="float: right; margin-right: 5%;"
-                                    class="fas fa-angle-down"></i></p>
-                            <div id="subInfoMenu" style="display:none; margin-left: 5%;">
-                            	<P id="myPageDetail"><a href="mtPage.do">전체보기</a></P>
-                                <p id="partnesInfo"><a href="partInfo.do">파트너스 정보</a></p>
-                                <p id="pPR"><a href="PR.do">자기소개</a></p>
-                                <p id="pPortfolio"><a href="portfolio.do">포트폴리오</a></p>
-                                <p id="pSkill"><a href="skill.do">보유기술</a></p>
-                                <p id="pCareer"><a href="career.do">경력</a></p>
-                                <p id="pLicense"><a href="academic.do">학력</a></p>
-                                <p id="pStack"><a href="certificate.do">자격증</a></p>
-                                <p id="pProjectHistory"><a href="PH.do">프로젝트 히스토리</a></p>
-                            </div>
-                            <p id="accountMenu">계정 관리<i style="float: right; margin-right: 5%;"
-                                    class="fas fa-angle-down"></i></p>
-                            <div id="subAccountMenu" style="display:none; margin-left: 5%;">
-                                <p id="clientComment">기본 정보 수정</p>
-                                <p id="insertCComment">신원 인증</p>
-                                <p id="insertCComment">날인 방법 관리</p>
-                                <p id="insertCComment">비밀번호 변경</p>
-                                <p id="insertCComment">회원 탈퇴</p>
-                            </div>
-                            <p id="pEvaluate">내게 온 제안</p>
-                        </div>
-                        <script>
-                            $("#infoMenu").click(function () {
-
-                                $("#subInfoMenu").toggle();
-                            });
-
-                            $("#accountMenu").click(function () {
-
-                                $("#subAccountMenu").toggle();
-                            });
-
-                            $("#clientInfo").on("click", function () {
-                                location.href = "../findUser/findClientDetail.html";
-                            }).on("mouseenter", function () {
-
-                            });
-
-                            $("#projectHistory").on("click", function () {
-                                location.href = "projectHistory.html";
-                            });
-
-
-                            $("#clientComment").on("click", function () {
-                                location.href = "clientComment.html";
-                            });
-
-                            $("#insertCComment").on("click", function () {
-                                location.href = "insertCComment.html";
-                            });
-                        </script>
-
-                    </div>
-                </div>
+                  ${loginUser.memNick } 마이페이지</div>
+			</div>
+			<div class="row">
+				<jsp:include page="../common/myPageMenubar.jsp" />
+			</div>
                 <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
                     <br>
                     <div class="row">
-                        <div class="col-12 main-title">
-                            <p style="float: left; font-size: 30px;">마이페이지 - 포트폴리오</p>
-                            <a href="mypageAllInfo.html" class="btn btn-info" style="float: right;">내 프로필에서 보기</a>
+                        <div class="col-12"
+                            style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
+                            <p style="float: left; font-size: 30px;">마이페이지 - 학력등록</p>
                         </div>
-
-                        <div class="col-12" style="margin-left: 5%; margin-top: 5%;">
-                            <h4>포트폴리오<span style="color: grey;"> / 0개 </span>
-                                <a href="mypagePortfolioUpdate.html" class="btn btn-info" style="float: right;">추가하기</a>
-                            </h4>
+                        <div class="col-12" style="height: auto; margin-left: 5%; margin-top: 5%;">
+                            <table>
+                                <form method="GET" action="SSCareerUpdate.do">
+                                <input type="hidden" name="profileId" value="${profile.profileId }">
+                                    <tr>
+                                        <th class="table-secondary" style="width: 100px; padding: 10px;">분류</th>
+                                        <td class="table-light" colspan="2" style="width: 300px; padding: 5px;">
+                                            <select name="schoolgrade" style="width: 120px; height: 40px;">
+                                                <option value="schoolgrade">분류</option>
+                                                <option value="SG1">중학교</option>
+                                                <option value="SG2">고등학교</option>
+                                                <option value="SG3">전문대</option>
+                                                <option value="SG4">대학교</option>
+                                                <option value="SG5">대학원</option>
+                                                <option value="SG6">박사과정</option>
+                                            </select>
+                                        </td>
+                                        <th class="table-secondary" style="width: 100px; padding: 10px;">상태</th>
+                                        <td class="table-light" colspan="2" style="width: 300px; padding: 5px;">
+                                            <select name="schoolstate" style="width: 120px; height: 40px;">
+                                                <option value="schoolstate">상태</option>
+                                                <option value="SS1">재학</option>
+                                                <option value="SS2">휴학</option>
+                                                <option value="SS3">졸업</option>
+                                                <option value="SS4">자퇴</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-secondary" style="width: 100px; padding: 10px;">학교명</th>
+                                        <td class="table-light" colspan="2" style="width: 300px; padding: 5px;">
+                                            <input type="text" name="school-name" style="width: 280px; height: 40px;">
+                                        </td>
+                                        <th class="table-secondary" style="width: 100px; padding: 10px;">전공</th>
+                                        <td class="table-light" colspan="2" style="width: 300px; padding: 5px;">
+                                            <input type="text" name="major" style="width: 280px; height: 40px;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-secondary" style="width: 100px; padding: 10px;">입학일</th>
+                                        <td class="table-light" colspan="2" style="width: 300px; padding: 5px;">
+                                            <select name="start-year" style="width: 120px; height: 40px;">
+                                                <option value="year">년</option>
+                                                <option value="2010">2010</option>
+                                                <option value="2011">2011</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2020">2020</option>
+                                            </select>
+                                            <select name="start-month" style="width: 120px; height: 40px;">
+                                                <option value="month">월</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </td>
+                                        <th class="table-secondary" style="width: 100px; padding: 10px;">졸업일</th>
+                                        <td class="table-light" colspan="2" style="width: 300px; padding: 5px;">
+                                            <select name="end-year" style="width: 120px; height: 40px;">
+                                                <option value="year">년</option>
+                                                <option value="2010">2010</option>
+                                                <option value="2011">2011</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2020">2020</option>
+                                            </select>
+                                            <select name="end-month" style="width: 120px; height: 40px;">
+                                                <option value="month">월</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="width: 100%; height: 50px; text-align: right; margin-top: 10px;">
+                                            <a href="academic.html" class="btn btn-info">취소</a>
+                                            <button type="submit" class="btn btn-info">등록완료</button>
+                                        </td>
+                                    </tr>
+                                </form>
+                            </table>
                         </div>
-                        <div class="col-12 portfolio-view">
-                            <!-- 하나의 포트폴리오 시작 -->
-                            <div class="col-4 portfolio-info">
-                                <div class="col-12" style="height: 70%;">
-                                    <div class="col-11 portfolio-category looking-btn" style="margin-top: 10px; margin-left: 30px; display: none;">
-                                        <button type="button" class="btn btn-info">삭제</button>
-                                        <a href="mypagePortfolioUpdate.html" class="btn btn-info">수정</a>
-                                    </div>
-                                    <div class="col-11 portfolio-category" style="margin-top: 70px;">
-                                        <h4>디자인</h4>
-                                    </div>
-                                    <div class="col-11 portfolio-category" style="margin-top: 130px;">
-                                        <h5>어플리케이션</h5>
-                                    </div>
-                                </div>
-                                <div class="col-12" style="height: 30%; border-top: 2px dashed grey;">
-                                    <!-- <h5>1. 제목을 작성하는 곳입니다.</h5> -->
-                                    <div class="col-11 portfolio-title">
-                                        <span>제목을 입력</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <script>
-                                // div 클릭시 그 포트폴리오 정보를 띄어주기
-                                $(".portfolio-info").on("click",function(){
-                                    location.href= "mypagePortfolio.html";
-                                })
-
-                                // 수정,삭제 숨기고 보이게하기
-                                $(".portfolio-info").mouseover(function(){
-                                    $(".looking-btn").show();
-                                })
-                                $(".portfolio-info").mouseout(function(){
-                                    $(".looking-btn").hide();
-                                })
-                            </script>
-                            <!-- 하나의 포트폴리오 끝 -->
-                            <div class="col-4 portfolio-info"></div>
-                            <div class="col-4 portfolio-info"></div>
-                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
         </div>

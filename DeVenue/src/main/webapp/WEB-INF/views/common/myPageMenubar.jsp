@@ -9,6 +9,15 @@
 </head>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
+<style>
+		/* 서브메뉴바 */
+        .aTag{
+	      background-color: #242424;
+	      border: none;
+	      color: white;
+	    }
+</style>
+
 <body>
 	<div class="col-2 text-white"
 		style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
@@ -25,7 +34,7 @@
 		<br>
 		<div class="partnes-img"
 			style="width: 90%; height: 150px; margin: auto;">
-			<img src="${contextPath }/resources/images/test.png"
+			<img src="${contextPath }/resources/images/admin.png"
 				style="width: 100%; height: 100%; border-radius: 50px 50px 50px 50px;">
 		</div>
 		<!-- 닉네임 -->
@@ -42,16 +51,36 @@
 				</p>
 				<div id="subInfoMenu" style="display: none; margin-left: 5%;">
 					<P id="myPageDetail">
-						<a href="mtPage.do">전체보기</a>
+						<a href="profile.do">전체보기</a>		
 					</P>
 					<p id="partnesInfo">
-						<a href="partInfo.do">파트너스 정보</a>
+					<!-- 에러가난다 왜 null 값이 넘어가지??? -->
+						<%-- <a href="partInfo.do">파트너스 정보</a>
+						<script type="text/javascript">
+							$("#partnesInfo a").on("click",function(){
+								$.ajax({
+									url:"test.do",
+									data:{profileId:${profile.profileId }},
+									success:function(data){
+										
+									},error:function(request, status, errorData){
+										alert("error code: " + request.status + "\n"
+												+"message: " + request.responseText
+												+"error: " + errorData);
+									}
+								})
+							})
+						</script> --%>
+						<form method="GET" action="partInfo.do">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<button class="aTag">파트너스정보</button>
+						</form>
 					</p>
 					<p id="pPR">
 						<a href="PR.do">자기소개</a>
 					</p>
 					<p id="pPortfolio">
-						<a href="portfolio.do">포트폴리오</a>
+						<a href="portfolioAll.do">포트폴리오</a>
 					</p>
 					<p id="pSkill">
 						<a href="skill.do">보유기술</a>

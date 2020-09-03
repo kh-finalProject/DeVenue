@@ -361,6 +361,13 @@
             height: 50px;
             margin-left: 40px;
         }
+        
+        /* a태그 밑줄없애기 */
+        #subInfoMenu p a{
+            text-decoration-line: none;
+            color: white;
+        }
+        
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
@@ -386,7 +393,7 @@
         <!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
         <div class="container">
             <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
-                <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+                <div class="col-12" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
                    ${loginUser.memNick } 마이페이지
                 </div>
 

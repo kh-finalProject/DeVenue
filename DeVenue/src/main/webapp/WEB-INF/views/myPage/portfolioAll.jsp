@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -361,6 +361,40 @@ section {
 	border-bottom: 2px dashed white;
 }
 
+/* 포트폴리오전부를 보여줄 div*/
+.portfolio-view {
+	width: 100%;
+	height: 350px;
+	margin-left: 5%;
+	margin-top: 2%;
+	border-bottom: 2px dashed grey;
+	position: relative;
+}
+
+/* 포트폴리오의 각 div */
+.portfolio-view .portfolio-info {
+	width: 220px;
+	height: 310px;
+	margin-left: 2%;
+	border: 2px solid white;
+	display: inline-block;
+}
+
+/* 포트폴리오의 카테고리 */
+.portfolio-category {
+	position: absolute;
+	text-align: center;
+	margin: auto;
+}
+
+/* 포트폴리오의 제목 */
+.portfolio-title {
+	position: absolute;
+	text-align: left;
+	margin: auto;
+	margin-top: 10px;
+}
+
 /* a태그 밑줄없애기 */
 #subInfoMenu p a {
 	text-decoration-line: none;
@@ -396,7 +430,6 @@ section {
 				<div class="col-12"
 					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
 					${loginUser.memNick } 마이페이지</div>
-
 			</div>
 			<div class="row">
 				<jsp:include page="../common/myPageMenubar.jsp" />
@@ -405,49 +438,75 @@ section {
 				<br>
 				<div class="row">
 					<div class="col-12 main-title">
-						<p style="float: left; font-size: 30px;">마이페이지 - 자기소개</p>
+						<p style="float: left; font-size: 30px;">마이페이지 - 포트폴리오</p>
 						<a href="mypageAllInfo.html" class="btn btn-info"
 							style="float: right;">내 프로필에서 보기</a>
 					</div>
+
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
-						<span>* 자기 소개</span>
+						<h4>
+							포트폴리오<span id="num" style="color: grey;"> / 0개 </span> <a
+								href="portfolioInsert.do" class="btn btn-info"
+								style="float: right;">추가하기</a>
+						</h4>
 					</div>
-					<form action="introduction.do">
-						<input type="hidden" id="memId" name="memId"
-							value="${loginUser.memId }">
-					</form>
-					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<p>${profile.introduction}</p>
+					<div class="col-12 portfolio-view">
+						<!-- 하나의 포트폴리오 시작 -->
+						<c:forEach var="i" begin="0" end="2">
+							<div class="col-4 portfolio-info" style="margin-top: 3%;">
+								<div class="col-12" style="height: 70%;">
+									<div class="col-11 portfolio-category looking-btn"
+										style="margin-top: 10px; margin-left: 30px; visibility: visible;">
+										<button type="button" class="btn btn-info">삭제</button>
+										<a href="mypagePortfolioUpdate.html" class="btn btn-info">수정</a>
+									</div>
+									<div class="col-12 portfolio-category"
+										style="margin-top: 50px;">
+										<h4>디자인</h4>
+									</div>
+									<div class="col-12 portfolio-category"
+										style="margin-top: 135px;">
+										<h5>어플리케이션</h5>
+									</div>
+								</div>
+								<div class="col-12"
+									style="height: 30%; border-top: 2px dashed grey;">
+									<!-- <h5>1. 제목을 작성하는 곳입니다.</h5> -->
+									<div class="col-11 portfolio-title">
+										<span>제목을 입력</span>
+									</div>
+								</div>
+							</div>
+							<script>
+								// div 클릭시 그 포트폴리오 정보를 띄어주기
+								$(".portfolio-info").on("click", function() {
+									location.href = "mypagePortfolio.html";
+								})
+
+								// 수정,삭제 숨기고 보이게하기
+								$(".portfolio-info").mouseover(
+										function() {
+											//$(".looking-btn").show();
+											$(".looking-btn").css({"visibility":"visible"});
+										})
+								$(".portfolio-info").mouseout(
+										function() {
+											//$(".looking-btn").hide();
+											$(".looking-btn").css({"visibility":"hidden"});
+										})
+								
+								// 포트폴리오가 증가시 id 생성해서 넣기
+							</script>
+							<!-- 하나의 포트폴리오 끝 -->
+						</c:forEach>
+
+						<!-- <div class="col-4 portfolio-info"></div>
+						<div class="col-4 portfolio-info"></div> -->
 					</div>
-					<div class="col-12"
-						style="width: 90%; height: 50px; text-align: right;">
-						<a href="introductionUpdate.do" class="btn btn-info">수정</a>
-					</div>
-					<!--  <script>
-                        	$(document).ready(function(){
-                        		var memId = ${loginUser.memId};
-                        		alert(memId);
-                        		$.ajax({
-                        			url:"introduction.do",
-                        			data:{memId:memId},
-                        			type:"POST",
-                        			sccess:function(data){
-										alert("성공함");
-            						},error:function(request, status, errorData){
-            							alert("error code: " + request.status + "\n"
-            									+"message: " + request.responseText
-            									+"error: " + errorData);
-            						}
-                        		})
-                        	})
-                        </script> -->
 				</div>
 			</div>
 		</div>
-		</div>
 
-		</div>
-		</div>
 		<!-- </div> -->
 
 		<!-- 오른쪽 공백 -->
@@ -457,38 +516,7 @@ section {
 
 
 	<!-- Footer -->
-	<footer class="footer" style="background-color: #212426;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-					<ul class="list-inline mb-2">
-						<li class="list-inline-item"><a href="#">고객센터</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">운영시간</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">이용약관</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">공지사항</a></li>
-					</ul>
-					<p class="text-muted small mb-4 mb-lg-0">&copy; Your Website
-						2020. All Rights Reserved.</p>
-				</div>
-				<div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-					<ul class="list-inline mb-0">
-						<li class="list-inline-item mr-3"><a href="#"> <i
-								class="fab fa-facebook fa-2x fa-fw"></i>
-						</a></li>
-						<li class="list-inline-item mr-3"><a href="#"> <i
-								class="fab fa-twitter-square fa-2x fa-fw"></i>
-						</a></li>
-						<li class="list-inline-item"><a href="#"> <i
-								class="fab fa-instagram fa-2x fa-fw"></i>
-						</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</footer>
+	<jsp:include page="../common/footer.jsp" />
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
