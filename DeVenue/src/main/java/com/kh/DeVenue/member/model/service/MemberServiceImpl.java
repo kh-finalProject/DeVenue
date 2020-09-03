@@ -16,9 +16,11 @@ import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 
 @Service("mService")
+
 public class MemberServiceImpl implements MemberService{
 
 	@Autowired
@@ -26,30 +28,36 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member loginUserMember(Member m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return mDao.selectMember(m);
+	}
+	
+	@Override
+	public int insertMember(Member m) {
+		
+		return mDao.insertMember(m);
 	}
 
 	@Override
 	public int pwdChangeMember(Member pwdchange) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return mDao.updatePwdMember(pwdchange);
 	}
 
 	@Override
 	public Profile profile(Profile memId) {
-		// TODO Auto-generated method stub
-		return null;
+		return mDao.selectProfile(memId);
 	}
 
 	@Override
 	public int profileInsert(int memId) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return mDao.insertProfile(memId);
 	}
 
-	@Override
+	
 	public int getListCount() {
+		
 		return mDao.getListCount();
 	}
 
@@ -65,12 +73,6 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public FindClientDetail selectClientDetail(Integer cId) {
 		return mDao.selectClientDetail(cId);
-	}
-
-	@Override
-	public int insertMember(Member m) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -103,5 +105,9 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.getMatchingPartners(id);
 	}
 
-
+	@Override
+	public int insertPartInfo(PartInfo partInfo) {
+		
+		return mDao.insertPartInfo(partInfo);
+	}
 }

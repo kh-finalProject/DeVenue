@@ -12,11 +12,14 @@ import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 
 public interface MemberService {
 
 	Member loginUserMember(Member m);
+
+	int insertMember(Member m);
 
 	int pwdChangeMember(Member pwdchange);
 
@@ -29,9 +32,7 @@ public interface MemberService {
 //	ArrayList<FindClient> selectList(PageInfo pi);
 	ArrayList<FindClient> selectList();
 
-	FindClientDetail selectClientDetail(Integer cId);
-
-	int insertMember(Member m);
+	int insertPartInfo(PartInfo partInfo);
 
 	FCprojectHistory selectProjectHistory(Integer cId);
 
@@ -44,4 +45,6 @@ public interface MemberService {
 	ArrayList<EvalProjectList> getClientInfo(Integer cId);
 
 	ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id);
+
+	FindClientDetail selectClientDetail(Integer cId);
 }

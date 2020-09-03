@@ -26,12 +26,35 @@
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.EvalProjectList" alias="EvalProjectList"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.MatchingPartnersList" alias="MatchingPartnersList"/>
 
+	    <!-- myPage 파트너스 정보 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.PartInfo" alias="PartInfo"/>
+	    <!-- myPage 포트폴리오 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.PortFolio" alias="PortFolio"/>
+	    <!-- myPage 포트폴리오 이미지 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.PortImg" alias="PortImg"/>
+	    <!-- myPage 포트폴리오 기술 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.PortTec" alias="PortTec"/>
+	    <!-- myPagd 보유기술 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.Skill" alias="Skill"/>
+	    <!-- myPage 경력 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.Career" alias="Career"/>
+	    <!-- myPage 평가 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.Eval" alias="Eval"/>
+	    <!-- myPage 자격증 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.Certificate" alias="Certificate"/>
+	    <!-- myPage 학력 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.SSCareer" alias="SSCareer"/>
+	    <typeAlias type="com.kh.DeVenue.member.model.vo.Portfolio" alias="Pofo"/>
+	    <typeAlias type="com.kh.DeVenue.member.model.vo.Image" alias="Image"/>
+	    <typeAlias type="com.kh.DeVenue.project.model.vo.Application" alias="Application"/>
+	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyAnswer" alias="Answer"/>
+	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyPortfolio" alias="ApplyPF"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="/mappers/project-mapper.xml"/>
 		<mapper resource="/mappers/member-mapper.xml"/>
-
+		<mapper resource="/mappers/myPage-mapper.xml"/>
 	</mappers>
 	
 </configuration>

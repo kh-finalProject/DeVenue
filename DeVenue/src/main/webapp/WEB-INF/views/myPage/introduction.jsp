@@ -360,6 +360,12 @@ section {
 	padding-right: 0;
 	border-bottom: 2px dashed white;
 }
+
+/* a태그 밑줄없애기 */
+#subInfoMenu p a {
+	text-decoration-line: none;
+	color: white;
+}
 </style>
 <script src="https://kit.fontawesome.com/4b6b63d8f6.js"
 	crossorigin="anonymous"></script>
@@ -387,7 +393,7 @@ section {
 		<div class="container">
 			<div class="row text-white"
 				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<div class="col-2"
+				<div class="col-12"
 					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
 					${loginUser.memNick } 마이페이지</div>
 
@@ -407,7 +413,8 @@ section {
 						<span>* 자기 소개</span>
 					</div>
 					<form action="introduction.do">
-						<input type="hidden" id="memId" name="memId" value="${loginUser.memId }">
+						<input type="hidden" id="memId" name="memId"
+							value="${loginUser.memId }">
 					</form>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
 						<p>${profile.introduction}</p>

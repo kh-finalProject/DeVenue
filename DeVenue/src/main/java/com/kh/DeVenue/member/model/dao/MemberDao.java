@@ -18,6 +18,7 @@ import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 
 @Repository("mDao")
@@ -68,6 +69,11 @@ public class MemberDao {
 //	}
 	public ArrayList<FindClient> selectList() {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList");
+	}
+
+	public int insertPartInfo(PartInfo partInfo) {
+		
+		return sqlSessionTemplate.insert("myPageMapper.insertPartInfo",partInfo);
 	}
 
 	public FindClientDetail selectClientDetail(Integer cId) {

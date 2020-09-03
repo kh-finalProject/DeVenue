@@ -3,6 +3,10 @@ package com.kh.DeVenue.project.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.project.model.vo.Application;
+import com.kh.DeVenue.project.model.vo.ApplyAnswer;
+import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -67,6 +71,78 @@ public interface ProjectService {
 	int getLikeListCount(int memId);
 
 	int deleteLikeProject(Integer lId);
+
+
+	ArrayList<Portfolio> selectPortfolio(int memId);
+
+
+	ArrayList<Portfolio> findPortfolio(HashMap cate);
+
+
+	int addApplication(Application application);
+
+
+	int addApplyAnswer(ApplyAnswer applyAnswer);
+
+
+	int addApplyPofol(ApplyPortfolio applyPortfolio);
+
+
+	int getapplyListCount(int memId);
+
+
+	ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi);
+
+
+	int getTempSave(HashMap application);
+
+
+	int addTempApplication(HashMap application);
+
+
+	int updateTempApplication(HashMap application);
+
+
+	int selectTempId(HashMap application);
+
+
+	int isAnswerExist(HashMap application);
+
+
+	int updateTempAnswer(HashMap application);
+
+
+	int isPofoExist(HashMap application);
+
+
+	int deleteExistPofo(HashMap application);
+
+
+	int addTempApplyAnswer(ApplyAnswer applyAnswer);
+
+
+	int addTempApplyPofol(ApplyPortfolio applyPortfolio);
+
+
+	Application selectTempResume(int aId);
+
+
+	int getTempApplyListCount(int memId);
+
+
+	ArrayList<ProjectList> selectTempApplyProject(int memId, PageInfo pi);
+
+
+	Application selectTempApplication(Integer aId);
+
+
+	int deleteTempApplication(Application application);
+
+
+	int cancelThisApply(Integer aId);
+
+
+	int cancelThisTempApply(Integer aId);
 
 
 	

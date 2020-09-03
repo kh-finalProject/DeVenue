@@ -274,7 +274,7 @@ i {
 							<c:out value="${loginUser.userType }사용자"/>
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							    <img src="${contextPath }/resources/images/test1.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
 							  </button>
 							  <div class="dropdown-menu">
 							    <a href="profile.do" class="dropdown-item">profile</a>

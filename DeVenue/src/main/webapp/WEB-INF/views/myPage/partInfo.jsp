@@ -367,6 +367,8 @@
             text-decoration-line: none;
             color: white;
         }
+        
+        
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
@@ -414,7 +416,11 @@
                                         <label>* 직종</label>
                                     </div>
                                     <div class="col-8" style="position: absolute; margin-left: 120px;">
-                                        <span><i class="fa fa-keyboard-o"></i>개발자</span>
+                                        <span><i class="fa fa-keyboard-o"></i>
+											<c:if test="${partInfo.mcId eq 'MC1'}">개발</c:if>
+											<c:if test="${partInfo.mcId eq 'MC2'}">다지인</c:if>
+											<c:if test="${partInfo.mcId eq 'MC3'}">개발 + 디자인</c:if>
+										</span>
                                     </div>
                                 </div>
                                 <div class="col-12" style="width: 100%; height: 70px; position: relative;">
@@ -422,17 +428,43 @@
                                         <label>* 선호프로젝트 형태<label>
                                     </div>
                                     <div class="col-10" style="position: absolute; margin-left: 120px;">
-                                        <span>상주</span>
+                                        <span id="workType">
+                                        <input type="hidden" id="wtId" value="${partInfo.wtId }">
+                                        	<c:if test="${partInfo.wtId eq 'WT1'}">상주</c:if>
+                                        	<c:if test="${partInfo.wtId eq 'WT2'}">외주</c:if>
+                                        	<c:if test="${partInfo.wtId eq 'WT3'}">상주 + 외주</c:if>
+                                        </span>
                                         <br>
-                                        <span>월 단위로 금액을 지급받고 클라이언트가 요청한 장소에서 프로젝트를 진행합니다.</span>
+                                        <p id="1">여</p>
+                                        <p id="2" style="margin-top: -15px;">기</p>
                                     </div>
+                                    <script>
+                                        $(function(){
+                                            var a = $("#wtId").val();
+
+                                            if(a == "WT1"){
+                                                $("#1").text("프로젝트 단위로 금액을 지급하고 원하는 장소에서 프로젝트를 진행합니다.");
+                                                $("#2").text("");
+                                            }else if(a == "WT2"){
+                                                $("#1").text("월 단위로 금액을 지급받고 클라이언트가 요청한 장소에서 프로젝트를 진행합니다.");
+                                                $("#2").text("");
+                                            }else if(a == "WT3"){
+                                                $("#1").text("프로젝트 단위로 금액을 지급하고 원하는 장소에서 프로젝트를 진행하거나");
+                                                $("#2").text("월 단위로 금액을 지급받고 클라이언트가 요청한 장소에서 프로젝트를 진행합니다.");
+                                            }
+                                        })
+                                    </script>
                                 </div>
-                                <div class="col-12" style="width: 100%; height: 30px; position: relative;">
+                                <div class="col-12" style="width: 100%; height: 30px; position: relative; margin-top: 10px;">
                                     <div class="col-2" style="position: absolute; text-align: right;">
                                         <label>* 활동 가능성</label>
                                     </div>
                                     <div class="col-8" style="position: absolute; margin-left: 120px;">
-                                        <p>활동가능</p>
+                                        <p>
+                                        	<c:if test="${partInfo.piType == 1}">활동 가능</c:if>
+                                        	<c:if test="${partInfo.piType == 2}">협의 필요</c:if>
+                                        	<c:if test="${partInfo.piType == 3}">활동 불가능</c:if>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="col-12" style="width: 90%; height: 50px; text-align: right;">
