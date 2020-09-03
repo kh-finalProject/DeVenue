@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace ="projectMapper">
 
-
-
-
 <resultMap type="Project" id="projectResultSet">
 		<id property="proId" column="PRO_ID"/>
 		<result property="memId" column="MEM_ID"/>

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
   
+  <!-- 회원정보 -->
   <resultMap type="Member" id="memberResultSet">
   	<id property="memId" column="MEM_ID"/>
   	
@@ -26,9 +27,9 @@
   	<result property="memStatus" column="MEM_STATUS"/>
   	<result property="memTypeName" column="MEM_TYPE_NAME"/>
 
-  	
   </resultMap>
 
+	<!-- 프로필 정보 -->
   <resultMap type="Profile" id="profileResultSet">
   	<id property="profileId" column="PROFILE_ID"/>
   	
@@ -55,6 +56,8 @@
   	INSERT INTO PROFILE
   	VALUES(PROFILE_SEQ.nextval,#{memId},NULL,NULL,NULL)
   </insert>
+   
+  
   
   <!-- 자기소개 수정 -->
   <update id="profileUpdate" parameterType="Profile">

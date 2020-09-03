@@ -9,9 +9,11 @@ import com.kh.DeVenue.member.model.dao.MemberDao;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 
 @Service("mService")
+
 public class MemberServiceImpl implements MemberService{
 
 	@Autowired
@@ -19,7 +21,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member loginUserMember(Member m) {
-		// TODO Auto-generated method stub
+		
 		return mDao.selectMember(m);
 	}
 
@@ -61,6 +63,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	public int insertPartInfo(PartInfo partInfo) {
+		
+		return mDao.insertPartInfo(partInfo);
+	}
+
 	public FindClient selectClientDetail(Integer cId) {
 		
 		return mDao.selectClientDetail(cId);

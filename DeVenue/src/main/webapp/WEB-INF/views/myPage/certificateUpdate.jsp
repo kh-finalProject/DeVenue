@@ -376,10 +376,10 @@
 </head>
 
 <body>
-    <!-- munubar -->
-	<jsp:include page="../common/menubar.jsp" />
+ 	<!-- munubar -->
+	<jsp:include page="../common/menubar.jsp"/>
 	<!-- sidebar -->
-	<jsp:include page="../common/sideMenubarAll.jsp" />
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
 
 
     <!-- Section -->
@@ -392,50 +392,119 @@
         <div class="container">
             <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
                 <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-                  ${loginUser.memNick } 마이페이지</div>
-			</div>
-			<div class="row">
-				<jsp:include page="../common/myPageMenubar.jsp" />
-			</div>
+                     ${loginUser.memNick } 마이페이지
+                </div>
+
+            </div>
+            <div class="row">
+            	<jsp:include page="../common/myPageMenubar.jsp"/>
+            </div>
                 <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
                     <br>
                     <div class="row">
                         <div class="col-12"
                             style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
-                            <p style="float: left; font-size: 30px;">마이페이지 - 보유 기술</p>
-                            <a href="profile.do" class="btn btn-info" style="float: right;">내 프로필에서 보기</a>
+                            <p style="float: left; font-size: 30px;">마이페이지 - 학력등록</p>
+                            <a href="#" class="btn btn-info" style="float: right;">전체보기</a>
                         </div>
-                        <div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-                            <table class="table">
-                                <tr class="table-secondary" style="font-size: 20px; text-align: center;">
-                                    <td colspan="2">종류</td>
-                                    <td>숙련도</td>
-                                    <td>경험</td>
-                                    <td>도구</td>
+                        <div class="col-12" style="height: auto; margin-left: 5%; margin-top: 5%;">
+                            <table>
+                                <form method="GET" action="cerificateInsert.do">
+                                <input type="hidden" name="profileId" value="${profile.profileId }">
+                                <tr>
+                                    <th class="table-secondary" style="width: 100px; padding: 10px;">자격증명</th>
+                                    <td class="table-light" colspan="3" style="width: 600px; padding: 5px;">
+                                        <input type="text" name="certificate-title" style="width: 590px; height: 40px;">
+                                    </td>
                                 </tr>
-                                <tr class="skill">
-                                	<td class="checkbox"><input type="checkbox" id="checkbox" name="checkbox"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="1"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="2"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="3"></td>
-                                    <td><button type="button" class="btn btn-info">삭제</button></td>
+                                <tr>
+                                    <th class="table-secondary" style="width: 100px; padding: 10px;">발급기관</th>
+                                    <td class="table-light" colspan="3" style="width: 600px; padding: 5px;">
+                                        <input type="text" name="certificate-company" style="width: 590px; height: 40px;">
+                                    </td>
                                 </tr>
+                                <tr>
+                                    <th class="table-secondary" style="width: 100px; padding: 10px;">발행일자</th>
+                                    <td class="table-light" style="width: 600px; padding: 5px;">
+                                        <select name="year" style="width: 120px; height: 40px;">
+                                            <option value="year">년</option>
+                                            <option value="2010">2010</option>
+                                            <option value="2011">2011</option>
+                                            <option value="2012">2012</option>
+                                            <option value="2013">2013</option>
+                                            <option value="2014">2014</option>
+                                            <option value="2015">2015</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                        <select name="month" style="width: 120px; height: 40px;">
+                                            <option value="month">월</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                        <select name="day" style="width: 120px; height: 40px;">
+                                            <option value="day">일</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                            <option value="31">31</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-secondary" style="width: 100px; padding: 10px;">일련번호</th>
+                                    <td class="table-light" colspan="3" style="width: 600px; padding: 5px;">
+                                        <input type="text" name="certificate-number" style="width: 590px; height: 40px;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" style="width: 100%; height: 50px; text-align: right; margin-top: 10px;">
+                                        <a href="certificate.do" class="btn btn-info">취소</a>
+                                        <button type="submit" class="btn btn-info">등록완료</button>
+                                    </td>
+                                </tr>
+                            </form>
                             </table>
-                        </div>
-                        
-                        <script type="text/javascript">
-	                        // 행 삭제
-	                        // 왜 전체 삭제가...?
-	                       $("#DelSkill").on("click",function(){
-	                            var checkRows = $("[input='checkbox']:checked");
-	                            for(var a=checkRows.length-1;a>-1;a--){
-	                                checkRows.eq(a).closeset(".skill").remove();
-	                            }
-	                       })
-                        </script>
-                        
-                        <div class="col-12" style="width: 100%; height: 50px; text-align: right;">
-                            <a href="skillUpdate.do" class="btn btn-info" style="float: left; margin-left: 30px;">+ 추가하기</a>
                         </div>
                     </div>
                 </div>
@@ -453,7 +522,51 @@
 
 
     <!-- Footer -->
-	<jsp:include page="../common/footer.jsp" />
+    <footer class="footer" style="background-color: #212426;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                    <ul class="list-inline mb-2">
+                        <li class="list-inline-item">
+                            <a href="#">고객센터</a>
+                        </li>
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a href="#">운영시간</a>
+                        </li>
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a href="#">이용약관</a>
+                        </li>
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a href="#">공지사항</a>
+                        </li>
+                    </ul>
+                    <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2020. All Rights Reserved.</p>
+                </div>
+                <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-facebook fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <i class="fab fa-instagram fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

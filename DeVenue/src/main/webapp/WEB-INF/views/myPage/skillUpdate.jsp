@@ -366,6 +366,7 @@
             text-decoration-line: none;
             color: white;
         }
+        
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
@@ -393,8 +394,9 @@
             <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
                 <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
                   ${loginUser.memNick } 마이페이지</div>
-			</div>
-			<div class="row">
+
+            </div>
+            <div class="row">
 				<jsp:include page="../common/myPageMenubar.jsp" />
 			</div>
                 <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
@@ -402,41 +404,48 @@
                     <div class="row">
                         <div class="col-12"
                             style="width: 100%; height: 60px; margin-left:5%; padding-right: 0; border-bottom: 2px dashed white;">
-                            <p style="float: left; font-size: 30px;">마이페이지 - 보유 기술</p>
-                            <a href="profile.do" class="btn btn-info" style="float: right;">내 프로필에서 보기</a>
+                            <p style="float: left; font-size: 30px;">마이페이지 - 보유 기술 등록</p>
+                            <a href="skill.do" class="btn btn-info">내 보유 기술 보기</a>
                         </div>
+                        <div class="col-12" style="margin-left: 5%; margin-top: 5%; border-bottom: 2px dashed white;">
+                            <p>
+                                <b>[ 보유 기술 입력 가이드]</b>
+                                <p>1. 보유 기술은 한 가지씩 입력해 주세요. Ex)C#, JavaScript, Android, Photoshop 등<br>
+                                2. 숙련도가 높은 기술이 상당에 표시 됩니다.
+                                </p>
+                            </p>
+                        </div>
+                        <form method="GET" action="skillInsert.do">
+                        <input type="hidden" name="profileId" value=${profile.profileId }>
                         <div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-                            <table class="table">
-                                <tr class="table-secondary" style="font-size: 20px; text-align: center;">
-                                    <td colspan="2">종류</td>
-                                    <td>숙련도</td>
-                                    <td>경험</td>
-                                    <td>도구</td>
-                                </tr>
-                                <tr class="skill">
-                                	<td class="checkbox"><input type="checkbox" id="checkbox" name="checkbox"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="1"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="2"></td>
-                                    <td><input type="text" readonly style="width: 180px; height: 40px;" value="3"></td>
-                                    <td><button type="button" class="btn btn-info">삭제</button></td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <script type="text/javascript">
-	                        // 행 삭제
-	                        // 왜 전체 삭제가...?
-	                       $("#DelSkill").on("click",function(){
-	                            var checkRows = $("[input='checkbox']:checked");
-	                            for(var a=checkRows.length-1;a>-1;a--){
-	                                checkRows.eq(a).closeset(".skill").remove();
-	                            }
-	                       })
-                        </script>
-                        
-                        <div class="col-12" style="width: 100%; height: 50px; text-align: right;">
-                            <a href="skillUpdate.do" class="btn btn-info" style="float: left; margin-left: 30px;">+ 추가하기</a>
-                        </div>
+                                <table class="table">
+                                    <tr class="table-secondary" style="font-size: large; text-align: center;">
+                                        <td>종류</td>
+                                        <td>숙련도</td>
+                                        <td>경험</td>
+                                    </tr>
+                                    <!-- 기술 등록 -->
+                                    <tr class="skillTr">
+                                        <td class="skillName"><input type="text" name="skillName" style="width: 180px; height: 40px;"></td>
+                                        <td class="skillLevel">
+                                            <select name="level" style="width: 150px; height: 40px;">
+                                                <option value="">---</option>
+                                                <option value="1">관심있음</option>
+                                                <option value="2">초급</option>
+                                                <option value="3">중급</option>
+                                                <option value="4">고급</option>
+                                                <option value="5">특급</option>
+                                            </select>
+                                        </td>
+                                        <td class="skillYear"><input type="text" name="skillYear" style="width: 180px; height: 40px;"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-12" style="width: 100%; height: 50px; text-align: right;">
+                                <!-- tr 태그 만들기(기술 테이블 추가) -->
+                                <button type="submit" class="btn btn-info">보유기술 추가</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -453,7 +462,7 @@
 
 
     <!-- Footer -->
-	<jsp:include page="../common/footer.jsp" />
+    <jsp:include page="../common/footer.jsp"/>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

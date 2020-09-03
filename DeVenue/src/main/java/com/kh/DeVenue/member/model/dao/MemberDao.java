@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 
 @Repository("mDao")
@@ -59,6 +60,12 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
 	}
+
+	public int insertPartInfo(PartInfo partInfo) {
+		
+		return sqlSessionTemplate.insert("myPageMapper.insertPartInfo",partInfo);
+	}
+
 
 	public FindClient selectClientDetail(Integer cId) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectClientDetail", cId);

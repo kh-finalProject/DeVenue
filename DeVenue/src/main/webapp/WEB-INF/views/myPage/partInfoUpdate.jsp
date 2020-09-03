@@ -391,14 +391,12 @@
         <!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
         <div class="container">
             <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
-                <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-                    마이페이지
-                </div>
-
-            </div>
-            <div class="row">
-            	<jsp:include page="../common/myPageMenubar.jsp"/>
-            </div>
+                <div class="col-12" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+                   ${loginUser.memNick } 마이페이지</div>
+			</div>
+			<div class="row">
+				<jsp:include page="../common/myPageMenubar.jsp" />
+			</div>
                 <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
                     <br>
                     <div class="row">
@@ -408,7 +406,7 @@
                         </div>
                         <div class="col-12">
                             <form method="GET" action="partInfoUp.do">
-                            <input type="hidden" name="memId" value="${loginUser.memId }">
+                            <input type="hidden" name="profileId" value="${profile.profileId }">
                                 <div class="col-12"
                                     style="margin-left: 5%; height: 20px; margin-top: 5%;  position: relative;">
                                     <div class="col-3" style="position: absolute; margin-left: 5%; text-align: right;">
