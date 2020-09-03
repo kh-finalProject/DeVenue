@@ -1,8 +1,15 @@
 package com.kh.DeVenue.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EvalProjectList;
+import com.kh.DeVenue.member.model.vo.FCeval;
+import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
+import com.kh.DeVenue.member.model.vo.FindClientDetail;
+import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
@@ -22,18 +29,22 @@ public interface MemberService {
 
 	int getListCount();
 
-	ArrayList<FindClient> selectList(PageInfo pi);
+//	ArrayList<FindClient> selectList(PageInfo pi);
+	ArrayList<FindClient> selectList();
 
 	int insertPartInfo(PartInfo partInfo);
 
+	FCprojectHistory selectProjectHistory(Integer cId);
 
+	int getCPevalCount(Integer cId);
 
+	ArrayList<CPeval> selectCPeval(Integer cId);
 
-	
+	FCeval getFCeval(Integer cId);
 
+	ArrayList<EvalProjectList> getClientInfo(Integer cId);
 
+	ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id);
 
-	
-
-	FindClient selectClientDetail(Integer cId);
+	FindClientDetail selectClientDetail(Integer cId);
 }

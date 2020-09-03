@@ -1,10 +1,9 @@
 package com.kh.DeVenue.member.controller;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.service.MemberService;
+import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EvalProjectList;
+import com.kh.DeVenue.member.model.vo.FCeval;
+import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
+import com.kh.DeVenue.member.model.vo.FindClientDetail;
+import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
+
 import static com.kh.DeVenue.common.Pagination.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
@@ -187,23 +193,44 @@ public class MemberController {
 	
 
 	// 클라이언트 찾기
+//	@RequestMapping(value="clientList.do")
+//	public ModelAndView clientList(ModelAndView mv,
+//			@RequestParam(value="page",required=false) Integer page) {
+//		
+//		int currentPage=1;
+//		if(page!=null) {
+//			currentPage=page;
+//		}
+//		
+//		int listCount=mService.getListCount();
+//		System.out.println("listcount : " + listCount);
+//				
+//		PageInfo pi=new PageInfo(currentPage, listCount);
+//		
+//		ArrayList<FindClient> list=mService.selectList(pi);
+//		System.out.println("list : " + list);
+//		
+//		if(list != null) {
+//			mv.addObject("list", list);
+//			mv.addObject("pi", pi);
+//			mv.setViewName("findMember/findClient");
+//		}else {
+//			throw new MemberException("게시글 전체 조회 실패!");
+//		}
+//		
+//		return mv;
+//	}
+	
 	@RequestMapping(value="clientList.do")
-	public ModelAndView boardList(ModelAndView mv,@RequestParam(value="page",required=false) Integer page) {
-
-		int currentPage=1;
-		if(page!=null) {
-			currentPage=page;
-		}
-		
+	public ModelAndView clientList(ModelAndView mv) {		
 		int listCount=mService.getListCount();
+		System.out.println("listcount : " + listCount);
 		
-		PageInfo pi=new PageInfo(currentPage, listCount);
-		
-		ArrayList<FindClient> list=mService.selectList(pi);
+		ArrayList<FindClient> list=mService.selectList();
+		System.out.println("list : " + list);
 		
 		if(list != null) {
 			mv.addObject("list", list);
-			mv.addObject("pi", pi);
 			mv.setViewName("findMember/findClient");
 		}else {
 			throw new MemberException("게시글 전체 조회 실패!");
@@ -212,17 +239,31 @@ public class MemberController {
 		return mv;
 	}
 	
-
+//	@RequestMapping(value="cDetail.do")
+//	public ModelAndView clientDetail(ModelAndView mv, Integer cId,
+//					@RequestParam(value="page") Integer page) {
+//		int currentPage=page;
+//		
+//		FindClient fc=mService.selectClientDetail(cId);
+//		if(fc!=null) {
+//			mv.addObject("fc", fc)
+//			.addObject("currentPage", currentPage)
+//			.setViewName("findMember/findClientDetail");
+//		}else {
+//			throw new MemberException("게시글 조회 실패!");
+//		}
+//		
+//		return mv;
+//	}
+	
 	@RequestMapping(value="cDetail.do")
-	public ModelAndView clientDetail(ModelAndView mv, Integer cId,
-					@RequestParam(value="page") Integer page) {
-		int currentPage=page;
+	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {
+		FindClientDetail fc=mService.selectClientDetail(cId);
+		System.out.println("fc : " + fc);
 		
-		FindClient fc=mService.selectClientDetail(cId);
 		if(fc!=null) {
 			mv.addObject("fc", fc)
-			.addObject("currentPage", currentPage)
-			.setViewName("board/boardDetailView");
+			.setViewName("findMember/findClientDetail");
 		}else {
 			throw new MemberException("게시글 조회 실패!");
 		}
@@ -230,6 +271,67 @@ public class MemberController {
 		return mv;
 	}
 	
+	@RequestMapping(value="cProjectHistory.do")
+	public ModelAndView projectHistory(ModelAndView mv, Integer cId) {
+		FCprojectHistory projectHistory = mService.selectProjectHistory(cId);
+		System.out.println("projectHistory : " + projectHistory);
+		
+		if(projectHistory!=null) {
+			mv.addObject("ph", projectHistory)
+			.setViewName("findMember/clientProjectHistory");
+		}else {
+			throw new MemberException("프로젝트 히스토리 조회 실패!");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="cEvalSelect.do")
+	public ModelAndView evalSelect(ModelAndView mv, Integer cId) {
+		// 페이지네이션 필요
+		
+		int cpEvalCount = mService.getCPevalCount(cId);
+		System.out.println("평가 총 개수 : " + cpEvalCount);
+		
+		ArrayList<CPeval> cpEval = mService.selectCPeval(cId);	// 파트너스 평가 리스트
+		System.out.println("cpEval : " + cpEval);
+		
+		FCeval fcEval = mService.getFCeval(cId);	// 클라이언트 정보
+		
+		if(cpEval!=null) {
+			mv.addObject("cp", cpEval)	// 파트너스 평가 리스트
+			.addObject("fc", fcEval)	// 클라이언트 정보
+			.setViewName("findMember/clientComment");
+		}
+		
+		return mv;
+	}
+	
+	// 클라이언트 평가등록 페이지
+	@RequestMapping(value="cEvalInsert.do")
+	public ModelAndView evalInsert(ModelAndView mv, Integer cId, Integer pId) {
+		ArrayList<EvalProjectList> epList = mService.getClientInfo(cId);
+		System.out.println("epList" + epList);
+		
+		// 로그인한 유저의 memId가 partnersId와 일치하지 않는다면 에러처리
+		HashMap id=new HashMap();
+		id.put("pId", pId);
+		id.put("cId", cId);
+		
+		ArrayList<MatchingPartnersList> mpList = mService.getMatchingPartners(id);
+		System.out.println("매칭파트너 리스트 : "+ mpList);
+		
+		if(mpList!=null) {
 
-
+			mv.addObject("epList", epList)
+			.setViewName("findMember/clientInsertComment");
+		}
+		
+		
+//		mv.addObject("epList", epList)
+//		.addObject("mpList", mpList)
+//		.setViewName("findMember/clientInsertComment");
+		
+		return mv;
+	}
 }
