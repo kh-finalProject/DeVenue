@@ -217,6 +217,116 @@
 
 	</resultMap>
 	
+	<resultMap type="Like" id="likeResultSet">
+	
+		<id property="proLId" column="PRO_LID"/>
+		
+		<association property="partner" javaType="Member">
+			<id property="memId" column="MEM_ID"/>
+			<result property="memNick" column="MEM_NICK"/>
+			<result property="memEmail" column="MEM_EMAIL"/>
+		</association>
+		
+		<association property="pList" javaType="ProjectList">
+			<id property="id" column="ID"/>
+			<result property="mCategory" column="MCATEGORY"/>
+			<result property="dCategory" column="DCATEGORY"/>
+			<result property="workType" column="WORKTYPE"/>
+			<result property="identify" column="IDENTIFY"/>
+			
+			<association property="project" javaType="Project">
+				<result property="proName" column="NAME"/>
+				<result property="proDuration" column="DURATION"/>
+				<result property="proSummary" column="SUMMARY"/>
+				<result property="proPayment" column="PAYMENT"/>
+				<result property="proLocation" column="LOCATION"/>
+				<result property="proRecruit" column="RECRUIT"/>
+				<result property="proCreateDate" column="CDATE"/>
+			</association>
+			
+		</association>
+	
+	</resultMap>
+	
+	<resultMap type="Portfolio" id="portfolioResultSet">
+		<id property="portId" column="PORT_ID"/>
+		<result property="mCategory" column="MC_ID"/>
+		<result property="dCategory" column="DC_ID"/>
+		<result property="portName" column="PROT_NAME"/>
+		<result property="portJoin" column="PORT_JOIN"/>
+		<result property="portContent" column="PORT_CONTENT"/>
+		<result property="startDate" column="PORT_START_DATE"/>
+		<result property="endDate" column="PORT_END_DATE"/>
+		
+		<collection property="image" javaType="java.util.ArrayList" resultMap="imageResultSet"/>
+	</resultMap>
+	
+	<resultMap type="Image" id="imageResultSet">
+		<id property="imgId" column="PORT_IMG_ID"/>
+		<result property="imgContent" column="PORT_IMG_CONTENT"/>
+		
+	</resultMap>
+	
+	<resultMap type="Answer" id="AnswerResultSet">
+		<id property="aaId" column="PRO_AA_ID"/>
+		<result property="aaContent" column="PRO_AA_CONTENT"/>
+		<result property="aqId" column="PRO_AQ_ID"/>
+		<result property="aqContent" column="PRO_AQ_CONTENT"/>
+		<result property="aaCDate" column="PRO_AAC_DATE"/>
+	
+	</resultMap>
+	
+	<resultMap type="ApplyPF" id="applyPFResultSet">
+		<id property="apId" column="AP_ID"/>
+		<result property="portId" column="PORT_ID"/>
+		<result property="apContent" column="AP_CONTENT"/>
+		
+		<association property="portfolio" javaType="Portfolio">
+		<result property="mCategory" column="MC_ID"/>
+		<result property="dCategory" column="DC_ID"/>
+		<result property="portName" column="PROT_NAME"/>
+		<result property="portJoin" column="PORT_JOIN"/>
+		<result property="startDate" column="PORT_START_DATE"/>
+		<result property="endDate" column="PORT_END_DATE"/>
+		</association>
+		
+	</resultMap>
+	
+	<resultMap type="Application" id="applyResultSet">
+		<id property="aId" column="PRO_AID"/>
+		<result property="aPayment" column="PRO_APAYMENT"/>
+		<result property="aDuration" column="PRO_ADURATION"/>
+		<result property="aContent" column="PRO_ACONTENT"/>
+		<result property="originalResume" column="PRO_ARESUME"/>
+		<result property="reNameResume" column="PRO_REARESUME"/>
+		<result property="applyDate" column="PRO_APPLY_DATE"/>
+		<result property="saveStatus" column="PRO_ASAVE_STATUS"/>
+		<result property="status" column="PRO_ASTATUS"/>
+			
+		<association property="pList" javaType="ProjectList">
+			<id property="id" column="ID"/>
+			<result property="mCategory" column="MCATEGORY"/>
+			<result property="dCategory" column="DCATEGORY"/>
+			<result property="workType" column="WORKTYPE"/>
+			<result property="identify" column="IDENTIFY"/>
+			
+			<association property="project" javaType="Project">
+				<result property="proName" column="NAME"/>
+				<result property="proDuration" column="DURATION"/>
+				<result property="proSummary" column="SUMMARY"/>
+				<result property="proPayment" column="PAYMENT"/>
+				<result property="proLocation" column="LOCATION"/>
+				<result property="proRecruit" column="RECRUIT"/>
+				<result property="proCreateDate" column="CDATE"/>
+			</association>
+			
+		</association>
+		
+		<collection property="portfolio" javaType="java.util.ArrayList" resultMap="applyPFResultSet"/>
+		<collection property="answer" javaType="java.util.ArrayList" resultMap="AnswerResultSet" />
+	
+	</resultMap>
+	
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO PROJECT VALUES(
 			SEQ_PRO_ID.NEXTVAL
@@ -335,6 +445,7 @@
 		LEFT JOIN P_TEC PT ON (P.ID=PT.PRO_ID)
 		LEFT JOIN TECH T ON (PT.T_ID=T.T_ID)
 		WHERE P.ID=#{id}
+		ORDER BY PRO_AQ_ID
 	</select>
 	
 	<select id="getProjectNumber" parameterType="int" resultMap="pNumberResultSet">
@@ -435,9 +546,266 @@
 		UPDATE P_REPLY SET
 		PRO_RANSWER='Y'
 		WHERE PRO_RID=#{parentRId}
-
 	</update>
+	
+	<select id="checkLikeNum" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+        FROM P_LIKE
+        WHERE PRO_ID=#{pId} AND MEM_ID=#{memId}
+	</select>
+	
+	<insert id="addLikeProject">
+		INSERT INTO P_LIKE VALUES
+		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
+	</insert>
+	
+	<select id="getLikeCount" parameterType="int" resultType="_int">
+		SELECT COUNT(*)
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		WHERE L.MEM_ID=#{memId}
+	</select>
+	
+	<select id="getLikeList" parameterType="int" resultMap="likeResultSet">
+		SELECT L.*,P.*,M.MEM_NICK,M.MEM_EMAIL
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
+		WHERE L.MEM_ID=#{memId}
+	
+	</select>
+	
+	<delete id="deleteLikeProject" parameterType="int">
+		DELETE FROM P_LIKE
+		WHERE PRO_LID=#{lId}
+	</delete>
+	
+	<select id="selectPortfolio" parameterType="int" resultMap="portfolioResultSet">
+		SELECT PF.*, F.MEM_ID, PORT_IMG_ID,PORT_IMG_CONTENT,PORT_IMG_PATH
+		FROM PORTFOLIO PF
+		LEFT JOIN PORT_IMG I ON (PF.PORT_ID=I.PORT_ID)
+		LEFT JOIN PROFILE F ON (PF.PROFILE_ID=F.PROFILE_ID)
+		LEFT JOIN MEMBER M ON (F.MEM_ID=M.MEM_ID)
+		WHERE F.MEM_ID=#{memId}
+	 </select>
 
+	<select id="findPortfolio" parameterType="hashmap" resultMap="portfolioResultSet">
+	SELECT PF.*, F.MEM_ID, PORT_IMG_ID,PORT_IMG_CONTENT
+	FROM PORTFOLIO PF
+	LEFT JOIN PORT_IMG I ON (PF.PORT_ID=I.PORT_ID)
+	LEFT JOIN PROFILE F ON (PF.PROFILE_ID=F.PROFILE_ID)
+	LEFT JOIN MEMBER M ON (F.MEM_ID=M.MEM_ID)
+	
+	<where>
+	<if test="memId !=null">
+	AND F.MEM_ID=#{memId}
+	</if>
+	
+	<if test="mCate!=''">
+	<choose>
+	<when test="mCate='M3'">
+	AND MC_ID IN('MC1','MC2')
+	</when>
+	<otherwise>
+	AND MC_ID=#{mCate}
+	</otherwise>
+	</choose>
+	</if>
+	
+	<if test="dCate!=''">
+	AND DC_ID=#{dCate}
+	</if>
+	</where>
+	
+	</select>
+	
+	<insert id="insertApplication" parameterType="Application">
+	
+	INSERT INTO P_APPLY VALUES(
+		SEQ_APPLY.NEXTVAL,#{partner.memId},#{pId},#{aPayment},#{aDuration},#{aContent},#{originalResume},
+		#{reNameResume},SYSDATE,'N','0')
+	
+	</insert>
+	
+	<insert id="insertApplyAnswer" parameterType="Answer">
+	
+	<selectKey resultType="int" keyProperty="aaId" order="BEFORE">
+		SELECT NVL(MAX(PRO_AA_ID),0)+1 FROM P_ANSWER
+	</selectKey>
+	
+	INSERT
+	INTO P_ANSWER VALUES 
+	(#{aaId},#{aaContent},SYSDATE,SEQ_APPLY.CURRVAL,#{aqId})
+	</insert>
+	
+	<insert id="insertApplypofol" parameterType="ApplyPF">
+	
+	<selectKey resultType="int" keyProperty="apId" order="BEFORE">
+		SELECT NVL(MAX(AP_ID),0)+1 FROM PORT_APPLY
+	</selectKey>
 
+	INSERT 
+	INTO PORT_APPLY VALUES(#{apId},SEQ_APPLY.CURRVAL,#{portId},#{apContent})
+	</insert>
+	
+	<select id="getApplyCount" parameterType="_int" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_APPLY 
+	WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='N' AND PRO_ASTATUS='0'
+	</select>
+	
+	<select id="selectApplyProject" parameterType="_int" resultMap="applyResultSet">
+		SELECT A.*,P.*,
+		PRO_AA_ID,PRO_AA_CONTENT,PRO_AAC_DATE,
+		W.PRO_AQ_ID AS "PRO_AQ_ID", PRO_AQ_CONTENT,
+		PA.AP_ID AS "AP_ID",PA.PORT_ID AS "PORT_ID",AP_CONTENT,
+		MC_ID,DC_ID,PROT_NAME,PORT_JOIN,PORT_START_DATE,PORT_END_DATE
+		FROM P_APPLY A
+		LEFT JOIN PROJECTLIST_VIEW P ON (A.PRO_ID=P.ID)
+		LEFT JOIN P_ANSWER W ON (W.PRO_AID=A.PRO_AID)
+		LEFT JOIN P_QUESTION Q ON (W.PRO_AQ_ID=Q.PRO_AQ_ID)
+		LEFT JOIN PORT_APPLY PA ON (PA.PRO_AID=A.PRO_AID)
+		LEFT JOIN PORTFOLIO F ON (PA.PORT_ID=F.PORT_ID)
+		WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='N' AND PRO_ASTATUS='0'
+		ORDER BY PRO_AID DESC
+	</select>
+	
+	<select id="getTempSaveNum" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+		FROM P_APPLY 
+		WHERE MEM_PID=#{memId} AND PRO_ID=#{pId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS='0'
+	</select>
+	
+	<insert id="insertTempApplication" parameterType="hashmap">
+	
+		INSERT INTO P_APPLY VALUES(
+		SEQ_APPLY.NEXTVAL,
+		#{memId},
+		#{pId},
+		#{aPayment},
+		#{aDuration},
+		#{aContent},
+		#{originalResume},
+		#{reNameResume},
+		SYSDATE,'Y','0')
+	
+	</insert>
+	
+	<select id="getTempId" parameterType="hashmap" resultType="_int">
+		SELECT PRO_AID
+		FROM P_APPLY 
+		WHERE MEM_PID=#{memId} AND PRO_ID=#{pId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS='0'
+	</select>
+	
+	<update id="updateTempApplication" parameterType="hashmap"> 
+		UPDATE P_APPLY
+		SET PRO_APAYMENT=#{aPayment},
+		PRO_ADURATION=#{aDuration},
+		PRO_ACONTENT=#{aContent},
+		PRO_ARESUME=#{originalResume},
+		PRO_REARESUME=#{reNameResume}
+		WHERE PRO_AID =#{aId}
+	</update>
+	
+	<select id="isAnswerExist" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+		FROM P_ANSWER
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+	</select>
+	
+	<update id="updateTempAnswer" parameterType="hashmap">
+		UPDATE P_ANSWER
+		SET PRO_AA_CONTENT=#{answer.aaContent},
+		PRO_AAC_DATE=SYSDATE
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+	</update>
+	
+	<select id="isPofoExist" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+		FROM PORT_APPLY
+		WHERE PRO_AID=#{aId} 
+	</select>
+	
+	<delete id="deleteExistPofo" parameterType="hashmap">
+		DELETE PORT_APPLY
+		WHERE PRO_AID=#{aId}
+	</delete>
+	
+	<insert id="insertTempAnswer" parameterType="Answer">
+	
+	<selectKey resultType="int" keyProperty="aaId" order="BEFORE">
+		SELECT NVL(MAX(PRO_AA_ID),0)+1 FROM P_ANSWER
+	</selectKey>
+	
+	INSERT
+	INTO P_ANSWER VALUES 
+	(#{aaId},#{aaContent},SYSDATE,#{aId},#{aqId})
+	
+	</insert>
+	
+	
+	<insert id="insertTempPofo" parameterType="ApplyPF">
+	
+	<selectKey resultType="int" keyProperty="apId" order="BEFORE">
+		SELECT NVL(MAX(AP_ID),0)+1 FROM PORT_APPLY
+	</selectKey>
+
+	INSERT 
+	INTO PORT_APPLY VALUES(#{apId},#{proAId},#{portId},#{apContent})
+	</insert>
+	
+	<select id="selectTempResume" parameterType="_int" resultMap="applyResultSet">
+	SELECT *
+	FROM P_APPLY
+	WHERE PRO_AID=#{aId}
+	</select>
+	
+	<select id="getTempApplyCount" parameterType="_int" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_APPLY 
+	WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS='0'
+	</select>
+	
+	<select id="selectTempApplyProject" parameterType="_int" resultMap="applyResultSet">
+		SELECT A.*,P.*
+		FROM P_APPLY A
+		LEFT JOIN PROJECTLIST_VIEW P ON (A.PRO_ID=P.ID)
+		WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS='0'
+	</select>
+	
+	<select id="selectTempApplication" parameterType="_int" resultMap="applyResultSet">
+		SELECT A.*,P.*,
+		PRO_AA_ID,PRO_AA_CONTENT,PRO_AAC_DATE,
+		W.PRO_AQ_ID AS "PRO_AQ_ID", PRO_AQ_CONTENT,
+		PA.AP_ID AS "AP_ID",PA.PORT_ID AS "PORT_ID",AP_CONTENT,
+		MC_ID,DC_ID,PROT_NAME,PORT_JOIN,PORT_START_DATE,PORT_END_DATE
+		FROM P_APPLY A
+		LEFT JOIN PROJECTLIST_VIEW P ON (A.PRO_ID=P.ID)
+		LEFT JOIN P_ANSWER W ON (W.PRO_AID=A.PRO_AID)
+		LEFT JOIN P_QUESTION Q ON (W.PRO_AQ_ID=Q.PRO_AQ_ID)
+		LEFT JOIN PORT_APPLY PA ON (PA.PRO_AID=A.PRO_AID)
+		LEFT JOIN PORTFOLIO F ON (PA.PORT_ID=F.PORT_ID)
+		WHERE PRO_AID=#{aId}
+		ORDER BY PRO_AID DESC
+	</select>
+	
+	<update id="deleteTempApplication" parameterType="Application">
+		UPDATE P_APPLY
+		SET PRO_ASTATUS='3'
+		WHERE MEM_PID=#{partner.memId} AND PRO_ID=#{pId} AND PRO_ASAVE_STATUS='Y' 
+	</update>
+	
+	<update id="cancelThisApply" parameterType="_int">
+		UPDATE P_APPLY
+		SET PRO_ASTATUS='3'
+		WHERE PRO_AID=#{aId}
+	</update>
+	
+	<update id="cancelTempApply" parameterType="_int">
+		UPDATE P_APPLY
+		SET PRO_ASTATUS='3'
+		WHERE PRO_AID=#{aId}
+	</update>
+	
 
 </mapper>

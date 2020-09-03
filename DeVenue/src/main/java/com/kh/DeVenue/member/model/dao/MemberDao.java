@@ -1,5 +1,6 @@
 package com.kh.DeVenue.member.model.dao;
 
+
 import java.util.ArrayList;
 
 import org.apache.ibatis.session.RowBounds;
@@ -66,5 +67,8 @@ public class MemberDao {
 	}
 
 
+	public FindClient selectClientDetail(Integer cId) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectClientDetail", cId);
+	}
 
 }

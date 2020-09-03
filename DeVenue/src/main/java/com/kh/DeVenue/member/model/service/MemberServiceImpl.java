@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.selectMember(m);
 	}
 
+	
 	@Override
 	public int insertMember(Member m) {
 		
@@ -50,13 +51,14 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	
-
 	public int getListCount() {
+		
 		return mDao.getListCount();
 	}
 
 	@Override
 	public ArrayList<FindClient> selectList(PageInfo pi) {
+
 		return mDao.selectList(pi);
 	}
 
@@ -66,6 +68,10 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.insertPartInfo(partInfo);
 	}
 
+	public FindClient selectClientDetail(Integer cId) {
+		
+		return mDao.selectClientDetail(cId);
+	}
 
 
 }

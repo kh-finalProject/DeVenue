@@ -35,4 +35,5 @@ public interface MemberService {
 
 	
 
+	FindClient selectClientDetail(Integer cId);
 }

@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.service.MemberService;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
+import static com.kh.DeVenue.common.Pagination.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.service.MyPageService;
@@ -63,6 +63,8 @@ public class MemberController {
 		
 		String memEmail = request.getParameter("email");
 		String memPwd = request.getParameter("pwd");
+
+
 		Member m = new Member(memEmail,memPwd);
 //		System.out.println(m);
 		Member loginUser = mService.loginUserMember(m);
@@ -74,6 +76,7 @@ public class MemberController {
 		if(loginUser != null) { // 로그인 할 멤버 객체가 조회 되었을 시
 //			if(logincheck != null) { // true이냐(로그인 유지 선택시)
 //			}else { // 로그인 유지 체크 안할시
+
 //				
 //			}
 			
@@ -129,6 +132,7 @@ public class MemberController {
 //			return mv;
 			
 		}else { // 로그인 실패시
+
 			// 아이디랑 비밀번호 잘못 입력했다는 창
 //			if(memEmail.equals(loginUser.getMemEmail())) {
 //				
@@ -172,18 +176,19 @@ public class MemberController {
 	
 	// 로그 아웃
 	@RequestMapping(value="logout.do")
+
 	public String logout(HttpSession session) {
 		
 		session.invalidate();
-		
+
 		return "common/mainPage";
-		
 	}
 	
+
 	// 클라이언트 찾기
 	@RequestMapping(value="clientList.do")
-	public ModelAndView boardList(ModelAndView mv,
-			@RequestParam(value="page",required=false) Integer page) {
+	public ModelAndView boardList(ModelAndView mv,@RequestParam(value="page",required=false) Integer page) {
+
 		int currentPage=1;
 		if(page!=null) {
 			currentPage=page;
@@ -198,7 +203,7 @@ public class MemberController {
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
-			mv.setViewName("board/boardListView");
+			mv.setViewName("findMember/findClient");
 		}else {
 			throw new MemberException("게시글 전체 조회 실패!");
 		}
@@ -206,5 +211,24 @@ public class MemberController {
 		return mv;
 	}
 	
+
+	@RequestMapping(value="cDetail.do")
+	public ModelAndView clientDetail(ModelAndView mv, Integer cId,
+					@RequestParam(value="page") Integer page) {
+		int currentPage=page;
+		
+		FindClient fc=mService.selectClientDetail(cId);
+		if(fc!=null) {
+			mv.addObject("fc", fc)
+			.addObject("currentPage", currentPage)
+			.setViewName("board/boardDetailView");
+		}else {
+			throw new MemberException("게시글 조회 실패!");
+		}
+		
+		return mv;
+	}
+	
+
 
 }
