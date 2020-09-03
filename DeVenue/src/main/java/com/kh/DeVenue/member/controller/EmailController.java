@@ -28,6 +28,7 @@ public class EmailController {
 	// 이것이 오류 -  javax.servlet.servletexception: 서블릿 [appservlet]을(를) 위한 servlet.init() 호출이 예외를 발생시켰습니다.
  @Autowired private JavaMailSender mailSender;
  @Autowired private MemberService mService;
+ 
 	
  	// 페이지로 이동
 	@RequestMapping(value = "go.do")

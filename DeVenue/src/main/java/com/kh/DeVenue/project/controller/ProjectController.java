@@ -1080,6 +1080,7 @@ ProjectService pService;
 		mv.addObject("page", page);
 		mv.setViewName("redirect:selectTempApplicationList.do");
 		
+		
 		if(result>0) {
 			
 			return mv;
