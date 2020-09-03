@@ -215,14 +215,15 @@ hr {
             <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
             
            <c:forEach var="b" items="${list }"> 
-                <div class="userBoard">
+                    <!-- 클릭이벤트 넣어야함 -->
+                    <c:url var="cDetail" value="cDetail.do">
+                    	<c:param name="cId" value="${b.memId }"/>
+                    	<%-- <c:param name="page" value="${pi.currentPage }"/> --%>
+                    </c:url>
+                <div class="userBoard" onclick="location.href='${cDetail }'" style="cursor:pointer;">
                     &emsp;
                     <input type="hidden" value="${b.memId }">
                     
-                    <c:url var="cDetail" value="cDetail.do">
-                    	<c:param name="cId" value="${b.memId }"/>
-                    	<c:param name="page" value="${pi.currentPage }"/>
-                    </c:url>
                     
                     <ul style="list-style: none;">
                         <li>

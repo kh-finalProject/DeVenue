@@ -22,12 +22,6 @@ public class HomeController {
 	@RequestMapping(value = "home.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 
-<<<<<<< HEAD
-
-		
-
-=======
->>>>>>> refs/remotes/origin/master
 		return "common/mainPage";
 //		return "member/login";
 //		return "common/pSideMenubar";
