@@ -34,8 +34,14 @@
 		<br>
 		<div class="partnes-img"
 			style="width: 90%; height: 150px; margin: auto;">
-			<img src="${contextPath }/resources/images/admin.png"
-				style="width: 100%; height: 100%; border-radius: 50px 50px 50px 50px;">
+			<!-- 클라이언트시 이미지 -->
+			<c:if test="${loginUser.userType eq 'UT3'}">
+				<img src="${contextPath }/resources/images/client.png" style="width: 100%; height: 100%; border-radius: 50px 50px 50px 50px;">
+			</c:if>
+			<!-- 파트너스 이미지 -->
+			<c:if test="${loginUser.userType eq 'UT4'}">
+				<img src="${contextPath }/resources/images/partners.png" style="width: 100%; height: 100%; border-radius: 50px 50px 50px 50px;">
+			</c:if>
 		</div>
 		<!-- 닉네임 -->
 		<div class="partnes-nickname"
