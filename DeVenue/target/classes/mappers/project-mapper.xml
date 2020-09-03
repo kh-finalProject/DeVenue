@@ -248,7 +248,7 @@
 	
 	</resultMap>
 	
-	<resultMap type="Portfolio" id="portfolioResultSet">
+	<resultMap type="Pofo" id="portfolioResultSet">
 		<id property="portId" column="PORT_ID"/>
 		<result property="mCategory" column="MC_ID"/>
 		<result property="dCategory" column="DC_ID"/>
@@ -281,7 +281,7 @@
 		<result property="portId" column="PORT_ID"/>
 		<result property="apContent" column="AP_CONTENT"/>
 		
-		<association property="portfolio" javaType="Portfolio">
+		<association property="portfolio" javaType="Pofo">
 		<result property="mCategory" column="MC_ID"/>
 		<result property="dCategory" column="DC_ID"/>
 		<result property="portName" column="PROT_NAME"/>

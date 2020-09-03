@@ -25,6 +25,7 @@ import com.kh.DeVenue.myPage.model.service.MyPageService;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 
 
+
 @Controller
 public class MemberController {
 	

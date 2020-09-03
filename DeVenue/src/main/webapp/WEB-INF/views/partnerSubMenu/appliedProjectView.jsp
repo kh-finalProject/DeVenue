@@ -393,7 +393,8 @@
                                 <div class="col-md-3">
                                   <div class="applyCancel" onclick="cancelation(${apply.aId});"><i class="fas fa-times float-right">삭제</i></div>
                                   <button type="button" class="btn btn-info btn-block" onclick="location.href='${pdetail}'">상세보기</button>
-                                  <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal" data-target="#applicationModal">지원서보기</button>
+                                  <c:set var="aId" value="${apply.aId}"/>
+                                  <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal" data-target="#${aId}Modal">지원서보기</button>
                                   <button type="button" class="btn btn-danger btn-block" onclick="cancelation(${apply.aId});">지원취소</button>
                                 </div>
                               </div>
@@ -405,7 +406,7 @@
                 
           <!--지원서 모달 시작-->
           <!-- Modal -->
-          <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="${apply.aId}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -430,7 +431,7 @@
                                         <span class="input-group-text" id="basic-addon1"><i
                                                 class="fas fa-won-sign"></i></span>
                                     </div>
-                                    <input id="nego_price_input" type="text" class="form-control"
+                                    <input type="text" class="form-control"
                                          aria-label="Username" readonly value="${apply.aPayment}"
                                         aria-describedby="basic-addon1">
                                    
@@ -447,7 +448,7 @@
                             <h5>지원 기간</h5>
                            
                             <div id="calendarDisplay">
-                                <input id="duration" type="text" class="form-control" readonly value="${apply.aDuration}">
+                                <input type="text" class="form-control" readonly value="${apply.aDuration}">
                             </div>
                           
                         </div>

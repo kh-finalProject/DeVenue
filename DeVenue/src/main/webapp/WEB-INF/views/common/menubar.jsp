@@ -187,35 +187,62 @@ i {
 	<c:set var="contextPath"
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
+	<!--Top Button-->
+	<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top"
+		role="button"><i class="fas fa-chevron-up" style="margin: 0"></i></a>
+	<script>
+		$(document).ready(function() {
+			$(window).scroll(function() {
+				if ($(this).scrollTop() > 10) {
+					$('#back-to-top').css("display", "block")
+
+				} else {
+					$('#back-to-top').css("display", "none")
+
+				}
+			});
+			// scroll body to 0px on click
+			$('#back-to-top').click(function() {
+				$('body,html').animate({
+					scrollTop : 0
+				}, 400);
+				return false;
+			});
+		});
+	</script>
+
 	<!--navigation bar 1-->
-    <nav class="navbar navbar-expand-lg" style="background-color: black;">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain"
-            aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+	<nav class="navbar navbar-expand-lg" style="background-color: black;">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarMain" aria-controls="navbarMain"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-        <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#"><img src="logo.png" height="80px"
-                            style="padding-bottom: 0;padding-top: 0;margin-top: 0;margin-bottom: 0;"><span
-                            class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트찾기</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link hvr-underline-from-center mr-2" href="#">프로젝트등록</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link hvr-underline-from-center" href="#">파트너스찾기</a>
-                </li>
-            </ul>
+		<div class="collapse navbar-collapse" id="navbarMain">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link" href="#"><img
+						src="${contextPath }/resources/images/logo.png" height="80px"
+						style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;"><span
+						class="sr-only">(current)</span></a></li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do">프로젝트찾기</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>
+					<div class="dropdown-content">
+						<a href="clientList.do ">클라이언트 찾기</a>
+						<a href="#">파트너스 찾기</a>
+					</div>
+		        </li>
+			</ul>
 
-            <ul class="navbar-nav ml-auto">
-                <ul class="navbar-nav ml-auto">
+			<ul class="navbar-nav ml-auto">
 				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
 				<c:if test="${empty sessionScope.loginUser }">
 					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
@@ -247,7 +274,7 @@ i {
 							<c:out value="${loginUser.userType }사용자"/>
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    <img src="${contextPath }/resources/images/admin.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
 							  </button>
 							  <div class="dropdown-menu">
 							    <a href="profile.do" class="dropdown-item">profile</a>
@@ -260,21 +287,23 @@ i {
 					</c:if>
 				</c:if>
 				</div>
-            </ul>
-        </div>
-    </nav>
+			</ul>
+		</div>
+			</ul>
+		</div>
+	</nav>
 
-    <script>
-        $(function () {
-            $("#navbarMain .nav-link").mouseenter(function () {
-                $(this).css("font-size", "105%");
-            })
+	<script>
+		$(function() {
+			$("#navbarMain .nav-link").mouseenter(function() {
+				$(this).css("font-size", "105%");
+			})
 
-            $("#navbarMain .nav-link").mouseleave(function () {
-                $(this).css("font-size", "100%");
-            })
-        })
-    </script>
+			$("#navbarMain .nav-link").mouseleave(function() {
+				$(this).css("font-size", "100%");
+			})
+		})
+	</script>
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
