@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatMapper">
+	<resultMap type="ChatRel" id="chatRelResultMap">
+		<id property="chatId" column="CHAT_ID"/>
+		<result property="fromId" column="FROM_ID"/>
+		<result property="toId" column="TO_ID"/>
+		<result property="roomId" column="ROOM_ID"/>
+		<result property="chatStatus" column="CHAT_STATUS"/>
+	</resultMap>
+	<resultMap type="ChatRoom" id="chatRoomResultSet">
+		<id property="roomId" column="ROOM_ID"/>
+		<result property="roomName" column="ROOM_NAME"/>
+		<result property="roomStatus" column="ROOM_STATUS"/>
+	</resultMap>
+	<resultMap type="Message" id="messageResultSet">
+		<id property="msgId" column="MESSAGE_ID"/>
+		<result property="roomId" column="ROOM_ID"/>
+		<result property="fromId" column="FROM_ID"/>
+		<result property="chatContent" column="CHAT_CONTENT"/>
+		<result property="originFileName" column="ORIGIN_FILENAME"/>
+		<result property="renameFileName" column="RENAME_FILENAME"/>
+		<result property="read" column="READ"/>
+		<result property="msgCreaetDate" column="MSG_CREATE_DATE"/>
+	</resultMap>
+	<resultMap type="ChatSet" id="chatSetResultSet">
+		<id property="csId" column="CS_ID"/>
+		<result property="introContent" column="INTRO_CONTENT"/>
+		<result property="outTimeContent" column="OUTTIME_CONTENT"/>
+		<result property="possibleTime_start" column="POSSIBLE_TIME_START"/>
+		<result property="possibleTime_end" column="POSSIBLE_TIME_END"/>
+		<result property="monday" column="MONDAY"/>
+		<result property="tuesday" column="TUESDAY"/>
+		<result property="wednesday" column="WEDNESDAY"/>
+		<result property="thursday" column="THURSDAY"/>
+		<result property="friday" column="FRIDAY"/>
+		<result property="saturday" column="SATURDAY"/>
+		<result property="sunday" column="SUNDAY"/>
+	</resultMap>
+	<resultMap type="MemChatSet" id="mChatSetResultSet">
+		<id property="mId" column="MEM_ID"/>
+		<result property="is_transChat" column="IS_TRANS_CHAT"/>
+		<result property="is_showPastChat" column="IS_SHOWPASTCHAT"/>
+	</resultMap>
+	<resultMap type="Ask" id="askResultSet">
+		<id property="askId" column="ASK_ID"/>
+		<result property="askTitle" column="ASK_TITLE"/>
+		<result property="askContent" column="ASK_CONTENT"/>
+		<result property="askKeyword" column="ASK_KEYWORD"/>
+		<result property="askCreateDate" column="ASK_CREATE_DATE"/>
+		<result property="askModifyDate" column="ASK_MODIFY_DATE"/>
+	</resultMap>
+	<resultMap type="Member2" id="memberResultSet">
+		<id property="mId" column="MEM_ID"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="mEmail" column="MEM_EMAIL"/>
+		<result property="mNick" column="MEM_NICK"/>
+		<result property="mName" column="MEM_NAME"/>
+		<result property="mPwd" column="MEM_PWD"/>
+		<result property="is_ad" column="IS_ADVERTISE"/>
+	</resultMap>
+	
+	<resultMap type="ChatList" id="chatListResultSet">
+		<result property="roomId" column="ROOM_ID"/>
+		<result property="roomName" column="ROOM_NAME"/>
+		<result property="fromId" column="FROM_ID"/>
+		<result property="toId" column="TO_ID"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="proImgName" column="PROFILE_IMG"/>
+		<result property="chatContent" column="CHAT_CONTENT"/>
+		<result property="unreadCount" column="UNREADCOUNT"/>
+		<result property="finalDate" column="MSG_CREATE_DATE"/>
+	</resultMap>
+	<!-- 정식 체팅용 객체(MEMBER 테이블과 PRFILE테이블과 USERTYPE테이블 조인한 뷰) -->
+	<resultMap type="ChatUser" id="chatUserResultSet">
+		<id property="mId" column="MEM_ID"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="typeName" column="UT_NAME"/>
+		<result property="mEmail" column="MEM_EMAIL"/>
+		<result property="mNick" column="MEM_NICK"/>
+		<result property="mName" column="MEM_NAME"/>
+		<result property="is_ad" column="IS_ADVERTISE"/>
+		<result property="proImgName" column="PROFILE_IMG"/>
+	</resultMap>
+
+	<resultMap type="ChatUserInfo" id="chatUserInfoResultSet">
+		<result property="mId" column="MEM_ID"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="typeName" column="UT_NAME"/>
+		<result property="memType" column="MEM_TYPE"/>
+		<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+		<result property="mNick" column="MEM_NICK"/>
+		<result property="mName" column="MEM_NAME"/>
+		<result property="mEmail" column="MEM_EMAIL"/>
+		<result property="phone" column="PHONE"/>
+		<result property="cellPhone" column="CELLPHONE"/>
+		<result property="memTypeName" column="MEM_TYPE_NAME"/>
+		<result property="proImgName" column="PROFILE_IMG"/>
+	</resultMap>
+	<resultMap type="ProInfo" id="proInfoResultSet">
+		<result property="proId" column="PRO_ID"/>
+		<result property="clientId" column="CLIENT_ID"/>
+		<result property="partnersId" column="PARTNERS_ID"/>
+		<result property="proName" column="PRO_NAME"/>
+		<result property="proStatId" column="PRO_STA_ID"/>
+		<result property="proStatName" column="PRO_STA_NAME"/>
+		<result property="proSummary" column="PRO_SUMMARY"/>
+		<result property="proStartDate" column="PRO_START_DATE"/>
+		<result property="proEndDate" column="PRO_END_DATE"/>
+		<result property="proDuration" column="PRO_DURATION"/>
+		<result property="proWorkPlace" column="PRO_WORKPLACE"/>
+		<result property="proPayment" column="PRO_PAYMENT"/>
+	</resultMap>
+	<resultMap type="EachChatInfo" id="eachChatInfoResultSet">
+		<result property="roomId" column="ROOM_ID"/>
+		<result property="roomName" column="ROOM_NAME"/>
+		<result property="clientId" column="CLIENT_ID"/>
+		<result property="relAdminId" column="REL_ADMIN_ID"/>
+		<result property="msgFromId" column="MSG_FROM_ID"/>
+		<result property="chatContent" column="CHAT_CONTENT"/>
+		<result property="oringalFileName" column="ORIGIN_FILENAME"/>
+		<result property="renameFileName" column="RENAME_FILENAME"/>
+		<result property="read" column="READ"/>
+		<result property="msgCreateDate" column="MSG_CREATE_DATE"/>
+	</resultMap>
+	
+	<!-- 본인의 정보를 불러옴 (채팅용) -->
+	<select id="selectMe" parameterType="_int" resultMap="chatUserResultSet">
+		SELECT * FROM CHATUSER
+		WHERE MEM_ID = #{userId}
+	</select>
+	<!-- 관리자 정보 싹다 불러옴(정식 채팅 사용자 객체 버전)  -->
+	<select id="selectAllAdmins" resultMap="chatUserResultSet">
+		SELECT *
+		FROM CHATUSER
+		WHERE USER_TYPE IN ('UT1', 'UT2')
+	</select>
+	
+	<!-- 클라이언트가 새 채팅방 접속시 주관리자와의 기존 채팅방 없애는 것 -->
+	<select id="getRoomId" parameterType="_int" resultType="_int">
+		SELECT ROOM_ID FROM CHAT
+		WHERE FROM_ID = #{mId} AND TO_ID = (SELECT MEM_ID FROM MEMBER WHERE USER_TYPE='UT1')
+	</select>
+	<delete id="deleteMainAdminChatMessages" parameterType="_int">
+		DELETE FROM MESSAGE
+		WHERE ROOM_ID = #{roomId}
+	</delete>
+	<delete id="deleteMainAdminChatRels" parameterType="_int">
+		DELETE FROM CHAT
+		WHERE ROOM_ID = #{roomId}
+	</delete>
+	<delete id="deleteMainAdminChatRooms" parameterType="_int">
+		DELETE FROM CHATROOM
+		WHERE ROOM_ID = #{roomId}
+	</delete>
+	<update id="chatFkConstraintDisable" parameterType="string">
+		${value}
+	</update>
+	<update id="chatFkConstraintEnable">
+		ALTER TABLE CHAT ENABLE NOVALIDATE CONSTRAINT FK_CHATROOM_TO_CHAT_1
+	</update>
+
+	<!-- 새로운 채팅관계, 채팅방 생성 -->
+	<insert id="insertNewChatRoom" parameterType="map">
+		INSERT INTO CHATROOM
+		VALUES ((SELECT NVL(MAX(ROOM_ID),0) +1 FROM CHATROOM), #{roomName}, DEFAULT)
+	</insert>
+	<!-- 생성된 채팅방번호 불러오기 -->
+	<select id="selectChatRoomNo" parameterType="map" resultType="_int">
+		SELECT ROOM_ID
+		FROM CHATROOM
+		WHERE ROOM_NAME = #{roomName}
+		AND ROOM_STATUS = 'Y'
+	</select>
+	<insert id="insertNewChatRel" parameterType="map">
+		INSERT INTO CHAT
+		VALUES ((SELECT NVL(MAX(CHAT_ID),0) +1 FROM CHAT), #{userNo}, #{mAdminNo}, #{roomId}, DEFAULT)
+	</insert>
+	
+	<!-- 채팅 메시지 저장 -->
+	<insert id="insertTextMessage" parameterType="map">
+		INSERT INTO MESSAGE
+		VALUES ((SELECT NVL(MAX(MESSAGE_ID),0) +1 FROM MESSAGE), #{room_id}, #{from_id}, #{msg}, NULL, NULL, #{isRead}, TO_TIMESTAMP(#{time}, 'YYYY/MM/DD/HH24/MI/SS/FF4'))
+	</insert>
+	
+	<!-- 페이지 로딩시 채팅관련 정보 불러오기 -->
+	<!-- 채팅관계 모두 불러오기 -->
+	<select id="selectAllChatRels" parameterType="_int" resultMap="chatRelResultMap">
+		SELECT * FROM CHAT
+		WHERE FROM_ID = #{userId}
+	</select>
+	<!-- 참여한 채팅방 모두 불러오기 -->
+	<select id="selectAllChatRooms" parameterType="_int" resultMap="chatRoomResultSet">
+		SELECT * FROM CHATROOM
+		WHERE ROOM_ID IN 
+		(SELECT ROOM_ID
+		FROM CHAT
+		WHERE FROM_ID = #{userId})
+	</select>
+	<!-- 참여한 채팅방의 모든 메시지 가져오기 -->
+	<select id="selectAllMessages" parameterType="list" resultMap="messageResultSet">
+		SELECT * 
+		FROM MESSAGE
+		WHERE ROOM_ID IN
+		<foreach item="item" index="index" collection="list"
+		    open="(" separator="," close=")">
+		      #{item}
+		</foreach>
+		ORDER BY MSG_CREATE_DATE ASC
+	</select>
+	<!-- 채팅 설정 가져오기 -->
+	<select id="selectChatSet" resultMap="chatSetResultSet">
+		SELECT * FROM CHAT_SET
+	</select>
+	<!-- 회원별 채팅 설정 가져오기 -->
+	<select id="selectMChatSet" parameterType="_int" resultMap="mChatSetResultSet">
+		SELECT * FROM MEM_CHATSET WHERE MEM_ID = #{userId}
+	</select>
+	<!-- 마케팅 수신여부 가져오기 -->
+	<select id="selectIsAd" parameterType="_int" resultType="string">
+		SELECT IS_ADVERTISE FROM MEMBER WHERE MEM_ID = #{userId}
+	</select>
+	<!-- 챗복 테이터 불러오기 -->
+	<select id="selectAsk" resultMap="askResultSet">
+		SELECT * FROM ASK
+	</select>
+	
+	<!-- 마케팅 수신여부 업데이트 -->
+	<update id="updateIsAdvertise" parameterType="map">
+		UPDATE MEMBER
+		SET IS_ADVERTISE = #{isAd}
+		WHERE MEM_ID = #{userId}
+	</update>
+	<!-- 번역 표시 여부 업데이트 -->
+	<update id="updateIsMessageTran">
+		UPDATE MEM_CHATSET
+		SET IS_TRANS_CHAT = #{isMT}
+		WHERE MEM_ID = #{userId}
+	</update>
+	<!-- 종료된 상담 표시여부 업데이트 -->
+	<update id="updateIsCompleteSave">
+		UPDATE MEM_CHATSET
+		SET IS_SHOWPASTCHAT = #{isCS}
+		WHERE MEM_ID = #{userId}
+	</update>
+	
+	<!-- 메시지까지 삭제 -->
+	<delete id="deleteEachChatRoomM" parameterType="_int">
+		DELETE FROM MESSAGE
+		WHERE ROOM_ID = #{roomId}
+	</delete>
+	<!-- 채팅관계까지 삭제  -->
+	<delete id="deleteEachChatRoomC" parameterType="_int">
+		DELETE FROM CHAT
+		WHERE ROOM_ID = #{roomId}
+	</delete>
+	<!-- 채팅방 개별 삭제 -->
+	<delete id="deleteEachChatRoomR" parameterType="_int">
+		DELETE FROM CHATROOM
+		WHERE ROOM_ID = #{roomId}
+	</delete>
+	
+	<!-- 채팅방 검색 -->
+	<select id="searchChatRoom" parameterType="map" resultType="integer">
+		SELECT ROOM_ID 
+		FROM MESSAGE
+		WHERE 
+		CHAT_CONTENT LIKE '%'||#{searchText}||'%' 
+		AND ROOM_ID IN
+		<foreach item="item" index="index" collection="roomIdList"
+		    open="(" separator="," close=")">
+		      #{item}
+		</foreach>
+	</select>
+	
+	<!-- 파일메시지 저장 -->
+	<insert id="insertFileMessage" parameterType="map">
+		INSERT INTO MESSAGE
+		VALUES ((SELECT NVL(MAX(MESSAGE_ID),0) +1 FROM MESSAGE), #{room_id}, #{from_id}, #{text}, #{originFileName}, #{renameFileName}, #{isRead}, TO_TIMESTAMP(#{time}, 'YYYY/MM/DD/HH24/MI/SS/FF4'))
+	</insert>
+	
+	<!-- 채팅방을 열기 위해 상대방의 정보를 불러옴(관리자가 다수가 될 수 있다고 가정이 변경됨)  -->
+	<select id="getOtherUser" parameterType="map" resultMap="chatUserResultSet">
+		SELECT * 
+		FROM (       
+		SELECT * FROM CHATUSER
+		WHERE MEM_ID IN (SELECT FROM_ID FROM MESSAGE WHERE ROOM_ID = #{roomId} AND FROM_ID != #{userId}) 
+		)
+	</select>
+	
+	<!-- 채팅 평시상태일때(로그인 한 상태일 때) 안읽은 메시지 카운트 -->
+	<select id="selectAllUnReadCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM MESSAGE
+		WHERE ROOM_ID IN (SELECT ROOM_ID
+                          FROM CHAT
+                          WHERE FROM_ID = #{mId})
+	          AND (FROM_ID != #{mId} 
+	          AND READ = 'N')
+	</select>
+	
+	<!-- 채팅방에 들어가면 읽은 메시지로 처리하는 쿼리(고객입장에선 본인이 아닌, 관리자 입장에선 고객인 메시지들을 바꿈) -->
+	<update id="readMessages" parameterType="map">
+		UPDATE MESSAGE
+		SET READ = 'Y'
+		WHERE ROOM_ID = #{roomId} AND READ = 'N' 
+		<if test="chatRoomMid == null">
+			AND FROM_ID != #{userId}
+		</if>
+		<if test="chatRoomMId != null">
+			AND FROM_ID = #{chatRoomMId}
+		</if>
+	</update>
+	
+	<!-- 채팅 목록 관리 페이지 채팅방 리스트 가져오는 쿼리(검색기능 때문에 뷰 수정할지도) -->
+	<select id="selectAllChatList" resultMap="chatListResultSet">
+		SELECT * FROM CHATLIST
+	</select>
+	
+	<!-- 관리자 채팅방  참여한 모든 유저정보 가져오는 쿼리 -->
+	<select id="selectChatUserInfo" parameterType="map" resultMap="chatUserInfoResultSet">
+		SELECT * FROM CHATUSER_INFO
+		WHERE MEM_ID IN (SELECT FROM_ID FROM CHAT WHERE ROOM_ID = #{roomId})
+	</select>
+	<!-- 관리자 채팅방  상대 고객 프로젝트 정보 가져오는 쿼리 -->
+	<select id="selectProInfos" parameterType="map" resultMap="proInfoResultSet">
+		SELECT * FROM PRO_INFO
+		WHERE CLIENT_ID = #{chatRoomMId} OR PARTNERS_ID = #{chatRoomMId}
+	</select>
+	<!-- 관리자 채팅방  상대 고객 채팅방의 정보 가져오는 쿼리 -->
+	<select id="selectEachChatInfos" parameterType="map" resultMap="eachChatInfoResultSet">
+		SELECT * FROM EACHCHAT_INFO
+		WHERE ROOM_ID = #{roomId}
+	</select>
+	
+	<!-- 관리자가 채팅방들 삭제하는 쿼리 -->
+	<delete id="deleteChatRoomsM" parameterType="list">
+		DELETE FROM MESSAGE
+		WHERE ROOM_ID IN (
+        <foreach collection="list" item="item" index="index" separator=",">
+            ${item}
+        </foreach>
+    	)
+	</delete>
+	<delete id="deleteChatRoomsC" parameterType="list">
+		DELETE FROM CHAT
+		WHERE ROOM_ID IN (
+        <foreach collection="list" item="item" index="index" separator=",">
+            ${item}
+        </foreach>
+    	)
+	</delete>
+	<delete id="deleteChatRoomsCR" parameterType="list">
+		DELETE FROM CHATROOM
+		WHERE ROOM_ID IN (
+        <foreach collection="list" item="item" index="index" separator=",">
+            ${item}
+        </foreach>
+    	)
+	</delete>
+	
+	<!-- 여러채팅방에 메시지 일괄 전송(일단 일반 텍스트 메시지라고 가정) -->
+	<select id="selectPrimaryKey" resultType="_int">
+		SELECT NVL(MAX(MESSAGE_ID),0)+1 FROM MESSAGE
+	</select>
+	<insert id="insertManyMessage" parameterType="map">
+		<foreach item="item" index="index" collection="roomIdList" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+			INTO MESSAGE (MESSAGE_ID, ROOM_ID, FROM_ID, CHAT_CONTENT, ORIGIN_FILENAME, RENAME_FILENAME, READ, MSG_CREATE_DATE)
+			VALUES (#{sequence}+#{index}, #{item}, #{adminId}, #{mContent}, null, null, DEFAULT, DEFAULT)
+		</foreach>
+	</insert>
+
+	<!-- 모든 회원 조회(채팅방 없는, 관리자 제외) -->
+	<select id="selectAllChatUserInfos" resultMap="chatUserInfoResultSet">
+		SELECT * FROM CHATUSER_INFO
+		WHERE USER_TYPE NOT IN ('UT1', 'UT2')
+            AND
+            MEM_ID NOT IN (SELECT FROM_ID
+                           FROM CHAT)
+        ORDER BY MEM_ID
+	</select>
+	<!-- 마케팅 동의한 회원의 채팅방 번호들 조회 -->
+	<select id="selectAdOkChatRoomIds" resultType="integer">
+		SELECT ROOM_ID
+		FROM CHAT C
+		LEFT JOIN MEMBER M ON (M.MEM_ID = C.FROM_ID)
+		WHERE IS_ADVERTISE = 'Y'
+	</select>
+	<!-- 마케팅 동의한 회원들 정보를 조회(채팅방 없는, 관리자 제외) -->
+	<select id="selectAdOkChatUserInfos" resultMap="chatUserInfoResultSet">
+		SELECT * FROM CHATUSER_INFO
+		WHERE USER_TYPE NOT IN ('UT1', 'UT2')
+            AND
+            MEM_ID IN (SELECT MEM_ID
+                       FROM MEMBER
+                       WHERE IS_ADVERTISE = 'Y')
+            AND
+            MEM_ID NOT IN (SELECT FROM_ID
+                           FROM CHAT)
+            ORDER BY MEM_ID
+	</select>
+	
+	<!-- 검색조건에 맞는 회원이 참여한 채팅방번호 가져오기 -->
+	<select id="searchRoomIds" parameterType="map" resultType="integer">
+		SELECT ROOM_ID FROM CHAT C
+		LEFT JOIN MEMBER M ON (M.MEM_ID = C.FROM_ID)
+		WHERE USER_TYPE NOT IN ('UT1', 'UT2')
+			<if test="column2==null">
+			AND ${columnName} LIKE '%'||#{searchText}||'%'
+			</if>
+			<if test="column2!=null">
+			AND (${columnName} LIKE '%'||#{searchText}||'%' OR ${column2} LIKE '%'||#{searchText}||'%')
+			</if>
+	</select>
+	<!-- 검색조건에 맞는 회원의 정보 가져오기(채팅방에 참여되지 않은, 관리자가 아닌) -->
+	<select id="searchMems" parameterType="map" resultMap="chatUserInfoResultSet">
+		SELECT * FROM CHATUSER_INFO
+		WHERE USER_TYPE NOT IN ('UT1', 'UT2')
+            AND
+            MEM_ID NOT IN (SELECT FROM_ID
+	                       FROM CHAT)
+			<if test="column2==null">
+			AND ${columnName} LIKE '%'||#{searchText}||'%'
+			</if>
+			<if test="column2!=null">
+			AND (${columnName} LIKE '%'||#{searchText}||'%' OR ${column2} LIKE '%'||#{searchText}||'%')
+			</if>
+	</select>
+	
+	<!-- 관리자가 채팅방(들)을 새로파기 -->
+	<select id="selectMaxChatRoomPrimaryKey" resultType="_int">
+		SELECT NVL(MAX(ROOM_ID),0)+1 FROM CHATROOM
+	</select>
+	<insert id="createNewChatRooms" parameterType="map">
+		<foreach item="item" index="index" collection="roomNames" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+			INTO CHATROOM (ROOM_ID, ROOM_NAME, ROOM_STATUS)
+			VALUES (#{lastCRIndex}+#{index}, #{item}, DEFAULT)
+		</foreach>
+	</insert>
+	<select id="selectMaxChatPrimaryKey" resultType="_int">
+		SELECT NVL(MAX(CHAT_ID),0)+1 FROM CHAT
+	</select>
+	<insert id="createNewChatRels" parameterType="map">
+		<foreach item="item" index="index" collection="users" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+			INTO CHAT (CHAT_ID, FROM_ID, TO_ID, ROOM_ID, CHAT_STATUS)
+			VALUES (#{lastCIndex}+#{index}, #{item.fromId}, #{adminId}, (SELECT ROOM_ID FROM CHATROOM WHERE ROOM_NAME = #{item.roomName}), DEFAULT)
+		</foreach>
+	</insert>
+	
+	<!-- 채팅시간 설정 -->
+	<update id="updateChatSet" parameterType="ChatSet">
+		MERGE INTO CHAT_SET
+		USING DUAL
+		   ON (CS_ID = 1)
+		WHEN MATCHED THEN
+		    UPDATE SET MONDAY = #{monday}, TUESDAY = #{tuesday}, WEDNESDAY = #{wednesday}, THURSDAY = #{thursday}, FRIDAY = #{friday}, SATURDAY = #{saturday}, SUNDAY = #{sunday}
+		    			, POSSIBLE_TIME_START = #{possibleTime_start}, POSSIBLE_TIME_END = #{possibleTime_end}
+		WHEN NOT MATCHED THEN
+		    INSERT (CS_ID, INTRO_CONTENT, OUTTIME_CONTENT, POSSIBLE_TIME_START, POSSIBLE_TIME_END
+		                , MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY) 
+		    VALUES ((SELECT NVL(MAX(CS_ID),0)+1 FROM CHAT_SET), '인트로', '아웃트로', '1:30', '15:30','Y','Y','Y','Y','Y','N','N')
+	</update>
+</mapper>

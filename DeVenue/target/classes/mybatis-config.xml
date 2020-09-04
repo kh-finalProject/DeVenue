@@ -19,13 +19,26 @@
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.Profile" alias="Profile"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ProjectLike" alias="Like"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FindClient" alias="FindClient"/>
-
+		
+		<typeAlias type="com.kh.DeVenue.model.vo.Member" alias="Member2"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatRel" alias="ChatRel"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatRoom" alias="ChatRoom"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.Message" alias="Message"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatSet" alias="ChatSet"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.MemChatSet" alias="MemChatSet"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.Ask" alias="Ask"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatList" alias="ChatList"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatUser" alias="ChatUser"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatUserInfo" alias="ChatUserInfo"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.EachChatInfo" alias="EachChatInfo"/>
+		<typeAlias type="com.kh.DeVenue.util.model.vo.ProInfo" alias="ProInfo"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="/mappers/project-mapper.xml"/>
 		<mapper resource="/mappers/member-mapper.xml"/>
-
+		<mapper resource="/mappers/chat-mapper.xml"/>
+		<mapper resource="/mappers/member2-mapper.xml"/>
 	</mappers>
 	
 </configuration>
