@@ -100,10 +100,17 @@ public class Member implements Serializable {
 		this.address3 = address3;
 		this.phone = phone;
 	}
+	
+	// 이메일로 memId를 검색해옴
+	public Member(String memEmail) {
+		super();
+		this.memEmail = memEmail;
+	}
 
 	public int getMemId() {
 		return memId;
 	}
+
 
 	public void setMemId(int memId) {
 		this.memId = memId;

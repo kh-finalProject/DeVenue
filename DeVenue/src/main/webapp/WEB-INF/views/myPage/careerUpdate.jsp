@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -367,6 +368,45 @@
             color: white;
         }
         
+        /* 메뉴바 폰트 끝 */
+
+/* 회원찾기 드롭다운 메뉴 */
+.dropbtn {
+  color: white;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+        
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
@@ -378,21 +418,145 @@
 
 <body>
     <!-- munubar -->
-	<jsp:include page="../common/menubar.jsp"/>
+	<%-- <jsp:include page="../common/menubar.jsp"/> --%>
+	
+	<c:set var="contextPath"
+		value="${pageContext.servletContext.contextPath }" scope="application" />
+
+	<!--Top Button-->
+	<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top"
+		role="button"><i class="fas fa-chevron-up" style="margin: 0"></i></a>
+	<script>
+		$(document).ready(function() {
+			$(window).scroll(function() {
+				if ($(this).scrollTop() > 10) {
+					$('#back-to-top').css("display", "block")
+
+				} else {
+					$('#back-to-top').css("display", "none")
+
+				}
+			});
+			// scroll body to 0px on click
+			$('#back-to-top').click(function() {
+				$('body,html').animate({
+					scrollTop : 0
+				}, 400);
+				return false;
+			});
+		});
+	</script>
+
+	<!--navigation bar 1-->
+	<nav class="navbar navbar-expand-lg" style="background-color: black;">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarMain" aria-controls="navbarMain"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarMain">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link" href="#"><img
+						src="${contextPath }/resources/images/logo.png" height="80px"
+						style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;"><span
+						class="sr-only">(current)</span></a></li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do">프로젝트찾기</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>
+					<div class="dropdown-content">
+						<a href="clientList.do ">클라이언트 찾기</a>
+						<a href="#">파트너스 찾기</a>
+					</div>
+		        </li>
+			</ul>
+
+			<ul class="navbar-nav ml-auto">
+				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
+				<c:if test="${empty sessionScope.loginUser }">
+					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
+					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
+					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
+					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
+				</c:if>
+				<c:if test="${!empty sessionScope.loginUser }">
+				<!-- 관리자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }관리자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <img src="${contextPath }/resources/images/admin.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  </button>
+							  <div class="dropdown-menu">
+							    <a class="dropdown-item" href="#">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+					<!-- 사용자 로그인 -->
+					<c:if test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }사용자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  <!-- 클라이언트시 기본 이미지 -->
+							  <c:if test="${loginUser.userType eq 'UT3' }">
+							    <img src="${contextPath }/resources/images/client.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
+							  </c:if>
+							  <!-- 파트너스 기본 이미지 -->
+							  <c:if test="${loginUser.userType eq 'UT4' }">
+							    <img src="${contextPath }/resources/images/partners.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
+							  </c:if>
+							  </button>
+							  <div class="dropdown-menu">
+							    <a href="profile.do" class="dropdown-item">profile</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+				</c:if>
+				</div>
+			</ul>
+		</div>
+			</ul>
+		</div>
+	</nav>
+
+	<script>
+		$(function() {
+			$("#navbarMain .nav-link").mouseenter(function() {
+				$(this).css("font-size", "105%");
+			})
+
+			$("#navbarMain .nav-link").mouseleave(function() {
+				$(this).css("font-size", "100%");
+			})
+		})
+	</script>
+	
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp"/>
 
 
     <!-- Section -->
-    <br>
     <section>
-        <!-- 왼쪽 공백 -->
-        <!-- <div class="left-null" style="width: 15%; height: 1600px; border: 1px solid yellow; float: left;"></div> -->
-        <!-- 실제 들어갈 값 -->
-        <!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
         <div class="container">
             <div class="row text-white" style="border-bottom: 1px solid lightgray; width: 1000px;">
-                <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+                <div class="col-12" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
                      ${loginUser.memNick } 마이페이지
                 </div>
             </div>
@@ -556,8 +720,6 @@
             
             
         </script>
-        <!-- 오른쪽 공백 -->
-        <!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
     </section>
     <br>
 

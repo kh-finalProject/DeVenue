@@ -10,6 +10,7 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
+import com.kh.DeVenue.member.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
@@ -47,4 +48,8 @@ public interface MemberService {
 	ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id);
 
 	FindClientDetail selectClientDetail(Integer cId);
+
+	Member selectMember(Member mEmail);
+
+	int insertChatSet(MemChatSet mc);
 }

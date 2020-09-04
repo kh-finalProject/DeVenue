@@ -175,7 +175,7 @@
 	</resultMap>
   
   <!-- 로그인 -->
-  <select id="selectMember" parameterType="Member" resultMap="memberResultSet">
+  <select id="loginMember" parameterType="Member" resultMap="memberResultSet">
   	SELECT * FROM MEMBER
 	WHERE MEM_EMAIL = #{memEmail}
 	AND MEM_PWD = #{memPwd}
@@ -286,4 +286,26 @@
 		FROM MATCHING_PARTNERS_LIST_VIEW
 		WHERE PARTNERS_ID=#{pId} AND CLIENT_ID=#{cId}
 	</select>
+	
+	<!-- 회원 채팅 설정 -->
+	<resultMap type="MemChatSet" id="memChatSetResultSet">
+		<id property="memId" column="MEM_ID"/>
+		
+		<result property="isTransChat" column="IS_TRANS_CHAT"/>
+		<result property="isShowPastChat" column="IS_SHOWPASTCHAT"/>
+
+	</resultMap>
+	
+	<!-- 회원가입시 회원 채팅 설정 기본 생성 -->
+	<insert id="insertcharSet" parameterType="MemChatSet">
+		INSERT INTO MEM_CHATSET
+		VALUES(#{memId},DEFAULT,DEFAULT)
+	</insert>
+	
+	<!-- 회원가입한후에 memId 추출하기 -->
+	<select id="selectMemId" parameterType="Member" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEM_EMAIL=#{memEmail}
+	</select>
+	
 </mapper>
