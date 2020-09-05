@@ -52,4 +52,10 @@ public interface MemberService {
 	Member selectMember(Member mEmail);
 
 	int insertChatSet(MemChatSet mc);
+
+	int membernick(String nick);
+
+	int memberemail(String email);
+
+	
 }

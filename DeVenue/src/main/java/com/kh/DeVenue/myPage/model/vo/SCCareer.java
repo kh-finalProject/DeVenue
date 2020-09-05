@@ -3,7 +3,7 @@ package com.kh.DeVenue.myPage.model.vo;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class SSCareer implements Serializable{
+public class SCCareer implements Serializable{
 
 	/**
 	 * 
@@ -18,10 +18,10 @@ public class SSCareer implements Serializable{
 	private String scStartDate;
 	private String scEndDate;
 	private int profileId;
-	public SSCareer() {
+	public SCCareer() {
 		super();
 	}
-	public SSCareer(int scId, String sgId, String ssId, String scName, String scMajor, String scStartDate,
+	public SCCareer(int scId, String sgId, String ssId, String scName, String scMajor, String scStartDate,
 			String scEndDate, int profileId) {
 		super();
 		this.scId = scId;
@@ -35,7 +35,7 @@ public class SSCareer implements Serializable{
 	}
 	
 	// 학력 insert
-	public SSCareer(String sgId, String ssId, String scName, String scMajor, String scStartDate, String scEndDate,
+	public SCCareer(String sgId, String ssId, String scName, String scMajor, String scStartDate, String scEndDate,
 			int profileId) {
 		super();
 		this.sgId = sgId;

@@ -114,4 +114,14 @@ public class MemberDao {
 		
 		return sqlSessionTemplate.insert("memberMapper.insertcharSet",mc);
 	}
+
+	public int membernick(String nick) {
+		
+		return sqlSessionTemplate.selectOne("memberMapper.membernick", nick);
+	}
+
+	public int memberemail(String email) {
+		
+		return sqlSessionTemplate.selectOne("memberMapper.memberemail", email);
+	}
 }

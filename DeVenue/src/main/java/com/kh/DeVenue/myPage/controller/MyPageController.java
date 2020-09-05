@@ -2,6 +2,7 @@ package com.kh.DeVenue.myPage.controller;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +25,9 @@ import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
-import com.kh.DeVenue.myPage.model.vo.SSCareer;
+import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
+import com.kh.DeVenue.project.model.vo.Project;
 
 @Controller
 public class MyPageController {
@@ -39,10 +41,10 @@ public class MyPageController {
 		return "myPage/myPageDetail";
 	}
 
-	// 파트너스 정보 이동
+	// 파트너스 정보 이동(파트너스 정보 출력)
 	@RequestMapping(value = "partInfo.do")
 	public ModelAndView partInfoView(HttpServletRequest request, ModelAndView mv) {
-		System.out.println("시발 왜 실행안됨");
+		
 		String pfId = request.getParameter("profileId");
 //		System.out.println(pfId);
 		int profile = Integer.parseInt(pfId);
@@ -50,7 +52,7 @@ public class MyPageController {
 		// 모든곳에서 다써야할텐데 간단한 방법은 없나??
 		PartInfo profileId = new PartInfo(profile);
 		PartInfo partInfo = myPageService.selectPartInfo(profileId);
-		System.out.println(partInfo);
+//		System.out.println(partInfo);
 		mv.addObject("partInfo", partInfo);
 		mv.setViewName("myPage/partInfo");
 		
@@ -63,34 +65,93 @@ public class MyPageController {
 		return "myPage/introduction";
 	}
 
-	// 전체 포트폴리오 이동
+	// 전체 포트폴리오 이동(포트폴리오 전체 출력)
 	@RequestMapping(value = "portfolioAll.do")
-	public String protfolioView() {
-		return "myPage/portfolioAll";
+	public ModelAndView protfolioView(HttpServletRequest request, ModelAndView mv) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.parseInt(pfId);
+
+		ArrayList<PortFolio> portInfolist = myPageService.selectPortInfo(profileId);
+		System.out.println(portInfolist);
+		
+		mv.addObject("protInfolist", portInfolist);
+		mv.setViewName("myPage/portfolioAll");			
+		
+		return mv;
+		
+		
 	}
 
-	// 보유 기술 이동
+	// 보유 기술 이동(보유 기술 전체 출력)
 	@RequestMapping(value = "skill.do")
-	public String skillView() {
-		return "myPage/skill";
+	public ModelAndView skillView(HttpServletRequest request, ModelAndView mv) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.parseInt(pfId);
+
+		ArrayList<Skill> skilllist = myPageService.selectSkillInfo(profileId);
+		System.out.println(skilllist);
+		
+		mv.addObject("skilllist", skilllist);
+		mv.setViewName("myPage/skill");
+		
+		return mv;
 	}
 
-	// 경력 이동
+	// 경력 이동(경력 전체 출력)
 	@RequestMapping(value = "career.do")
-	public String careerView() {
-		return "myPage/career";
+	public ModelAndView careerView(HttpServletRequest request, ModelAndView mv) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.parseInt(pfId);
+
+		ArrayList<Career> careerlist = myPageService.selectCareerInfo(profileId);
+		System.out.println(careerlist);
+		
+		for(int i=0;i<careerlist.size();i++) {
+			System.out.println(careerlist.get(i).getcStartDate());
+			System.out.println(careerlist.get(i).getcEndDate());
+			int comepare = careerlist.get(0).getcEndDate().compareTo(careerlist.get(0).getcStartDate());
+			System.out.println(comepare);
+		}
+		
+		mv.addObject("careerlist", careerlist);
+		mv.setViewName("myPage/career");
+		
+		return mv;
 	}
 
-	// 학력 이동
+	// 학력 이동(학력 전체 출력)
 	@RequestMapping(value = "academic.do")
-	public String academicView() {
-		return "myPage/academic";
+	public ModelAndView academicView(HttpServletRequest request, ModelAndView mv) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.parseInt(pfId);
+
+		ArrayList<SCCareer> sccareerlist = myPageService.selectSCCareerInfo(profileId);
+		System.out.println(sccareerlist);
+		
+		mv.addObject("sccareerlist", sccareerlist);
+		mv.setViewName("myPage/academic");
+		
+		return mv;
 	}
 
 	// 자격증 이동
 	@RequestMapping(value = "certificate.do")
-	public String certificateView() {
-		return "myPage/certificate";
+	public ModelAndView certificateView(HttpServletRequest request, ModelAndView mv) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.parseInt(pfId);
+
+		ArrayList<Certificate> certilist = myPageService.selectCertificateInfo(profileId);
+		System.out.println(certilist);
+		
+		mv.addObject("certilist", certilist);
+		mv.setViewName("myPage/certificate");
+		
+		return mv;
 	}
 
 	// 프로젝트 히스토리 이동
@@ -420,9 +481,9 @@ public class MyPageController {
 		String eMonth =request.getParameter("end-month");
 		String scEndDate = eYear+"-"+eMonth;
 		
-		SSCareer sc = new SSCareer(sgId,ssId,scName,scMarjor,scStartDate,scEndDate,profileId);
+		SCCareer sc = new SCCareer(sgId,ssId,scName,scMarjor,scStartDate,scEndDate,profileId);
 		System.out.println(sc);
-		int SSCareerInfo = myPageService.insertSSCareer(sc);
+		int SCCareerInfo = myPageService.insertSCCareer(sc);
 		
 		return "myPage/academic";
 	}

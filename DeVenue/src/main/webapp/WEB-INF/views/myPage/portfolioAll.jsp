@@ -629,7 +629,8 @@ section {
 					</div>
 					<div class="col-12 portfolio-view">
 						<!-- 하나의 포트폴리오 시작 -->
-						<c:forEach var="i" begin="0" end="2">
+						<h1>${portInfolist }</h1>
+						 <%-- <c:forEach var="port" items="${portInfolist }" varStatus="status">
 							<div class="col-4 portfolio-info" style="margin-top: 3%;">
 								<div class="col-12" style="height: 70%;">
 									<div class="col-11 portfolio-category looking-btn"
@@ -648,7 +649,7 @@ section {
 								</div>
 								<div class="col-12"
 									style="height: 30%; border-top: 2px dashed grey;">
-									<!-- <h5>1. 제목을 작성하는 곳입니다.</h5> -->
+									<h5>1. 제목을 작성하는 곳입니다.</h5>
 									<div class="col-11 portfolio-title">
 										<span>제목을 입력</span>
 									</div>
@@ -675,7 +676,7 @@ section {
 								// 포트폴리오가 증가시 id 생성해서 넣기
 							</script>
 							<!-- 하나의 포트폴리오 끝 -->
-						</c:forEach>
+						</c:forEach> --%>
 					</div>
 				</div>
 			</div>

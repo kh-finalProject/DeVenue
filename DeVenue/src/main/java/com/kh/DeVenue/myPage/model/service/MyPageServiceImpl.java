@@ -1,5 +1,7 @@
 package com.kh.DeVenue.myPage.model.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,7 @@ import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
-import com.kh.DeVenue.myPage.model.vo.SSCareer;
+import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
 @Service("myPageService")
@@ -99,10 +101,42 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 
 	@Override
-	public int insertSSCareer(SSCareer sc) {
+	public int insertSCCareer(SCCareer sc) {
 		
-		return myPageDao.insertSSCareer(sc);
+		return myPageDao.insertSCCareer(sc);
 	}
+
+	@Override
+	public ArrayList<PortFolio> selectPortInfo(int profileId) {
+		
+		return myPageDao.selectListPortFolio(profileId);
+	}
+
+	@Override
+	public ArrayList<Skill> selectSkillInfo(int profileId) {
+		
+		return myPageDao.selectListSkill(profileId);
+	}
+
+	@Override
+	public ArrayList<Career> selectCareerInfo(int profileId) {
+		
+		return myPageDao.selectListCareer(profileId);
+	}
+
+	@Override
+	public ArrayList<SCCareer> selectSCCareerInfo(int profileId) {
+		
+		return myPageDao.selectListSCCareer(profileId);
+	}
+
+	@Override
+	public ArrayList<Certificate> selectCertificateInfo(int profileId) {
+		
+		return myPageDao.selectListCertificate(profileId);
+	}
+
+
 
 
 

@@ -1,9 +1,12 @@
 package com.kh.DeVenue.member.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.DeVenue.member.model.exception.MemberException;
@@ -76,19 +80,23 @@ public class MemberController {
 		Member m = new Member(memEmail,memPwd);
 //		System.out.println(m);
 		Member loginUser = mService.loginUserMember(m);
-
-//		System.out.println(loginUser);
+		System.out.println(loginUser);
 //		System.out.println(loginUser.getMemId());
 		
 		
 		if(loginUser != null) { // 로그인 할 멤버 객체가 조회 되었을 시
+			
+			// 로그인 한 후에 화면에 profile을 뿌려줌
+			Profile memId = new Profile(loginUser.getMemId());
+			Profile profile = mService.profile(memId);
+			
 //			if(logincheck != null) { // true이냐(로그인 유지 선택시)
 //			}else { // 로그인 유지 체크 안할시
-
+			
 //				
 //			}
 			
-		
+			session.setAttribute("profile", profile);
 			session.setAttribute("loginUser", loginUser);
 //			mv.setViewName("common/mainPage");
 //			mv.addObject("loginUser", loginUser);
@@ -112,7 +120,7 @@ public class MemberController {
 	
 	// 회원 가입
 		@RequestMapping("meminsert.do")
-		public String memberInsert(HttpServletRequest request, ModelAndView mv) {
+		public String memberInsert(HttpSession session, HttpServletRequest request, ModelAndView mv) {
 	
 			String userType = request.getParameter("purpose");	// 사용자 분류(클라이언트/파트너스)
 			String memType = request.getParameter("memtype");	// 사용자 형태(개인,팀,기업,개인사업자,법인사업자..)
@@ -153,14 +161,13 @@ public class MemberController {
 							System.out.println("프로필 정보 생성 ");
 							
 							Profile memId = new Profile(memberId.getMemId());
-							Profile profileinfo = mService.profile(memId);
-							System.out.println(profileinfo);
-							PartInfo partInfo = new PartInfo(profileinfo.getProfileId());
+							Profile profile = mService.profile(memId);
+							System.out.println(profile);
+							PartInfo partInfo = new PartInfo(profile.getProfileId());
 							int portId = mService.insertPartInfo(partInfo);
 							
 							if(portId > 0) {
 								System.out.println("파트너스 정보 생성 ");
-								
 							}else {
 								throw new MemberException("파트너스 정보 생성 실패!");
 							}
@@ -332,5 +339,32 @@ public class MemberController {
 //		.setViewName("findMember/clientInsertComment");
 		
 		return mv;
+	}
+	
+	
+	// 닉네임 중복 확인
+	@RequestMapping(value="nickCheck.do", method=RequestMethod.GET)
+	public void nickCheck(@RequestParam("nick") String nick, HttpServletResponse response) throws IOException {
+		
+		// 1. 그냥 오류 두던가 예외처리로 없애버리던가 근데 sql에러 인데 가능한가?
+		// 2. 전체 member 뽑아오고 컨트롤러에서 비교
+		System.out.println("내가 입력하고자 하는 닉네임"+nick);
+		PrintWriter out = response.getWriter();
+		
+		int member = mService.membernick(nick);
+		// 0 or 1 이 반환됨
+//		System.out.println(member);
+		// 중복된 값이 없으면 0이 반환
+		if(member == 0) {
+			System.out.println("닉네임 사용 가능");
+			out.append("ok");
+			out.flush();
+		// 중복된 값이 있으면 1이 반환
+		}else {
+			System.out.println("닉네임 사용 불가능");
+			out.append("fail");
+			out.flush();
+		}		
+		out.close();
 	}
 }

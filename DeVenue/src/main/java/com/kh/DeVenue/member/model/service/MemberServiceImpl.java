@@ -123,4 +123,16 @@ public class MemberServiceImpl implements MemberService{
 		
 		return mDao.insertChatSet(mc);
 	}
+
+	@Override
+	public int membernick(String nick) {
+		
+		return mDao.membernick(nick);
+	}
+
+	@Override
+	public int memberemail(String email) {
+		
+		return mDao.memberemail(email);
+	}
 }

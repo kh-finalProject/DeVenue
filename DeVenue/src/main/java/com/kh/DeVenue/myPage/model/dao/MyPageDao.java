@@ -1,5 +1,7 @@
 package com.kh.DeVenue.myPage.model.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
-import com.kh.DeVenue.myPage.model.vo.SSCareer;
+import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
 @Repository("myPageDao")
@@ -88,9 +90,34 @@ public class MyPageDao {
 		return sqlSessionTemplate.insert("myPageMapper.insertCertificate",certi);
 	}
 
-	public int insertSSCareer(SSCareer sc) {
+	public int insertSCCareer(SCCareer sc) {
 		
-		return sqlSessionTemplate.insert("myPageMapper.insertSSCareer",sc);
+		return sqlSessionTemplate.insert("myPageMapper.insertSCCareer",sc);
+	}
+
+	public ArrayList<PortFolio> selectListPortFolio(int profileId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectListPortFolio", profileId);
+	}
+
+	public ArrayList<Skill> selectListSkill(int profileId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectListSKill", profileId);
+	}
+
+	public ArrayList<Career> selectListCareer(int profileId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectListCareer", profileId);
+	}
+
+	public ArrayList<SCCareer> selectListSCCareer(int profileId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectListSCCareer", profileId);
+	}
+
+	public ArrayList<Certificate> selectListCertificate(int profileId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectListCertificate", profileId);
 	}
 	
 	
