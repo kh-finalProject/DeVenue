@@ -321,6 +321,8 @@
 	<select id="selectChatUserInfo" parameterType="map" resultMap="chatUserInfoResultSet">
 		SELECT * FROM CHATUSER_INFO
 		WHERE MEM_ID IN (SELECT FROM_ID FROM CHAT WHERE ROOM_ID = #{roomId})
+		OR MEM_ID IN (SELECT TO_ID FROM CHAT WHERE ROOM_ID =#{roomId})
+		OR MEM_ID IN (SELECT FROM_ID FROM MESSAGE WHERE ROOM_ID =#{roomId})
 	</select>
 	<!-- 관리자 채팅방  상대 고객 프로젝트 정보 가져오는 쿼리 -->
 	<select id="selectProInfos" parameterType="map" resultMap="proInfoResultSet">

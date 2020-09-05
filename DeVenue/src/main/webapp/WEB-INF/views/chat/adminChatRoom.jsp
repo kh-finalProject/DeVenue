@@ -1110,15 +1110,9 @@ try {
                             <div class="Messages_list">
                            		<c:set var="eachChatRoomId" value="${eachChatInfos.get(0).roomId }"/>
                            		<c:set var="eachChatRoomMemId" value="${eachChatInfos.get(0).clientId }"/>
-                            	<c:if test="${eachChatInfos != null && ! empty eachChatInfos}">
+                            	<c:if test="${eachChatInfos != null && !empty eachChatInfos}">
                             		<!-- 스크립트에서 쓰기위한 선언(방번호, 고객번호) -->
                             		<c:forEach var="i" begin="0" end="${eachChatInfos.size()-1 }" step="1">
-                            			<!-- 채팅방 참여자 정보 중 메시지 보낸 유저 정보 따로 저장해두기 -->
-						                <c:forEach var="j" begin="0" end="${chatUserInfos.size()-1 }" step="1">
-						                	<c:if test="${eachChatInfos.get(i).getMsgFromId() == chatUserInfos.get(j).getmId() }">
-						                		<c:set var="msgUserInfo" value="${ chatUserInfos.get(j) }"/>
-						                	</c:if>
-						                </c:forEach>
                             			<!-- 날짜 구분선의 내용이될 변수 만들기  -->
                             			<c:set var="seperDate" value=""/>
                             			<c:set var="beforeDate" value=""/>
@@ -1192,6 +1186,13 @@ try {
 											<c:set var="msgTime" value="${hours}:${minut} ${seperHour }"/>
 											
 											<!-- 먼저 누구로부터 온건지 구분 후 반메시지인지 파일 메시지인지 구분 -->
+	                            			<!-- 채팅방 참여자 정보 중 메시지 보낸 유저 정보 따로 저장해두기 -->
+	                            			<c:set var="msgUserInfo" value=""/>
+							                <c:forEach var="j" begin="0" end="${chatUserInfos.size()-1 }" step="1">
+							                	<c:if test="${eachChatInfos.get(i).getMsgFromId() == chatUserInfos.get(j).getmId() }">
+							                		<c:set var="msgUserInfo" value="${ chatUserInfos.get(j) }"/>
+							                	</c:if>
+							                </c:forEach>
 											<!-- 다른 관리자가 보낸 메시지도 내가 보낸 메시지처럼 인식시킨다 -->
 											<c:if test="${eachChatInfos.get(i).getMsgFromId() != eachChatInfos.get(i).getClientId()}">
 				                                <!-- 내가 보낸 메시지 + 프로필 -->
@@ -1578,20 +1579,7 @@ try {
 				
 				// 메시지의 구조는 JSON 형태로 만들었다.
 				let node = JSON.parse(message.data);
-				// 위 템플릿 div를 취득한다.
-// 					var isExist = false;
-// 					if($('.Messages_list').attr('data-key') == node.key){
-// 						isExist = true;
-// 					}
-// 					if(isExist==false){
-// 						// div를 감싸고 속성 data-key에 unique키를 넣는다.
-// 						$('.Messages_list').attr("data-key",node.key);
-// 					}
-					
-				// key로 해당 div영역을 찾는다.
-// 				let $div = $("[data-key='" + node.key + "']");
-				// console영역을 찾는다.
-// 				let log = $div.find(".console").val();
+
 				// 메시지 내용과 시간을 분리한다(,로 구분하여 보냄)
 				var mContent = node.message.split(',');
 				if(mContent.length >= 3){
@@ -1614,6 +1602,40 @@ try {
 				var viewDate = DateToString(messageTime);
 				var msgSendMemNick = mContent[2];
 				console.log('3번째 콘텐트'+mContent[2]);
+				
+				if($('.msgDate').length > 0){
+					var msgDate = $('.msgDate:last').val().trim();
+					alert('날짜 : '+ msgDate);
+					var todayDate = submitDate.substring(0, 9).trim();
+					alert('오늘날짜 : ' + todayDate);
+					var mDArr = msgDate.split('/');
+					var mY = mDArr[0];
+					var mM = mDArr[1];
+					var mD = mDArr[2];
+					var tDArr = todayDate.split('/');
+					var tY = tDArr[0];
+					var tM = tDArr[1];
+					var tD = tDArr[2];
+					if(tM.length < 2){
+						tM = "0"+tM;
+					}
+					if(tD.length < 2){
+						tD = "0"+tD;
+					}
+					var reTodayDate = tY+"/"+tM+"/"+tD;
+					// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
+					$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
+					if(mY==tY&&mM==tM&&mD==tD){
+						alert('오늘 처음보낸 메시지가 아니다')
+					}else{
+						alert('오늘 처음보낸 메시지다')				
+						$('.Messages_list').append($seperLine);
+						$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
+					}
+				}else{
+					// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
+					$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
+				}
 				
 				var proImgName = 'user3.png';
 				<c:forEach var="i" begin="0" end="${chatUserInfos.size()-1}" step="1">
@@ -1714,34 +1736,40 @@ try {
 		
 		// 삽입할 내가보낸 메시지 영역
 		// 마지막 메시지의 날짜와 오늘 날짜 비교
-// 		var msgDate = $(".Messages_list").find('.msgDate:last').val().trim();
-// 		alert('날짜 : '+ msgDate);
-// 		var todayDate = submitDate.substring(0, 9).trim();
-// 		alert('오늘날짜 : ' + todayDate);
-// 		var mDArr = msgDate.split('/');
-// 		var mY = mDArr[0];
-// 		var mM = mDArr[1];
-// 		var mD = mDArr[2];
-// 		var tDArr = todayDate.split('/');
-// 		var tY = tDArr[0];
-// 		var tM = tDArr[1];
-// 		var tD = tDArr[2];
-// 		if(tM.length < 2){
-// 			tM = "0"+tM;
-// 		}
-// 		if(tD.length < 2){
-// 			tD = "0"+tD;
-// 		}
-// 		var reTodayDate = tY+"/"+tM+"/"+tD;
-		// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
-// 		$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
-// 		if(mY==tY&&mM==tM&&mD==tD){
-// 			alert('오늘 처음보낸 메시지가 아니다')
-// 		}else{
-// 			alert('오늘 처음보낸 메시지다')				
-// 			$(".Messages_list").append($seperLine);
-// 			$(".Messages_list").append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
-// 		}
+		if($('.msgDate').length > 0){
+			var msgDate = $('.msgDate:last').val().trim();
+			alert('날짜 : '+ msgDate);
+			var todayDate = submitDate.substring(0, 9).trim();
+			alert('오늘날짜 : ' + todayDate);
+			var mDArr = msgDate.split('/');
+			var mY = mDArr[0];
+			var mM = mDArr[1];
+			var mD = mDArr[2];
+			var tDArr = todayDate.split('/');
+			var tY = tDArr[0];
+			var tM = tDArr[1];
+			var tD = tDArr[2];
+			if(tM.length < 2){
+				tM = "0"+tM;
+			}
+			if(tD.length < 2){
+				tD = "0"+tD;
+			}
+			var reTodayDate = tY+"/"+tM+"/"+tD;
+			// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
+			$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
+			if(mY==tY&&mM==tM&&mD==tD){
+				alert('오늘 처음보낸 메시지가 아니다')
+			}else{
+				alert('오늘 처음보낸 메시지다')				
+				$('.Messages_list').append($seperLine);
+				$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
+			}
+		}else{
+			// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
+			$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
+		}
+		
 		var proImgName = 'user3.png'
 		if('${me.proImgName}' != null || '${me.proImgName}' != ''){
 			proImgName = '${me.proImgName}'
@@ -1884,34 +1912,40 @@ try {
 		
 		// 삽입할 내가보낸 메시지 영역
 		// 마지막 메시지의 날짜와 오늘 날짜 비교
-// 		var msgDate = eachChatRoomArea.find('.msgDate:last').val().trim();
-// 		alert('날짜 : '+ msgDate);
-// 		var todayDate = submitDate.substring(0, 9).trim();
-// 		alert('오늘날짜 : ' + todayDate);
-// 		var mDArr = msgDate.split('/');
-// 		var mY = mDArr[0];
-// 		var mM = mDArr[1];
-// 		var mD = mDArr[2];
-// 		var tDArr = todayDate.split('/');
-// 		var tY = tDArr[0];
-// 		var tM = tDArr[1];
-// 		var tD = tDArr[2];
-// 		if(tM.length < 2){
-// 			tM = "0"+tM;
-// 		}
-// 		if(tD.length < 2){
-// 			tD = "0"+tD;
-// 		}
-// 		var reTodayDate = tY+"/"+tM+"/"+tD;
-		// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
-// 		$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
-// 		if(mY==tY&&mM==tM&&mD==tD){
-// 			alert('오늘 처음보낸 메시지가 아니다')
-// 		}else{
-// 			alert('오늘 처음보낸 메시지다')				
-// 			$(eachChatRoomArea).append($seperLine);
-// 			$(eachChatRoomArea).append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
-// 		}
+		if($('.msgDate').length > 0){
+			var msgDate = $('.msgDate:last').val().trim();
+			alert('날짜 : '+ msgDate);
+			var todayDate = submitDate.substring(0, 9).trim();
+			alert('오늘날짜 : ' + todayDate);
+			var mDArr = msgDate.split('/');
+			var mY = mDArr[0];
+			var mM = mDArr[1];
+			var mD = mDArr[2];
+			var tDArr = todayDate.split('/');
+			var tY = tDArr[0];
+			var tM = tDArr[1];
+			var tD = tDArr[2];
+			if(tM.length < 2){
+				tM = "0"+tM;
+			}
+			if(tD.length < 2){
+				tD = "0"+tD;
+			}
+			var reTodayDate = tY+"/"+tM+"/"+tD;
+			// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
+			$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
+			if(mY==tY&&mM==tM&&mD==tD){
+				alert('오늘 처음보낸 메시지가 아니다')
+			}else{
+				alert('오늘 처음보낸 메시지다')				
+				$('.Messages_list').append($seperLine);
+				$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
+			}
+		}else{
+			// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
+			$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
+		}
+		
 		var proImgName = 'user3.png'
 		if('${me.proImgName}' != null || '${me.proImgName}' != ''){
 			proImgName = '${me.proImgName}'

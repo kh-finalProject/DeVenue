@@ -58,6 +58,7 @@ public class AdminChatController {
 		// 뷰와 그에 대응하는 DTO 객체를 사용함
 		ArrayList<ChatUserInfo> chatUserInfos = cService.selectChatUserInfo(map);
 		System.out.println("채팅방 참석자들 상세정보 : "+chatUserInfos);
+		System.out.println("채팅방 참석자들 수 : " + chatUserInfos.size());
 		ArrayList<ProInfo> proInfos = cService.selectProInfos(map);
 		System.out.println("채팅방 클라이언트 프로젝트 간략 정보 : " + proInfos);
 		ArrayList<EachChatInfo> eachChatInfos = cService.selectEachChatInfos(map);
