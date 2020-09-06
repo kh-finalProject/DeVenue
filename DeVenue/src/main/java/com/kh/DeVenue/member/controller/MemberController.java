@@ -20,7 +20,7 @@ import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
-
+import com.kh.DeVenue.member.model.vo.Recruit;
 
 @Controller
 public class MemberController {
@@ -175,5 +175,20 @@ public class MemberController {
 		return mv;
 	}
 	
+	
+@RequestMapping(value="proRecruitMemList.do") 
+public ModelAndView recruitMemList(ModelAndView mv ) {
+	
+	ArrayList<Recruit> list=mService.selectRecruitMemList();
 
+	if(list != null) {
+	mv.addObject("list", list);
+	mv.setViewName("board/boardListView");
+}else {
+	throw new MemberException("게시글 전체 조회 실패!");
+}
+
+return mv;
+
+}
 }

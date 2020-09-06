@@ -1,0 +1,25 @@
+TOBESOFT X-API V1.X LICENSE AGREEMENT
+
+TOBESOFT Co.,Ltd (hereunder called as "TOBESOFT") will license TOBESOFT X-API 1.X version
+(hereunder called as "X-API V1.X" or "Licensed Program") to you only if you accept the agreement.
+You agree to the terms of this agreement by clicking to "Agree" button or by installing, or using the X-API V1.X.
+If you do not agree to these terms, click to "Don’t Agree" button or do not install, or use the X-API V1.X.
+Please read the terms of this agreement carefully before install or use the X-API V1.X.
+
+GRANT OF LICENSE.  This is a license agreement and NOT an agreement for sale.
+TOBESOFT licenses you to use X-API V1.X only as permitted by this Agreement.
+
+COPYRIGHT.  The Licensed Program is a proprietary product of TOBESOFT and is protected by copyright law and international treaties.
+TOBESOFT retains title to and ownership of X-API V1.X, including the enclosed copies and each copy that you are authorized by this Agreement to make.
+
+SCOPE OF RIGHTS; RESTRICTIONS ON USE.  X-API V1.X can be used only for the Testing purpose.
+The individual or entity which use this license (referred to as the "Licensee" or "you") has the non-exclusive right to use for business purpose or commercial purpose.
+
+In addition:
+-    You may not copy the written documentation that accompanies Licensed Program.
+-    You may not distribute, rent, lend, lease, grant a security interest in, sublicense or otherwise transfer rights in the Licensed Program.
+
+WARRANTY DISCLAIMER.  TOBESOFT does not warrant that the licensed program will meet your requirements or that its operation will be error-free.
+TOBESOFT excludes and expressly disclaims all express and implied warranties not stated herein, including the implied warranties of merchantability and fitness for a particular purpose.
+
+LIMITATION OF LIABILITY.  In no event will TOBESOFT be liable to you for any indirect, special, incidental, or consequential damages (including loss of profits).

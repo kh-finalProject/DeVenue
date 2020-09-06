@@ -9,7 +9,13 @@ import com.kh.DeVenue.member.model.dao.MemberDao;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.member.model.vo.Recruit;
 import com.kh.DeVenue.member.model.vo.PageInfo;
+
+import com.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.member.model.vo.PageInfo;
+
 
 @Service("mService")
 public class MemberServiceImpl implements MemberService{
@@ -28,6 +34,8 @@ public class MemberServiceImpl implements MemberService{
 		
 		return mDao.insertMember(m);
 	}
+
+	
 
 	@Override
 	public int pwdChangeMember(Member pwdchange) {
@@ -49,6 +57,12 @@ public class MemberServiceImpl implements MemberService{
 
 	
 
+
+	
+
+	
+
+
 	public int getListCount() {
 		return mDao.getListCount();
 	}
@@ -56,5 +70,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public ArrayList<FindClient> selectList(PageInfo pi) {
 		return mDao.selectList(pi);
+	}
+
+	@Override
+	public ArrayList<Recruit> selectRecruitMemList() {
+		
+		return mDao.selectRecruitMemList();
 	}
 }

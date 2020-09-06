@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.DeVenue.member.model.dao.MemberDao;
+import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.project.model.dao.ProjectDao;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
@@ -18,6 +20,8 @@ import com.kh.DeVenue.project.model.vo.Tech;
 public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	ProjectDao proDao;
+	
+	
 
 	@Override
 	public int addProject(Project p) {
@@ -46,18 +50,18 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ArrayList<Project> selectCheckList() {
+	public ArrayList<Project> selectCheckList(String memId) {
 		
-		return proDao.selectCheckList();
+		return proDao.selectCheckList(memId);
 
 	}
 
 
 
 	@Override
-	public ArrayList<Project> selectunderwayList() {
+	public ArrayList<Project> selectunderwayList(int memId1) {
 		
-		return proDao.selectunderwayList();
+		return proDao.selectunderwayList(memId1);
 	}
 
 
@@ -166,7 +170,121 @@ public class ProjectServiceImpl implements ProjectService {
 	public int checkLikeNum(Integer pId, Integer memId) {
 		return proDao.checkLikeNum(pId,memId);
 	}
+
+
+
+	@Override
+	public int temStoreProject(Project p) {
+		
+		return proDao.temStoreProject(p);
+	}
+
+
+
+	@Override
+	public int temStoreQuestion(ProjectQuestion q) {
+		
+		return proDao.temStoreQuestion(q);
+	}
+
+
+
+
+
+
 	
 
+
+
+//	@Override
+//	public ProjectQuestion getQuestion(int proId) {
+//		
+//		return proDao.getQuestion(proId);
+//	}
+
+
+
+	@Override
+	public int getUpdateForm(Integer proId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+
+
+
+	@Override
+	public ArrayList<ProjectQuestion> getQuestion(int proId) {
+	
+		return proDao.getQuestion(proId);
+	}
+
+
+
+	@Override
+	public Project selectOne(int proId) {
+		
+		return proDao.selectOne(proId);
+	}
+
+
+
+	@Override
+	public int updateProject(Project p) {
+	
+		return proDao.updateProject(p);
+	}
+
+
+
+	@Override
+	public int updateQuestion(ProjectQuestion q) {
+
+		return proDao.updateQuestion(q);
+	}
+
+
+
+	@Override
+	public ArrayList<Member> selectrecruitMember() {
+
+		return proDao.selectrecruitMember();
+	}
+
+
+
+	@Override
+	public int deleteProject(Integer proId) {
+		
+		return proDao.deleteProject(proId);
+	}
+
+
+
+	@Override
+	public int deleteQuestion(Integer proId) {
+	
+		return proDao.deleteQuestion(proId);
+	}
+
+
+
+	@Override
+	public ArrayList<Project> selectTemStoreList(int a) {
+
+		return proDao.selectTemStore(a);
+	}
+
+
+
+
+
+
+
+
+
+	
 
 }

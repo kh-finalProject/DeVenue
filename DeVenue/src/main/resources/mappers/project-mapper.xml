@@ -223,41 +223,39 @@
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO PROJECT VALUES(
 			SEQ_PRO_ID.NEXTVAL
-			,2
+			,#{memId}
 			,#{proName}
 			,#{proMaintain}
-			,'PST1'
-			,'Y'
+			,'PST2'
+			,DEFAULT
 			,SYSDATE
 			,#{proPlan}
 			,#{proPlanDetail}
 			,#{proSummary}
 			,#{proNeeds}
 			,#{proNeedsDetail}
-			,'리소스'
+			,#{proResource}
 			,#{proPayment}
 			,#{proStartDate}
 			,#{proDuration}
 			,#{proREndDate}
-			,'2018-02-08'
+			,#{proEndDate}
 			,#{proMCId}
 			,#{proDCId}
 			,#{proWTId}
 			,#{proRecruitNum}
 			,#{proPlanPaper}
-			,NULL
+			,#{proPlanRePaper}
 			,'강남구'
 			,#{proHelp}
 			,#{proManage}
 			,#{proFuturePlan}
 			,#{proPriority}
 			,NULL
-			,'MT1' <!-- 삭제예상 -->
-			,'no'
+			,#{proTypeCode}<!-- 삭제예상 -->
 			,1  <!-- 날인ID -->
-			,'Y'
+			,'N'
 			,SEQ_PRO_ID.CURRVAL
-			,'Y'
 			
 		)
 			</insert>
@@ -268,15 +266,135 @@
 	,#{proAQContent}
 	,SYSDATE
 	,(SELECT MAX(PRO_ID) FROM PROJECT)
-	,'Y'
+	,'N'
 	)
 	
 	</insert>
 	
+<insert id ="temStoreProject" parameterType = "Project">
+INSERT INTO PROJECT VALUES(
+		SEQ_PRO_ID.NEXTVAL
+			,#{memId}
+			,#{proName}
+			,#{proMaintain}
+			,'PST7'
+			,DEFAULT
+			,SYSDATE
+			,#{proPlan}
+			,#{proPlanDetail}
+			,#{proSummary}
+			,#{proNeeds}
+			,#{proNeedsDetail}
+			,#{proResource}
+			,#{proPayment}
+			,#{proStartDate}
+			,#{proDuration}
+			,#{proREndDate}
+			,#{proEndDate}
+			,#{proMCId}
+			,#{proDCId}
+			,#{proWTId}
+			,#{proRecruitNum}
+			,#{proPlanPaper}
+			,#{proPlanRePaper}
+			,'강남구'
+			,#{proHelp}
+			,#{proManage}
+			,#{proFuturePlan}
+			,#{proPriority}
+			,NULL
+			,#{proTypeCode} <!-- 삭제예상 -->
+			,1  <!-- 날인ID -->
+			,'N'
+			,SEQ_PRO_ID.CURRVAL
+			)	
+</insert>	
+	
+	<insert id ="temStoreQuestion" parameterType ="ProjectQuestion">
+	INSERT INTO P_QUESTION VALUES (
+	SEQ_PRO_AQ_ID.NEXTVAL
+	,#{proAQContent}
+	,SYSDATE
+	,(SELECT MAX(PRO_ID) FROM PROJECT)
+	,'Y'
+	)
+	
+	</insert>
+	<select id ="selectOne" parameterType ="int" resultMap ="projectResultSet">
+		SELECT * 
+		FROM PROJECT
+		WHERE PRO_ID = #{proId}
+	</select>
+	
+		<select id ="temStoreList" parameterType ="int" resultMap ="projectResultSet"> 
+			SELECT * 
+			FROM PROJECT
+			WHERE MEM_ID=#{a} AND PRO_STA_ID = 'PST7'
+			ORDER BY PRO_ID DESC
+		</select>
+	
+	<select id ="getQuestion" parameterType ="int" resultMap ="projectQuestionResultSet"> 
+		SELECT * 
+		FROM P_QUESTION
+		WHERE PRO_ID = #{proId}
+	</select>
+		
+	<update id ="updateProject"  parameterType ="Project">
+	UPDATE PROJECT
+	SET PRO_NAME = #{proName}
+		,PRO_MAINTAIN = #{proMaintain}
+		,PRO_PLAN = #{proPlan}
+		,PRO_PLANDETAIL = #{proPlanDetail}
+		,PRO_SUMMARY = #{proSummary}
+		,PRO_NEEDS = #{proNeeds}
+		,PRO_NEEDSDETAIL = #{proNeedsDetail}
+		,PRO_RESOURCE = #{proResource}
+		,PRO_PAYMENT = #{proPayment}
+		,PRO_DURATION = #{proDuration}
+		,PRO_R_END_DATE =#{proREndDate}
+		,PRO_END_DATE =#{proREndDate}
+		,MC_ID =#{proMCId}
+		,DC_ID = #{proDCId}
+		,WT_ID = #{proWTId}
+		,PRO_RECRUIT_NUM = #{proRecruitNum}
+		,PRO_PLAN_PAPER =#{proPlanPaper}
+		,PRO_PLAN_REPAPER = #{proPlanRePaper}
+		,PRO_LOCATION = #{proLocation}
+		,PRO_HELP = #{proHelp}
+		,PRO_MANAGE = #{proManage}
+		,PRO_FUTUREPLAN =#{proFuturePlan}
+		,PRO_PRIORTY = #{proPriority}
+		,PRO_STA_ID ='PST2'
+		,MEM_TYPE_CODE = #{proTypeCode}
+		WHERE PRO_ID=#{proId}
+	</update>
+	<update id ="updateQuestion"  parameterType ="ProjectQuestion">
+	UPDATE P_QUESTION
+		SET PRO_AQ_CONTENT = #{proAQContent}
+			,PRO_AQC_DATE =SYSDATE
+				
+	
+	</update>
+	
+	<delete id ="deleteProject" parameterType ="Project">
+	DELETE FROM PROJECT
+	WHERE PRO_ID = #{proId}
+	
+	</delete>
+	
+	<delete id ="deleteQuestion" parameterType ="ProjectQuestion">
+	DELETE FROM P_QUESTION
+	WHERE PRO_ID = #{proId}
+	
+	</delete>
+	
+	
+	
+	
 <select id = "selectCheckList" resultMap="projectResultSet">
 	SELECT * 
 	FROM PROJECT
-	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST2'
+	WHERE MEM_ID= #{memId} AND PRO_STA_ID = 'PST2'
 	ORDER BY PRO_ID DESC
 </select>
 <select id ="selectrecruitList" resultMap="projectResultSet">
@@ -286,10 +404,10 @@
 	ORDER BY PRO_ID DESC
 </select>
 
-<select id ="selectunderwayList" resultMap = "projectResultSet">
+<select id ="underwayList" resultMap = "projectResultSet">
 		SELECT * 
 	FROM PROJECT
-	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST4'
+	WHERE MEM_ID= #{memId1} AND PRO_STA_ID = 'PST4'
 	ORDER BY PRO_ID DESC
 </select>
 
@@ -314,7 +432,9 @@
 		SELECT * FROM PROJECTTECH_VIEW
 	</select>
 	
-	<select id="getProjectDetail" parameterType="int" resultMap="detailResultSet">
+<select id="getProjectDetail" parameterType="int" resultMap="detailResultSet">
+	
+	
 		SELECT P.*,PJ.*,INTRODUCTION,PRO_AQ_ID,PRO_AQ_CONTENT,PRO_AQC_DATE,
 		RP.PRO_RID AS "RP_RID",RP.PRO_ID AS "RP_PID",RP.PRO_RCONTENT AS "RP_CONTENT",RP.PRO_RCREATE_DATE AS "RP_CDATE",RP.PRO_RMODIFY_DATE AS "RP_MDATE",
 		RP.PRO_RANSWER AS "RP_RANSWER",RP.PRO_RSTATUS AS "RP_STATUS",RP.PRO_PARENT_RID AS "RP_P_RID",RP.PRO_RSECRET AS "RP_SECRET",
@@ -338,7 +458,9 @@
 		LEFT JOIN P_TEC PT ON (P.ID=PT.PRO_ID)
 		LEFT JOIN TECH T ON (PT.T_ID=T.T_ID)
 		WHERE P.ID=#{id}
-	</select>
+	
+	
+</select>
 	
 	<select id="getProjectNumber" parameterType="int" resultMap="pNumberResultSet">
 		SELECT *

@@ -2,6 +2,7 @@ package com.kh.DeVenue.project.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -16,7 +17,7 @@ public interface ProjectService {
 	int addProject(Project p);
 
 	
-	ArrayList<Project> selectCheckList();
+	ArrayList<Project> selectCheckList(String memId);
 
 	int getListCount();
 
@@ -26,7 +27,7 @@ public interface ProjectService {
 
 
 
-	ArrayList<Project> selectunderwayList();
+	ArrayList<Project> selectunderwayList(int memId1);
 
 
 	ArrayList<Project> selectrecruitList();
@@ -58,6 +59,58 @@ public interface ProjectService {
 	int changeAnswerStatus(Reply r);
 
 	int checkLikeNum(Integer pId, Integer memId);
+
+
+	int temStoreProject(Project p);
+
+
+	int temStoreQuestion(ProjectQuestion q);
+
+
+	int getUpdateForm(Integer proId);
+
+
+	Project selectOne(int proId);
+
+
+	ArrayList<ProjectQuestion> getQuestion(int proId);
+
+
+	int updateProject(Project p);
+
+
+	int updateQuestion(ProjectQuestion q);
+
+
+	ArrayList<Member> selectrecruitMember();
+
+
+	int deleteProject(Integer proId);
+
+
+	int deleteQuestion(Integer proId);
+
+
+	ArrayList<Project> selectTemStoreList(int a);
+
+
+	
+
+
+//	ProjectQuestion getQuestion(int proId);
+
+
+	
+
+
+
+
+
+
+
+
+
+
 
 
 	

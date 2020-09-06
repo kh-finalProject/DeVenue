@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    	    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -387,11 +389,15 @@ button{
             </li>
         </div>
         <br>
+           <c:choose>
+          <c:when test="${!empty list1}">
+       <c:forEach var ="p" items="${list1}">
+           
         <div id ="projectbox">
             <table width="540px" >
                 <thead>
                   <tr >
-                    <td><li style= "color: white; padding-left:10px; padding-top:10px;" >Title</li></td>
+                    <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
                     
                     <td colspan="5"><a id ="sText" style ="float:right; font-size:25px; padding-top:10px; padding-left:10px;" > 
   
@@ -401,8 +407,8 @@ button{
                 </tr>
                   <tr id ="sText" style ="">
                     <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                      <span class="badge badge-primary">개발</span>
-                      <span class="badge badge-success">워드프레스</span></td>
+                    <span class="badge badge-primary">${p.proMCId}</span>
+                        <span class="badge badge-success">${p.proDCId}</span></td>
                     
                 </tr>
                  <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
@@ -411,15 +417,15 @@ button{
 						src="${contextPath }/resources/images/money	.png" height="30px"
 						 width  ="20px" style ="margin-left: 25px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>
                     </td>
-                      <td >2000000원&nbsp;&nbsp;&nbsp;</td>
+                      <td >${p.proPayment}&nbsp;&nbsp;&nbsp;</td>
                       <td ><img
 						src="${contextPath }/resources/images/period.png" height="30px"
 						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">예상기간   </span></td>
-                      <td>30일&nbsp;&nbsp;&nbsp;</td>
+                      <td>${p.proDuration}&nbsp;&nbsp;&nbsp;</td>
                       <td><li><img
 						src="${contextPath }/resources/images/deadline.png" height="30px"
 						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">모집마감    </span></li></td>
-                      <td><li style= "margin-right:15px;">2020년 2월 30일&nbsp;&nbsp;&nbsp;</li></td>
+                      <td><li style= "margin-right:15px;">${p.proREndDate}&nbsp;&nbsp;&nbsp;</li></td>
                  
                   </tr>
 
@@ -427,8 +433,8 @@ button{
                                 <td colspan="2">  </td>
                                 <td colspan="6">
                                     <div style= "margin-left:100px;">
-                                    <button class="btn/middle btn-info" style= "color:black;">삭제</button>
-                                    <button class="btn/middle btn-info" style= "color:black;">수정</button>
+                                     <button type ='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proUpdateForm.do?proId='+${p.proId}"> 수정</button>
                                   
                                             </div>
                                 </td>
@@ -443,6 +449,21 @@ button{
     
 
         </div>
+         
+     </c:forEach>
+      </c:when>
+    <c:when test="${empty list1}">
+    <br>
+ <div id= "explainbox" style ="padding:30px;">
+              
+              <li id ="sText" style ="margin-left:80px; font-size:20px;">
+              	종료된 프로젝트를 찾을 수 없습니다!
+                
+              </li>
+          </div>
+    
+    </c:when>
+    </c:choose>
         <br>
         
   

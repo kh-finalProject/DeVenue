@@ -35,5 +35,8 @@ public class HomeController {
 //	public String getClientList() {
 //		return "findMember/findClient";
 //	}
-//	
+
+
+	
+
 }

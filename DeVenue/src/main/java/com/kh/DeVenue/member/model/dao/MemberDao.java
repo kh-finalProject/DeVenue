@@ -8,9 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.DeVenue.member.model.vo.FindClient;
+
+import com.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.member.model.vo.Recruit;
+import com.kh.DeVenue.member.model.vo.PageInfo;
+
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.member.model.vo.PageInfo;
+
 
 @Repository("mDao")
 public class MemberDao {
@@ -22,12 +29,16 @@ public class MemberDao {
 	public Member selectMember(Member m) {
 
 		return sqlSessionTemplate.selectOne("memberMapper.selectMember",m);
+
 	}
 
 	public int insertMember(Member m) {
 		
 		return sqlSessionTemplate.insert("memberMapper.insertMember",m);
+
 	}
+
+	
 
 
 	public int updatePwdMember(Member pwdchange) {
@@ -57,6 +68,13 @@ public class MemberDao {
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
+	}
+
+	public ArrayList<Recruit> selectRecruitMemList() {
+		ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectrecruitMemList");
+		return list;
 	}
 
 }

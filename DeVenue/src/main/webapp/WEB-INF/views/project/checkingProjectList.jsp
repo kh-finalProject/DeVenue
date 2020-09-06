@@ -171,7 +171,7 @@
     @media (max-width: 767px) {
 
       .wizard .nav-tabs>li a i {
-        display: none;
+      display: none;
       }
 
     }
@@ -357,7 +357,10 @@ button{
               <br>
               <div>
                 <li class="nav-item" >
-                  <a class="nav-link hvr-underline-from-center mr-2" width="100px;" height="100px;" href="temporaryStoreList.do" style ="color:white">임시 저장</a>
+                	<c:url var="temStoreList" value="temStoreList.do">
+						<c:param name="memId" value= "${loginUser.memId}" ></c:param>
+					</c:url>
+                  <a class="nav-link hvr-underline-from-center mr-2" width="100px;" height="100px;" href="${temStoreList}" style ="color:white">임시 저장</a>
                 </li>
                    <br>
                   
@@ -375,7 +378,6 @@ button{
               </div>
           </div>
       </div>
-
 
 
 
@@ -405,12 +407,15 @@ button{
         </div>
         <br>
            <c:choose>
+           
        <c:when test="${!empty list1}">
        <c:forEach var ="p" items="${list1}">
+         
+       
         <div id ="projectbox" style ="margin-top:50px;" >
           <table width="533px"   >
               <thead>
-
+				<input type ="hidden" value = ${p.proId} >
                   <tr >
                       <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
                       
@@ -465,28 +470,18 @@ button{
                        
                           <tr  align ="center" style= "border:1px solid black;" height="30" id ="sText">
                            
+                         
+				
+					
+							
+						
                               <td colspan="6">
                                   <div style= "float:right; margin-right:30px; padding:10px;">
-                                  <button class="btn/middle btn-info" style= "color:black; width:90px;">취소</button>
-                                  <button class="btn/middle btn-info" style= "color:black; width:90px;" id ="btnUpdate">수정</button>
+                                  <button type ='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proUpdateForm.do?proId='+${p.proId}"> 수정</button>
                                   </tr>
 
-<script>
-$(document).on('click', '#btnUpdate', function(){
 
-		var url = "${pageContext.request.contextPath}/project/addProject";
-
-		url = url + "?proId="+${addPorject.proid};
-
-		url = url + "&mode=edit";
-
-
-
-		location.href = url;
-
-	});
-
-</script>
 
 
     </div>
@@ -497,11 +492,13 @@ $(document).on('click', '#btnUpdate', function(){
 </tr>   
                    
             </table>      
-      </form>
+    
       </div>
+       
      </c:forEach>
       </c:when>
     <c:when test="${empty list1}">
+   
     <br>
  <div id= "explainbox" style ="padding:30px;">
               
@@ -513,8 +510,7 @@ $(document).on('click', '#btnUpdate', function(){
     
     </c:when>
     </c:choose>
-           
-    
+    </form>
   </div>
   
 </div>

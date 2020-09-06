@@ -27,6 +27,7 @@
   	<result property="memTypeName" column="MEM_TYPE_NAME"/>
   </resultMap>
 
+
   <resultMap type="Profile" id="ProfileResultSet">
   	<id property="proId" column="PRO_ID"/>
   	
@@ -49,6 +50,8 @@
   	INSERT INTO PROFILE
   	VALUES(PROFILE_SEQ.nextval,#{memId},NULL,NULL,NULL)
   </insert>
+
+
 
   <!-- 클라이언트 찾기 리스트 -->
   <resultMap type="FindClient" id="findCLient">
@@ -77,6 +80,7 @@
   </resultMap>
   
 
+
   
   <!-- 로그인 -->
   <select id="selectMember" parameterType="Member" resultMap="memberResultSet">
@@ -86,7 +90,6 @@
 	AND MEM_STATUS='Y'
   </select>
 
-  
 
   <!-- 회원가입 -->
   <insert id="insertMember" parameterType="Member">
@@ -126,6 +129,8 @@
   </update>
 
 
+
+
   <!-- 클라이언트 찾기(클라이언트 수) -->
   <select id="getListCount" resultType="_int">
   	SELECT COUNT(*)
@@ -138,4 +143,9 @@
   	
   </select>
 
+<!-- <select id = "selectRecruitMemlist" resultMap ="Recruit">
+SELECT *
+FROM MEMBER
+
+</select> -->
 </mapper>

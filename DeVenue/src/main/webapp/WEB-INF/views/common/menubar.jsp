@@ -230,8 +230,13 @@ i {
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do">프로젝트찾기</a>
 				</li>
+				
+				<c:url var="addProject" value="addProject.do">
+						<c:param name="memId" value="${loginUser.memId}"></c:param>
+					</c:url>
+					
 				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
+					<a class="nav-link hvr-underline-from-center mr-2" href="${addProject}">프로젝트등록</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>

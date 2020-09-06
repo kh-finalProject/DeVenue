@@ -387,6 +387,7 @@ button{
            <c:choose>
        <c:when test="${!empty list1}">
        <c:forEach var ="p" items="${list1}">
+             <c:if test="${loginUser.memId eq p.memId }">
         <div id ="projectbox" style ="margin-top:50px;" >
           <table width="533px"   >
               <thead>
@@ -508,6 +509,7 @@ button{
               </table>      
       </form>
       </div>
+      </c:if>
      </c:forEach>
       </c:when>
     <c:when test="${empty list1}">

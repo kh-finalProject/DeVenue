@@ -5,20 +5,26 @@ import static com.kh.DeVenue.common.Pagination.getPageInfo;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,27 +56,65 @@ ProjectService pService;
 	
 	@RequestMapping(value="proinsert.do", method=RequestMethod.POST)
 	public String projectInsert(Project p, ProjectQuestion q, HttpServletRequest request,
-								@RequestParam(value="proPlanPaper1",required=false) MultipartFile file , 
-								@RequestParam(value="chk", required=false) List<String> valueArr) {
-	
-	
+								@RequestParam(value="proPlanPaper1",required=false) MultipartFile file,
+								@RequestParam(value ="proAQContent",required=false) String[] proAQContent,
+								@RequestParam(value ="proStartDate",required=false) String proStartDate,
+								@RequestParam(value ="proDuration",required=false) int proDuration
+								) throws ParseException {
+								
+	System.out.println("proStartDate= "+proStartDate);
+	System.out.println("proDuaration =" +proDuration);
 		
+	Calendar cal = Calendar.getInstance();
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	Date date = null;
 	
+	
+	try {
+		date = df.parse(proStartDate);
+	} catch (ParseException e) {
 		
-		if(!file.getOriginalFilename().contentEquals("")) {
+		e.printStackTrace();
+	}
+	cal.setTime(date);
+	System.out.println("current: " + df.format(cal.getTime()));
+	cal.add(Calendar.DATE, proDuration);
+	String a = df.format(cal.getTime());
+	Date date1 = df.parse(a);
+	
+	
+	java.util.Date utilDate = date1;
+	java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+	System.out.println("utilDate:" + utilDate);
+	System.out.println("sqlDate : " +sqlDate);
+	
+	System.out.println("after :" + df.format(cal.getTime()));
+		
+	if(!file.getOriginalFilename().contentEquals("")) {
 			String savePath = saveFile(file, request);
+			
 //			System.out.println("최종 저장 될 파일명을 포함한 경로 : " + savePath);
-			if(savePath != null) {	// 파일이 잘 저장되어 경로가 반환 된다면..
-				p.setProPlanPaper(file.getOriginalFilename());	
+
+				if(savePath != null) {	// 파일이 잘 저장되어 경로가 반환 된다면..
+			
+					p.setProPlanPaper(file.getOriginalFilename());	
+				p.setProPlanRePaper(savePath);
 				
 			}
 		}
+		
+
 		System.out.println(p);	
+		System.out.println(q);
+		p.setProEndDate(sqlDate);
 		int result = pService.addProject(p);
-		int result1 = pService.addQuestion(q);
+		for(int i =0; i<proAQContent.length; i++) {
+			q.setProAQContent(proAQContent[i]);
+			int result1 = pService.addQuestion(q);
+		}
 		System.out.println(p);			
 		System.out.println(q);	
-		
+		 
 	
 		
 		if(result > 0) {
@@ -84,13 +128,35 @@ ProjectService pService;
 	}
 	
 	
-	
+	@RequestMapping("temStoreList.do")
+	public ModelAndView temStoreList(ModelAndView mv,@RequestParam(value ="memId") String memId
+			
+			) {
+		int a = Integer.valueOf(memId);
+		System.out.println("a:"+a);
+		ArrayList<Project> list = pService.selectTemStoreList( a);
+		
+		System.out.println("임시저장 리스트"+list);
+		if(!list.isEmpty()) {
+			mv.addObject("list1",list);
+			mv.setViewName("project/temporaryStoreList");
+			
+		}else {
+			
+		}
+		
+		return mv;
+		
+	}
 	@RequestMapping(value="temStore.do", method=RequestMethod.POST)
 	public String temStore(Project p, ProjectQuestion q, HttpServletRequest request,
 								@RequestParam(value="proPlanPaper1",required=false)
-								MultipartFile file) {
+								MultipartFile file,
+								@RequestParam(value ="proAQContent",required=false) String[] proAQContent) {
 	
 	
+		
+		
 		
 		if(!file.getOriginalFilename().contentEquals("")) {
 			String savePath = saveFile(file, request);
@@ -101,8 +167,11 @@ ProjectService pService;
 			}
 		}
 		System.out.println(p);	
-		int result = pService.addProject(p);
-		int result1 = pService.addQuestion(q);
+		int result = pService.temStoreProject(p);
+		for(int i =0; i<proAQContent.length; i++) {
+			q.setProAQContent(proAQContent[i]);
+			int result1 = pService.addQuestion(q);
+		}
 		System.out.println(p);			
 		System.out.println(q);	
 		
@@ -124,7 +193,7 @@ ProjectService pService;
 		
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		
-		String savePath = root + "\\nuploadFiles";
+		String savePath = root + "\\puploadFiles";
 		
 		File folder = new File(savePath);
 		
@@ -134,8 +203,18 @@ ProjectService pService;
 			
 		}
 		
-		String filePath = folder + "\\" + file.getOriginalFilename();
-		// 실제 저장 될 파일의 경로 + 파일명
+		// 공지글은 파일명 중복 제거는 신경쓰지 않고 했지만
+		// 게시판에서는 파일명을 날짜(업로드 시간)로 rename 해보자
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String originFileName = file.getOriginalFilename();
+		String renameFileName
+			= sdf.format(new java.sql.Date(System.currentTimeMillis()))
+			 + "." + originFileName.substring(originFileName.lastIndexOf(".")+1);
+		
+		
+		String filePath = folder + "\\" + renameFileName;
+		// 실제 저장 될 파일의 경로 + rename 파일명
 		
 		try {
 			file.transferTo(new File(filePath));
@@ -147,27 +226,187 @@ ProjectService pService;
 			e.printStackTrace();
 		}
 		
-		return filePath;
+		return renameFileName;
 	}
 	
 	@RequestMapping("checkList.do")
-	public ModelAndView checkProjectList(ModelAndView mv) {
-		ArrayList<Project> list = pService.selectCheckList();
-		System.out.println(list);
+	public ModelAndView checkProjectList(ModelAndView mv, @RequestParam(value ="memId" ,required= false) String memId
+			
+			) {
+		
+	  
+		System.out.println("진입");
+		int a = Integer.valueOf(memId);
+		System.out.println("memId?" +memId);
+		ArrayList<Project> list = pService.selectCheckList(memId);
+		
+		System.out.println("검수 리스트"+list);
 		if(!list.isEmpty()) {
 			mv.addObject("list1",list);
 			mv.setViewName("project/checkingProjectList");
 			
 		}else {
-			mv.setViewName("project/checkingProjectList");
+			
 		}
-		
+		 
 		return mv;
 		
 	}
+	
+//	@RequestMapping("proUpdateForm.do" )
+//	public ModelAndView boardUpdateView(ModelAndView mv, Integer proId ,Project p, @RequestParam("page") Integer page
+//										) {
+//		mv.addObject("project",pService.getUpdateForm(proId)).addObject("currentPage",page).setViewName("project/updateProjectForm");
+//			System.out.println("mv"+mv);
+//			System.out.println("proId"+proId);
+//		return mv;
+//	}
+	
+//	@RequestMapping("proUpdateForm.do")
+//	public String projectUpdateView(int proId, Model model) {
+//		System.out.println(model);
+//		System.out.println(proId);
+//		
+//		ArrayList<Project> list = pService.selectCheckList();
+//		model.addAttribute("p", pService.selectOne(proId));
+//		model.addAttribute("q", pService.getQuestion(proId));
+//		System.out.println(model);
+//		
+//		
+//		return "project/updateProjectForm";
+//	}
+	@RequestMapping("proUpdateForm.do")
+	public String projectUpdateView(int proId, Model model, @RequestParam(value ="proAQContent",required=false) String[] proAQContent) {
+		System.out.println(model);
+		System.out.println(proId);
+		
+		ArrayList<ProjectQuestion> list = pService.getQuestion(proId);
+		System.out.println(list);
+		model.addAttribute("p", pService.selectOne(proId));
+		model.addAttribute("q",list);
+		System.out.println(model);
+		
+		
+		return "project/updateProjectForm";
+	}
+	
+	@RequestMapping("proUpdate.do")
+	public ModelAndView proUpdate(ModelAndView mv,  Project p, ProjectQuestion q ,RedirectAttributes redirectAttributes,
+									HttpServletRequest request, 
+									
+									@RequestParam(value ="proAQContent",required=false) String[] proAQContent,
+									@RequestParam(value="proPlanPaper1", required=false)
+									MultipartFile file,
+									
+									@RequestParam(value ="proStartDate",required=false) String proStartDate,
+									@RequestParam(value ="proDuration",required=false) int proDuration) throws ParseException {
+	   int a =p.getMemId();
+		   redirectAttributes.addAttribute("memId", a);
+		System.out.println("mv"+mv);
+		String renameFileName="";
+		// 기존의 파일이 input hidden으로 와서 매개변수의 Board 객체에 담김
+		// 그럼 그걸 가지고 기존의 파일을 삭제하자
+		if(!file.getOriginalFilename().equals("")) {	// 새로 올린 파일이 있느냐
+			if(p.getProPlanPaper() != null) {		// 기존의 파일이 있느냐(hidden)
+				deleteFile(p.getProPlanPaper(), request);
+				// deleteFile메소드는 NoticeController에 만들었으니 아래에 복붙해서
+				// 폴더명만 수정하자
+			}
+			renameFileName = saveFile(file, request);
+		}
+		
+		// 위에 만든 saveFile메소드를 활용해서 새로 사용자가 수정하려고 올린 파일의
+		// 파일명을 바꾸고 buploadFiles폴더에 저장하자.
+		
+		// Board객체에 새로 올린 파일명을 담고(원본 및 변경한 것 둘다) DB를 다녀오자(update)
+
+			p.setProPlanPaper(file.getOriginalFilename());
+			p.setProPlanRePaper(renameFileName);
+			Calendar cal = Calendar.getInstance();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = null;
+			
+			Calendar cal1 = Calendar.getInstance();
+			DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date date2 = null;
+			try {
+				date = df.parse(proStartDate);
+			} catch (ParseException e) {
+				
+				e.printStackTrace();
+			}
+			cal1.setTime(date);
+			System.out.println("current: " + df.format(cal1.getTime()));
+			cal1.add(Calendar.DATE, proDuration);
+			String b = df.format(cal1.getTime());
+			Date date1 = df.parse(b);
+			
+			System.out.println("cal"+cal);
+			java.util.Date utilDate = date1;
+			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+			System.out.println("utilDate:" + utilDate);
+			System.out.println("sqlDate : " +sqlDate);
+			
+			p.setProEndDate(sqlDate);
+		System.out.println("보자 :"+p);
+		int result = pService.updateProject(p);
+		
+		
+		
+		for(int i =0; i<proAQContent.length; i++) {
+			q.setProAQContent(proAQContent[i]);
+			int result1 = pService.updateQuestion(q);
+		}
+		
+		if(result > 0) {
+			mv.setViewName("redirect:checkList.do");
+		
+		
+		}else {
+			throw new ProjectException("게시글 수정 실패!!");
+		}
+		
+		return mv;
+	}
+
+	private void deleteFile(String fileName, HttpServletRequest request) {
+		String root = 
+			request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\nuploadFiles";
+		
+		File f = new File(savePath + "\\" + fileName);
+		if(f.exists()) {
+			f.delete();
+		}
+	}
+	
+	@RequestMapping("proDelete.do")
+	public String proDelete(Integer proId, HttpServletRequest request) {
+		
+		// 게시글을 삭제하기 전에 기존의 파일을 지운다.
+		Project p = pService.selectOne(proId);
+		
+		if(p.getProPlanPaper() != null) {
+			deleteFile(p.getProPlanRePaper(), request);
+			
+		}
+		
+		// 게시글 삭제하기
+		int result1 = pService.deleteQuestion(proId);
+		int result = pService.deleteProject(proId);
+		
+		if(result > 0) {
+			return "redirect:checkList.do";
+		}else {
+			throw new ProjectException("게시물 삭제 실패!");
+		}
+	}
+	
 	@RequestMapping("recruitProjectList.do")
-	public ModelAndView recruitProjectList(ModelAndView mv) {
+	public ModelAndView recruitProjectList(ModelAndView mv
+			) {
 		ArrayList<Project> list = pService.selectrecruitList();
+		/* ArrayList<Member> list2 = pService.selectrecruitMember(memId); */
 		System.out.println(list);
 		if(!list.isEmpty()) {
 			mv.addObject("list1",list);
@@ -199,8 +438,9 @@ ProjectService pService;
 	
 	
 	@RequestMapping("underwayProjectList.do")
-	public ModelAndView underwayProjectList(ModelAndView mv) {
-		ArrayList<Project> list = pService.selectunderwayList();
+	public ModelAndView underwayProjectList(ModelAndView mv, @RequestParam(value ="memId") String memId) {
+		int memId1 = Integer.valueOf(memId);
+		ArrayList<Project> list = pService.selectunderwayList(memId1);
 		System.out.println(list);
 		if(!list.isEmpty()) {
 			mv.addObject("list1",list);
@@ -214,14 +454,39 @@ ProjectService pService;
 		
 	}
 	
-
-
 	
-	@RequestMapping("temporaryStoreList.do")
-	public String temporaryStoreListView() {
+	@RequestMapping(value="searchProjectDetail.do")
+	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="page", required=false) Integer page) {
 		
-		return "project/temporaryStoreList";
+		System.out.println("parameter 뭐 넘어왔나?"+project);
+		//프로젝트 디테일 가져오기
+		System.out.println(project);
+		ProjectDetail detail=pService.selectProjectDetail(project.getId());
+		
+		// 클라이언트의 전체 프로젝트 수 
+		ProjectDetail number=pService.selectAllNumber(detail.getProject().getMemId());
+		detail.setAllProject(number.getAllProject());
+		detail.setProcessProject(number.getProcessProject());
+		detail.setCompleteProject(number.getCompleteProject());
+		detail.setTotal(number.getTotal());
+		detail.setEvalCount(number.getEvalCount());
+		
+		System.out.println("화면단 가기 전, 프로젝트 디테일:"+detail);
+		
+		//추천 프로젝트 리스트 가져오기
+		ArrayList<ProjectList> candidate=pService.selectRecommend(project);
+		System.out.println("화면단 가기 전, 추천 프로젝트 리스트"+candidate);
+		
+		
+		mv.addObject("detail", detail);
+		mv.addObject("candidate", candidate);
+		mv.setViewName("project/findProjectDetailView");
+		return mv;
+		
 	}
+
+
+
 	
 	@RequestMapping("addFailProjectList.do")
 	public String addFailProjectListView() {

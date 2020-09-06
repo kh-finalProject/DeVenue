@@ -59,7 +59,7 @@ public class Member implements Serializable {
 		this.address2 = address2;
 		this.address3 = address3;
 		this.phone = phone;
-		this.cellphone = cellphone;
+		this.cellPhone = cellPhone;
 		this.faxNo = faxNo;
 		this.taxEmail = taxEmail;
 		this.decCount = decCount;
