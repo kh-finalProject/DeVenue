@@ -462,4 +462,36 @@
 		                , MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY) 
 		    VALUES ((SELECT NVL(MAX(CS_ID),0)+1 FROM CHAT_SET), '인트로', '아웃트로', '1:30', '15:30','Y','Y','Y','Y','Y','N','N')
 	</update>
+	
+	<!-- 채팅 인트로 아웃트로 설정 -->
+	<update id="insertUpdateIntroOutime" parameterType="map">
+		MERGE INTO CHAT_SET
+		USING DUAL
+		ON (CS_ID = 1)
+		WHEN MATCHED THEN
+		UPDATE SET INTRO_CONTENT = #{introMessage}, OUTTIME_CONTENT = #{notOperMessage}
+		WHEN NOT MATCHED THEN
+		INSERT (CS_ID, INTRO_CONTENT, OUTTIME_CONTENT, POSSIBLE_TIME_START, POSSIBLE_TIME_END
+		            , MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY) 
+		VALUES ((SELECT NVL(MAX(CS_ID),0)+1 FROM CHAT_SET), '인트로', '아웃트로', '1:30', '15:30','Y','Y','Y','Y','Y','N','N')
+	</update>
+	
+	<!-- 챗봇데이터 삭제 -->
+	<delete id="deleteAsk" parameterType="string">
+		DELETE FROM ASK
+		WHERE ASK_ID = #{askId}
+	</delete>
+	
+	<!-- 챗봇데이터 수정 -->
+	<update id="updateAsk" parameterType="map">
+		UPDATE ASK
+		SET ASK_TITLE=#{title}, ASK_CONTENT=#{answer}, ASK_KEYWORD = #{keyword}, ASK_MODIFY_DATE = SYSDATE
+		WHERE ASK_ID = #{askId}
+	</update>
+	
+	<!-- 챗봇데이터 삽입 -->
+	<insert id="insertAsk" parameterType="map">
+		INSERT INTO ASK
+		VALUES ((SELECT NVL(MAX(ASK_ID), 0)+1 FROM ASK), #{title}, #{answer}, #{keyword}, DEFAULT, DEFAULT)
+	</insert>
 </mapper>

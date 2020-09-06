@@ -1397,7 +1397,7 @@ body{
   /* 알림 */
   .content_chatRoom_list .alertRead{
       display: inline-block;
-      width: 16px;
+/*       width: 16px; */
       height: 16px;
       padding: 0px 0px 2px 4.5px;
       background-color: red;
@@ -1406,7 +1406,7 @@ body{
       max-width: 20px;
       overflow: hidden;
       white-space: nowrap;
-      text-overflow: ellipsis;
+/*       text-overflow: ellipsis; */
       position: relative;
       top:6px;
       font-size: 11px;
@@ -1540,6 +1540,55 @@ body{
   }
   #emojis{
   	display:none;
+  }
+  
+  /* 챗봇 관련 */
+  /* 챗봇 키워드(내입장) */
+  .bot_keyword_me {
+      margin-top: auto;
+      margin-bottom: 3px;
+      border-radius: 25px;
+      background-color: #94ebff;
+      padding: 10px;
+      display: inline-block;
+      position: relative;
+      right: 0px;
+      min-width: 41px;
+      max-width: 240px;
+      white-space: pre-wrap;
+      /*한글에 효험*/
+      word-break: break-all;
+      /*영어에 효험*/
+      font-size: 12px;
+	  max-width:219px;
+	
+      opacity: 0;
+      transition: all .35s;
+      display:none;
+  }
+
+  /* 챗봇 관리자 답변 */
+  .bot_answer {
+      margin-top: auto;
+      margin-bottom: 10px;
+      margin-right: 10px;
+      border-radius: 25px;
+      background-color: #89fda2;
+      padding: 10px;
+      display: inline-block;
+      position: relative;
+      top:-8px;
+      left: 17px;
+      min-width: 50px;
+      max-width: 240px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-size: 12px;
+      max-width:219px;
+
+      opacity: 0;
+      transition: all .4s;
+      display:none;
   }
 </style>
 
@@ -1732,7 +1781,7 @@ try {
           <!-- 채팅 메인창 콘텐트 -->
           <div class="Messenger_content_main">
             <div class="Messenger_content_mainContent">
-              <table>
+              <table style="max-width:300px !important;">
                 <tr>
                   <td style="vertical-align: baseline; padding-top: 3px;">
                   	<c:forEach var="i" begin="0" end="${admins.size()-1 }" step="1">
@@ -1748,8 +1797,8 @@ try {
 <!-- 디베뉴 이용 절차, 프로젝트 견적 등이 -->
 <!-- 궁금하신가요? -->
 <!-- <a href="#">'자주 묻는 질문' 보러 가기 ▶</a> -->
-                    <pre id="introCPre" style="display:none;">${chatSet.introContent }</pre>
-                    <pre id="outTimeCPre" style="display:none;">${chatSet.outTimeContent }</pre>
+                    <pre id="introCPre" style="display:none;max-width:235px !important;min-width:235px;">${chatSet.introContent }</pre>
+                    <pre id="outTimeCPre" style="display:none;max-width:235px !important;min-width:235px;">${chatSet.outTimeContent }</pre>
                   </td>
                 </tr>
                 <tr>
@@ -2417,7 +2466,7 @@ try {
                   </div>
                 </button>
                 <!-- 메시지 입력창 -->
-                <div class="Input-content-wrap">
+                <div class="Input-content-wrap chatRoomInputWrap">
                   <textarea class="Input_field" placeholder="메시지를 입력하세요" id="textMessage" onkeydown="return enter()"></textarea>
                   <input type="hidden" id="forEmojiAdd">
                 </div>
@@ -2492,6 +2541,20 @@ try {
           <p>채팅 상담</p>
         </div>
         <!--============================================-->
+        <!-- 챗봇 데이터 받아놓기 -->
+       	<c:if test="${ask != null && ! empty ask }">
+       		<c:set var="firstAskLen" value="${ask.size() }"/>
+	        <div style="max-width: 220px;position:relative;margin-bottom:10px;" class="keywordArea">
+	       		<c:forEach var="i" begin="0" end="${ask.size()-1 }" step="1">
+			        <span class="bot_keyword_me">${ask[i].askKeyword }<input type="hidden" name="" value="${ask[i].askId }"></span>
+		        </c:forEach>
+		    </div>
+	    	<div style="min-width: 220px;" class="anserArea">
+	    		<c:forEach var="i" begin="0" end="${ask.size()-1 }" step="1">
+			        <span class="bot_answer">${ask[i].askContent }<input type="hidden" name="" value="${ask[i].askId }"></span>
+		        </c:forEach>
+		    </div>
+       	</c:if>
       </div>
     </div>
   </div>
@@ -2785,6 +2848,9 @@ try {
 			    $('.Layout-chatOption').hide();
 			    $('.Layout-chatRooms').hide();
 			    $(".Layout-chatMain").hide();
+			    
+			    // 챗봇해줄건지
+			    changeToChatBot();
 			},
 			error:function(request,status,error){
 			    alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
@@ -2933,7 +2999,7 @@ try {
     	  firstScrollPosition = $(item)[0].scrollHeight-$(item).innerHeight();
     	  $(item).scrollTop(firstScrollPosition);
       })
-      alert('스크롤탐 : ' + firstScrollPosition)
+//       alert('스크롤탐 : ' + firstScrollPosition)
       $('.Messages').scroll();
   }
   
@@ -3219,6 +3285,9 @@ try {
 			
 			// 모든 작업이 성공했으면 다시 DB로 가서 안읽은 메시지를 모두 읽음 처리한다.
 		    readMessages(roomId, userId);
+			
+		 	// 챗봇해줄건지
+		    changeToChatBot();
     	},
     	error:function(request, status, error){
     		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3430,10 +3499,10 @@ function changeChatAllowOper(chatSet){
 	
 	var currentH = new Date().getHours();
 	var currentM = new Date().getMinutes();
-	var operStartTime = chatSet.possibleTime_start.split(':');
+	var operStartTime = '${chatSet.possibleTime_start}'.split(':');
 	var operSH = operStartTime[0];
 	var operSM = operStartTime[1];
-	var operEndTime = chatSet.possibleTime_end.split(':');
+	var operEndTime = '${chatSet.possibleTime_end}'.split(':');
 	var operEH = operEndTime[0];
 	var operEM = operEndTime[1];
 	
@@ -3453,25 +3522,25 @@ function changeChatAllowOper(chatSet){
 	var hourGap = operSH - currentH;
 	var minuGap = operSM - currentM;
 	var operDays = "";
-	if(chatSet.monday == 'Y'){
+	if('${chatSet.monday}' == 'Y'){
 		operDays = operDays + '월, ';
 	}
-	if(chatSet.tuesday == 'Y'){
+	if('${chatSet.tuesday}' == 'Y'){
 		operDays = operDays + '화, ';
 	}
-	if(chatSet.wednesday == 'Y'){
+	if('${chatSet.wednesday}' == 'Y'){
 		operDays = operDays + '수, ';
 	}
-	if(chatSet.thursday == 'Y'){
+	if('${chatSet.thursday}' == 'Y'){
 		operDays = operDays + '목, ';
 	}
-	if(chatSet.friday == 'Y'){
+	if('${chatSet.friday}' == 'Y'){
 		operDays = operDays + '금, ';
 	}
-	if(chatSet.saturday == 'Y'){
+	if('${chatSet.saturday}' == 'Y'){
 		operDays = operDays + '토, ';
 	}
-	if(chatSet.sunday == 'Y'){
+	if('${chatSet.sunday}' == 'Y'){
 		operDays = operDays + '일';
 	}
 	if(operDays[operDays.length-1] == ' '){
@@ -3517,8 +3586,8 @@ function changeChatAllowOper(chatSet){
 	if(operSH < 12){ampm1 = "AM"}else{ampm1 = "PM"}
 	if(operEH < 12){ampm2 = "AM"}else{ampm2 = "PM"}
 	$('#operDaysPre').html(operDays);
-	$('#operStartTimePre').html(ampm1 + ' ' + chatSet.possibleTime_start);
-	$('#operEndTimePre').html(ampm2 + ' ' + chatSet.possibleTime_end);
+	$('#operStartTimePre').html(ampm1 + ' ' + '${chatSet.possibleTime_start}');
+	$('#operEndTimePre').html(ampm2 + ' ' + '${chatSet.possibleTime_end}');
 	
 	// 운영시간과 관련된 모든 문구, 아이콘을 지정
 	// 비운영 시간인 경우
@@ -3526,6 +3595,10 @@ function changeChatAllowOper(chatSet){
 		$('.Messenger_prompt2_main').html('운영시간 아님&nbsp;&nbsp;<img class="zzzIcon" src="resources/image/zzz1.png" width="20px" height="20px">')
 		$('.Messenger_header_mainImgView').css('display', 'block');
    		$('.during_oper').css('display', 'none');
+   		$('.Messenger_header_mainImgView').css('display', 'block');
+   		$('.chatRoomInputWrap').find('textarea').each(function(index, item){
+			$(item).prop('disabled', 'disabled').prop('placeholder', '상담 시간이 아닙니다');
+		})
 		// 운영시간 시작까지 남은 시간을 계산, '~뒤 상담이 운영됩니다' 라고 띄워줌(하루 미만일땐 시간, 한시간 미만일땐 분 그외엔 일 )
 		// 비운영 시간이지만 운영일인 경우
 		if(minGap == 0){
@@ -3562,8 +3635,13 @@ function changeChatAllowOper(chatSet){
 			$('.Messenger_prompt2_newChatRoom').text(Math.abs(minGap) + '일 뒤 상담이 재개됩니다');
 			$('.Messenger_prompt2_chatRoom').text(Math.abs(minGap) + '일 뒤 상담이 재개됩니다');
 			$('.Messenger_prompt2_chatRooms').text(Math.abs(minGap) + '일 뒤 상담이 재개됩니다');
+			$('.during_oper').css('display', 'none');
+			$('.Messenger_header_mainImgView').css('display', 'block');
 			$('#outTimeCPre').css('display', 'block');
 			$('#introCPre').css('display', 'none');
+			$('.chatRoomInputWrap').find('textarea').each(function(index, item){
+				$(item).prop('disabled', 'disabled').prop('placeholder', '상담 시간이 아닙니다');
+			})
 		}else{//운영시간이고 오늘인 경우
 			$('.Messenger_prompt2_main').html('응답시간 빠름&nbsp;&nbsp;<img class="thunderIcon" src="resources/image/thunder.png" width="20px" height="20px">')
 			$('.Messenger_prompt3_main').html('보통 몇 분 내에 응답합니다.');
@@ -3574,7 +3652,10 @@ function changeChatAllowOper(chatSet){
 			$('#introCPre').css('display', 'block');
 			$('#outTimeCPre').css('display', 'none');
 		    $('.during_oper').css('display', 'block');
-			$('.Messenger_header_mainImgView').css('display', 'none');
+		    $('.Messenger_header_mainImgView').css('display', 'none');
+			$('.chatRoomInputWrap').find('textarea').each(function(index, item){
+				$(item).prop('disabled', false).prop('placeholder', '메시지를 입력하세요');
+			})
 		}
 	}
 	
@@ -3589,6 +3670,9 @@ function changeChatAllowOper(chatSet){
 		})
 	}
 }
+$(function(){
+	changeChatAllowOper();
+})
 // 오늘 요일 알아내기
 function getInputDayLabel() {
 //     var week = new Array('일', '월', '화', '수', '목', '금', '토');
@@ -4199,5 +4283,268 @@ function getInputDayLabel() {
 			}
 			return true;
 		}
+		
+		// 챗봇 관련 --------------------------------------------------------------------------------
+		$(function(){
+			
+		})
+		function changeToChatBot(){
+			
+			var currentH = new Date().getHours();
+			var currentM = new Date().getMinutes();
+			var operStartTime = '${chatSet.possibleTime_start}'.split(':');
+			var operSH = operStartTime[0];
+			var operSM = operStartTime[1];
+			var operEndTime = '${chatSet.possibleTime_end}'.split(':');
+			var operEH = operEndTime[0];
+			var operEM = operEndTime[1];
+			
+			if(operSH.length==2&&operSH.indexOf('0')==0){
+				operSH = operSH.replace('0', '');
+			}
+			if(operSM.length==2&&operSM.indexOf('0')==0){
+				operSM = operSM.replace('0', '');
+			}
+			if(operEH.length==2&&operEH.indexOf('0')==0){
+				operEH = operEH.replace('0', '');
+			}
+			if(operEM.length==2&&operEM.indexOf('0')==0){
+				operEM = operEM.replace('0', '');
+			}
+			
+			var hourGap = operSH - currentH;
+			var minuGap = operSM - currentM;
+			var operDays = "";
+			if('${chatSet.monday}' == 'Y'){
+				operDays = operDays + '월, ';
+			}
+			if('${chatSet.tuesday}' == 'Y'){
+				operDays = operDays + '화, ';
+			}
+			if('${chatSet.wednesday}' == 'Y'){
+				operDays = operDays + '수, ';
+			}
+			if('${chatSet.thursday}' == 'Y'){
+				operDays = operDays + '목, ';
+			}
+			if('${chatSet.friday}' == 'Y'){
+				operDays = operDays + '금, ';
+			}
+			if('${chatSet.saturday}' == 'Y'){
+				operDays = operDays + '토, ';
+			}
+			if('${chatSet.sunday}' == 'Y'){
+				operDays = operDays + '일';
+			}
+			if(operDays[operDays.length-1] == ' '){
+				operDays = operDays.substring(0, operDays.length-2);
+			}
+			var operDaysSplit = operDays.split(', ');
+			for(var i = 0; i < operDaysSplit.length; i++){
+				if(operDaysSplit[i]=='월'){operDaysSplit[i]=1};
+				if(operDaysSplit[i]=='화'){operDaysSplit[i]=2};
+				if(operDaysSplit[i]=='수'){operDaysSplit[i]=3};
+				if(operDaysSplit[i]=='목'){operDaysSplit[i]=4};
+				if(operDaysSplit[i]=='금'){operDaysSplit[i]=5};
+				if(operDaysSplit[i]=='토'){operDaysSplit[i]=6};
+				if(operDaysSplit[i]=='일'){operDaysSplit[i]=0};
+			}
+
+			var today = getInputDayLabel();
+			var todayOrigin = new Date().getDate();
+			var gap = null;
+			var minGap = 7-1;
+			for(var i = 0; i < operDaysSplit.length; i++){
+				if(operDaysSplit[i]==today){
+					minGap = 0;
+					break;
+				}else{
+					if(today<operDaysSplit[i]){
+						gap = Math.abs(operDaysSplit[i]-today);
+						if(minGap>gap){
+							minGap = gap;					
+						}
+					}else{
+						gap = 7 - (today-operDaysSplit[i]);
+						if(minGap>gap){
+							minGap = gap;
+						}
+					}
+				}
+			}
+			
+			// 운영시간과 관련된 모든 문구, 아이콘을 지정
+			// 비운영 시간인 경우
+			if(currentH < operSH || currentH > operEH ||(currentH == operSH && currentM < operSM)||(currentH == operEH && currentM > operEM)){
+				// 채팅방에 들어가는 순간 키워드들이 채팅방에 뜨게 한다.
+				// 이때 들어갈 채팅방은 .Messages_list 중에서 display가 none이 아닌 녀석이다.
+				chatKeywordShowAni();
+				
+				// 운영시간 시작까지 남은 시간을 계산, '~뒤 상담이 운영됩니다' 라고 띄워줌(하루 미만일땐 시간, 한시간 미만일땐 분 그외엔 일 )
+				// 비운영 시간이지만 운영일인 경우
+				if(minGap == 0){
+					// 한시간도 안남은 경우
+					if(hourGap == 0){
+						
+					}else{
+						
+					}
+				// 운영일이 남은 경우
+				}else{
+					
+				}
+			}else{//운영 시간인 경우
+				// 운영시간이지만 오늘이 아닌 경우
+				if(minGap != 0){
+					// 채팅방에 들어가는 순간 키워드들이 채팅방에 뜨게 한다.
+					// 이때 들어갈 채팅방은 .Messages_list 중에서 display가 none이 아닌 녀석이다.
+					chatKeywordShowAni();
+					
+				}else{//운영시간이고 오늘인 경우
+					
+				}
+			}
+			
+		}
+		
+		 // 챗봇 매칭되는 답변 띄워주는 메소드
+	    $(function(){
+	        $('.bot_keyword_me').click(function (event) {
+	            var askId = $(event.target).find('input[type=hidden]').val();
+	    
+	            // 미리 키워드에 대한 답변 메시지를 메시지 영역에 만들어놓고, 
+	            // 매칭되는 키워드를 누르면 해당 답변 메시지의 display를 보이게 해주자
+	            // 이 답변 메시지에는 자주묻는 질문 링크를 항상 달아주자
+	            var answer = document.getElementsByClassName('bot_answer');
+	            for(var i = 0; i < answer.length; i++){
+	                if(askId == answer[i].querySelector('input').value){
+	                    var apAnswer = answer[i].cloneNode(true);
+	                    apAnswer.style.display = 'inline-block';
+	                	 // 스크롤 최근순으로	    		
+// 	        		    showRecentChatView();
+	        			
+	                    var area = null;
+	                    $('.Messages_list').each(function(index, item){
+	                    	if($(item).css('display')!='none'){
+	                    		area = $(item);
+	                    	}
+	                    })
+	                    
+	                    // 관리자쪽은 프로필도 붙여주자
+	                    // 아래에 메시지를 추가한다.
+	                    var proImgName = 'user3.png';
+	                    var currentDateTime = new Date();
+	                    var hour = currentDateTime.getHours();
+	                    var minu = currentDateTime.getMinutes();
+	                    var ampm = "";
+	                    if(hour>=12){
+	                    	ampm = "AM";
+	                    }else{
+	                    	ampm = "PM";
+	                    }
+	                    hour = hour % 12;
+	        		  	hour = hour != 0 ? hour : 12;
+	        			if(minu.length<2){
+	        				minu = "0"+minu;
+	        			}
+	        			var viewDate = hour + ":" + minu + " " + ampm;
+	                    $fromOtherMsgContent = $('<div class="message_from_other msg_unit"><div class="name_with_profile"><div class="img_cont_msg"><img src="${pageContext.servletContext.contextPath}/resources/proImg/'+ proImgName +'" width="30" height="30"></div><span class="user_other">디베뉴 고객센터</span><span class="msg_time_send">'+viewDate+'</span></div></div>');
+	                    area.append($fromOtherMsgContent);
+	                    
+	                    area.append(apAnswer);
+	                    var answerTimeout = setTimeout(function () {
+	                        apAnswer.style.opacity = 1;
+	                        apAnswer.style.background = '#78e08f';
+	                    },200);
+	    
+	                    var reKeyWordArea = $('.keywordArea:first').clone(true);
+	                    reKeyWordArea.find('span').each(function(index, item){
+	                        $(item).css('opacity', 0).css('background-color', '#94ebff');
+	                    });
+	                    
+	                    var area = null;
+	                    $('.Messages_list').each(function(index, item){
+	                    	if($(item).css('display')!='none'){
+	                    		area = $(item);
+	                    	}
+	                    })
+	                    area.append($(reKeyWordArea));
+	                 	// 스크롤 최근순으로	    		
+// 	        		    showRecentChatView();
+	        			
+	                    chatKeywordShowAni();
+	    
+	                    break;
+	                }
+	            }
+	        	 // 스크롤 최근순으로	    		
+			    showRecentChatView();
+				
+	        })
+	    })
+	    
+	    // 챗봇 키워드를 애니메이션 적용해서 띄워주는 메소드
+	    // 순서대로 주르륵 스르륵 뜨게 만들자
+	    function chatKeywordShowAni(){
+	        var keyword = document.getElementsByClassName('bot_keyword_me');
+	        if(keyword.length!=Number('${firstAskLen}')){
+	            var count = keyword.length-Number('${firstAskLen}');//계속해서 생성되는 모든것들을 전부 거쳐가면 성능 저하가 심하므로 새로 추가된것의 갯수만큼만 돌린다.
+	            
+	            var contentWidth = $('.Layout-open').width();
+			    var scrollbarWidth = getScrollbarWidth();
+			    var leftVal = contentWidth - scrollbarWidth -  $('.keywordArea').last().width();
+		        $('.keywordArea').last().css('left', leftVal);
+	            
+	            var keywordShowTimeout = setTimeout(function () {
+	                var keywordShowInterval = setInterval(function () {
+	                    keyword[count].style.display = 'inline-block';
+	                    keyword[count].style.opacity = 1;
+	                    keyword[count].style.background = '#82ccdd';
+
+	                    if (count == keyword.length - 1) {
+	                        clearInterval(keywordShowInterval);
+	                    }
+	                    count += 1;
+	                }, 200)
+	            },200);
+	        }else{
+	        	var area = null;
+                $('.Messages_list').each(function(index, item){
+                	if($(item).css('display')!='none'){
+                		area = $(item);
+                	}
+                })
+                
+	            area.append($('.keywordArea'));
+                
+                var contentWidth = $('.Layout-open').width();
+			    var scrollbarWidth = getScrollbarWidth();
+			    var leftVal = contentWidth - scrollbarWidth -  $('.keywordArea').last().width();
+		        $('.keywordArea').last().css('left', leftVal);
+		        
+	            var count = 0;
+	            var keywordShowTimeout = setTimeout(function () {
+	                var keywordShowInterval = setInterval(function () {
+	                    keyword[count].style.display = 'inline-block';
+	                    keyword[count].style.opacity = 1;
+	                    keyword[count].style.background = '#82ccdd';
+
+	                    if (count == keyword.length - 1) {
+	                        clearInterval(keywordShowInterval);
+	                    }
+	                    count += 1;
+	                    
+	                    // 스크롤 최근순으로	    		
+	        		    showRecentChatView();
+	                }, 200)
+	            },200);
+    			
+	        }
+	       
+	    }
+		 
+		$(function(){
+			
+		})
 	</script>
 </html>

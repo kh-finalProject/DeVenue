@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.util.model.service.ChatService;
+import com.kh.DeVenue.util.model.vo.Ask;
 import com.kh.DeVenue.util.model.vo.ChatList;
 import com.kh.DeVenue.util.model.vo.ChatSet;
 import com.kh.DeVenue.util.model.vo.ChatUser;
@@ -375,6 +376,105 @@ public class AdminChatController {
 			out.print("채팅시간설정 업뎃혹은 인서트 실패");
 			out.flush();
 			out.close();
+		}
+	}
+	
+	// 채팅 인트로, 운영외 메시지 바꾸는 메소드
+	@RequestMapping("insertUpdateIntroOutime.do")
+	public String insertUpdateIntroOutime(String introMessage, String notOperMessage) {
+		System.out.println("인트로 메시지 : " + introMessage);
+		System.out.println("운영외 메시지 : " + notOperMessage);
+		
+		Map map = new HashMap<>();
+		map.put("introMessage", introMessage);
+		map.put("notOperMessage", notOperMessage);
+		
+		int result = cService.insertUpdateIntroOutime(map);
+		
+		if(result>0) {
+			return "redirect:gotoChatOption.do";
+		}else {
+			System.out.println("인트로 아웃타임 메시지 변경이 잘 안됐지만 예외처리하진 않음");
+			return "redirect:gotoChatOption.do";
+		}
+	}
+	
+	// 챗봇 데이터 관리 페이지 가는 메소드
+	@RequestMapping("gotoChatBotManage.do")
+	public String gotoChatBotManage(HttpServletRequest request) {
+		
+		// 챗봇데이터 테이블 불러오기
+		ArrayList<Ask> chatBotDatas = new ArrayList<>();
+		
+		chatBotDatas = cService.selectAsk();
+		
+		request.setAttribute("chatBotDatas", chatBotDatas);
+		
+		return "chat/adminChatBotManage";
+	}
+	
+	// 챗봇 데이터 삭제 메소드
+	@RequestMapping("deleteChatBotData.do")
+	public String deleteChatBotData(HttpServletRequest request, String askId) {
+		System.out.println("삭제할 챗봇데이터 번호 : "+askId);
+		
+		int result = cService.deleteAsk(askId);
+		
+		if(result>0) {
+			return "redirect:gotoChatBotManage.do";
+		}else {
+			System.out.println("챗봇 데이터 삭제가 잘 안됐지만 예외처리하진 않음");
+			return "redirect:gotoChatBotManage.do";
+		}
+		
+	}
+	
+	// 챗봇 데이터 삭제 메소드
+	@RequestMapping("updateChatBotData.do")
+	public String updateChatBotData(HttpServletRequest request, String askId, String keyword, String title, String answer, String answerSummer) {
+		System.out.println("업뎃할 챗봇데이터 번호 : "+askId);
+		System.out.println("업뎃할 챗봇데이터 타이틀 : "+title);
+		System.out.println("업뎃할 챗봇데이터 키워드 : "+keyword);
+		System.out.println("업뎃할 답변" + answer);
+//		System.out.println("업뎃할 답변" + answerSummer);
+		
+		Map map = new HashMap<>();
+		map.put("askId", Integer.valueOf(askId));
+		map.put("keyword", keyword);
+		map.put("title", title);
+		map.put("answer", answer);
+		
+		int result = cService.updateAsk(map);
+		
+		if(result>0) {
+			return "redirect:gotoChatBotManage.do";
+		}else {
+			System.out.println("챗봇 데이터 업뎃이 잘 안됐지만 예외처리하진 않음");
+			return "redirect:gotoChatBotManage.do";
+		}
+		
+	}
+
+	// 챗봇 데이터 삭제 메소드
+	@RequestMapping("insertChatbotData.do")
+	public String insertChatbotData(HttpServletRequest request, String keyword, String title, String answer) {
+		System.out.println("업뎃할 챗봇데이터 타이틀 : "+title);
+		System.out.println("업뎃할 챗봇데이터 키워드 : "+keyword);
+		System.out.println("업뎃할 답변" + answer);
+//			System.out.println("업뎃할 답변" + answerSummer);
+		
+		Map map = new HashMap<>();
+		map.put("keyword", keyword);
+		map.put("title", title);
+		map.put("answer", answer);
+		
+		int result = cService.insertAsk(map);
+		
+		if(result>0) {
+			return "redirect:gotoChatBotManage.do";
+		}else {
+			System.out.println("챗봇 데이터 삽입이 잘 안됐지만 예외처리하진 않음");
+			return "redirect:gotoChatBotManage.do";
 		}
 		
 	}

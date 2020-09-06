@@ -240,7 +240,7 @@
         /* 알림 */
         .content_chatRoom_list .alertRead{
             display: inline-block;
-            width: 20px;
+/*             width: 20px; */
             height: 20px;
             padding: 0px 0px 0px 6px;
             background-color: red;
@@ -249,7 +249,7 @@
             max-width: 20px;
             overflow: hidden;
             white-space: nowrap;
-            text-overflow: ellipsis;
+/*             text-overflow: ellipsis; */
             position: relative;
             top:-7px;
         }

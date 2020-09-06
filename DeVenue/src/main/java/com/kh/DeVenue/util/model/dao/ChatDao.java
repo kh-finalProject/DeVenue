@@ -370,6 +370,22 @@ public class ChatDao {
 		return sqlsessionTemplate.update("chatMapper.updateChatSet", chatSet);
 	}
 
+	public int insertUpdateIntroOutime(Map map) {
+		return sqlsessionTemplate.update("chatMapper.insertUpdateIntroOutime", map);
+	}
+
+	public int deleteAsk(String askId) {
+		return sqlsessionTemplate.delete("chatMapper.deleteAsk", askId);
+	}
+
+	public int updateAsk(Map map) {
+		return sqlsessionTemplate.update("chatMapper.updateAsk", map);
+	}
+
+	public int insertAsk(Map map) {
+		return sqlsessionTemplate.insert("chatMapper.insertAsk", map);
+	}
+
 
 
 	

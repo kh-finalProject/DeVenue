@@ -22,7 +22,7 @@
 
   <!-- summernote CSS : 텍스트 필드 플러그인 css !!!!!!!!!!!!!!!!!!!
 		============================================ -->
-		    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/summernote/summernote.css">
+  <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/summernote/summernote.css">
 		
     <!-- 개인적인 css 시작 -->
     <style>
@@ -180,7 +180,7 @@
             <div class="tab-content">
                 <!-- 탭 내용 -->
                 <div class="tab-pane fade show active" id="qwe">
-                    <form action="#" method="post" id="chatOptionForm" onsubmit="return submitChatOption();">
+                    <form action="insertUpdateIntroOutime.do" method="post" id="chatOptionForm" onsubmit="return sendintroOutimeMessage();">
                         <!-- 채팅 기본 소개 메시지 -->
                         <div class="chatIntro_message">
                             <label>채팅창 기본 소개 메시지</label>
@@ -266,6 +266,14 @@
                             	<!-- 운영시간에 필요한 변수  -->
                             	<c:set var="startTimeSplit" value="${fn:split(chatSet.possibleTime_start, ':') }"/>
                             	<c:set var="endTimeSplit" value="${fn:split(chatSet.possibleTime_end, ':') }"/>
+                           		<c:set var="startM" value="${startTimeSplit[1] }"/>
+                           		<c:set var="endM" value="${endTimeSplit[1] }"/>
+                            	<c:if test="${fn:length(startTimeSplit[1]) > 1 && fn:indexOf(startTimeSplit[1],'0') == 0}">
+                            		<c:set var="startM" value="${fn:substring(startM, 1,2) }"/>
+                            	</c:if>
+                            	<c:if test="${fn:length(endTimeSplit[1]) > 1 && fn:indexOf(endTimeSplit[1],'0') == 0}">
+                            		<c:set var="endM" value="${fn:substring(endM, 1,1) }"/>
+                            	</c:if>
                             	
                                 <label>채팅 상담 시간</label><br>
                                 <input type="checkbox" class="allTimeCheckbox" id="allTimeCheckbox" value="all">
@@ -274,11 +282,11 @@
                                 <div class="seperTimeOption_area">
                                     <span>시작: </span>
                                     <input type="number" id="startH" class="time operStartTimeS" step="1" min="0" max="24" placeholder="시" required value="${startTimeSplit[0] }" name="startH">
-                                    <input type="number" id="startM" class="time operStartTimeM" step="1" min="0" max="60" placeholder="분" required value="${startTimeSplit[1] }" name="startM">
+                                    <input type="number" id="startM" class="time operStartTimeM" step="1" min="0" max="60" placeholder="분" required value="${startM }" name="startM">
                                     &nbsp;
                                     <span>종료: </span>
                                     <input type="number" id="endH" class="time operEndTimeS" step="1" min="0" max="24" placeholder="시" required value="${endTimeSplit[0] }" name="endH">
-                                    <input type="number" id="endM" class="time operEndTimeM" step="1" min="0" max="59" placeholder="분" required value="${endTimeSplit[1] }" name="endM">
+                                    <input type="number" id="endM" class="time operEndTimeM" step="1" min="0" max="59" placeholder="분" required value="${endM }" name="endM">
                                 </div>
                             </div>
                         </div>
@@ -292,7 +300,6 @@
 
     <!-- summernote JS : 텍스트 필드 플러그인 js !!!!!!!!!!!!!!!!!!!1
 		============================================ -->
-
     <script src="${pageContext.servletContext.contextPath}/resources/js/summernote/summernote.min.js"></script>
     <script src="${pageContext.servletContext.contextPath}/resources/js/summernote/summernote-active.js"></script>
 
@@ -352,20 +359,16 @@
             // 시작시간은 반드시 종료시간보다 작아야 함(서브밋 못하고 알람설정까지)
             $('.warnTimeAlert').hide();
             $('.seperTimeOption_area').change(function(){
-                if($('.operStartTimeS').val() > $('.operEndTimeS').val()){
+                if(Number($('.operStartTimeS').val()) > Number($('.operEndTimeS').val())){
                     $('.warnTimeAlert').show();
-                    possibleSubmit = false;
-                }else if($('.operStartTimeS').val() == $('.operEndTimeS').val()){
-                    if($('.operStartTimeM').val() > $('.operEndTimeM').val()){
+                }else if(Number($('.operStartTimeS').val()) == Number($('.operEndTimeS').val())){
+                    if(Number($('.operStartTimeM').val()) > Number($('.operEndTimeM').val())){
                         $('.warnTimeAlert').show();
-                        possibleSubmit = false;
                     }else{
                         $('.warnTimeAlert').hide();
-                        possibleSubmit = true;
                     }
                 }else{
                     $('.warnTimeAlert').hide();
-                    possibleSubmit = true;
                 }
             })
           
@@ -388,47 +391,71 @@
         })
         
         // summernote의 내용을 제출하기위해서 값을 옮김
-        var possibleSubmit = true;
-        function submitChatOption(){
+        function sendSummerMessageToHidden(){
             var hidden =  $('input[type=hidden]');
             hidden.each(function (index, item) {
                 var sHTML = $(item).next().summernote('code');
                 $(item).val(sHTML)
-                // alert($(item).val());
+                alert($(item).val());
+            });
+        };
+        // summernote의 내용 submit
+        function sendintroOutimeMessage(){
+        	// summernote 입력내용을 제출하기 위해 히든태그에 값을 옮김
+        	sendSummerMessageToHidden();
+        	
+        	// 조건에 안맞으면 튕김
+        	var hidden =  $('input[type=hidden]');
+            hidden.each(function (index, item) {
+                if($(item).val().trim()==''){
+					alert('내용을 모두 입력해주세요');
+					return false;
+                }
             });
 
-            return possibleSubmit;
-        };
-
+        }
          
         // 채팅 시간설정 제출 관련 함수들-------------------------------------------
         $('.warnSubmitAlert').hide();
         function sendOperTime(){
-//         	var possibleSubmit = true;
-//         	// 요일이 체크 되었는지
-//         	possibleSubmit = submitChatOption2();
+//         	// 요일이 하나 이상 체크 되었는지
+        	var dayCheckbox =  $('.dayCheckbox');
+            var countUnCheck = 0;
+            dayCheckbox.each(function (index, item) {
+                if($(item).prop('checked') == false){
+                    countUnCheck += 1;
+                }
+            });
+            if(countUnCheck >= 7){
+            	$('.warnSubmitAlert').show();
+        		alert('모든 항목이 입력되어있는지 확인해주세요.')
+        		return;
+            }else{
+            	$('.warnSubmitAlert').hide();
+            }
             
 //         	// 경고 알람이 떠있는 상태라면
-//         	if(!possibleSubmit){
-//         		$('.warnSubmitAlert').show();
-//         		return;
-//         	}
+        	if($('.warnSubmitAlert').css('display')!='none'){
+        		alert('모든 항목이 입력되어있는지 확인해주세요.')
+        		return;
+        	}
         	
 //         	// 모든 시간이 기입 되었는지
-//         	$('input[type=number]').each(function(index, item){
-//         		if($(item).val()==''){
-//         			$('.warnSubmitAlert').show();
-//         			return;
-//         		}
-//         	})
+        	$('input[type=number]').each(function(index, item){
+        		if($(item).val()==''){
+        			alert('모두 입력하셔야 합니다')
+        			$('.warnSubmitAlert').show();
+        			return;
+        		}
+        	})
         	
 //         	// 시작시간보다 종료시간이 더 커서 알람이 떠있다면
-//         	if($('.warnTimeAlert').css('display')!='none'){
-//         		return;
-//         	}
+        	if($('.warnTimeAlert').css('display')!='none'){
+        		alert('시간을 확인해주세요.')
+        		return;
+        	}
         	
         	// 넣어줄 value들 정리 후 객체로 한번에
-        	
         	$('.dayCheckbox').each(function(index, item){
         		if($(item).prop('checked')==true){
         			$(item).val('Y');

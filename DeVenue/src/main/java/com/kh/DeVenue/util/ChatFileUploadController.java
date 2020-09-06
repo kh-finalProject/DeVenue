@@ -43,36 +43,36 @@ public class ChatFileUploadController {
 	   out.close();
    }
 
-private String saveFile(MultipartFile file, HttpServletRequest request) throws UnsupportedEncodingException {
-	String root = request.getSession().getServletContext().getRealPath("resources");
-	
-	String savePath = root + "\\chatFile";
-	
-	File folder = new File(savePath);
-	
-	if(!folder.exists()) {
-		folder.mkdirs();
+	private String saveFile(MultipartFile file, HttpServletRequest request) throws UnsupportedEncodingException {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		
+		String savePath = root + "\\chatFile";
+		
+		File folder = new File(savePath);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String originFileName = file.getOriginalFilename();
+		originFileName = new String(originFileName.getBytes("8859_1"),"utf-8");
+	    System.out.println(originFileName);
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis()))
+				+"."+originFileName;
+		
+		String filePath = folder + "\\"+renameFileName;
+		
+		try {
+			file.transferTo(new File(filePath));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return renameFileName;
 	}
-	
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-	String originFileName = file.getOriginalFilename();
-	originFileName = new String(originFileName.getBytes("8859_1"),"utf-8");
-    System.out.println(originFileName);
-	String renameFileName = sdf.format(new Date(System.currentTimeMillis()))
-			+"."+originFileName;
-	
-	String filePath = folder + "\\"+renameFileName;
-	
-	try {
-		file.transferTo(new File(filePath));
-	} catch (IllegalStateException e) {
-		e.printStackTrace();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-	
-	return renameFileName;
-}
 }
 
 

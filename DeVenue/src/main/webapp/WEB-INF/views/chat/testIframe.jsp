@@ -5,68 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <!-- 이모티콘 관련 -->
-    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="resources/css/emojis.css">
-	<script type="text/javascript"
-	src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-	</script>
-	<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-	<script src="resources/js/DisMojiPicker.js"></script>
-<style>
-body{
-background-color:black !important;
-}
 
-/* 채팅 iframe css */
-.chatIframe {
-	background-color: transparent;
-    position: fixed;
-    right: 40px;
-    bottom: 35px;
-	width:300px;
-	height:500px;
-	border-radius: 10px;
-	border:none;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12) !important;
-    min-height: 500px;
-    display: none;
-    -webkit-animation: appear .15s cubic-bezier(.25, .25, .5, 1.1);
-    animation: appear .15s cubic-bezier(.25, .25, .5, 1.1);
-    -webkit-animation-fill-mode: forwards;
-    animation-fill-mode: forwards;
-    opacity: 0;
-    z-index:9999999;
-}
- @-webkit-keyframes appear {
-    0% {
-      opacity: 0;
-      -webkit-transform: scale(0);
-      transform: scale(0)
-    }
-    to {
-      opacity: 1;
-      -webkit-transform: scale(1);
-      transform: scale(1)
-    }
-  }
-  @keyframes appear {
-    0% {
-      opacity: 0;
-      -webkit-transform: scale(0);
-      transform: scale(0)
-    }
-    to {
-      opacity: 1;
-      -webkit-transform: scale(1);
-      transform: scale(1)
-    }
-  }
-  
-/* 확대되기 전 채팅 아이콘 css --------------------------*/
+<style>
+/* 확대되기 전 채팅 아이콘 css ---------------------------------------------------*/
   #chatDiv{
   	display:none;
   }
@@ -87,8 +28,42 @@ background-color:black !important;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12) !important;
     cursor: pointer;
     display: block;
+     -webkit-animation: appear .15s cubic-bezier(.25, .25, .5, 1.1);
+    animation: appear .15s cubic-bezier(.25, .25, .5, 1.1);
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    -webkit-transition: right .1s cubic-bezier(.25, .25, .5, 1), bottom .1s cubic-bezier(.25, .25, .5, 1), min-width .2s cubic-bezier(.25, .25, .5, 1), max-width .2s cubic-bezier(.25, .25, .5, 1), min-height .2s cubic-bezier(.25, .25, .5, 1), max-height .2s cubic-bezier(.25, .25, .5, 1), border-radius 50ms cubic-bezier(.25, .25, .5, 1) .15s, background-color 50ms cubic-bezier(.25, .25, .5, 1) .15s, color 50ms cubic-bezier(.25, .25, .5, 1) .15s;
+    transition: right .1s cubic-bezier(.25, .25, .5, 1), bottom .1s cubic-bezier(.25, .25, .5, 1), min-width .2s cubic-bezier(.25, .25, .5, 1), max-width .2s cubic-bezier(.25, .25, .5, 1), min-height .2s cubic-bezier(.25, .25, .5, 1), max-height .2s cubic-bezier(.25, .25, .5, 1), border-radius 50ms cubic-bezier(.25, .25, .5, 1) .15s, background-color 50ms cubic-bezier(.25, .25, .5, 1) .15s, color 50ms cubic-bezier(.25, .25, .5, 1) .15s
+  }
+  @-webkit-keyframes appear {
+    0% {
+      opacity: 0;
+      -webkit-transform: scale(0);
+      transform: scale(0)
+    }
+
+    to {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1)
+    }
   }
 
+  @keyframes appear {
+    0% {
+      opacity: 0;
+      -webkit-transform: scale(0);
+      transform: scale(0)
+    }
+
+    to {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1)
+    }
+  }
+  
   .chat_on_icon {
     color: #fff;
     font-size: 25px;
@@ -124,33 +99,30 @@ background-color:black !important;
   }
 
   @media screen and (max-width: 768px) {}
-
+  /* ----------------------------------------------------------------------- */
 </style>
 </head>
 <body >
-	<jsp:include page="../common/adminNavbar.jsp" />
-
-	<!-- 채팅 아이콘 영역 -->
+	
+	<!-- 채팅 아이콘 영역----------------------------------------------------------------------------------- -->
 	<div id="chatDiv">
 	<div class="chat_on">
 		<span class="chat_on_icon">
 		</span> 
 		<img src="resources/image/talkIcon.png" width="55" height="50" style="margin-left: -5px; margin-top: -5px; max-width:200% !important;" />
-		<c:if test="${allUnReadCount != 0&&allUnReadCount != null}">
-			<div class="allAlertRead" style="font-weight: 600; font-size: 14px; background-color: red; color: white; position: relative; position: absolute; top: 0px; right: -1px; border-radius: 50%; padding: 7px; padding-bottom: 1px; padding-top: 1px;">${allUnReadCount}</div>
-		</c:if>
+		<div class="allAlertRead" id="allAlertRead" style="font-weight: 600; font-size: 14px; background-color: red; color: white; position: relative; position: absolute; top: 0px; right: -1px; border-radius: 50%; padding: 7px; padding-bottom: 1px; padding-top: 1px;">${allUnReadCount}</div>
 	</div>
 	<div class="chat_on_box">
 		<p>채팅 상담</p>
 	</div>
 	</div>
 	
-	<!-- 채팅 영역(iframe) -->
+	<!-- 채팅 iframe 영역 --------------------------------------------------------------------------------->
 	<div style="width:300px; height:500px">
 		<iframe id="chatIframe" name="chatIframe" src="${contextPath}/firstLoadChat.do" class="chatIframe" frameborder="0" scrolling="no" ></iframe>
 	</div>
 	
-	<!-- 채팅 관련 부모측 스크립트  -->
+	<!-- 채팅 관련 부모측 스크립트 ------------------------------------------------------------------------------->
 	<script>
 	  $(document).ready(function () {
 		// 로딩시간 중에 채팅에 진입하는 것을 막기 위해 타임아웃을 걸어서 채팅아이콘을 띄움
@@ -158,15 +130,29 @@ background-color:black !important;
 			$("#chatDiv").show(300);
 		},1500);
 		
-	  	// 채팅 아이콘 상태일 때 채팅창 열기
-	    $("#chatDiv").click(function () {
-		      $("#chatIframe").show();
-		      $("#chatDiv").hide();
-		      
-		      clearInterval(iframeInterval);
-	    });
+		// 첫 로드시 안읽은 메시지 처리
+		<c:if test="${!empty loginUser}">
+			reloadAllReadCount();
+		</c:if>
+		<c:if test="${empty loginUser}">
+			$('#allAlertRead').css('display', 'none');
+		</c:if>
 	  });
 	  
+	// 채팅 아이콘 상태일 때 채팅창 열기
+	// 채팅 아이콘을 로그인 하지 않음 상태에서 클릭하면 로그인 해야한다고 알림
+	$("#chatDiv").click(function () {
+		<c:if test="${ empty loginUser}">
+			alert('채팅 상담은 로그인 이후에 가능합니다.');
+			return;
+		</c:if>
+		
+		clearInterval(iframeInterval);
+			
+		$("#chatIframe").show();
+		$("#chatDiv").hide();
+	});
+	
 	  // 자식 프레임으로 부터 메시지 수신 받는 eventListener 등록
 	  window.addEventListener( 'message', receiveMsgFromChild );
 
@@ -176,20 +162,24 @@ background-color:black !important;
 	      if(e.data=='close'){
 	    	  $("#chatIframe").hide(300);
 		      $("#chatDiv").show();
-		      // 읽은 메시지 업뎃
+		      
+		      // 읽은 메시지 뷰 영역 업뎃
 		      reloadAllReadCount();
 		      
 		      // 아이프레임 새로고침
 		      reloadIframe();
-		      alert('리로드 됐을까?');
+		      
 		      iframeInterval = setInterval(function(){
 					reloadIframe();
+					
+					<c:if test="${!empty loginUser}">
+						reloadAllReadCount();
+					</c:if>
 			  }, 10000)
-		      alert('인터벌이 다시 시작될까?');
 	      }
 	  }
 	  
-	  // 채팅 상담 아이콘 채팅상담 텍스트 영역 이벤트
+	  // 채팅 상담 아이콘 채팅상담 텍스트 영역 이벤트(css적 요소)
 	  $(function(){
 		  showChatTextIcon();
 	  })
@@ -202,6 +192,7 @@ background-color:black !important;
 	  }
 	  
 	  // 채팅 아이콘 안읽은 메시지 에이작스
+	  // 안읽은 메시지 수가 0일 때 안읽은 메시지 뷰 영역을 보이게 하지 않는다. 또한 로그인을 하지 않았을 경우에 안보이는 건 당연하다.
 	  function reloadAllReadCount(){
 		  $.ajax({
 			  url:"reloadAllReadCount.do",
@@ -211,9 +202,7 @@ background-color:black !important;
 					  $('.allAlertRead').text('');
 					  $('.allAlertRead').css('display', 'none');
 				  }else{
-					  if($('.allAlertRead') == null){
-						$('.chat_on').append('<div class="allAlertRead" style="font-weight: 600; font-size: 14px; background-color: red; color: white; position: relative; position: absolute; top: 0px; right: -1px; border-radius: 50%; padding: 7px; padding-bottom: 1px; padding-top: 1px;">'+data+'</div>')	  
-					  }else if($('.allAlertRead').css('display') == 'none'){
+					  if($('.allAlertRead').css('display') == 'none'){
 						  $('.allAlertRead').css('display', 'block');
 						  $('.allAlertRead').text(data);
 				  	  }else{
@@ -231,10 +220,17 @@ background-color:black !important;
 	  function reloadIframe(){
 		  document.getElementById("chatIframe").src = document.getElementById("chatIframe").src;
 	  }
+	  
+	  // 평시상태(아이콘 상태)면 주기적으로 자식프레임 새로고침 및 안읽은 메시지 리카운트
 	  var iframeInterval = setInterval(function(){
 			reloadIframe();
-	  }, 10000)
+		
+			<c:if test="${!empty loginUser}">
+				reloadAllReadCount();
+			</c:if>
+	  }, 15000)
 	</script>
-	<!-- ------------------------------------------------------------------ -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+
 </body>
 </html>

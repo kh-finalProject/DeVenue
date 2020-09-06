@@ -1118,17 +1118,17 @@ try {
                             			<c:set var="beforeDate" value=""/>
                             			<c:set var="msgDate" value="${fn:substring(eachChatInfos.get(i).getMsgCreateDate(),0,10) }"/>
                             			<c:set var="msgDate" value="${fn:replace(msgDate, '-', '/')}"/>
-                            			<fmt:formatDate value="<%=new Date() %>" pattern="yyyy/MM/DD" var="todayDate"/>
-                            			
+                            			<fmt:formatDate value="<%=new Date() %>" pattern="yyyy/MM/dd" var="todayDate"/>
+<%--                             			<c:out value="${todayDate}"/> --%>
                            				<c:set var="msgDateArr" value="${fn:split(msgDate, '/') }"/>
                            				<c:set var="mYear" value="${msgDateArr[0] }"/>
                            				<c:set var="mMonth" value="${msgDateArr[1] }"/>
                            				<c:set var="mDate" value="${msgDateArr[2] }"/>
                            				
                            				<c:set var="tDateArr" value="${fn:split(todayDate, '/') }"/>
-                           				<c:set var="tYear" value="${msgDateArr[0] }"/>
-                           				<c:set var="tMonth" value="${msgDateArr[1] }"/>
-                           				<c:set var="tDate" value="${msgDateArr[2] }"/>
+                           				<c:set var="tYear" value="${tDateArr[0] }"/>
+                           				<c:set var="tMonth" value="${tDateArr[1] }"/>
+                           				<c:set var="tDate" value="${tDateArr[2] }"/>
                             			
                             			<c:choose>
 	                            			<c:when test="${msgDate == todayDate }">
@@ -1605,9 +1605,9 @@ try {
 				
 				if($('.msgDate').length > 0){
 					var msgDate = $('.msgDate:last').val().trim();
-					alert('날짜 : '+ msgDate);
-					var todayDate = submitDate.substring(0, 9).trim();
-					alert('오늘날짜 : ' + todayDate);
+					console.log('날짜 : '+ msgDate);
+					var todayDate = messageTime.substring(0, 10).trim();
+					console.log('오늘날짜 : ' + todayDate);
 					var mDArr = msgDate.split('/');
 					var mY = mDArr[0];
 					var mM = mDArr[1];
@@ -1627,12 +1627,14 @@ try {
 					$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 					if(mY==tY&&mM==tM&&mD==tD){
 						alert('오늘 처음보낸 메시지가 아니다')
-					}else{
+					}else if($('.Messages_list').find('.msg_unit').length >= 1){
+						console.log("!!")
 						alert('오늘 처음보낸 메시지다')				
 						$('.Messages_list').append($seperLine);
 						$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 					}
-				}else{
+				}else if($('.Messages_list').find('.msg_unit').length < 1){
+					consol.log("??")
 					// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
 					$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 				}
@@ -1760,12 +1762,12 @@ try {
 			$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 			if(mY==tY&&mM==tM&&mD==tD){
 				alert('오늘 처음보낸 메시지가 아니다')
-			}else{
+			}else if($('.Messages_list').find('.msg_unit').length >= 1){
 				alert('오늘 처음보낸 메시지다')				
 				$('.Messages_list').append($seperLine);
 				$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 			}
-		}else{
+		}else if($('.Messages_list').find('.msg_unit').length < 1){
 			// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
 			$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 		}

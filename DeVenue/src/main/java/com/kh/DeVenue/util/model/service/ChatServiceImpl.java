@@ -229,7 +229,25 @@ public class ChatServiceImpl implements ChatService{
 		return cDao.updateChatSet(chatSet);
 	}
 
+	@Override
+	public int insertUpdateIntroOutime(Map map) {
+		return cDao.insertUpdateIntroOutime(map);
+	}
 
+	@Override
+	public int deleteAsk(String askId) {
+		return cDao.deleteAsk(askId);
+	}
+
+	@Override
+	public int updateAsk(Map map) {
+		return cDao.updateAsk(map);
+	}
+
+	@Override
+	public int insertAsk(Map map) {
+		return cDao.insertAsk(map);
+	}
 
 	
 }

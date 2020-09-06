@@ -79,7 +79,7 @@
                             </a>
                             <ul class="submenu-angle" aria-expanded="true">
                                 <li><a title="Dashboard v.1" href="gotoChatOption.do"><span class="mini-sub-pro">채팅 설정</span></a></li>
-                                <li><a title="Dashboard v.2" href="#"><span class="mini-sub-pro">asdf</span></a></li>
+                                <li><a title="Dashboard v.2" href="gotoChatBotManage.do"><span class="mini-sub-pro">챗봇 데이터 설정</span></a></li>
                                 <li><a title="Dashboard v.3" href="#"><span class="mini-sub-pro">sadf</span></a></li>
                                 <li><a title="Analytics" href="#"><span class="mini-sub-pro">asdf</span></a></li>
                                 <li><a title="Widgets" href="#"><span class="mini-sub-pro">asdf</span></a>
@@ -173,7 +173,6 @@
                                                                     class="edu-icon edu-user-rounded author-log-ic"></span>프로필
                                                                 관리</a>
                                                         </li>
-                                                </li>
                                                 <li><a href="#"><span
                                                             class="edu-icon edu-settings author-log-ic"></span>설정</a>
                                                 </li>

@@ -92,4 +92,12 @@ public interface ChatService {
 
 	int updateChatSet(ChatSet chatSet);
 
+	int insertUpdateIntroOutime(Map map);
+
+	int deleteAsk(String askId);
+
+	int updateAsk(Map map);
+
+	int insertAsk(Map map);
+
 }
