@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -212,9 +213,18 @@ hr {
                 </div>
             </div>
             <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
-                <div class="userBoard">
+            
+           <c:forEach var="b" items="${list }"> 
+                    <!-- 클릭이벤트 넣어야함 -->
+                    <c:url var="cDetail" value="cDetail.do">
+                    	<c:param name="cId" value="${b.memId }"/>
+                    	<%-- <c:param name="page" value="${pi.currentPage }"/> --%>
+                    </c:url>
+                <div class="userBoard" onclick="location.href='${cDetail }'" style="cursor:pointer;">
                     &emsp;
-                    <input type="hidden" value="선택한 회원 ID">
+                    <input type="hidden" value="${b.memId }">
+                    
+                    
                     <ul style="list-style: none;">
                         <li>
                             <div class="row" style="margin-left:3%; margin-right:3%;border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
@@ -231,14 +241,17 @@ hr {
                                     <div>
                                         <ul style="list-style: none; margin-top: 2%;">
                                             <li>
-                                                qwer01(닉네임)
+                                                <!-- qwer01(닉네임) -->
+                                                ${b.memNick }
                                             </li>
                                             <li>
-                                                kh_Bclass(소속)&emsp;
-                                                <a class="badge badge-info">개인</a>
+                                                <!-- kh_Bclass(소속)&emsp; -->
+                                                ${b.memTypeName }
+                                                <!-- <a class="badge badge-info">개인</a> -->
+                                                <a class="badge badge-info">${b.memTypeKind }</a>
                                             </li>
                                             <li>
-                                                예아! 호우! 예예예~
+                                                <!-- 예아! 호우! 예예예~
                                                 싹쓰리 인더 하우스
                                                 커커커커커몬! 싹!쓰리!투 렛츠고!
 
@@ -253,7 +266,8 @@ hr {
                                                 흐르는 시간 속에서
                                                 너와 내 기억은
                                                 점점 희미해져만 가
-                                                끝난 줄 알았
+                                                끝난 줄 알았 -->
+                                                ${b.introduction }
                                                 <br><br>
                                             </li>
                                         </ul>
@@ -261,33 +275,115 @@ hr {
                                 </div>
                                 <div class="col-4">
                                     <div id="starPoint" class="point">
-                                        <i id="firstStar" class="far fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        
-                                        <b>4.5 / 평가 4개</b> 
+                                    <c:choose>
+                                    	<c:when test="${b.avgEagv == 0 }">
+	                                        <i id="firstStar" class="far fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv > 0 && b.avgEagv < 1 }">
+	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv == 1 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv > 1 && b.avgEagv < 2 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv == 2 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv > 2 && b.avgEagv < 3 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv == 3 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv > 3 && b.avgEagv < 4 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv == 4 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv > 4 && b.avgEagv < 5 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${b.avgEagv == 5 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+										</c:when>
+                                    </c:choose>
+                                        <!-- <b>4.5 / 평가 4개</b>  -->
+                                        <b>${b.avgEagv } / 평가 ${b.countEagv }개</b> 
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
                                     <div class="point">
                                         <b>진행한 프로젝트 수</b>
-                                        <b style="float:right">22개</b>
+                                        <!-- <b style="float:right">22개</b> -->
+                                        <b style="float:right">${b.countProId }개</b>
                                     </div>
                                     <div class="point">
                                         <b>자주 진행한 프로젝트</b>
-                                        <a class="badge badge-info" style="float:right;">WEB</a>
+                                        <!-- <a class="badge badge-info" style="float:right;">WEB</a> -->
+                                        <a class="badge badge-info" style="float:right;">${b.maxDcType }</a>
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
+                                    
                                     <div class="point" align="center">
+                                    <c:if test="${b.ideStatus eq 'COMPLETE' }">
                                         <a class="badge badge-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
+                                    </c:if>
+                                    <c:if test="${!empty b.phone }">    
                                         <a class="badge badge-info" style="padding:1%;">연락처 등록</a>
+                                    </c:if>
                                     </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
+			</c:forEach>
 
                 <div class="userBoard">
                     &emsp;

@@ -326,10 +326,9 @@
         <!--Grid column 시작-->
         <div class="col-md-2 mb-4">
 
-          <!-- Section: Sidebar 시작 -->
-
-
-          <section>
+          <!-- Section: 필터시작 -->
+			
+          <section id="searchFilter">
 
             <!-- Section: 프로젝트 진행 방식 시작 -->
             <section class="mb-5">
@@ -338,11 +337,11 @@
               </h6>
 
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="process_outsource" />
+                <input type="checkbox" class="form-check-input" name="workType" id="process_outsource" value="외주" />
                 <label class="form-check-label small" for="process_outsource">외주(도급)</label>
               </div>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="process_insource" />
+                <input type="checkbox" class="form-check-input" name="workType" id="process_insource" value="상주" />
                 <label class="form-check-label small" for="process_insource">상주</label>
               </div>
 
@@ -370,11 +369,11 @@
               <h6 class="font-weight-bold mb-3">프로젝트 대표 카테고리</h6>
 
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="main_category_develop" />
+                <input type="checkbox" class="form-check-input" id="main_category_develop" name="mCate" value="개발"/>
                 <label class="form-check-label small" for="main_category_develop">개발</label>
               </div>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="main_category_design" />
+                <input type="checkbox" class="form-check-input" id="main_category_design" name="mCate" value="디자인" />
                 <label class="form-check-label small" for="main_category_design">디자인</label>
               </div>
 
@@ -386,19 +385,19 @@
               <h6 class="font-weight-bold mb-3">프로젝트 세부 카테고리</h6>
 
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="sub_category_web" />
+                <input type="checkbox" class="form-check-input" id="sub_category_web" name="dCate" value="웹" />
                 <label class="form-check-label small" for="sub_category_web">웹</label>
               </div>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="sub_category_app" />
+                <input type="checkbox" class="form-check-input" id="sub_category_app" name="dCate" value="어플리케이션" />
                 <label class="form-check-label small" for="sub_category_app">애플리케이션</label>
               </div>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="sub_category_pub" />
+                <input type="checkbox" class="form-check-input" id="sub_category_pub" name="dCate" value="퍼블리싱"/>
                 <label class="form-check-label small" for="sub_category_pub">퍼블리싱</label>
               </div>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="sub_category_etc" />
+                <input type="checkbox" class="form-check-input" id="sub_category_etc" name="dCate" value="기타" />
                 <label class="form-check-label small" for="sub_category_etc">기타</label>
               </div>
 
@@ -416,7 +415,8 @@
                 <button id="cost_btn_min" style="width:7.5rem; box-shadow: none;" class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  	 금액 선택
                 </button>
-                <div id="cost_min_menu" class="dropdown-menu" style="max-height:7.5rem; overflow-y: auto;">
+                <input type="hidden" name="cost_min">
+                <div id="cost_min_menu" class="dropdown-menu" style="max-height:7.5rem; overflow-y:auto;">
                   <a class="dropdown-item">100만원</a>
                   <a class="dropdown-item">200만원</a>
                   <a class="dropdown-item">300만원</a>
@@ -448,6 +448,7 @@
                   <button id="cost_btn_max" style="width: 7.5rem; box-shadow: none;" class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     	금액 선택
                   </button>
+                  <input type="hidden" name="cost_max">
                   <div id="cost_max_menu" class="dropdown-menu" style="max-height: 7.5rem; overflow-y: auto;">
                     <a class="dropdown-item">100만원</a>
                     <a class="dropdown-item">200만원</a>
@@ -605,9 +606,6 @@
             </script>
             </section>
             <!-- Section: 프로젝트 예상 금액 끝 -->
-
-
-
 
 
             <!-- Section: 검증된 클라이언트 시작 -->
@@ -926,14 +924,28 @@
             </section>
             <!-- Section: 지원자 모집 상태 끝 -->
 
-            
-
-
           </section>
-          <!-- Section: Sidebar의 끝 -->
-
+          <!-- Section: 필터끝 -->
+        
         </div>
         <!--Grid column 사이드바 column 끝-->
+        <script>
+          //필터 
+          //1.사이드바의 input 상태 값이 바뀐다
+          //2.필터 전체의 값을 받아온다.
+          //3.form에 붙여 ajax로 controller에 전송한다.
+          //4.조회결과 프로젝트 리스트와 페이지 네이션을 data로 받아온다.
+          //5.새로 리스트를 작성하여 갖다 붙인다.
+          
+          $(function(){
+        	
+        	  
+        	  
+        	  
+          });
+          
+          
+          </script>
 
         <!--Grid column 프로젝트 리스트 시작-->
         <div class="col-md-6 mb-4">
@@ -1197,8 +1209,20 @@
             </div>
             </c:forEach>
             
+            <c:choose>
+            <c:when test="${empty loginUser}">
             <script>
-              
+            $(function(){
+                $(".heart").click(function(){
+              	  
+              		location.href="loginpage.do";
+                });
+              });
+            
+            </script>
+            </c:when>
+            <c:when test="${not empty loginUser}">
+             <script>
               //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
                                         
                 $(function(){
@@ -1239,6 +1263,9 @@
               
               
               </script>
+            </c:when>
+            </c:choose>
+           
                          
             
             <!-- Project list row 끝-->

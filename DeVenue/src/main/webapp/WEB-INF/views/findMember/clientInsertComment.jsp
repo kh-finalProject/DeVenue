@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,39 +160,52 @@
                     </div>
                     <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
                     <div>
-                        <p id="clientInfo">클라이언트 정보</p>
-                        <p id="projectHistory">프로젝트 히스토리</p>
-                        <p id="clientEvaluate">평가<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
+                        <p id="clientInfo" style="cursor:pointer;">클라이언트 정보</p>
+                        <p id="projectHistory" style="cursor:pointer;">프로젝트 히스토리</p>
+                        
+                        <p id="clientEvaluate" style="cursor:pointer;">평가<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
                         <div id="subClientEva" style="display:none; margin-left: 5%;">
-                            <p id="clientComment">평가 조회</p>
-                            <p id="insertCComment">평가 등록</p>
+                            <p id="clientComment" style="cursor:pointer;">평가 조회</p>
+                            <p id="insertCComment" style="cursor:pointer;">평가 등록</p>
                         </div>
                     </div>
+                    <c:url var="cDetail" value="cDetail.do">
+                    	<c:param name="cId" value="${fc.memId }"/>
+                    	<%-- <c:param name="page" value="${pi.currentPage }"/> --%>
+                    </c:url>
+                    <c:url var="cProjectHistory" value="cProjectHistory.do">
+                    	<c:param name="cId" value="${fc.memId }"/>
+                    </c:url>
+                    <c:url var="cEvalSelect" value="cEvalSelect.do">
+                    	<c:param name="cId" value="${fc.memId }"/>
+                    </c:url>
+                    <c:url var="cEvalInsert" value="cEvalInsert.do">
+                    	<c:param name="cId" value="${fc.memId }"/>
+                    	<c:param name="pId" value="${loginUser.memId }"/>
+                    </c:url>
                     <script>
                         $("#clientInfo").on("click", function(){
-                            location.href="findClientDetail.html";
+                            location.href="${cDetail }";
                         }).on("mouseenter", function(){
                             
                         });
 
                         $("#projectHistory").on("click", function(){
-                            location.href="projectHistory.html";
+                            location.href="${cProjectHistory }";
                         });
 
                         $("#clientEvaluate").click(function() {
-                            
                             $("#subClientEva").toggle();
                         });
 
                         $("#clientComment").on("click", function(){
-                            location.href="clientComment.html";
+                            location.href="${cEvalSelect }";
                         });
 
                         $("#insertCComment").on("click", function(){
-                            location.href="insertCComment.html";
+                            location.href="${cEvalInsert }";
                         });
                     </script>
-
                 </div>
             </div>
             <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">

@@ -321,7 +321,6 @@
 				                       </c:choose>
 				                       
 				                       <jsp:useBean id="today" class="java.util.Date"/>
-                       
 				                       <jsp:useBean id="aweekAgo" class="java.util.Date"/>
 				                       <jsp:setProperty property="time" name="aweekAgo" value="${today.time-(1000*60*60*24*7)}"/>
 				                       <fmt:formatDate value="${today}" pattern="yyyyMMdd" var="now"/>
