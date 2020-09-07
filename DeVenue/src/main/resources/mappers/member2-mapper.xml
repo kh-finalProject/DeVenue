@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper2">
+	<resultMap type="Member2" id="memberResultSet">
+		<id property="mId" column="MEM_ID"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="mEmail" column="MEM_EMAIL"/>
+		<result property="mNick" column="MEM_NICK"/>
+		<result property="mName" column="MEM_NAME"/>
+		<result property="mPwd" column="MEM_PWD"/>
+		<result property="is_ad" column="IS_ADVERTISE"/>
+	</resultMap>
+	<resultMap type="ChatUserInfo" id="chatUserInfoResultSet">
+		<result property="mId" column="MEM_ID"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="typeName" column="UT_NAME"/>
+		<result property="memType" column="MEM_TYPE"/>
+		<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+		<result property="mNick" column="MEM_NICK"/>
+		<result property="mName" column="MEM_NAME"/>
+		<result property="mEmail" column="MEM_EMAIL"/>
+		<result property="phone" column="PHONE"/>
+		<result property="cellPhone" column="CELLPHONE"/>
+		<result property="memTypeName" column="MEM_TYPE_NAME"/>
+		<result property="proImgName" column="PROFILE_IMG"/>
+	</resultMap>
+	
+	<select id="selectOne" parameterType="Member2" resultMap="memberResultSet">
+		SELECT MEM_ID, USER_TYPE, MEM_EMAIL, MEM_NICK, MEM_NAME, MEM_PWD, IS_ADVERTISE
+		FROM MEMBER
+		WHERE MEM_EMAIL = #{mEmail}
+		AND MEM_PWD = #{mPwd}
+		AND MEM_STATUS = 'Y'
+	</select>
+
+	<!-- 채팅창이 가용한 동시에(로그인과 동시에) 관리자 정보 싹다 불러옴  -->
+	<select id="selectAllAdmin" resultMap="chatUserInfoResultSet">
+		SELECT *
+		FROM CHATUSER_INFO
+		WHERE USER_TYPE IN ('UT1', 'UT2')
+	</select>
+</mapper>

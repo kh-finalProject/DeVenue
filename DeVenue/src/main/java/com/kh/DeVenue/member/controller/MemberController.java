@@ -27,9 +27,12 @@ import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
+<<<<<<< HEAD
 
 import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
+=======
+>>>>>>> refs/remotes/origin/master
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
@@ -64,7 +67,10 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService mService;
-	
+	@Autowired
+	private MemberService2 mmService;
+	@Autowired
+	private ChatService cService;
 	// 할일 로그인 유지/ 브라우저 종료시 reload
 	// 로그인 유지할때 request와 session으로 넘겨버리면???
 	// 로그인 값 받아오기
@@ -98,49 +104,6 @@ public class MemberController {
 //				
 //			}
 			
-			// 로그인하면서 회원번호로 포트폴리오의 값을 확인한다.
-			Profile memId = new Profile(loginUser.getMemId());
-			Profile profile = mService.profile(memId);
-			System.out.println(profile);
-			// 프로필이 있으면
-			if(profile != null) {
-				System.out.println("로그인 해서 프로필이 있을경우"+profile);
-//				mv.setViewName("myPage/introduction");
-//				mv.addObject("profile", profile);
-//				model.addAttribute("profile", profile);
-//				return "myPage/introduction";
-			// 프로필이 없으면 프로필을 생성
-			}else {
-				System.out.println("프로필없음");
-				int proId = mService.profileInsert(loginUser.getMemId());
-				
-				// 프로필 생성
-				if(proId > 0) {
-					System.out.println("프로필 정보 생성 ");
-					// 프로필이 생성한 후 파트너스 정보의 번호도 생성
-					// memId를 통해서 profileId를 찾아오자
-//					Profile memId = new Profile(loginUser.getMemId());
-					Profile profile1 = mService.profile(memId);
-					System.out.println("profileId : "+ profile1.getProfileId());
-					// 파트너스 기본으로 생성
-					PartInfo partInfo = new PartInfo(profile1.getProfileId());
-					System.out.println("profileId로 partInfo 가져오기"+partInfo);
-					// a의 값을 못뽑아 오는데 insert는 DB가 성공함?
-					int insertPartInfoInsert = mService.insertPartInfo(partInfo);
-					if(insertPartInfoInsert > 0) {
-						System.out.println("파트너스 정보 생성");
-						
-					}else {
-						throw new MemberException("파트너스 정보 생성 실패!");
-					}
-				
-				// 프로필 생성 실패
-				}else {
-					throw new MemberException("프로필 생성 실패!");
-				}
-			}
-			// session으로 보내는것이 맞는 것인가??
-			// profile은 profileId를 뽑안 내기 위해서
 			session.setAttribute("profile", profile);
 			session.setAttribute("loginUser", loginUser);
 //			mv.setViewName("common/mainPage");
@@ -148,6 +111,30 @@ public class MemberController {
 			
 			
 //			return mv;
+			
+			// 배혜린 추가 ----------------------------------------------------------------------
+			if(loginUser.getUserType().equals("UT1")||loginUser.getUserType().equals("UT2")) {
+				System.out.println("관리자 로그인");
+				
+				// 관리자 메인페이지가 없기때문에 일단 채팅 목록관리로 이동
+				return "redirect:goChatListManage.do";
+			}else {
+				System.out.println("회원 로그인");
+				
+				// 채팅을 위해 관리자 정보를 죄다 불러옴(주관리자 여부는 웹단에서 구분하여 쓰자)
+				ArrayList<ChatUserInfo> admins = mmService.allAdmin();
+				session.setAttribute("admins", admins);
+				
+				// 채팅평시상태를 위해 안읽은 메시지를 모두 카운트해서 불러옴
+				int allUnReadCount = cService.selectAllUnReadCount(loginUser.getMemId());
+				if(allUnReadCount >= 0) {
+					request.setAttribute("allUnReadCount", allUnReadCount);
+				}
+				
+				return "common/mainPage";
+			}
+			//------------------------------------------------------------------------------
+			
 			
 		}else { // 로그인 실패시
 
@@ -377,5 +364,32 @@ public class MemberController {
 		int star5=Integer.valueOf(request.getParameter("star5"));	// 만족도
 		
 		return mv;
+	}
+	
+	
+	// 닉네임 중복 확인
+	@RequestMapping(value="nickCheck.do", method=RequestMethod.GET)
+	public void nickCheck(@RequestParam("nick") String nick, HttpServletResponse response) throws IOException {
+		
+		// 1. 그냥 오류 두던가 예외처리로 없애버리던가 근데 sql에러 인데 가능한가?
+		// 2. 전체 member 뽑아오고 컨트롤러에서 비교
+		System.out.println("내가 입력하고자 하는 닉네임"+nick);
+		PrintWriter out = response.getWriter();
+		
+		int member = mService.membernick(nick);
+		// 0 or 1 이 반환됨
+//		System.out.println(member);
+		// 중복된 값이 없으면 0이 반환
+		if(member == 0) {
+			System.out.println("닉네임 사용 가능");
+			out.append("ok");
+			out.flush();
+		// 중복된 값이 있으면 1이 반환
+		}else {
+			System.out.println("닉네임 사용 불가능");
+			out.append("fail");
+			out.flush();
+		}		
+		out.close();
 	}
 }

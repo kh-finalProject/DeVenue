@@ -257,7 +257,7 @@ i {
 							<c:out value="${loginUser.userType }관리자"/>
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    <img src="${contextPath }/resources/images/test.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							    <img src="${contextPath }/resources/images/admin.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
 							  </button>
 							  <div class="dropdown-menu">
 							    <a class="dropdown-item" href="#">profile</a>
@@ -274,10 +274,18 @@ i {
 							<c:out value="${loginUser.userType }사용자"/>
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    <img src="${contextPath }/resources/images/test1.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							  <!-- 클라이언트시 기본 이미지 -->
+							  <c:if test="${loginUser.userType eq 'UT3' }">
+							    <img src="${contextPath }/resources/images/client.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
+							  </c:if>
+							  <!-- 파트너스 기본 이미지 -->
+							  <c:if test="${loginUser.userType eq 'UT4' }">
+							    <img src="${contextPath }/resources/images/partners.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
+							  </c:if>
 							  </button>
 							  <div class="dropdown-menu">
 							    <a href="profile.do" class="dropdown-item">profile</a>
+							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>
 							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>

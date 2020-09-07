@@ -14,6 +14,7 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
+import com.kh.DeVenue.util.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
@@ -29,7 +30,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member loginUserMember(Member m) {
 		
-		return mDao.selectMember(m);
+		return mDao.loginMember(m);
 	}
 	
 	@Override
@@ -139,5 +140,6 @@ public class MemberServiceImpl implements MemberService{
 	public int insertEval(HashMap id) {
 		return mDao.insertEval(id);
 	}
+
 
 }

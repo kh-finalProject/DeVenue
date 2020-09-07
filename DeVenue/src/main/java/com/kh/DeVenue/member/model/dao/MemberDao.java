@@ -16,6 +16,7 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
+import com.kh.DeVenue.util.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
@@ -28,9 +29,9 @@ public class MemberDao {
 	private SqlSessionTemplate sqlSessionTemplate;
 
 
-	public Member selectMember(Member m) {
+	public Member loginMember(Member m) {
 
-		return sqlSessionTemplate.selectOne("memberMapper.selectMember",m);
+		return sqlSessionTemplate.selectOne("memberMapper.loginMember",m);
 	}
 
 	public int insertMember(Member m) {

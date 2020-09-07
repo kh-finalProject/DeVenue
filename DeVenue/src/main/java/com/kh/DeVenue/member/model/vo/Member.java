@@ -111,6 +111,7 @@ public class Member implements Serializable {
 		return memId;
 	}
 
+
 	public void setMemId(int memId) {
 		this.memId = memId;
 	}

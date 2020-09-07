@@ -294,8 +294,6 @@
 			, #{평가내용}, #{전문성}, #{적극성}, #{의사소통}, #{일정준수}, #{만족도}, SYSDATE, 'Y')
 	</insert>
 
-	</select>
-	
 	<!-- 회원 채팅 설정 -->
 	<resultMap type="MemChatSet" id="memChatSetResultSet">
 		<id property="mId" column="MEM_ID"/>
