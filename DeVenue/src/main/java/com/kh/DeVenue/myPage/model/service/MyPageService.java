@@ -27,15 +27,11 @@ public interface MyPageService {
 
 	int insertPortfolio(PortFolio pf);
 
-	PortFolio selectPortfolio(PortFolio portId);
-
 	int insertPortImg(PortImg pi);
 
 	int insertPortTect(PortTec pt);
 
 	int insertSkill(Skill s);
-
-	Skill selectSkill(Skill s);
 
 	int insertCareer(Career c);
 
@@ -52,6 +48,23 @@ public interface MyPageService {
 	ArrayList<SCCareer> selectSCCareerInfo(int profileId);
 
 	ArrayList<Certificate> selectCertificateInfo(int profileId);
+
+	int delSkill(int skillId);
+
+	int delCareer(int cId);
+
+	int delAca(int scId);
+
+	int delCerti(int ccId);
+
+	int selectPortId(String portName);
+
+	int delPortImg(int portId);
+
+	int delPortTec(int portId);
+
+	int delPortFolio(int portId);
+
 
 
 

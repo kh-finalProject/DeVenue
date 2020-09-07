@@ -367,32 +367,50 @@ section {
 	height: 350px;
 	margin-left: 5%;
 	margin-top: 2%;
-	border-bottom: 2px dashed grey;
 	position: relative;
 }
 
-/* 포트폴리오의 각 div */
-.portfolio-view .portfolio-info {
-	width: 220px;
-	height: 310px;
-	margin-left: 2%;
-	border: 2px solid white;
-	display: inline-block;
+/* 포트폴리오 전체 보여줄 테이블 */
+.pTable {
+	width: 100%;
+	/* border: 1px solid white; */
+	/* border-collapse: separate;
+            border-spacing: 20px 10px; */
 }
 
-/* 포트폴리오의 카테고리 */
-.portfolio-category {
-	position: absolute;
+/* 포트폴리오 td */
+.pTable tr td {
+	border: 1px solid white;
+	/* width: 25%; */
+	/* height: 300px; */
+	font-size: 20px;
+}
+
+/* 이미지 보여주기 */
+.img {
+	width: 30%;
+	height: 200px;
+}
+
+/* 포트폴리오 내용 */
+.category {
+	width: 20%;
 	text-align: center;
-	margin: auto;
+	vertical-align: middle;
+	height: 30%;
 }
 
-/* 포트폴리오의 제목 */
-.portfolio-title {
-	position: absolute;
-	text-align: left;
-	margin: auto;
-	margin-top: 10px;
+/* 포트폴리오 제목 */
+.title {
+	width: 50%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 참여율 과 기술 */
+.join, .tec {
+	text-align: center;
+	vertical-align: middle;
 }
 
 /* a태그 밑줄없애기 */
@@ -441,7 +459,6 @@ section {
 .dropdown:hover .dropdown-content {
 	display: block;
 }
-
 </style>
 <script src="https://kit.fontawesome.com/4b6b63d8f6.js"
 	crossorigin="anonymous"></script>
@@ -456,7 +473,7 @@ section {
 <body>
 	<!-- munubar -->
 	<%-- <jsp:include page="../common/menubar.jsp" /> --%>
-	
+
 	<c:set var="contextPath"
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
@@ -595,7 +612,7 @@ section {
 			})
 		})
 	</script>
-	
+
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
 
@@ -622,61 +639,65 @@ section {
 
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h4>
-							포트폴리오<span id="num" style="color: grey;"> / 0개 </span> <a
+							포트폴리오<span id="num" style="color: grey;"> / 0개  ${profileId }</span> <a
 								href="portfolioInsert.do" class="btn btn-info"
 								style="float: right;">추가하기</a>
 						</h4>
 					</div>
 					<div class="col-12 portfolio-view">
 						<!-- 하나의 포트폴리오 시작 -->
-						<h1>${portInfolist }</h1>
-						 <%-- <c:forEach var="port" items="${portInfolist }" varStatus="status">
-							<div class="col-4 portfolio-info" style="margin-top: 3%;">
-								<div class="col-12" style="height: 70%;">
-									<div class="col-11 portfolio-category looking-btn"
-										style="margin-top: 10px; margin-left: 30px; visibility: visible;">
-										<button type="button" class="btn btn-info">삭제</button>
-										<a href="mypagePortfolioUpdate.html" class="btn btn-info">수정</a>
-									</div>
-									<div class="col-12 portfolio-category"
-										style="margin-top: 50px;">
-										<h4>디자인</h4>
-									</div>
-									<div class="col-12 portfolio-category"
-										style="margin-top: 135px;">
-										<h5>어플리케이션</h5>
-									</div>
-								</div>
-								<div class="col-12"
-									style="height: 30%; border-top: 2px dashed grey;">
-									<h5>1. 제목을 작성하는 곳입니다.</h5>
-									<div class="col-11 portfolio-title">
-										<span>제목을 입력</span>
-									</div>
-								</div>
-							</div>
-							<script>
-								// div 클릭시 그 포트폴리오 정보를 띄어주기
-								$(".portfolio-info").on("click", function() {
-									location.href = "mypagePortfolio.html";
-								})
-
-								// 수정,삭제 숨기고 보이게하기
-								$(".portfolio-info").mouseover(
-										function() {
-											//$(".looking-btn").show();
-											$(".looking-btn").css({"visibility":"visible"});
-										})
-								$(".portfolio-info").mouseout(
-										function() {
-											//$(".looking-btn").hide();
-											$(".looking-btn").css({"visibility":"hidden"});
-										})
-								
-								// 포트폴리오가 증가시 id 생성해서 넣기
-							</script>
-							<!-- 하나의 포트폴리오 끝 -->
-						</c:forEach> --%>
+						<form method="get" action="delPort.do">
+						<c:forEach var="port" items="${portList }"  varStatus="status">
+						<%-- <c:forEach begin="0" end="2"> --%>
+						<input type="hidden" name="profileId" value="${port.profileId }">
+						<input type="hidden" name="portId" value="${port.portId }">
+							 <table class="pTable">
+								<tr>
+									<td class="img" rowspan="2"><img src="../image/test.png"
+										style="max-width: 100%; height: auto;"></td>
+									<td class="category">
+										<!-- port.mcId에 따른 출력 --> <c:choose>
+											<c:when test="${port.mcId eq 'MC1'}">
+												<span>개발자</span><br>
+											</c:when>
+											<c:when test="${port.mcId eq 'MC2'}">
+												<span>디자인</span><br>
+											</c:when>
+											<c:otherwise>
+												<span>개발/디자인</span><br>
+											</c:otherwise>
+										</c:choose> <!-- port.dcId에 따른 출력 --> <c:choose>
+											<c:when test="${port.dcId eq 'DC1'}">
+												<span>웹</span>
+											</c:when>
+											<c:when test="${port.dcId eq 'DC2'}">
+												<span>어플리케이션</span>
+											</c:when>
+											<c:when test="${port.dcId eq 'DC3'}">
+												<span>퍼블리싱</span>
+											</c:when>
+											<c:otherwise>
+												<span>기타</span>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td class="title">${port.portName }</td>
+								</tr>
+								<tr>
+									<td colspan="2" rowspan="2" class="text">
+										<p style="margin-left: 3%;">${port.content }</p>
+									</td>
+								</tr>
+								<tr></tr>
+								<tr>
+									<td><button class="btn btn-info" style="width: 100%;">삭제</button></td>
+									<td class="join">참여율 : ${port.portJoin }%</td>
+									<td class="tec">java, css</td>
+								</tr>
+							</table>
+							<br>
+						</c:forEach>
+						</form>
 					</div>
 				</div>
 			</div>

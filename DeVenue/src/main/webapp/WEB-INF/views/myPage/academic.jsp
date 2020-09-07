@@ -584,6 +584,7 @@ section {
 						</h3>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
+					<form method="get" action="delacademic.do">
 						<c:forEach var="sc" items="${sccareerlist }">
 							<table class="table">
 								<tr class="table-secondary" style="text-align: center;">
@@ -597,17 +598,23 @@ section {
 								</tr>
 								<tr class="table-light"
 									style="text-align: center; vertical-align: middle; font-size: 15px">
+									
 									<td>${sc.scName }</td>
 									<td>${sc.scMajor }</td>
 									<td>박사과정</td>
 									<td>${sc.ssId }</td>
 									<td>2020년 1월</td>
 									<td>2020년 3월</td>
-									<td><a href="academicUpdate.html" class="btn btn-info">수정</a>
-										<a href="#" class="btn btn-info">삭제</a></td>
+									<td>
+										<input type="hidden" name="scId" value="${sc.scId }">
+										<input type="hidden" name="profileId" value="${sc.profileId }">
+										<a href="academicUpdate.html" class="btn btn-info">수정</a>
+										<button id="del" class="btn btn-info">삭제</button>
+									</td>
 								</tr>
 							</table>
 						</c:forEach>
+						</form>
 					</div>
 				</div>
 			</div>

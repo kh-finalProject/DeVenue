@@ -55,11 +55,6 @@ public class MyPageDao {
 		return sqlSessionTemplate.insert("myPageMapper.insertPortfolio",pf);
 	}
 
-	public PortFolio selectPortfolio(PortFolio portId) {
-		
-		return sqlSessionTemplate.selectOne("myPageMapper.selectPortfolio",portId);
-	}
-
 	public int insertPartImg(PortImg pi) {
 		
 		return sqlSessionTemplate.insert("myPageMapper.insertPortImg", pi);
@@ -73,11 +68,6 @@ public class MyPageDao {
 	public int insertSkill(Skill s) {
 		
 		return sqlSessionTemplate.insert("myPageMapper.insertSkill",s);
-	}
-
-	public Skill selectSkill(Skill s) {
-		
-		return sqlSessionTemplate.selectOne("myPageMapper.selectSkill",s);
 	}
 
 	public int insertCareer(Career c) {
@@ -118,6 +108,46 @@ public class MyPageDao {
 	public ArrayList<Certificate> selectListCertificate(int profileId) {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectListCertificate", profileId);
+	}
+
+	public int deleteSkill(int skillId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteSkill", skillId);
+	}
+
+	public int deleteCareer(int cId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteCareer",cId);
+	}
+
+	public int deleteAca(int scId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteAca",scId);
+	}
+
+	public int deletCerti(int ccId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteCerti",ccId);
+	}
+
+	public int selectPortId(String portName) {
+
+		return sqlSessionTemplate.selectOne("myPageMapper.selectPortId", portName);
+	}
+
+	public int deletePortImg(int portId) {
+
+		return sqlSessionTemplate.delete("myPageMapper.deletePortImg", portId);
+	}
+
+	public int deletePortTec(int portId) {
+
+		return sqlSessionTemplate.delete("myPageMapper.deletePortTec", portId);
+	}
+
+	public int deletePortFolio(int portId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deletePortFolio", portId);
 	}
 	
 	

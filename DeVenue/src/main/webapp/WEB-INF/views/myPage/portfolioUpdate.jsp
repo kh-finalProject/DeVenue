@@ -42,7 +42,13 @@
 	rel="stylesheet" type="text/css">
 
 <!--jQuery-->
+
 <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script> -->
+<!-- <script src="jquery.min.js"></script> -->
+
+
+
 
 <style>
 body {
@@ -605,15 +611,35 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<p style="float: left; font-size: 30px;">마이페이지 - 포트폴리오 추가</p>
 					</div>
 					<div class="col-12" style="width: 100%; height: 1200px;">
-						<form method="GET" action="piInsert.do"
+						<form method="POST" action="piInsert.do"
 							enctype="multipart/form-data">
-							<input type="hidden" name="profileId" value=${profile.profileId }>
-							<table style="border-collapse: separate; border-spacing: 0 15px; margin-left: 5%; margin-top: 3%;">
+							<input type="hidden" id="profileId" name="profileId" value=${profile.profileId }>
+							<table
+								style="border-collapse: separate; border-spacing: 0 15px; margin-left: 5%; margin-top: 3%;">
 								<tr>
 									<td class="port-title">* 제목</td>
 									<td><input type="text" id="title" name="title"
-										style="width: 400px; height: 40px;"></td>
+										style="width: 380px; height: 40px;">
+										<!-- <button type="button" id="title-chk" class="btn btn-info btn-lg"
+								style="margin-left: 5px;">중복체크</button> -->
+								</td>
 								</tr>
+								
+								<script type="text/javascript">
+									$("#title").focusout(function(){
+										alert("실행");
+										
+										var id = $("#profileId").val();
+										var title = $("#title").val();
+										console.log ($. ajax);
+										
+										$.ajax({
+											
+										})
+										
+										// profileId를 이용해서 portName을 리스트에 담아 가져와 비교
+									})
+								</script>
 								<tr>
 									<td class="port-title">* 카테고리</td>
 									<td><select name="jobtype" id="jobtype" name="jobtype"
@@ -709,7 +735,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									<td class="port-title">* 참여율</td>
 									<td>
 										<!-- <input type="number" id="participation" name="participation" onkeydown="return isNumberKey(event)" style="width: 150px; height: 40px;"> % -->
-										<input type="text" id="number" name="name"
+										<input type="text" id="participation" name="participation"
 										class="data_col9 w100p" onkeydown="return isNumberKey(event)"
 										onkeyup="return delHangle(event)"
 										style="width: 150px; height: 40px;"> %
@@ -723,9 +749,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								</tr>
 								<script>
 
-                      $("#number").keyup(function(event){
+                      $("#participation").keyup(function(event){
                         if(event.keyCode == 8){
-                          $("#number").val("");
+                          $("#participation").val("");
                         }
                       })
 
@@ -748,11 +774,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
                             }
 
                             var _pattern1 = /^\d{3}$/;
-                            var num = $("#number").val();
+                            var num = $("#participation").val();
                             
                             if(_pattern1.test(_value)){
                               if(charCode != 46 || num < 101){
-                                $("#number").val(100);
+                                $("#participation").val(100);
                                 return false;
                               }
                             }

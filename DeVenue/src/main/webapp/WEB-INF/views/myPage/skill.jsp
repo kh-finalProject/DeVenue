@@ -44,6 +44,8 @@
 <!--jQuery-->
 <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
 
+<!-- https://code.jquery.com/jquery-3.3.1.slim.min.js -->
+
 <style>
 body {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -578,18 +580,23 @@ section {
 							프로필에서 보기</a>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
+					<form method="get" action="delSkill.do">
 						<table class="table">
 							<tr class="table-secondary"
 								style="font-size: 20px; text-align: center;">
-								<td colspan="2">종류</td>
+								<td>종류</td>
 								<td>숙련도</td>
 								<td>경험</td>
 								<td>도구</td>
 							</tr>
 							<c:forEach var="skill" items="${skilllist }">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<c:out value="${profile.profileId }"/>
+							<input type="hidden" name="skillId" value="${skill.skillId }">
+							
 								<tr class="skill">
-									<td class="checkbox"><input type="checkbox" id="checkbox"
-										name="checkbox"></td>
+									<!-- <td class="checkbox"><input type="checkbox" id="checkbox"
+										name="checkbox"></td> -->
 									<td><input type="text" readonly
 										style="width: 180px; height: 40px; text-align: center;"
 										value="${skill.skillKind }"></td>
@@ -599,22 +606,37 @@ section {
 									<td><input type="text" readonly
 										style="width: 180px; height: 40px; text-align: center;"
 										value="${skill.skillYear }"></td>
-									<td><button type="button" class="btn btn-info">삭제</button></td>
+
+
+									<td><button type="submit" id="${skill.skillId }"
+											class="btn btn-info">삭제</button></td>
 								</tr>
 							</c:forEach>
 						</table>
+						</form>
 					</div>
-
-					<script type="text/javascript">
-	                        // 행 삭제
-	                        // 왜 전체 삭제가...?
-	                       $("#DelSkill").on("click",function(){
-	                            var checkRows = $("[input='checkbox']:checked");
-	                            for(var a=checkRows.length-1;a>-1;a--){
-	                                checkRows.eq(a).closeset(".skill").remove();
-	                            }
-	                       })
-                        </script>
+					<!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script> -->
+					<script>
+						//삭제 버튼 클릭스 id랑 skillID를 비교해서 삭제
+						// id를 ajax로 넘겨 skillId와 비교하여 삭제
+						// 에러
+						/* $(".delSkill").on("click", function() {
+							 alert(this.id);
+							var id = (this.id);
+							alert(id);
+							$.ajax({
+								url:"delSkill.do",
+								data:{id:id},
+								success:function(data){
+									
+								},error:function(request, status, errorData){
+									alert("error code: " + request.status + "\n"
+											+"message: " + request.responseText
+											+"error: " + errorData);
+								}	
+							})
+						}) */
+					</script>
 
 					<div class="col-12"
 						style="width: 100%; height: 50px; text-align: right;">
