@@ -10,7 +10,31 @@
 		<result property="renameFileName" column="IDE_RENAMEFILE"/>
 		<result property="ideStatus" column="IDE_STATUS"/>
 	</resultMap>
-	
+	<resultMap type="MemBasicInfo" id="memBasicInfoResultSet">
+		<result property="proImgName" column="PROFILE_IMG"/>
+		<result property="utName" column="UT_NAME"/>
+		<result property="mtName" column="MEM_TYPE_KIND"/>
+		<result property="memName" column="MEM_NAME"/>
+		<result property="address1" column="ADDRESS1"/>
+		<result property="address2" column="ADDRESS2"/>
+		<result property="address3" column="ADDRESS3"/>
+		<result property="taxEmail" column="TAX_EMAIL"/>
+		<result property="phone" column="PHONE"/>
+		<result property="cellPhone" column="CELLPHONE"/>
+		<result property="faxNo" column="FAX_NO"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="master" column="MASTER"/>
+		<result property="accNo" column="ACC_NO"/>
+	</resultMap>
+	<resultMap type="Bank" id="bankResultSet">
+		<id property="bankId" column="BANK_ID"/>
+		<result property="bankName" column="BANK_NAME"/>
+	</resultMap>
+	<resultMap type="MemType" id="memTypeResultSet">
+		<id property="memTypeCode" column="MEM_TYPE_CODE"/>
+		<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+	</resultMap>
+
 	<!-- 회원 비밀번호 변경 쿼리 -->
 	<select id="updatePwd" parameterType="map">
 		UPDATE MEMBER
@@ -44,4 +68,27 @@
 		SET IDE_NAME = NULL, IDE_ADDRESS = NULL, IDE_ORIGINFILE = NULL, IDE_RENAMEFILE = NULL, IDE_STATUS = DEFAULT
 		WHERE IDE_ID = #{memId}
 	</update>
+	
+	<!-- 기본계정관리 정보 셀렉 -->
+	<select id="selectMemBasicInfo" parameterType="_int" resultMap="memBasicInfoResultSet">
+		SELECT
+            PROFILE_IMG, UT_NAME, MEM_TYPE_KIND, MEM_NAME, ADDRESS1, ADDRESS2, ADDRESS3, TAX_EMAIL
+            , PHONE, CELLPHONE, FAX_NO
+            , BANK_NAME, MASTER, ACC_NO
+		FROM MEMBER M
+		LEFT JOIN MEMTYPE MT ON(M.MEM_TYPE = MT.MEM_TYPE_CODE)
+		LEFT JOIN USERTYPE UT ON(UT.UT_CODE = M.USER_TYPE)
+		LEFT JOIN PROFILE P ON (P.MEM_ID = M.MEM_ID)
+		LEFT JOIN ACCOUNT A ON (A.MEM_ID = P.MEM_ID)
+		LEFT JOIN BANK B ON (A.BANK_ID = B.BANK_ID)
+		WHERE M.MEM_ID = #{mId}
+	</select>
+	<!-- 은행 이름들 셀렉 -->
+	<select id="selectBankName" resultMap="bankResultSet">
+		SELECT * FROM BANK
+	</select>
+	<!-- 회원형태 셀렉 -->
+	<select id="selectMemType" resultMap="memTypeResultSet">
+		SELECT * FROM MEMTYPE
+	</select>
 </mapper>

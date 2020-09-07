@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.memberAccount.dto.MemBasicInfo;
 import com.kh.DeVenue.memberAccount.model.service.MemberAccountService;
+import com.kh.DeVenue.memberAccount.model.vo.Bank;
 import com.kh.DeVenue.memberAccount.model.vo.Identify;
+import com.kh.DeVenue.memberAccount.model.vo.MemType;
 
 @Controller
 public class MemberAccountController {
@@ -33,9 +37,25 @@ public class MemberAccountController {
 	
 	// 계정관리1 - 기본적인 개인정보 수정 및 생성 으로 가는 메소드
 	@RequestMapping("gotoAccountMypage.do")
-	public String gotoAccountMypage() {
+	public String gotoAccountMypage(HttpSession session, HttpServletRequest request) {
+		int mId = ((Member)session.getAttribute("loginUser")).getMemId();
+		// 여러 테이블로부터 필요한 컬럼만 불러오자.(dto 패키지에 클래스 생성)
+		MemBasicInfo mbi = maService.selectMemBasicInfo(mId);
+		// 은행 목록을 불러옴
+		ArrayList<Bank> banks = maService.selectBankName();
+		// 회원 형태 목록을 불러옴
+		ArrayList<MemType> memTypes = maService.selectMemType();
 		
-		return "memberAccountManage/accountMain";
+		if(mbi != null && banks != null && memTypes != null) {
+			request.setAttribute("mbi", mbi);
+			request.setAttribute("banks", banks);
+			request.setAttribute("memTypes", memTypes);
+			System.out.println("회원 기본 계정 정보를 잘 불러옴");
+			return "memberAccountManage/accountMain";
+		}else {
+			System.out.println("회원 기본 계정 정보를 못 불러옴");
+			return "memberAccountManage/accountMain";
+		}
 	}
 	
 	// 계정관리2 - 비밀번호 수정으로 가는 메소드
@@ -213,4 +233,5 @@ public class MemberAccountController {
 		}
 		
 	}
+
 }

@@ -203,7 +203,9 @@
             </form>
         </div>
     </div>
-
+	<!-- 풋터 가져오기  -->
+    <jsp:include page="../common/footer.jsp"/>
+    
 	<script>
 		$(function(){
 			// 보안로그인하러 ajax 사용하여 서버갔다오자

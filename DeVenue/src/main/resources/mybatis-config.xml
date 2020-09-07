@@ -33,6 +33,9 @@
 		<typeAlias type="com.kh.DeVenue.util.model.vo.EachChatInfo" alias="EachChatInfo"/>
 		<typeAlias type="com.kh.DeVenue.util.model.vo.ProInfo" alias="ProInfo"/>
 		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.Identify" alias="Identify"/>
+		<typeAlias type="com.kh.DeVenue.memberAccount.model.dto.MemBasicInfo" alias="MemBasicInfo"/>
+		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.Bank" alias="Bank"/>
+		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.MemType" alias="MemType"/>
 
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FindClientDetail" alias="FindClientDetail"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FCprojectHistory" alias="FCprojectHistory"/>

@@ -263,6 +263,8 @@
         </div>
     </div>
 </div>
+	<!-- 풋터 가져오기  -->
+    <jsp:include page="../common/footer.jsp"/>
    
 	<script>
 		// !!정규표현식은 상의해서 8자~32자 이하의 아무 문자로 하자
