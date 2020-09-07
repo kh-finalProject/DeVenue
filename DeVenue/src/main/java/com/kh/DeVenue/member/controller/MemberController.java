@@ -26,13 +26,13 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
-import com.kh.DeVenue.member.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.util.model.service.ChatService;
 import com.kh.DeVenue.util.model.vo.ChatUserInfo;
+import com.kh.DeVenue.util.model.vo.MemChatSet;
 
 
 
@@ -161,7 +161,7 @@ public class MemberController {
 			String address3 = request.getParameter("address3");	// 사용자 상세 주소
 			
 			Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phone);
-//			System.out.println(m);
+			System.out.println(m);
 			int result = mService.insertMember(m);
 			if(result > 0) {
 				System.out.println("회원가입 성공");
