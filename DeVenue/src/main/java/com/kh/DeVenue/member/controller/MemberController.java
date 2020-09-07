@@ -28,12 +28,11 @@ import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.Member;
-
-import static com.kh.DeVenue.common.Pagination.getPageInfo;
-import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
-import com.kh.DeVenue.myPage.model.service.MyPageService;
+import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.util.model.service.ChatService;
+import com.kh.DeVenue.util.model.vo.ChatUserInfo;
 
 
 
@@ -62,7 +61,10 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService mService;
-	
+	@Autowired
+	private MemberService2 mmService;
+	@Autowired
+	private ChatService cService;
 	// 할일 로그인 유지/ 브라우저 종료시 reload
 	// 로그인 유지할때 request와 session으로 넘겨버리면???
 	// 로그인 값 받아오기
@@ -103,6 +105,30 @@ public class MemberController {
 			
 			
 //			return mv;
+			
+			// 배혜린 추가 ----------------------------------------------------------------------
+			if(loginUser.getUserType().equals("UT1")||loginUser.getUserType().equals("UT2")) {
+				System.out.println("관리자 로그인");
+				
+				// 관리자 메인페이지가 없기때문에 일단 채팅 목록관리로 이동
+				return "redirect:goChatListManage.do";
+			}else {
+				System.out.println("회원 로그인");
+				
+				// 채팅을 위해 관리자 정보를 죄다 불러옴(주관리자 여부는 웹단에서 구분하여 쓰자)
+				ArrayList<ChatUserInfo> admins = mmService.allAdmin();
+				session.setAttribute("admins", admins);
+				
+				// 채팅평시상태를 위해 안읽은 메시지를 모두 카운트해서 불러옴
+				int allUnReadCount = cService.selectAllUnReadCount(loginUser.getMemId());
+				if(allUnReadCount >= 0) {
+					request.setAttribute("allUnReadCount", allUnReadCount);
+				}
+				
+				return "common/mainPage";
+			}
+			//------------------------------------------------------------------------------
+			
 			
 		}else { // 로그인 실패시
 

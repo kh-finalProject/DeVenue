@@ -285,6 +285,7 @@ i {
 							  </button>
 							  <div class="dropdown-menu">
 							    <a href="profile.do" class="dropdown-item">profile</a>
+							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>
 							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>

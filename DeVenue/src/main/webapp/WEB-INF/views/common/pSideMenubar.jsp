@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,15 +111,21 @@
 
 <body>
 	<!-- 서브 메뉴바 영역-->
+	<c:if test="${loginUser.userType == 'UT3'}">
+		<c:set var="clOrPt" value="클라이언트"/>
+	</c:if>
+	<c:if test="${loginUser.userType == 'UT4'}">
+		<c:set var="clOrPt" value="파트너스"/>
+	</c:if>
 	<div class="text-white myPage_sideNav_area">
 		<div class="myPage_sideNav_title">
-			파트너스
+			${clOrPt }
 		</div>
 		<div class="myPage_sideNav_content">
 			<div id="infoMenu" class="myPage_sideNav_mainC">정보 관리<i style="float: right; margin-right: 5%;"
 					class="fas fa-angle-right"></i></div>
 			<div id="subInfoMenu" class="myPage_sideNav_serveC">
-				<div id="userTypeInfo">파트너스 정보</div>
+				<div id="userTypeInfo">${clOrPt } 정보</div>
 				<div id="pPrfile">프로필</div>
 				<div id="pPR">자기소개</div>
 				<div id="pPortfolio">포트폴리오</div>
@@ -128,11 +137,11 @@
 			<div id="accountMenu" class="myPage_sideNav_mainC">계정 관리<i style="float: right; margin-right: 5%;"
 					class="fas fa-angle-right"></i></div>
 			<div id="subAccountMenu" class="myPage_sideNav_serveC">
-				<div id="clientComment">기본 정보 수정</div>
-				<div id="insertCComment">신원 인증</div>
-				<div id="insertCComment">날인 방법 관리</div>
-				<div id="insertCComment">비밀번호 변경</div>
-				<div id="insertCComment">회원 탈퇴</div>
+				<div id="clientComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">기본 정보 수정</div>
+				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoIdentityVerification.do'">신원 인증</div>
+				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">날인 방법 관리</div>
+				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountChangePwd.do'">비밀번호 변경</div>
+				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/outOfMember.do'">회원 탈퇴</div>
 			</div>
 			<div id="pEvaluate" class="myPage_sideNav_mainC">내게 온 제안</div>
 			<script>
@@ -161,25 +170,6 @@
 					});
 				});
 
-
-				_("#userTypeInfo").on("click", function () {
-					location.href = "../findUser/findClientDetail.html";
-				}).on("mouseenter", function () {
-
-				});
-
-				_("#projectHistory").on("click", function () {
-					location.href = "projectHistory.html";
-				});
-
-
-				$("#clientComment").on("click", function () {
-					location.href = "clientComment.html";
-				});
-
-				$("#insertCComment").on("click", function () {
-					location.href = "insertCComment.html";
-				});
 			</script>
 		</div>
 	</div>
