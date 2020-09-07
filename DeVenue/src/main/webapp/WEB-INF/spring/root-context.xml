@@ -27,8 +27,21 @@
 	
 	</bean>
 	
+	<!-- 트랜잭션 처리를 직접하기 위해 트랜잭션 제어 빈객체 만듬(안그럼 delete가 안됨)(배혜린) -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   		<property name="dataSource" ref="dataSource"/>
+   </bean>
+
+		<!-- 파일업로드 bean ,MultipartResolver 설정 -->
+<!-- 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="100000000" />
+<<<<<<< HEAD
+		<property name="maxInMemorySize" value="100000000" />
+		
+	</bean> -->
+	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="1000000000"/>
-		<property name="maxInMemorySize" value="1000000000"/>
+		<property name="maxUploadSize" value="1000000000" />
+		
 	</bean>
 </beans>

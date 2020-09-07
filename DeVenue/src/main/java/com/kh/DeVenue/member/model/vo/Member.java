@@ -15,6 +15,7 @@ public class Member implements Serializable {
 	private static final long serialVersionUID = -6563273375076952851L;
 
 
+
 	private int memId; // 회원 기본키
 	private String userType; // 사용자 분류
 	private String memType; // 회원 형태
@@ -40,7 +41,11 @@ public class Member implements Serializable {
 	private ArrayList<ProjectLike> likeList;//관심 프로젝트 리스트
 	private ArrayList<ProjectList> applyList;// 지원 프로젝트 리스트
 
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> refs/remotes/origin/master
 	public Member() {
 		super();
 	}
@@ -77,7 +82,11 @@ public class Member implements Serializable {
 		this.applyList = applyList;
 	}
 
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> refs/remotes/origin/master
 	// 로그인용
 	public Member(String memEmail, String memPwd) {
 		super();

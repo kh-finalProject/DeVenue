@@ -289,6 +289,7 @@
 	
 	<!-- 회원 채팅 설정 -->
 	<resultMap type="MemChatSet" id="memChatSetResultSet">
+<<<<<<< HEAD
 		<id property="memId" column="MEM_ID"/>
 		
 		<result property="isTransChat" column="IS_TRANS_CHAT"/>
@@ -300,6 +301,19 @@
 	<insert id="insertcharSet" parameterType="MemChatSet">
 		INSERT INTO MEM_CHATSET
 		VALUES(#{memId},DEFAULT,DEFAULT)
+=======
+		<id property="mId" column="MEM_ID"/>
+		
+		<result property="is_TransChat" column="IS_TRANS_CHAT"/>
+		<result property="is_ShowPastChat" column="IS_SHOWPASTCHAT"/>
+
+	</resultMap>
+	
+	<!-- 회원가입시 회원 채팅 설정 기본 생성 -->
+	<insert id="insertcharSet" parameterType="MemChatSet">
+		INSERT INTO MEM_CHATSET
+		VALUES(#{mId},DEFAULT,DEFAULT)
+>>>>>>> refs/remotes/origin/master
 	</insert>
 	
 	<!-- 회원가입한후에 memId 추출하기 -->

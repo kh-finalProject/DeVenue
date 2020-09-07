@@ -44,16 +44,27 @@
 <!--jQuery-->
 <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
 
+<<<<<<< HEAD
 <style>
 body {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+=======
+<!-- https://code.jquery.com/jquery-3.3.1.slim.min.js -->
+>>>>>>> refs/remotes/origin/master
 
+<<<<<<< HEAD
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 700;
+=======
+<style>
+body {
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 header.masthead {
 	position: relative;
 	background-color: #343a40;
@@ -62,8 +73,14 @@ header.masthead {
 	padding-top: 8rem;
 	padding-bottom: 8rem;
 	height: 50rem;
+=======
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 700;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 header.masthead .overlay {
 	position: absolute;
 	background-color: #212529;
@@ -72,12 +89,34 @@ header.masthead .overlay {
 	top: 0;
 	left: 0;
 	opacity: 0.3;
+=======
+header.masthead {
+	position: relative;
+	background-color: #343a40;
+	background: url("mainImg.jpg") no-repeat center center;
+	background-size: cover;
+	padding-top: 8rem;
+	padding-bottom: 8rem;
+	height: 50rem;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 header.masthead h1 {
 	font-size: 2rem;
+=======
+header.masthead .overlay {
+	position: absolute;
+	background-color: #212529;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0.3;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 @media ( min-width : 768px) {
 	header.masthead {
 		padding-top: 12rem;
@@ -86,108 +125,242 @@ header.masthead h1 {
 	header.masthead h1 {
 		font-size: 3rem;
 	}
+=======
+header.masthead h1 {
+	font-size: 2rem;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .showcase .showcase-text {
 	padding: 3rem;
+=======
+@media ( min-width : 768px) {
+	header.masthead {
+		padding-top: 12rem;
+		padding-bottom: 12rem;
+	}
+	header.masthead h1 {
+		font-size: 3rem;
+	}
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .showcase .showcase-img {
 	min-height: 30rem;
 	background-size: cover;
+=======
+.showcase .showcase-text {
+	padding: 3rem;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 @media ( min-width : 768px) {
 	.showcase .showcase-text {
 		padding: 7rem;
 	}
+=======
+.showcase .showcase-img {
+	min-height: 30rem;
+	background-size: cover;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 footer.footer {
 	padding-top: 4rem;
 	padding-bottom: 4rem;
+=======
+@media ( min-width : 768px) {
+	.showcase .showcase-text {
+		padding: 7rem;
+	}
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 #navbarMain>ul>li>a {
 	color: white;
+=======
+footer.footer {
+	padding-top: 4rem;
+	padding-bottom: 4rem;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
+#navbarMain>ul>li>a:hover {
+	color: lightblue;
+=======
+#navbarMain>ul>li>a {
+	color: white;
+>>>>>>> refs/remotes/origin/master
+}
+
+<<<<<<< HEAD
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+=======
 #navbarMain>ul>li>a:hover {
 	color: lightblue;
 }
+>>>>>>> refs/remotes/origin/master
 
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
+<<<<<<< HEAD
 * {
 	margin: 0;
 	padding: 0;
 }
+=======
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+>>>>>>> refs/remotes/origin/master
 
+<<<<<<< HEAD
+i {
+	margin-right: 10px;
+=======
+* {
+	margin: 0;
+	padding: 0;
+>>>>>>> refs/remotes/origin/master
+}
+
+<<<<<<< HEAD
+/*------------------------*/
+=======
 i {
 	margin-right: 10px;
 }
+>>>>>>> refs/remotes/origin/master
 
-/*------------------------*/
-
+<<<<<<< HEAD
 /*----------step-wizard------------*/
 .d-flex {
 	display: flex;
 }
+=======
+/*------------------------*/
+>>>>>>> refs/remotes/origin/master
 
+<<<<<<< HEAD
 .justify-content-center {
 	justify-content: center;
+=======
+/*----------step-wizard------------*/
+.d-flex {
+	display: flex;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .align-items-center {
 	align-items: center;
+=======
+.justify-content-center {
+	justify-content: center;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 /*---------signup-step-------------*/
 .signup-step-container {
 	padding: 150px 0px;
 	padding-bottom: 60px;
+=======
+.align-items-center {
+	align-items: center;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .wizard .tab-pane {
 	position: relative;
 	padding-top: 20px;
+=======
+/*---------signup-step-------------*/
+.signup-step-container {
+	padding: 150px 0px;
+	padding-bottom: 60px;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .footer-link {
 	margin-top: 30px;
+=======
+.wizard .tab-pane {
+	position: relative;
+	padding-top: 20px;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .list-inline li {
 	display: inline-block;
+=======
+.footer-link {
+	margin-top: 30px;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 @media ( max-width : 767px) {
 	.wizard .nav-tabs>li a i {
 		display: none;
 	}
+=======
+.list-inline li {
+	display: inline-block;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .back-to-top {
 	position: fixed;
 	bottom: 100px;
 	right: 20px;
 	display: none;
 	z-index: 100;
+=======
+@media ( max-width : 767px) {
+	.wizard .nav-tabs>li a i {
+		display: none;
+	}
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 /* 프로세스 관련 style */
 .wizard .nav-tabs {
 	position: relative;
 	margin-bottom: 0;
 	border-bottom-color: transparent;
+=======
+.back-to-top {
+	position: fixed;
+	bottom: 100px;
+	right: 20px;
+	display: none;
+	z-index: 100;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .wizard>div.wizard-inner {
 	position: relative;
 	margin-bottom: 50px;
 	text-align: center;
+=======
+/* 프로세스 관련 style */
+.wizard .nav-tabs {
+	position: relative;
+	margin-bottom: 0;
+	border-bottom-color: transparent;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .connecting-line {
 	height: 4px;
 	background: #e0e0e0;
@@ -198,16 +371,36 @@ i {
 	right: 0;
 	top: 10px;
 	z-index: 1;
+=======
+.wizard>div.wizard-inner {
+	position: relative;
+	margin-bottom: 50px;
+	text-align: center;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 .wizard .nav-tabs>li.active>a, .wizard .nav-tabs>li.active>a:hover,
 	.wizard .nav-tabs>li.active>a:focus {
 	color: #555555;
 	cursor: default;
 	border: 0;
 	border-bottom-color: transparent;
+=======
+.connecting-line {
+	height: 4px;
+	background: #e0e0e0;
+	position: absolute;
+	width: 80%;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	top: 10px;
+	z-index: 1;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 span.round-tab {
 	width: 80px;
 	height: 80px;
@@ -224,18 +417,59 @@ span.round-tab {
 	color: #0e214b;
 	font-weight: 700;
 	border: 1px solid #ddd;
+=======
+.wizard .nav-tabs>li.active>a, .wizard .nav-tabs>li.active>a:hover,
+	.wizard .nav-tabs>li.active>a:focus {
+	color: #555555;
+	cursor: default;
+	border: 0;
+	border-bottom-color: transparent;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
 span.round-tab i {
 	color: #fff;
+=======
+span.round-tab {
+	width: 80px;
+	height: 80px;
+	line-height: 70px;
+	display: inline-block;
+	border-radius: 50%;
+	background: #fff;
+	z-index: 2;
+	position: absolute;
+	left: -30px;
+	top: -30px;
+	text-align: center;
+	font-size: 30px !important;
+	color: #0e214b;
+	font-weight: 700;
+	border: 1px solid #ddd;
+>>>>>>> refs/remotes/origin/master
 }
 
+<<<<<<< HEAD
+.wizard li.active span.round-tab {
+	background: #2793F2;
+	color: #fff;
+	border-color: #2793F2;
+=======
+span.round-tab i {
+	color: #fff;
+>>>>>>> refs/remotes/origin/master
+}
+
+<<<<<<< HEAD
+=======
 .wizard li.active span.round-tab {
 	background: #2793F2;
 	color: #fff;
 	border-color: #2793F2;
 }
 
+>>>>>>> refs/remotes/origin/master
 .wizard li.active span.round-tab i {
 	color: #5bc0de;
 }
@@ -578,6 +812,7 @@ section {
 							프로필에서 보기</a>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
+<<<<<<< HEAD
 						<table class="table">
 							<tr class="table-secondary"
 								style="font-size: 20px; text-align: center;">
@@ -615,6 +850,64 @@ section {
 	                            }
 	                       })
                         </script>
+=======
+					<form method="get" action="delSkill.do">
+						<table class="table">
+							<tr class="table-secondary"
+								style="font-size: 20px; text-align: center;">
+								<td>종류</td>
+								<td>숙련도</td>
+								<td>경험</td>
+								<td>도구</td>
+							</tr>
+							<c:forEach var="skill" items="${skilllist }">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<c:out value="${profile.profileId }"/>
+							<input type="hidden" name="skillId" value="${skill.skillId }">
+							
+								<tr class="skill">
+									<!-- <td class="checkbox"><input type="checkbox" id="checkbox"
+										name="checkbox"></td> -->
+									<td><input type="text" readonly
+										style="width: 180px; height: 40px; text-align: center;"
+										value="${skill.skillKind }"></td>
+									<td><input type="text" readonly
+										style="width: 180px; height: 40px; text-align: center;"
+										value="${skill.skillLevel }"></td>
+									<td><input type="text" readonly
+										style="width: 180px; height: 40px; text-align: center;"
+										value="${skill.skillYear }"></td>
+
+
+									<td><button type="submit" id="${skill.skillId }"
+											class="btn btn-info">삭제</button></td>
+								</tr>
+							</c:forEach>
+						</table>
+						</form>
+					</div>
+					<!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script> -->
+					<script>
+						//삭제 버튼 클릭스 id랑 skillID를 비교해서 삭제
+						// id를 ajax로 넘겨 skillId와 비교하여 삭제
+						// 에러
+						/* $(".delSkill").on("click", function() {
+							 alert(this.id);
+							var id = (this.id);
+							alert(id);
+							$.ajax({
+								url:"delSkill.do",
+								data:{id:id},
+								success:function(data){
+									
+								},error:function(request, status, errorData){
+									alert("error code: " + request.status + "\n"
+											+"message: " + request.responseText
+											+"error: " + errorData);
+								}	
+							})
+						}) */
+					</script>
 
 					<div class="col-12"
 						style="width: 100%; height: 50px; text-align: right;">
@@ -625,7 +918,21 @@ section {
 			</div>
 		</div>
 		</div>
+>>>>>>> refs/remotes/origin/master
 
+<<<<<<< HEAD
+					<div class="col-12"
+						style="width: 100%; height: 50px; text-align: right;">
+						<a href="skillUpdate.do" class="btn btn-info"
+							style="float: left; margin-left: 30px;">+ 추가하기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+
+=======
+>>>>>>> refs/remotes/origin/master
 		</div>
 		</div>
 	</section>

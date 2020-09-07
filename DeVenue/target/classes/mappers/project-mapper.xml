@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace ="projectMapper">
 
-
-
-
 <resultMap type="Project" id="projectResultSet">
 		<id property="proId" column="PRO_ID"/>
 		<result property="memId" column="MEM_ID"/>
@@ -221,6 +218,7 @@
 	</resultMap>
 	<resultMap type="Like" id="likeResultSet">
 	
+<<<<<<< HEAD
 		<id property="proLId" column="PRO_LID"/>
 		
 		<association property="partner" javaType="Member">
@@ -328,6 +326,118 @@
 		<collection property="answer" javaType="java.util.ArrayList" resultMap="AnswerResultSet" />
 	
 	</resultMap>
+=======
+	<resultMap type="Like" id="likeResultSet">
+	
+		<id property="proLId" column="PRO_LID"/>
+		
+		<association property="partner" javaType="Member">
+			<id property="memId" column="MEM_ID"/>
+			<result property="memNick" column="MEM_NICK"/>
+			<result property="memEmail" column="MEM_EMAIL"/>
+		</association>
+		
+		<association property="pList" javaType="ProjectList">
+			<id property="id" column="ID"/>
+			<result property="mCategory" column="MCATEGORY"/>
+			<result property="dCategory" column="DCATEGORY"/>
+			<result property="workType" column="WORKTYPE"/>
+			<result property="identify" column="IDENTIFY"/>
+			
+			<association property="project" javaType="Project">
+				<result property="proName" column="NAME"/>
+				<result property="proDuration" column="DURATION"/>
+				<result property="proSummary" column="SUMMARY"/>
+				<result property="proPayment" column="PAYMENT"/>
+				<result property="proLocation" column="LOCATION"/>
+				<result property="proRecruit" column="RECRUIT"/>
+				<result property="proCreateDate" column="CDATE"/>
+			</association>
+			
+		</association>
+	
+	</resultMap>
+	
+	<resultMap type="Pofo" id="portfolioResultSet">
+		<id property="portId" column="PORT_ID"/>
+		<result property="mCategory" column="MC_ID"/>
+		<result property="dCategory" column="DC_ID"/>
+		<result property="portName" column="PROT_NAME"/>
+		<result property="portJoin" column="PORT_JOIN"/>
+		<result property="portContent" column="PORT_CONTENT"/>
+		<result property="startDate" column="PORT_START_DATE"/>
+		<result property="endDate" column="PORT_END_DATE"/>
+		
+		<collection property="image" javaType="java.util.ArrayList" resultMap="imageResultSet"/>
+	</resultMap>
+	
+	<resultMap type="Image" id="imageResultSet">
+		<id property="imgId" column="PORT_IMG_ID"/>
+		<result property="imgContent" column="PORT_IMG_CONTENT"/>
+		
+	</resultMap>
+	
+	<resultMap type="Answer" id="AnswerResultSet">
+		<id property="aaId" column="PRO_AA_ID"/>
+		<result property="aaContent" column="PRO_AA_CONTENT"/>
+		<result property="aqId" column="PRO_AQ_ID"/>
+		<result property="aqContent" column="PRO_AQ_CONTENT"/>
+		<result property="aaCDate" column="PRO_AAC_DATE"/>
+	
+	</resultMap>
+	
+	<resultMap type="ApplyPF" id="applyPFResultSet">
+		<id property="apId" column="AP_ID"/>
+		<result property="portId" column="PORT_ID"/>
+		<result property="apContent" column="AP_CONTENT"/>
+		
+		<association property="portfolio" javaType="Pofo">
+		<result property="mCategory" column="MC_ID"/>
+		<result property="dCategory" column="DC_ID"/>
+		<result property="portName" column="PROT_NAME"/>
+		<result property="portJoin" column="PORT_JOIN"/>
+		<result property="startDate" column="PORT_START_DATE"/>
+		<result property="endDate" column="PORT_END_DATE"/>
+		</association>
+		
+	</resultMap>
+	
+	<resultMap type="Application" id="applyResultSet">
+		<id property="aId" column="PRO_AID"/>
+		<result property="aPayment" column="PRO_APAYMENT"/>
+		<result property="aDuration" column="PRO_ADURATION"/>
+		<result property="aContent" column="PRO_ACONTENT"/>
+		<result property="originalResume" column="PRO_ARESUME"/>
+		<result property="reNameResume" column="PRO_REARESUME"/>
+		<result property="applyDate" column="PRO_APPLY_DATE"/>
+		<result property="saveStatus" column="PRO_ASAVE_STATUS"/>
+		<result property="status" column="PRO_ASTATUS"/>
+			
+		<association property="pList" javaType="ProjectList">
+			<id property="id" column="ID"/>
+			<result property="mCategory" column="MCATEGORY"/>
+			<result property="dCategory" column="DCATEGORY"/>
+			<result property="workType" column="WORKTYPE"/>
+			<result property="identify" column="IDENTIFY"/>
+			
+			<association property="project" javaType="Project">
+				<result property="proName" column="NAME"/>
+				<result property="proDuration" column="DURATION"/>
+				<result property="proSummary" column="SUMMARY"/>
+				<result property="proPayment" column="PAYMENT"/>
+				<result property="proLocation" column="LOCATION"/>
+				<result property="proRecruit" column="RECRUIT"/>
+				<result property="proCreateDate" column="CDATE"/>
+			</association>
+			
+		</association>
+		
+		<collection property="portfolio" javaType="java.util.ArrayList" resultMap="applyPFResultSet"/>
+		<collection property="answer" javaType="java.util.ArrayList" resultMap="AnswerResultSet" />
+	
+	</resultMap>
+	
+>>>>>>> refs/remotes/origin/master
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO PROJECT VALUES(
 			SEQ_PRO_ID.NEXTVAL
@@ -665,9 +775,50 @@ INSERT INTO PROJECT VALUES(
 		UPDATE P_REPLY SET
 		PRO_RANSWER='Y'
 		WHERE PRO_RID=#{parentRId}
-
 	</update>
+	
+	<select id="checkLikeNum" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+        FROM P_LIKE
+        WHERE PRO_ID=#{pId} AND MEM_ID=#{memId}
+	</select>
+	
+	<insert id="addLikeProject">
+		INSERT INTO P_LIKE VALUES
+		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
+	</insert>
+	
+	<select id="getLikeCount" parameterType="int" resultType="_int">
+		SELECT COUNT(*)
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		WHERE L.MEM_ID=#{memId}
+	</select>
+	
+	<select id="getLikeList" parameterType="int" resultMap="likeResultSet">
+		SELECT L.*,P.*,M.MEM_NICK,M.MEM_EMAIL
+		FROM P_LIKE L
+		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+		LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
+		WHERE L.MEM_ID=#{memId}
+	
+	</select>
+	
+	<delete id="deleteLikeProject" parameterType="int">
+		DELETE FROM P_LIKE
+		WHERE PRO_LID=#{lId}
+	</delete>
+	
+	<select id="selectPortfolio" parameterType="int" resultMap="portfolioResultSet">
+		SELECT PF.*, F.MEM_ID, PORT_IMG_ID,PORT_IMG_CONTENT,PORT_IMG_PATH
+		FROM PORTFOLIO PF
+		LEFT JOIN PORT_IMG I ON (PF.PORT_ID=I.PORT_ID)
+		LEFT JOIN PROFILE F ON (PF.PROFILE_ID=F.PROFILE_ID)
+		LEFT JOIN MEMBER M ON (F.MEM_ID=M.MEM_ID)
+		WHERE F.MEM_ID=#{memId}
+	 </select>
 
+<<<<<<< HEAD
 <select id="checkLikeNum" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
         FROM P_LIKE
@@ -709,6 +860,8 @@ INSERT INTO PROJECT VALUES(
 		WHERE F.MEM_ID=#{memId}
 	 </select>
 
+=======
+>>>>>>> refs/remotes/origin/master
 	<select id="findPortfolio" parameterType="hashmap" resultMap="portfolioResultSet">
 	SELECT PF.*, F.MEM_ID, PORT_IMG_ID,PORT_IMG_CONTENT
 	FROM PORTFOLIO PF

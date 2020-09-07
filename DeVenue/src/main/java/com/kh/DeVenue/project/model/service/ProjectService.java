@@ -1,8 +1,16 @@
 package com.kh.DeVenue.project.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+<<<<<<< HEAD
 import com.kh.DeVenue.member.model.vo.Member;
+=======
+import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.project.model.vo.Application;
+import com.kh.DeVenue.project.model.vo.ApplyAnswer;
+import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
+>>>>>>> refs/remotes/origin/master
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -139,6 +147,7 @@ public interface ProjectService {
 
 
 	int cancelThisTempApply(Integer aId);
+<<<<<<< HEAD
 
 
 
@@ -193,6 +202,8 @@ public interface ProjectService {
 
 
 
+=======
+>>>>>>> refs/remotes/origin/master
 
 
 	

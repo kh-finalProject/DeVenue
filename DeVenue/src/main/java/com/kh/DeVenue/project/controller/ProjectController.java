@@ -7,12 +7,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;
+=======
+import java.util.ArrayList;
+import java.util.HashMap;
+>>>>>>> refs/remotes/origin/master
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+<<<<<<< HEAD
 import org.json.simple.JSONObject;
+=======
+import org.json.simple.JSONObject;
+>>>>>>> refs/remotes/origin/master
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -712,6 +721,247 @@ ProjectService pService;
 		out.flush();
 		out.close();
 		
+<<<<<<< HEAD
+	}
+	
+	@RequestMapping(value = "addLikeProject.do")
+	public void addLikeProject(HttpServletResponse response,@RequestParam(value="pId") Integer pId, @RequestParam(value="memId") Integer memId) throws IOException {
+		
+		
+		int result=0;
+		HashMap ids=new HashMap();
+		ids.put("pId",pId);
+		ids.put("memId",memId);
+		
+		System.out.println("관심 등록하기 parameter"+ids);
+		
+		result=pService.addLikeProject(ids);
+		
+		PrintWriter out=response.getWriter();
+		
+		if(result>0) {
+			out.append("success");
+			out.flush();
+			out.close();
+		}else {
+			out.append("fail");
+			out.flush();
+			out.close();
+		}
+		
+	}
+	
+	@RequestMapping(value = "likeProjectList.do")
+	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page) {
+		
+		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+		
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		//전체 관심프로젝트 수
+		int listCount=pService.getLikeListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		//프로젝트 리스트를 가져오자
+		ArrayList<ProjectList> likeList=pService.selectLikeProject(memId,pi);
+		
+		System.out.println("화면단 가기전 관심 등록 리스트:"+likeList);
+		
+		mv.addObject("like", likeList);
+		mv.addObject("pi", pi);
+		mv.setViewName("partnerSubMenu/likeProjectView");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "deleteLikeProject.do")
+	public void deleteLikeProject(HttpServletResponse response, @RequestParam(value = "lId") Integer lId) throws IOException {
+		
+		System.out.println("관심프로젝트 삭제 전:"+lId);
+		
+		PrintWriter out=response.getWriter();
+		int result=0;
+		result=pService.deleteLikeProject(lId);
+		
+	}
+	
+	
+	
+	@RequestMapping(value="applyThisProject.do")
+	public ModelAndView applyProjectDetail(HttpServletRequest request,ModelAndView mv, @RequestParam(value="pId") Integer pId, @RequestParam(value="page") Integer page) {
+		
+		//프로젝트 디테일 정보 가져오기
+		ProjectDetail detail=pService.selectProjectDetail(pId);
+		
+		mv.addObject("detail", detail);
+		mv.setViewName("project/apply/applyProjectDetailView");
+		
+		//로그인 유저의 포트폴리오 가져오기
+		int memId=((Member)(request.getSession().getAttribute("loginUser"))).getMemId();
+		ArrayList<Portfolio> pf=pService.selectPortfolio(memId);
+		System.out.println("화면단 가기 전, 지원 포트폴리오:"+pf);
+		
+		mv.addObject("page", page);
+		mv.addObject("pofol", pf);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="findPortfolio.do")
+	public void findPortfolio(HttpServletRequest request,HttpServletResponse response, @RequestParam(value="mCate",required=false) String mCate,@RequestParam(value="dCate",required=false) String dCate) throws JsonIOException, IOException {
+		
+		response.setContentType("application/json;charset=utf-8");
+		
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+		
+		HashMap cate=new HashMap();
+		cate.put("mCate",mCate);
+		cate.put("dCate",dCate);
+		cate.put("memId",memId);
+		
+		
+		ArrayList<Portfolio> pf=pService.findPortfolio(cate);
+		
+		System.out.println("화면단 가기 전, 카테고리 검색한 포트폴리오"+pf);
+		
+		
+		Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(pf, response.getWriter());
+		
+		
+		
+	}
+	
+	
+	@RequestMapping(value = "notifyFileSize.do")
+	public void notifyFileSize(HttpServletResponse response, @RequestParam(value = "file",required = false) MultipartFile file) throws IOException {
+		
+		String name=file.getOriginalFilename();
+		Long size=file.getSize();
+		System.out.println("업로드한 이력서 이름?"+name);
+		System.out.println("업로드한 이력서 크기?"+size);
+		
+		JSONObject result=new JSONObject();
+		result.put("size", size);
+		
+		PrintWriter out=response.getWriter();
+		out.print(result);
+		out.flush();
+		out.close();
+		
+		
+	}
+	
+	
+	@RequestMapping(value = "submitApplication.do")
+	public ModelAndView submitApplication(HttpServletRequest request,ModelAndView mv,@ModelAttribute Application application,
+			@RequestParam(value="aqId", required=false) Integer[] aqId,@RequestParam(value="aaContent",required=false) String[] aaContent,
+			@RequestParam(value="resume",required=false) MultipartFile resume,
+			@RequestParam(value="portId",required=false) Integer[] portId,@RequestParam(value="portContent",required=false) String portContent) throws IllegalStateException, IOException {
+		
+		//이력서를 저장하자
+		if(resume!=null) {
+			String renamedResume=saveResume(resume,request);
+			application.setOriginalResume(resume.getOriginalFilename());
+			application.setReNameResume(renamedResume);
+		}
+		
+		//지원서를 insert
+		
+		//세션 로그인유저를 set
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		application.setPartner(loginUser);
+		
+		
+	
+		
+		//답변을 set
+		ArrayList<ApplyAnswer> answer=new ArrayList<>();
+		
+		if(aqId!=null) {
+		
+		for(int i=0;i<aqId.length;i++) {
+			ApplyAnswer a=new ApplyAnswer();
+			a.setAqId(aqId[i]);
+			a.setAaContent(aaContent[i]);
+			answer.add(a);
+		}
+		
+		application.setAnswer(answer);
+		
+		}
+		
+		System.out.println("지원서 insert 전, 지원서:"+application);
+		
+		int result1=0;
+		int result2=0;
+		int result3=0;
+		
+		result1=pService.addApplication(application);
+		
+		//지원서가 성공적으로 insert되었다면 지원답변을 들록한다.
+		if(result1>0) {
+			
+			//지원답변이 있을 경우,
+			if(aqId!=null) {
+			for(int i=0;i<aqId.length;i++) {
+			result2=pService.addApplyAnswer(application.getAnswer().get(i));
+			}
+			}
+			
+		}
+		
+		
+		
+		ArrayList<ApplyPortfolio> pofo=new ArrayList<>();
+		//지원 포트폴리오도 insert한다
+		
+		if(portId!=null) {
+		
+		for(int i=0;i<portId.length;i++) {
+			
+			ApplyPortfolio ap=new ApplyPortfolio();
+			ap.setPortId(portId[i]);
+			ap.setApContent(portContent);
+			
+			pofo.add(ap);
+		}
+		
+		application.setPortfolio(pofo);
+		
+		}
+		
+		//지원서가 insert가 되었다면, portfolio를 등록한다.
+		if(result1>0) {
+			
+			//지원 포트폴리오가 있는 경우
+			if(portId!=null) {
+			for(int i=0;i<portId.length;i++) {
+			result3=pService.addApplyPofol(application.getPortfolio().get(i));
+			}
+			
+			}
+		}
+		
+		
+		
+		//임시저장 되었던 파일은 삭제한다.
+		int deleteTemp=pService.deleteTempApplication(application);
+		
+		System.out.println("지원서 결과확인, 1:"+result1+",2:"+result2+",3:"+result3+"deleteTemp:"+deleteTemp);
+		
+		//지원한 프로젝트 리스트 서브메뉴로 이동하기 위해 다른 컨트롤러로 간다.
+		mv.setViewName("redirect:selectApplyProject.do");
+		return mv;
+=======
+>>>>>>> refs/remotes/origin/master
 	}
 	
 	@RequestMapping(value = "addLikeProject.do")
@@ -951,6 +1201,388 @@ ProjectService pService;
 		mv.setViewName("redirect:selectApplyProject.do");
 		return mv;
 	}
+
+
+	private String saveResume(MultipartFile resume, HttpServletRequest request) throws IllegalStateException, IOException {
+		
+		String root=request.getSession().getServletContext().getRealPath("resources");
+		String saveDir=root+"\\resume";
+		File folder=new File(saveDir);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmss");
+		String originName=resume.getOriginalFilename();
+		String rename=format.format(new Date(System.currentTimeMillis()))+"."
+				+originName.substring(originName.lastIndexOf(".")+1);
+		
+		String path=folder+"\\"+rename;
+		
+		resume.transferTo(new File(path));
+		
+		return rename;
+	}
+	
+	@RequestMapping(value = "selectApplyProject.do")
+	public ModelAndView selectApplyProject(HttpServletRequest request,ModelAndView mv,@RequestParam(value = "page", required = false) Integer page) {
+		
+		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+				
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+				
+		//전체 지원 프로젝트 수
+		int listCount=pService.getapplyListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+				
+		//프로젝트 리스트를 가져오자
+		ArrayList<ProjectList> applyList=pService.selectApplyProject(memId,pi);
+				
+		System.out.println("화면단 가기전 지원 프로젝트 리스트:"+applyList);
+		
+		mv.addObject("apply", applyList);
+		mv.addObject("pi", pi);
+		
+		mv.setViewName("partnerSubMenu/appliedProjectView");
+		return mv;
+	}
+	
+	
+	@RequestMapping(value = "saveTempApplication.do")
+	public void saveTempApplication(HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value="pId", required=false) Integer pId,
+			@RequestParam(value="aPayment", required=false) Integer aPayment,
+			@RequestParam(value="aDuration", required=false) Integer aDuration,
+			@RequestParam(value="aContent", required=false) String aContent,
+			@RequestParam(value="aqId", required=false) Integer[] aqId,
+			@RequestParam(value="aaContent",required=false) String[] aaContent,
+			@RequestParam(value="resume",required=false) MultipartFile resume,
+			@RequestParam(value="portId",required=false) Integer[] portId,
+			@RequestParam(value="portContent",required=false) String portContent) throws IllegalStateException, IOException {
+		
+		System.out.println("임시저장 컨트롤러에 진입!");
+		
+		//최종 결과
+		int result=0;
+		
+		//이미 저장된 임시저장 row가 있는지 확인한다.
+		HashMap application =new HashMap();
+		int memId=((Member)(request.getSession().getAttribute("loginUser"))).getMemId();
+		
+		application.put("memId", memId);
+		application.put("pId",pId);
+		application.put("aPayment", aPayment);
+		application.put("aDuration",aDuration);
+		application.put("aContent", aContent);
+		
+		int count=pService.getTempSave(application);
+		
+		
+			
+			
+			String reNameResume="";
+			String originalResume="";
+			//이력서를 저장하자
+			if(resume!=null) {
+				reNameResume=saveResume(resume,request);
+				originalResume=resume.getOriginalFilename();
+			}
+			
+			application.put("reNameResume",reNameResume);
+			application.put("originalResume",originalResume);
+			
+			
+			//답변 리스트
+			ArrayList<ApplyAnswer> answer=new ArrayList<>();
+			
+			if(aqId!=null&&aaContent!=null) {
+			
+			for(int i=0;i<aaContent.length;i++) {
+				ApplyAnswer a=new ApplyAnswer();
+				a.setAqId(aqId[i]);
+				a.setAaContent(aaContent[i]);
+				answer.add(a);
+			}
+			
+			}
+			
+			application.put("answer",answer);
+			
+			
+			//지원 포트폴리오 list
+			ArrayList<ApplyPortfolio> pofo=new ArrayList<>();
+			if(portId!=null) {
+			
+			for(int i=0;i<portId.length;i++) {
+				
+				ApplyPortfolio ap=new ApplyPortfolio();
+				ap.setPortId(portId[i]);
+				ap.setApContent(portContent);
+				
+				pofo.add(ap);
+			}
+			
+			}
+			
+			application.put("portfolio",pofo);
+			
+			System.out.println("임시 저장 전 지원서:"+application);
+			
+			
+			//이미 저장된 지원서가 있는지 여부에 따라 2가지 선택
+			
+			if(count>0) {
+				//update 이미 저장된 지원서가 있다면, 기존의 임시 저장 파일에 업데이트
+				int result1=0;
+				int result2=0;
+				int result3=0;
+				int result4=0;
+				
+				//임시저장 파일 아이디를 알아내자
+				int aId=pService.selectTempId(application);
+				application.put("aId", aId);
+				
+				//업로드 된 이력서와 기존에 저장된 이력서의 이름을 비교하자
+				Application a=pService.selectTempResume(aId);
+				if(resume!=null) {
+					if(resume.getOriginalFilename()!=a.getOriginalResume()) {
+						//사용자가 이전과 다른 파일을 업로드 했다면 기존에 올렸던 이력서를 삭제한다.
+						
+						//이전에 업로드 했다면,
+						if(a.getOriginalResume()!=null) {
+						deleteResume(a.getReNameResume(),request);
+						}
+					}
+					
+				}
+				
+				//임시저장 파일 아이디를 참조하여 업데이트 한다.
+				result1=pService.updateTempApplication(application);
+				
+				//답변을 업데이트 하기 전, 기존의 답변이 있는지 확인한다.
+				int answerCount=0;
+				if(!answer.isEmpty()) {
+				for(int i=0;i<answer.size();i++) {
+					
+					answer.get(i).setaId(aId);
+					application.put("answer", answer.get(i));
+					answerCount=pService.isAnswerExist(application);
+					
+					if(answerCount>0) {
+						//기존 답변이 존재한다면 update
+						result2=pService.updateTempAnswer(application);
+						
+					}else {
+						//새 답변을 insert
+						result2=pService.addTempApplyAnswer(answer.get(i));
+					}
+					
+					
+				}
+				}
+				
+				//포트폴리오 업데이트 하기 전, 기존에 등록한 포트폴리오가 있는지 확인한다.
+				int pofoCount=0;
+				if(!pofo.isEmpty()) {
+					
+						pofoCount=pService.isPofoExist(application);
+						
+						if(pofoCount>0) {
+							//답변과 달리 포트폴리오는 업데이트하지 않고 delete한다.
+							result3=pService.deleteExistPofo(application);
+						}
+						
+						
+							//포트폴리오 리스트를 넣는다.
+							for(int i=0;i<pofo.size();i++) {
+								pofo.get(i).setProAId(aId);
+								result4=pService.addTempApplyPofol(pofo.get(i));
+							}
+						
+				}
+				
+				System.out.println("임시 저장 업데이트 결과,1:"+result1+",2:"+result2+",3:"+result3+",4:"+result4);
+				result=result1+result2+result3+result4;
+				
+				
+			}else {
+				
+				//기존에 임시저장된 지원서가 없다면, insert
+				int result1=0;
+				int result2=0;
+				int result3=0;
+				
+				//지원서를 저장하고
+				result1=pService.addTempApplication(application);
+				
+				//답변을 저장하고
+				if(result1>0) {
+					
+					//지원답변이 있을 경우,
+					if(aqId!=null) {
+					for(int i=0;i<aqId.length;i++) {
+					result2=pService.addApplyAnswer(answer.get(i));
+					}
+					}
+					
+					
+				}
+				
+				//포트폴리오를 저장하고
+				if(result1>0) {
+					
+					//지원 포트폴리오가 있는 경우
+					if(portId!=null) {
+					for(int i=0;i<portId.length;i++) {
+					result3=pService.addApplyPofol(pofo.get(i));
+					}
+					
+					}
+					
+				}
+				
+				
+				System.out.println("새 임시저장 결과확인, 1:"+result1+",2:"+result2+",3:"+result3);
+				result=result1+result2+result3;
+			}
+			
+			
+			
+			PrintWriter out=response.getWriter();
+			
+			if(result>0) {
+				out.append("success");
+				out.flush();
+				out.close();
+			}else {
+				out.append("fail");
+				out.flush();
+				out.close();
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+
+	private void deleteResume(String reNameResume, HttpServletRequest request) {
+		
+		String root=request.getSession().getServletContext().getRealPath("resources");
+		String saveDir=root+"\\resume";
+		File f=new File(saveDir+"\\"+reNameResume);
+		
+		if(f.exists()) {
+			f.delete();
+		}
+		
+	}
+	
+	
+	@RequestMapping(value="selectTempApplicationList.do")
+	public ModelAndView tempApplicationList(HttpServletRequest request,ModelAndView mv,@RequestParam(value = "page", required = false) Integer page) {
+		
+				
+		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+						
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+			}
+						
+		//전체 지원 프로젝트 수
+		int listCount=pService.getTempApplyListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+						
+		//프로젝트 리스트를 가져오자
+		ArrayList<ProjectList> applyList=pService.selectTempApplyProject(memId,pi);
+						
+		System.out.println("화면단 가기전 임시 저장된 지원 프로젝트 리스트:"+applyList);
+				
+		mv.addObject("apply", applyList);
+		mv.addObject("pi", pi);
+				
+		mv.setViewName("partnerSubMenu/TempAppliedProjectView");
+		return mv;
+	}
+	
+	
+	@RequestMapping(value="loadTempApplication.do")
+	public ModelAndView loadTempApplication(HttpServletRequest request,ModelAndView mv,@RequestParam(value="pId") Integer pId, @RequestParam(value="aId") Integer aId, @RequestParam(value="page") Integer page) {
+		//프로젝트 디테일 정보 가져오기
+		ProjectDetail detail=pService.selectProjectDetail(pId);
+				
+		mv.addObject("detail", detail);
+		mv.setViewName("project/apply/completeTempApplicationView");
+				
+		//로그인 유저의 포트폴리오 가져오기
+		int memId=((Member)(request.getSession().getAttribute("loginUser"))).getMemId();
+		ArrayList<Portfolio> pf=pService.selectPortfolio(memId);
+		
+		
+		//임시저장된 지원서(포트폴리오,답변 포함) 가져오기
+		Application application=pService.selectTempApplication(aId);
+		mv.addObject("app", application);
+				
+		mv.addObject("page", page);
+		mv.addObject("pofol", pf);
+		
+		
+		return mv;
+	}
+	
+	
+	@RequestMapping(value = "cancelThisApply.do")
+	public ModelAndView cancelThisApply(ModelAndView mv,
+			@RequestParam(value="page", required=false) Integer page,
+			@RequestParam(value="aId") Integer aId) {
+		
+		
+		int result=pService.cancelThisApply(aId);
+		
+		
+		mv.addObject("page", page);
+		mv.setViewName("redirect:selectApplyProject.do");
+		return mv;
+	}
+	
+	
+	@RequestMapping(value = "cancelThisTempApply.do")
+	public ModelAndView cancelThisTempApply(ModelAndView mv,
+			@RequestParam(value="page", required=false) Integer page,
+			@RequestParam(value="aId") Integer aId) {
+		
+		
+		int result=pService.cancelThisTempApply(aId);
+		mv.addObject("page", page);
+		mv.setViewName("redirect:selectTempApplicationList.do");
+		
+		
+		
+		
+		if(result>0) {
+			
+			return mv;
+		}else {
+			throw new ProjectException("임시 저장 지원서 삭제 실패!");
+		}
+		
+	}
+	
 
 
 	private String saveResume(MultipartFile resume, HttpServletRequest request) throws IllegalStateException, IOException {

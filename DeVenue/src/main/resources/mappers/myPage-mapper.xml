@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="myPageMapper">
+
+	<!-- 파트너스 정보 -->
+	<resultMap type="PartInfo" id="partInfoResultSet">
+		<id property="piId" column="PI_ID"/>
+		
+		<result property="wtId" column="WT_ID"/>
+		<result property="mcId" column="MC_ID"/>
+		<result property="piType" column="PI_TYPE"/>
+		<result property="profileId" column="PROFILE_ID"/>
+		
+	</resultMap>
+	
+	<!-- 포트폴리오 -->
+	<resultMap type="PortFolio" id="portFolioResultSet">
+		<id property="portId" column="PORT_ID"/>
+		
+		<result property="profileId" column="PROFILE_ID"/>
+		<result property="mcId" column="MC_ID"/>
+		<result property="dcId" column="DC_ID"/>
+		<result property="portName" column="PROT_NAME"/>
+		<result property="portJoin" column="PORT_JOIN"/>
+		<result property="content" column="PORT_CONTENT"/>
+		<result property="portStartDate" column="PORT_START_DATE"/>
+		<result property="portEndDate" column="PORT_END_DATE"/>
+		
+	</resultMap>
+	
+	<!-- 포트폴리오 이미지 -->
+	<resultMap type="PortImg" id="portImgResultset">
+		<id property="portImgId" column="PORT_IMG_ID"/>
+		
+		<result property="portId" column="PORT_ID"/>
+		<result property="portImgContent" column="PORT_IMG_CONTENT"/>
+		<result property="portImgPath" column="PORT_IMG_PATH"/>
+		
+	</resultMap>
+	
+	
+	<!-- 포트폴리오 기술 -->
+	<resultMap type="PortTec" id="portTecResultSet">
+		<id property="portId" column="PORT_ID"/>
+		
+		<result property="tId" column="T_ID"/>
+		<result property="ptId" column="PT_ID"/>
+		
+	</resultMap>
+	
+	<!-- 보유 기술 -->
+	<resultMap type="Skill" id="skillResultSet">
+		<id property="skillId" column="SKILL_ID"/>
+		
+		<result property="profileId" column="PROFILE_ID"/>
+		<result property="skillKind" column="SKILL_KIND"/>
+		<result property="skillLevel" column="SKILL_LEVEL"/>
+		<result property="skillYear" column="SKILL_YEAR"/>
+		
+	</resultMap>
+	
+	<!-- 경력 -->
+	<resultMap type="Career" id="careerResultSet">
+		<id property="cId" column="C_ID"/>
+		
+		<result property="cName" column="C_NAME"/>
+		<result property="cDept" column="C_DEPT"/>
+		<result property="cPosition" column="C_POSITION"/>
+		<result property="cStartDate" column="C_START_DATE"/>
+		<result property="cEndDate" column="C_END_DATE"/>
+		<result property="cContent" column="C_CONTENT"/>
+		<result property="profileId" column="PROFILE_ID"/>		
+		
+	</resultMap>
+	
+	<!-- 평가 -->
+	<resultMap type="Eval" id="evalResultSet">
+		<id property="eId" column="E_ID"/>
+		
+		<result property="eWriter" column="E_WRITER"/>
+		<result property="eTarget" column="E_TARGET"/>
+		<result property="epId" column="EP_ID"/> 
+		<result property="eAgv" column="E_AGV"/>
+		<result property="eContent" column="E_CONTENT"/>
+		<result property="eStar1" column="E_STAR1"/>
+		<result property="eStar2" column="E_STAR2"/>
+		<result property="eStar3" column="E_STAR3"/>
+		<result property="eStar4" column="E_STAR4"/>
+		<result property="eStar5" column="E_STAR5"/>
+		<result property="eCreateDate" column="E_CREATE_DATE"/>
+		<result property="eStatus" column="E_STATUS"/>
+		
+	</resultMap>
+
+	<!-- 학력 -->
+	<resultMap type="SCCareer" id="sccareerResltSet">
+		<id property="scId" column="SC_ID"/>
+		
+		<result property="sgId" column="SG_ID"/>
+		<result property="ssId" column="SS_ID"/>
+		<result property="scName" column="SC_NAME"/>
+		<result property="scMajor" column="SC_MAJOR"/>
+		<result property="scStartDate" column="SC_START_DATE"/>
+		<result property="scEndDate" column="SC_END_DATE"/>
+		<result property="profileId" column="PROFILE_ID"/>
+		
+	</resultMap>
+	
+	<!-- 자격증 -->
+	<resultMap type="Certificate" id="certificateResultSet">
+		<id property="ccId" column="CC_ID"/>
+		
+		<result property="profileId" column="PROFILE_ID"/>
+		<result property="ccName" column="CC_NAME"/>
+		<result property="ccPlace" column="CC_PLACE"/>
+		<result property="ccCreateDate" column="CC_CREATE_DATE"/>
+		<result property="ccNumber" column="CC_NUMBER"/>
+
+	</resultMap>
+
+	<!-- <resultMap type="PartInfoDetail" id="PIDetail">
+		<id property="piId" column="PI_ID"/>
+		
+		<result property="wtId" column="WT_ID"/>
+		<result property="mcId" column="MC_ID"/>
+		<result property="piType" column="PI_TYPE"/>
+		<result property="profileId" column="PROFILE_ID"/>
+		
+		<association property="MCate" javaType="MCate"/>
+		<result property="mcId" column="MC_ID"/>
+		<result property="mcType" column="MC_TYPE"/>
+	</resultMap> -->
+	
+	<!-- 회원가입시  파트너스 정보 기본으로 생성 -->
+	<insert id="insertPartInfo" parameterType="PartInfo">
+		INSERT INTO PARTINFO
+		VALUES(PI_SEQ.NEXTVAL,'WT1','MC1',1,#{profileId})
+	</insert>
+	
+	<!-- 파트너스정보 조회 -->
+	<select id="selectPartInfo" parameterType="PartInfo" resultMap="partInfoResultSet">
+		SELECT * FROM PARTINFO 
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- 파트너스정보 수정 -->
+	<update id="partInfoUpdate" parameterType="PartInfo">
+		UPDATE PARTINFO 
+		SET WT_ID = #{wtId}
+		, MC_ID = #{mcId}
+		, PI_TYPE = #{piType}
+		WHERE PROFILE_ID = #{profileId}
+	</update>
+	
+	<!-- myPage insert -->
+	
+	<!-- 포트폴리오 추가 -->
+	<insert id="insertPortfolio" parameterType="PortFolio">
+		INSERT INTO PORTFOLIO
+		VALUES(PORT_SEQ.NEXTVAL,#{profileId},#{mcId},#{dcId},#{portName},
+		#{portJoin},#{content},TO_DATE(#{portStartDate},'YYYY-MM'),TO_DATE(#{portEndDate},'YYYY-MM'))
+	</insert>
+	
+	
+	<!-- 포트폴리오 이미지 추가 -->
+	<insert id="insertPortImg" parameterType="PortImg">
+		INSERT INTO PORT_IMG
+		VALUES(PORT_IMG_SEQ.nextval,#{portId},#{portImgContent},#{portImgPath})
+	</insert>
+	
+	<!-- 포트폴리오 기술 추가 -->
+	<insert id="insertPortTect" parameterType="PortTec">
+		INSERT INTO PORT_TEC
+		VALUES(#{portId},#{tId},PT_SEQ.nextval)
+	</insert>
+	
+	<!-- 보유기술 추가 -->
+	<insert id="insertSkill" parameterType="Skill">
+		INSERT INTO SKILL
+		VALUES(SKILL_SEQ.NEXTVAL,#{profileId},#{skillKind},#{skillLevel},#{skillYear})
+	</insert>
+	
+	<!-- 경력 추가 -->
+	<insert id="insertCareer" parameterType="Career">
+		INSERT INTO CAREER
+		VALUES(C_SEQ.NEXTVAL,#{cName},#{cDept},#{cPosition},TO_DATE(#{cStartDate},'YYYY-MM'),TO_DATE(#{cEndDate},'YYYY-MM'),#{cContent},#{profileId})
+	</insert>
+	
+	<!-- 자격증 추가 -->
+	<insert id="insertCertificate" parameterType="Certificate">
+		INSERT INTO CERTIFICATE
+		VALUES(CC_SEQ.NEXTVAL,#{profileId},#{ccName},#{ccPlace},TO_DATE(#{ccCreateDate},'YYYY-MM-DD'),#{ccNumber})
+	</insert>
+	
+	<!-- 학력 추가 -->
+	<insert id="insertSCCareer" parameterType="SCCareer">
+		INSERT INTO SC_CAREER
+		VALUES(SC_SEQ.nextval,#{sgId},#{ssId},#{scName},#{scMajor},TO_DATE(#{scStartDate},'YYYY-MM'),TO_DATE(#{scEndDate},'YYYY-MM'),#{profileId})
+	</insert>
+	
+	
+	<!-- myPage 포트폴리오 전체 Select -->
+	<select id="selectListPortFolio" parameterType="_int" resultMap="portFolioResultSet">
+		SELECT * FROM PORTFOLIO
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 보유 기술 전체 Select -->
+	<select id="selectListSKill" parameterType="_int" resultMap="skillResultSet">
+		SELECT * FROM SKILL
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 경력 전체 Select -->
+	<select id="selectListCareer" parameterType="_int" resultMap="careerResultSet">
+		SELECT * FROM CAREER
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 학력 전체 Select -->
+	<select id="selectListSCCareer" parameterType="_int" resultMap="sccareerResltSet">
+		SELECT * FROM SC_CAREER
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 자격증 전체 Select -->
+	<select id="selectListCertificate" parameterType="_int" resultMap="certificateResultSet">
+		SELECT * FROM CERTIFICATE
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 스킬 delete -->
+	<delete id="deleteSkill" parameterType="_int">
+		DELETE FROM SKILL
+		WHERE SKILL_ID=#{skillId}
+	</delete>
+	
+	<!-- myPage 경력 delete -->
+	<delete id="deleteCareer" parameterType="_int">
+		DELETE FROM CAREER
+		WHERE C_ID=#{cId}
+	</delete>
+	
+	<!-- myPage 학력 delete -->
+	<delete id="deleteAca" parameterType="_int">
+		DELETE FROM SC_CAREER
+		WHERE SC_ID=#{scId}
+	</delete>
+	
+	<!-- myPage 자격증 delete -->
+	<delete id="deleteCerti" parameterType="_int">
+		DELETE FROM CERTIFICATE
+		WHERE CC_ID=#{ccId}
+	</delete>
+	
+	<!-- myPage 포트폴리오 포트번호 select -->
+	<select id="selectPortId" parameterType="String" resultType="_int">
+		SELECT port_id FROM PORTFOLIO
+		WHERE PROT_NAME=#{portName}
+	</select>
+	
+	<!-- myPage 포트폴리오 이미지 삭제 -->
+	<delete id="deletePortImg" parameterType="_int">
+		DELETE FROM PORT_IMG
+		WHERE PORT_ID=#{portId}
+	</delete>
+	
+	<!-- myPage 포트폴리오 기술 삭제 -->
+	<delete id="deletePortTec" parameterType="_int">
+		DELETE FROM PORT_TEC
+		WHERE PORT_ID=#{portId}
+	</delete>
+	
+	<!-- myPage 포트폴리오 삭제 -->
+	<delete id="deletePortFolio" parameterType="_int">
+		DELETE FROM PORTFOLIO
+		WHERE PORT_ID=#{portId}
+	</delete>
+
+</mapper>
