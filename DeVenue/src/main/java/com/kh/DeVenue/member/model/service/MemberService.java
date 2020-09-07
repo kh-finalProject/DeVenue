@@ -29,8 +29,8 @@ public interface MemberService {
 
 	int getListCount();
 
-//	ArrayList<FindClient> selectList(PageInfo pi);
-	ArrayList<FindClient> selectList();
+	ArrayList<FindClient> selectList(PageInfo pi);
+//	ArrayList<FindClient> selectList();
 
 	int insertPartInfo(PartInfo partInfo);
 
@@ -38,7 +38,7 @@ public interface MemberService {
 
 	int getCPevalCount(Integer cId);
 
-	ArrayList<CPeval> selectCPeval(Integer cId);
+	ArrayList<CPeval> selectCPeval(Integer cId, PageInfo pi);
 
 	FCeval getFCeval(Integer cId);
 
@@ -47,4 +47,16 @@ public interface MemberService {
 	ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id);
 
 	FindClientDetail selectClientDetail(Integer cId);
+
+	int insertEval(HashMap id);
+
+	Member selectMember(Member mEmail);
+
+	int insertChatSet(MemChatSet mc);
+
+	int membernick(String nick);
+
+	int memberemail(String email);
+
+	
 }

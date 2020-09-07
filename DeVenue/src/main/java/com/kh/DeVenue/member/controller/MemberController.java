@@ -1,9 +1,12 @@
 package com.kh.DeVenue.member.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.DeVenue.member.model.exception.MemberException;
@@ -24,11 +28,14 @@ import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
 
-import static com.kh.DeVenue.common.Pagination.getPageInfo;
+import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
-import com.kh.DeVenue.myPage.model.service.MyPageService;
+import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.util.model.service.ChatService;
+import com.kh.DeVenue.util.model.vo.ChatUserInfo;
+import com.kh.DeVenue.util.model.vo.MemChatSet;
 
 
 
@@ -75,15 +82,19 @@ public class MemberController {
 		Member m = new Member(memEmail,memPwd);
 //		System.out.println(m);
 		Member loginUser = mService.loginUserMember(m);
-
-//		System.out.println(loginUser);
+		System.out.println(loginUser);
 //		System.out.println(loginUser.getMemId());
 		
 		
 		if(loginUser != null) { // 로그인 할 멤버 객체가 조회 되었을 시
+			
+			// 로그인 한 후에 화면에 profile을 뿌려줌
+			Profile memId = new Profile(loginUser.getMemId());
+			Profile profile = mService.profile(memId);
+			
 //			if(logincheck != null) { // true이냐(로그인 유지 선택시)
 //			}else { // 로그인 유지 체크 안할시
-
+			
 //				
 //			}
 			
@@ -154,10 +165,8 @@ public class MemberController {
 	
 	// 회원 가입
 		@RequestMapping("meminsert.do")
-		public String memberInsert(HttpServletRequest request) {
-			
-			
-			
+		public String memberInsert(HttpSession session, HttpServletRequest request, ModelAndView mv) {
+	
 			String userType = request.getParameter("purpose");	// 사용자 분류(클라이언트/파트너스)
 			String memType = request.getParameter("memtype");	// 사용자 형태(개인,팀,기업,개인사업자,법인사업자..)
 			String memName = request.getParameter("name");		// 사용자 이름
@@ -171,9 +180,51 @@ public class MemberController {
 			String address3 = request.getParameter("address3");	// 사용자 상세 주소
 			
 			Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phone);
-//			System.out.println(m);
+			System.out.println(m);
 			int result = mService.insertMember(m);
 			if(result > 0) {
+				System.out.println("회원가입 성공");
+				Member mEmail = new Member(m.getMemEmail());
+//				System.out.println(mEmail);
+				Member memberId = mService.selectMember(mEmail);
+				System.out.println(memberId);
+				
+				// 회원별 채팅설정 id 생성
+				MemChatSet mc = new MemChatSet(memberId.getMemId());
+//				System.out.println(mc);
+				int insertMc = mService.insertChatSet(mc);
+				
+				if(insertMc > 0) {
+					System.out.println("회원채팅설정 기본생성");
+					System.out.println(memberId.getUserType());
+					// 만약 파트너스 일경우 (파트너스 기본정보와 포트폴리오id 생성하고)
+					String UT4 = "UT4";
+					if(memberId.getUserType().equals("UT4")) {
+						int proId = mService.profileInsert(memberId.getMemId());
+						
+						if(proId > 0) {
+							System.out.println("프로필 정보 생성 ");
+							
+							Profile memId = new Profile(memberId.getMemId());
+							Profile profile = mService.profile(memId);
+							System.out.println(profile);
+							PartInfo partInfo = new PartInfo(profile.getProfileId());
+							int portId = mService.insertPartInfo(partInfo);
+							
+							if(portId > 0) {
+								System.out.println("파트너스 정보 생성 ");
+							}else {
+								throw new MemberException("파트너스 정보 생성 실패!");
+							}
+							
+						}else {
+							throw new MemberException("프로필 생성 실패!");
+						}
+					}
+				}else {
+					throw new MemberException("회원태칭설정 기본생성 실패!");
+				}
+				
 				return "member/login";
 			}else {
 				throw new MemberException("회원가입실패!");
@@ -193,44 +244,27 @@ public class MemberController {
 	
 
 	// 클라이언트 찾기
-//	@RequestMapping(value="clientList.do")
-//	public ModelAndView clientList(ModelAndView mv,
-//			@RequestParam(value="page",required=false) Integer page) {
-//		
-//		int currentPage=1;
-//		if(page!=null) {
-//			currentPage=page;
-//		}
-//		
-//		int listCount=mService.getListCount();
-//		System.out.println("listcount : " + listCount);
-//				
-//		PageInfo pi=new PageInfo(currentPage, listCount);
-//		
-//		ArrayList<FindClient> list=mService.selectList(pi);
-//		System.out.println("list : " + list);
-//		
-//		if(list != null) {
-//			mv.addObject("list", list);
-//			mv.addObject("pi", pi);
-//			mv.setViewName("findMember/findClient");
-//		}else {
-//			throw new MemberException("게시글 전체 조회 실패!");
-//		}
-//		
-//		return mv;
-//	}
-	
 	@RequestMapping(value="clientList.do")
-	public ModelAndView clientList(ModelAndView mv) {		
+	public ModelAndView clientList(ModelAndView mv,
+			@RequestParam(value="page",required=false) Integer page) {
+		
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
 		int listCount=mService.getListCount();
 		System.out.println("listcount : " + listCount);
+				
+		PageInfo pi= getPageInfo(currentPage, listCount);
 		
-		ArrayList<FindClient> list=mService.selectList();
+		ArrayList<FindClient> list=mService.selectList(pi);
 		System.out.println("list : " + list);
+		System.out.println("pi" + pi);
 		
 		if(list != null) {
 			mv.addObject("list", list);
+			mv.addObject("pi", pi);
 			mv.setViewName("findMember/findClient");
 		}else {
 			throw new MemberException("게시글 전체 조회 실패!");
@@ -238,23 +272,6 @@ public class MemberController {
 		
 		return mv;
 	}
-	
-//	@RequestMapping(value="cDetail.do")
-//	public ModelAndView clientDetail(ModelAndView mv, Integer cId,
-//					@RequestParam(value="page") Integer page) {
-//		int currentPage=page;
-//		
-//		FindClient fc=mService.selectClientDetail(cId);
-//		if(fc!=null) {
-//			mv.addObject("fc", fc)
-//			.addObject("currentPage", currentPage)
-//			.setViewName("findMember/findClientDetail");
-//		}else {
-//			throw new MemberException("게시글 조회 실패!");
-//		}
-//		
-//		return mv;
-//	}
 	
 	@RequestMapping(value="cDetail.do")
 	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {
@@ -287,20 +304,30 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="cEvalSelect.do")
-	public ModelAndView evalSelect(ModelAndView mv, Integer cId) {
+	public ModelAndView evalSelect(ModelAndView mv, Integer cId, int msg,
+			@RequestParam(value="page",required=false) Integer page) {
+		
 		// 페이지네이션 필요
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
 		
 		int cpEvalCount = mService.getCPevalCount(cId);
 		System.out.println("평가 총 개수 : " + cpEvalCount);
 		
-		ArrayList<CPeval> cpEval = mService.selectCPeval(cId);	// 파트너스 평가 리스트
+		PageInfo pi=getPageInfo(currentPage, cpEvalCount);
+		
+		ArrayList<CPeval> cpEval = mService.selectCPeval(cId, pi);	// 파트너스 평가 리스트
 		System.out.println("cpEval : " + cpEval);
 		
 		FCeval fcEval = mService.getFCeval(cId);	// 클라이언트 정보
 		
-		if(cpEval!=null) {
+		if(!cpEval.isEmpty()) {
 			mv.addObject("cp", cpEval)	// 파트너스 평가 리스트
 			.addObject("fc", fcEval)	// 클라이언트 정보
+			.addObject("msg", msg)
+			.addObject("pi", pi)
 			.setViewName("findMember/clientComment");
 		}
 		
@@ -310,6 +337,7 @@ public class MemberController {
 	// 클라이언트 평가등록 페이지
 	@RequestMapping(value="cEvalInsert.do")
 	public ModelAndView evalInsert(ModelAndView mv, Integer cId, Integer pId) {
+		
 		ArrayList<EvalProjectList> epList = mService.getClientInfo(cId);
 		System.out.println("epList" + epList);
 		
@@ -321,16 +349,32 @@ public class MemberController {
 		ArrayList<MatchingPartnersList> mpList = mService.getMatchingPartners(id);
 		System.out.println("매칭파트너 리스트 : "+ mpList);
 		
-		if(mpList!=null) {
-
-			mv.addObject("epList", epList)
+		if(!mpList.isEmpty()) {
+//			int result = mService.insertEval(id);
+			
+			mv.addObject("epList", epList).addObject("cId", cId)
 			.setViewName("findMember/clientInsertComment");
+		}else {
+			int msg=0;
+			mv.addObject("msg", msg).addObject("cId", cId)
+			.setViewName("redirect:cEvalSelect.do");
 		}
 		
+		return mv;
+	}
+	
+	@RequestMapping(value="cEvalInsert2.do")
+	public ModelAndView evalInsert(ModelAndView mv, HttpServletRequest request) {
 		
-//		mv.addObject("epList", epList)
-//		.addObject("mpList", mpList)
-//		.setViewName("findMember/clientInsertComment");
+		// cId, pId 추가해야함
+		String proId= request.getParameter("proId");
+		String content=request.getParameter("eContent");
+		int eAgv=Integer.valueOf(request.getParameter("eAgv"));
+		int star1=Integer.valueOf(request.getParameter("star1"));	// 전문성
+		int star2=Integer.valueOf(request.getParameter("star2"));	// 적극성
+		int star3=Integer.valueOf(request.getParameter("star3"));	// 의사소통
+		int star4=Integer.valueOf(request.getParameter("star4"));	// 일정준수
+		int star5=Integer.valueOf(request.getParameter("star5"));	// 만족도
 		
 		return mv;
 	}
