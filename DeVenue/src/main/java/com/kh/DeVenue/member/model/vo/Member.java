@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import com.kh.DeVenue.project.model.vo.ProjectLike;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 
 public class Member implements Serializable {
@@ -12,6 +13,7 @@ public class Member implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6563273375076952851L;
+
 
 	private int memId; // 회원 기본키
 	private String userType; // 사용자 분류
@@ -35,8 +37,9 @@ public class Member implements Serializable {
 	private String memStatus; // 사용자 탈퇴상태
 	private String memTypeName; // 회원 소속명
 	private ArrayList<Signature> sigs;// 날인 리스트
-	private ArrayList<ProjectList> likeList;// 관심 프로젝트 리스트
+	private ArrayList<ProjectLike> likeList;//관심 프로젝트 리스트
 	private ArrayList<ProjectList> applyList;// 지원 프로젝트 리스트
+
 
 	public Member() {
 		super();
@@ -45,7 +48,7 @@ public class Member implements Serializable {
 	public Member(int memId, String userType, String memType, String memEmail, String memNick, String memName,
 			String memPwd, String address1, String address2, String address3, int phone, int cellPhone, int faxNo,
 			String taxEmail, int decCount, String memAction, String isAdvertise, Date memCreateDate, Date memModifyDate,
-			String memStatus, String memTypeName, ArrayList<Signature> sigs, ArrayList<ProjectList> likeList,
+			String memStatus, String memTypeName, ArrayList<Signature> sigs, ArrayList<ProjectLike> likeList,
 			ArrayList<ProjectList> applyList) {
 		super();
 		this.memId = memId;
@@ -74,6 +77,7 @@ public class Member implements Serializable {
 		this.applyList = applyList;
 	}
 
+
 	// 로그인용
 	public Member(String memEmail, String memPwd) {
 		super();
@@ -96,10 +100,17 @@ public class Member implements Serializable {
 		this.address3 = address3;
 		this.phone = phone;
 	}
+	
+	// 이메일로 memId를 검색해옴
+	public Member(String memEmail) {
+		super();
+		this.memEmail = memEmail;
+	}
 
 	public int getMemId() {
 		return memId;
 	}
+
 
 	public void setMemId(int memId) {
 		this.memId = memId;
@@ -273,11 +284,11 @@ public class Member implements Serializable {
 		this.sigs = sigs;
 	}
 
-	public ArrayList<ProjectList> getLikeList() {
+	public ArrayList<ProjectLike> getLikeList() {
 		return likeList;
 	}
 
-	public void setLikeList(ArrayList<ProjectList> likeList) {
+	public void setLikeList(ArrayList<ProjectLike> likeList) {
 		this.likeList = likeList;
 	}
 
