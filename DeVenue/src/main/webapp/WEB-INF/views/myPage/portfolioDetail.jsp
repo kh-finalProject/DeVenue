@@ -504,7 +504,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>
 					<div class="dropdown-content">
 						<a href="clientList.do ">클라이언트 찾기</a>
-						<a href="#">파트너스 찾기</a>
+						<a href="partnersList.do">파트너스 찾기</a>
 					</div>
 		        </li>
 			</ul>

@@ -59,5 +59,7 @@ public interface MemberService {
 
 	int memberemail(String email);
 
+	int insertIden(int memId);
+
 	
 }

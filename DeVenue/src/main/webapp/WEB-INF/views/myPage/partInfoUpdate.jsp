@@ -466,7 +466,8 @@ section {
 					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
 						찾기</a>
 					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a> <a href="#">파트너스 찾기</a>
+						<a href="clientList.do ">클라이언트 찾기</a>
+						<a href="partnersList.do">파트너스 찾기</a>
 					</div></li>
 			</ul>
 
@@ -647,7 +648,7 @@ section {
 							</div>
 							<div class="col-12"
 								style="margin-left: 5%; position: relative; text-align: right;">
-								<a href="mypagePartnesInfo.html" class="btn btn-info">취소</a>
+								<a href="profile.do" class="btn btn-info">취소</a>
 								<button type="submit" class="btn btn-info">수정완료</button>
 							</div>
 						</form>
