@@ -15,8 +15,11 @@ import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
+import com.kh.DeVenue.project.model.vo.ProjectFilter;
+import com.kh.DeVenue.project.model.vo.ProjectLike;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.ProjectSearch;
 import com.kh.DeVenue.project.model.vo.Reply;
 import com.kh.DeVenue.project.model.vo.Tech;
 
@@ -34,17 +37,19 @@ public class ProjectDao {
 	}
 
 	
-	public int getListCount() {
+	public int getListCount(ProjectFilter filter) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getListCount");
+		return sqlSessionTemplate.selectOne("projectMapper.getListCount",filter);
 	}
 
-	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi, ProjectFilter filter) {
+		
+		System.out.println("필터있는 프로젝트 리스트");
 		
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getProjectList", null, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getProjectList", filter, rowBounds);
 	}
 
 
@@ -323,6 +328,70 @@ public ArrayList<Tech> selectTechList() {
 	public int cancelThisTempApply(Integer aId) {
 		
 		return sqlSessionTemplate.update("projectMapper.cancelTempApply", aId);
+	}
+
+
+	public int getListCount() {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getListCountNoFilter");
+	}
+
+
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
+		
+		System.out.println("필터없는 프로젝트 리스트");
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getProjectListNoFilter", null, rowBounds);
+	}
+
+
+	public int getListCount(ProjectSearch search) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getListCountWithSearch",search);
+	}
+
+
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi, ProjectSearch search) {
+		
+		System.out.println("검색있고 필터없는 프로젝트 리스트");
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getProjectListWithSearch", search, rowBounds);
+	}
+
+
+	public int checkApplyId(HashMap application) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.checkApplyCount", application);
+	}
+
+
+	public int checkTempApplyId(HashMap application) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.checkTempApplyCount", application);
+	}
+
+
+	public int checkSigCount(HashMap application) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.checkSigCount", application);
+	}
+
+
+	public int checkMatched(HashMap application) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.checkMatched", application);
+	}
+
+
+	public ArrayList<ProjectLike> selectUserLike(int memId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectUserLike", memId);
 	}
 
 

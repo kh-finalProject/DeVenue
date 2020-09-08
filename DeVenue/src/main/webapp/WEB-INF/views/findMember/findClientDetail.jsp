@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +36,9 @@
 		.fas{
 			margin-right:0;
 		}
+		.far{
+			margin-right:0;
+		}
 
         /* 이미지 사이즈 맞추기 */
         .image-container{
@@ -48,6 +52,13 @@
 
         .image-container img{
             object-fit: fill;
+        }
+        
+        /* 자기소개 글자 줄 제한 */
+        #introduction{
+        	overflow: hidden;
+        	text-overflow : ellipsis;
+        	-webkit-line-clamp: 3; 
         }
 </style>
 
@@ -126,10 +137,18 @@
                     </c:url>
                     <c:url var="cEvalSelect" value="cEvalSelect.do">
                     	<c:param name="cId" value="${fc.memId }"/>
+                    	<c:param name="msg" value="1"/>
                     </c:url>
                     <c:url var="cEvalInsert" value="cEvalInsert.do">
                     	<c:param name="cId" value="${fc.memId }"/>
-                    	<c:param name="pId" value="${loginUser.memId }"/>
+                    	<c:choose>
+                    		<c:when test="${!empty loginUser }">
+	                    		<c:param name="pId" value="${loginUser.memId }"/>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<c:param name="pId" value="0"/>
+                    		</c:otherwise>
+                    	</c:choose>
                     </c:url>
                     <script>
                         $("#clientInfo").on("click", function(){
@@ -273,11 +292,11 @@
                                     <p>만족도</p>
                                 </div>
                                 <div class="point" style="flex:1; margin-right: 0;">
-                                    <p style="margin-left:65%; width: 100%;">${fc.star1 }점</p>
-                                    <p style="margin-left:65%; width: 100%;">${fc.star2 }점</p>
-                                    <p style="margin-left:65%; width: 100%;">${fc.star3 }점</p>
-                                    <p style="margin-left:65%; width: 100%;">${fc.star4 }점</p>
-                                    <p style="margin-left:65%; width: 100%;">${fc.star5 }점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star1 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star2 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star3 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star4 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star5 }"/>점</p>
                                 </div>
                             </div>
                         </div>
@@ -371,7 +390,7 @@
 
 한편 이강인은 2022년 6월이면 발렌시아와의 계약이 만료된다. 발렌시아는 올해 혹은 내년 이강인이 떠나지 않도록 하기 위해 재계약 제안을 건넨 것으로 알려졌다. 하지만 다수 스페인 매체들은 “이강인이 출전 기회를 잡고자 이적을 원한다”고 보도 중이다.
                         </p> -->
-                        <p>${fc.introduction }</p>
+                        <p id="introduction">${fc.introduction }</p>
                         <a href="#" style="float: right;">자기소개  더 보기 ></a>
                     </div>
                 </div>

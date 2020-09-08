@@ -27,6 +27,8 @@ import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
+import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
+import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.memberAccount.model.vo.Identify;
 import com.kh.DeVenue.model.service.MemberService2;
@@ -236,44 +238,27 @@ public class MemberController {
 	
 
 	// 클라이언트 찾기
-//	@RequestMapping(value="clientList.do")
-//	public ModelAndView clientList(ModelAndView mv,
-//			@RequestParam(value="page",required=false) Integer page) {
-//		
-//		int currentPage=1;
-//		if(page!=null) {
-//			currentPage=page;
-//		}
-//		
-//		int listCount=mService.getListCount();
-//		System.out.println("listcount : " + listCount);
-//				
-//		PageInfo pi=new PageInfo(currentPage, listCount);
-//		
-//		ArrayList<FindClient> list=mService.selectList(pi);
-//		System.out.println("list : " + list);
-//		
-//		if(list != null) {
-//			mv.addObject("list", list);
-//			mv.addObject("pi", pi);
-//			mv.setViewName("findMember/findClient");
-//		}else {
-//			throw new MemberException("게시글 전체 조회 실패!");
-//		}
-//		
-//		return mv;
-//	}
-	
 	@RequestMapping(value="clientList.do")
-	public ModelAndView clientList(ModelAndView mv) {		
+	public ModelAndView clientList(ModelAndView mv,
+			@RequestParam(value="page",required=false) Integer page) {
+		
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
 		int listCount=mService.getListCount();
 		System.out.println("listcount : " + listCount);
+				
+		PageInfo pi= getPageInfo(currentPage, listCount);
 		
-		ArrayList<FindClient> list=mService.selectList();
+		ArrayList<FindClient> list=mService.selectList(pi);
 		System.out.println("list : " + list);
+		System.out.println("pi" + pi);
 		
 		if(list != null) {
 			mv.addObject("list", list);
+			mv.addObject("pi", pi);
 			mv.setViewName("findMember/findClient");
 		}else {
 			throw new MemberException("게시글 전체 조회 실패!");
@@ -281,23 +266,6 @@ public class MemberController {
 		
 		return mv;
 	}
-	
-//	@RequestMapping(value="cDetail.do")
-//	public ModelAndView clientDetail(ModelAndView mv, Integer cId,
-//					@RequestParam(value="page") Integer page) {
-//		int currentPage=page;
-//		
-//		FindClient fc=mService.selectClientDetail(cId);
-//		if(fc!=null) {
-//			mv.addObject("fc", fc)
-//			.addObject("currentPage", currentPage)
-//			.setViewName("findMember/findClientDetail");
-//		}else {
-//			throw new MemberException("게시글 조회 실패!");
-//		}
-//		
-//		return mv;
-//	}
 	
 	@RequestMapping(value="cDetail.do")
 	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {
@@ -330,20 +298,30 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="cEvalSelect.do")
-	public ModelAndView evalSelect(ModelAndView mv, Integer cId) {
+	public ModelAndView evalSelect(ModelAndView mv, Integer cId, int msg,
+			@RequestParam(value="page",required=false) Integer page) {
+		
 		// 페이지네이션 필요
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
 		
 		int cpEvalCount = mService.getCPevalCount(cId);
 		System.out.println("평가 총 개수 : " + cpEvalCount);
 		
-		ArrayList<CPeval> cpEval = mService.selectCPeval(cId);	// 파트너스 평가 리스트
+		PageInfo pi=getPageInfo(currentPage, cpEvalCount);
+		
+		ArrayList<CPeval> cpEval = mService.selectCPeval(cId, pi);	// 파트너스 평가 리스트
 		System.out.println("cpEval : " + cpEval);
 		
 		FCeval fcEval = mService.getFCeval(cId);	// 클라이언트 정보
 		
-		if(cpEval!=null) {
+		if(!cpEval.isEmpty()) {
 			mv.addObject("cp", cpEval)	// 파트너스 평가 리스트
 			.addObject("fc", fcEval)	// 클라이언트 정보
+			.addObject("msg", msg)
+			.addObject("pi", pi)
 			.setViewName("findMember/clientComment");
 		}
 		
@@ -353,6 +331,7 @@ public class MemberController {
 	// 클라이언트 평가등록 페이지
 	@RequestMapping(value="cEvalInsert.do")
 	public ModelAndView evalInsert(ModelAndView mv, Integer cId, Integer pId) {
+		
 		ArrayList<EvalProjectList> epList = mService.getClientInfo(cId);
 		System.out.println("epList" + epList);
 		
@@ -364,16 +343,32 @@ public class MemberController {
 		ArrayList<MatchingPartnersList> mpList = mService.getMatchingPartners(id);
 		System.out.println("매칭파트너 리스트 : "+ mpList);
 		
-		if(mpList!=null) {
-
-			mv.addObject("epList", epList)
+		if(!mpList.isEmpty()) {
+//			int result = mService.insertEval(id);
+			
+			mv.addObject("epList", epList).addObject("cId", cId)
 			.setViewName("findMember/clientInsertComment");
+		}else {
+			int msg=0;
+			mv.addObject("msg", msg).addObject("cId", cId)
+			.setViewName("redirect:cEvalSelect.do");
 		}
 		
+		return mv;
+	}
+	
+	@RequestMapping(value="cEvalInsert2.do")
+	public ModelAndView evalInsert(ModelAndView mv, HttpServletRequest request) {
 		
-//		mv.addObject("epList", epList)
-//		.addObject("mpList", mpList)
-//		.setViewName("findMember/clientInsertComment");
+		// cId, pId 추가해야함
+		String proId= request.getParameter("proId");
+		String content=request.getParameter("eContent");
+		int eAgv=Integer.valueOf(request.getParameter("eAgv"));
+		int star1=Integer.valueOf(request.getParameter("star1"));	// 전문성
+		int star2=Integer.valueOf(request.getParameter("star2"));	// 적극성
+		int star3=Integer.valueOf(request.getParameter("star3"));	// 의사소통
+		int star4=Integer.valueOf(request.getParameter("star4"));	// 일정준수
+		int star5=Integer.valueOf(request.getParameter("star5"));	// 만족도
 		
 		return mv;
 	}

@@ -162,6 +162,7 @@
 		<result property="ideStatus" column="IDE_STATUS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="profileImg" column="PROFILE_IMG"/>
+		<result property="proId" column="PRO_ID"/>
 		<result property="proName" column="PRO_NAME"/>
 	</resultMap>
 	
@@ -287,6 +288,12 @@
 		WHERE PARTNERS_ID=#{pId} AND CLIENT_ID=#{cId}
 	</select>
 	
+	<!-- 평가 등록 -->
+	<insert id="insertEval" parameterType="hashmap">
+		INSERT INTO EVAL VALUES(EVAL_SEQ.NEXTVAL, #{파트너스}, #{클라이언트}, #{프로젝트}, #{평가점수}
+			, #{평가내용}, #{전문성}, #{적극성}, #{의사소통}, #{일정준수}, #{만족도}, SYSDATE, 'Y')
+	</insert>
+
 	<!-- 회원 채팅 설정 -->
 	<resultMap type="MemChatSet" id="memChatSetResultSet">
 		<id property="mId" column="MEM_ID"/>

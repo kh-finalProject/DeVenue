@@ -62,15 +62,15 @@ public class MemberDao {
 	}
 
 
-//	public ArrayList<FindClient> selectList(PageInfo pi) {
-//		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-//		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-//		
-//		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
-//	}
-	public ArrayList<FindClient> selectList() {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList");
+	public ArrayList<FindClient> selectList(PageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
 	}
+//	public ArrayList<FindClient> selectList() {
+//		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList");
+//	}
 
 	public int insertPartInfo(PartInfo partInfo) {
 		
@@ -89,8 +89,11 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.getCPevalCount", cId);
 	}
 
-	public ArrayList<CPeval> selectCPeval(Integer cId) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectCPeval", cId);
+	public ArrayList<CPeval> selectCPeval(Integer cId, PageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectCPeval", cId, rowBounds);
 	}
 
 	public FCeval getFCeval(Integer cId) {
@@ -103,6 +106,10 @@ public class MemberDao {
 
 	public ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id) {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.getMatchingPartners", id);
+	}
+
+	public int insertEval(HashMap id) {
+		return sqlSessionTemplate.insert("memberMapper.insertEval", id);
 	}
 
 	public Member selectMemberId(Member mEmail) {

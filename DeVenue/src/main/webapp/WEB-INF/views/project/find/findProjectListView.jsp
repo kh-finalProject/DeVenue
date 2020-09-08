@@ -1,9 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.util.ArrayList, com.kh.DeVenue.project.model.vo.*,com.kh.DeVenue.member.model.vo.*"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+<%
+
+Member loginUser=null;
+ArrayList<ProjectLike> likeList =null;
+
+if(session!=null||!request.isRequestedSessionIdValid()){
+	
+	loginUser=(Member)session.getAttribute("loginUser");
+	likeList=loginUser.getLikeList();
+	System.out.println("화면단에서, 로그인유저의 관심 리스트"+likeList);
+}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +45,7 @@
 
     .modal-body{
       color: gray;
-      font-size: 0.8rem;
+      font-size: 1rem;
     }
 
 
@@ -163,11 +178,12 @@
         </div>
           <div id="searchDiv" class="col-md-6 mt-5 px-0" style="border-bottom: 0.0625rem solid gray;">
             <div class="float-right">
-            <form>
+            <form action="searchProjectList.do" method="post">
               <div id="searchDiv_category" class="dropdown" style="display: inline-block;">
                 <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="searchDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   	전체
                 </button>
+                <input type="hidden" name="category" id="search_category"/>
                 <div class="dropdown-menu text-right" aria-labelledby="searchDrop">
                   <a class="dropdown-item" href="#">전체</a>
                   <a class="dropdown-item" href="#">제목</a>
@@ -176,21 +192,40 @@
                 </div>
               </div>
               <div class="autocomplete" style="width:18.75rem;">
-                <input id="search_text" type="text" name="techName" placeholder="검색어를 입력하세요.">
+                <input id="search_text" type="text" name="keyword" placeholder="검색어를 입력하세요.">
               </div>
-              <button type="button" class="btn btn-outline-info mb-1" style="width:6.25rem;height: 2.75rem;">검색</button>
+              <button id="search_btn" type="submit" class="btn btn-outline-info mb-1" style="width:6.25rem;height: 2.75rem;">검색</button>
             </form>
             </div>
           </div>
 
           <script>
-
+			//카테고리 선택 시 항목 변경하고 input hidden tag에 값을 set
             $("#searchDiv_category>div>a").click(function(){
               var selected=$(this).text();
               $("#searchDiv_category>button").text(selected);
+              $("#search_category").val(selected);
             })
-
-
+            
+            
+            //검색 조건이 걸려있다면,
+            $(document).ready(function(){
+            
+            	var category="${search.category}";
+            	var keyword="${search.keyword}";
+            	
+            	if(category!=null&&category!=''){
+            		$("#searchDrop").text(category);
+            		
+            		if(keyword!=null&&keyword!=''){
+            			$("#search_text").val(keyword);
+            		}
+            	}
+            	
+            })
+            
+            
+           
           </script>
 
           <script>
@@ -327,6 +362,483 @@
         <div class="col-md-2 mb-4">
 
           <!-- Section: 필터시작 -->
+          <script>
+          //request에 존재하는 filter를 바탕으로 체크한다.
+          
+          $(document).ready(function(){
+        	 
+        	  var filter="";
+        	  var workType;
+        	  var mCate;
+        	  var dCate;
+        	  var costMin;
+        	  var costMax;
+        	  var rate;
+        	  var sign;
+        	  var location;
+        	  var recruit;
+        	  var costMinWithWon;
+        	  var costMinWithComma;
+        	  var costMaxWithWon;
+        	  var costMaxWithComma;
+        	  var costCustom;
+        	  
+        	  filter="${filter}";
+        	  
+        	  if(filter!=null){
+        		  
+        		  
+        		  location="${filter.location}";
+        		  recruit="${filter.recruit}";
+        		  sign="${filter.sign}";
+        		  rate="${filter.rate}";
+        		  costMin="${filter.costMin}";
+        		  costMax="${filter.costMax}";
+        		  workType="${filter.workType}";
+        		  mCate="${filter.mCate}"; 
+        		  dCate="${filter.dCate}";
+        		  costCustom="${filter.costCustom}"
+        		  
+        	  
+        	  if(location!=null&&location.length!=0){
+        		  
+        		  var refine=location.replace("[","").replace("]","").split(",");
+        		  
+        		  $("#location_display").html("");
+        		  
+        		  for(var i=0;i<refine.length;i++){
+        			  
+        			
+        			  
+        			  if(refine[i].includes('서울')){
+        				  
+        				  $section=$("#location_display");
+                          $div=$("<div class='form-check mb-3'>")
+                          $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_seoul").val("서울").attr("checked","true").attr("name","location_modal_check");
+                          $label=$("<label>").addClass("form-check-label small").attr("for","m_seoul").text("서울");
+
+                          $div.append($input);
+                          $div.append($label);
+                          $section.append($div);
+        				  
+        			  }
+        			  
+ 					if(refine[i].includes('강원도')){
+        				  
+        				  $section=$("#location_display");
+                          $div=$("<div class='form-check mb-3'>")
+                          $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_kangweon").val("강원도").attr("checked","true").attr("name","location_modal_check");
+                          $label=$("<label>").addClass("form-check-label small").attr("for","m_kangweon").text("강원도");
+
+                          $div.append($input);
+                          $div.append($label);
+                          $section.append($div);
+        				  
+        			  }
+ 					
+ 					
+ 					if(refine[i].includes('경기도')){
+      				  
+      				  $section=$("#location_display");
+                        $div=$("<div class='form-check mb-3'>")
+                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_kyeongki").val("경기도").attr("checked","true").attr("name","location_modal_check");
+                        $label=$("<label>").addClass("form-check-label small").attr("for","m_kyeongki").text("경기도");
+
+                        $div.append($input);
+                        $div.append($label);
+                        $section.append($div);
+      				  
+      			  }
+ 					
+ 					
+ 					if(refine[i].includes('충청북도')){
+ 	      				  
+ 	      				  $section=$("#location_display");
+ 	                        $div=$("<div class='form-check mb-3'>")
+ 	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_chungbuk").val("충청북도").attr("checked","true").attr("name","location_modal_check");
+ 	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_chungbuk").text("충청북도");
+
+ 	                        $div.append($input);
+ 	                        $div.append($label);
+ 	                        $section.append($div);
+ 	      				  
+ 	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('부산')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_pusan").val("부산").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_pusan").text("부산");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('충청남도')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_chungnam").val("충청남도").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_chungnam").text("충청남도");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('인천')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_incheon").val("인천").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_incheon").text("인천");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('전라북도')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_jeonbuk").val("전라북도").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_jeonbuk").text("전라북도");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('대전')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_daejeon").val("대전").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_daejeon").text("대전");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('전라남도')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_jeonnam").val("전라남도").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_jeonnam").text("전라남도");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('대구')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_daegu").val("대구").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_daegu").text("대구");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('경상북도')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_kyeongbuk").val("경상북도").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_kyeongbuk").text("경상북도");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('광주')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_kwangju").val("광주").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_kwangju").text("광주");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('경상남도')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_kyeongnam").val("경상남도").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_kyeongnam").text("경상남도");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('울산')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_ulsan").val("울산").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_ulsan").text("울산");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('제주')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_jeju").val("제주").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_jeju").text("제주");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+ 					
+ 					
+ 					if(refine[i].includes('세종')){
+	      				  
+	      				  $section=$("#location_display");
+	                        $div=$("<div class='form-check mb-3'>")
+	                        $input=$("<input type='checkbox'>").addClass("form-check-input").attr("id","m_sejong").val("세종").attr("checked","true").attr("name","location_modal_check");
+	                        $label=$("<label>").addClass("form-check-label small").attr("for","m_sejong").text("세종");
+
+	                        $div.append($input);
+	                        $div.append($label);
+	                        $section.append($div);
+	      				  
+	      			  }
+        			  
+        		  }
+        	  }
+        	  
+        	  if(recruit!=null&&recruit!=''){
+        		  
+        		  $("#hide_finished").attr("checked","true");
+        	  }
+        	  
+        	  
+        	  if(sign!=null&&sign!=''){
+        		  
+        		  $("#qualified").attr("checked","true");
+        	  }
+        	  
+        	  if(rate!=null&&rate!=''){
+        		  
+        		  $("#highRate").attr("checked","true");
+        	  }
+        	  
+        	  
+        	  console.log("costCustom"+costCustom);
+        	  if(costCustom=="Y"){
+        		  
+        		  $("#cost_custom_check").attr("checked","true");
+        		  $("#cost_custom_menu").css("display","block");
+                  $("#cost_select").css("display","none");
+        		  
+        	  }else if(costCustom==""){
+        		  
+        		  $("#cost_custom_check").prop("checked");
+        		  $("#cost_custom_menu").css("display","none");
+                  $("#cost_select").css("display","block");
+        	  }
+        	  
+        	  
+        	  
+        	  if(costMin!=null&&costMin!=''){
+        		  
+        		  switch(costMin){
+        		  case '1000000':
+        			costMinWithWon="100만원";
+        			break;
+        		  case '2000000':
+      			  	costMinWithWon="200만원";
+      				break;
+        		  case '3000000':
+      			  	costMinWithWon="300만원";
+      				break;
+        		  case '4000000':
+      			  	costMinWithWon="400만원";
+      				break;
+        		  case '5000000':
+      			  	costMinWithWon="500만원";
+      				break;
+        		  case '6000000':
+      			  	costMinWithWon="600만원";
+      				break;
+        		  case '7000000':
+      			  	costMinWithWon="700만원";
+      				break;
+        		  case '8000000':
+      			  	costMinWithWon="800만원";
+      				break;
+        		  case '9000000':
+      			  	costMinWithWon="900만원";
+      				break;
+        		  case '10000000':
+      			  	costMinWithWon="1000만원";
+      				break;
+        		  }
+        		  
+        		  $("#cost_btn_min").text(costMinWithWon);
+        		 
+        		  console.log("costMin"+costMin);
+        		  console.log("costMinWithWon"+costMinWithWon);
+        		  
+        		  costMinWithComma=numberWithCommas(costMin);
+        		  $("#cost_custom_min").val(costMinWithComma);
+        		  
+        	  }
+        	  
+        	  if(costMax!=null&&costMax!=''){
+        		  
+        		
+        		  switch(costMax){
+        		  case '1000000':
+        			  costMaxWithWon="100만원";
+        			break;
+        		  case '2000000':
+        			  costMaxWithWon="200만원";
+      				break;
+        		  case '3000000':
+        			  costMaxWithWon="300만원";
+      				break;
+        		  case '4000000':
+        			  costMaxWithWon="400만원";
+      				break;
+        		  case '5000000':
+        			  costMaxWithWon="500만원";
+      				break;
+        		  case '6000000':
+        			  costMaxWithWonn="600만원";
+      				break;
+        		  case '7000000':
+        			  costMaxWithWon="700만원";
+      				break;
+        		  case '8000000':
+        			  costMaxWithWon="800만원";
+      				break;
+        		  case '9000000':
+        			  costMaxWithWon="900만원";
+      				break;
+        		  case '10000000':
+        			  costMaxWithWon="1000만원";
+      				break;
+        		  }
+        		  
+        		  console.log("costMax"+costMax);
+        		  console.log("costMaxWithWon"+costMaxWithWon);
+        		  
+        		  $("#cost_btn_max").text(costMaxWithWon);
+        		  
+        		  costMaxWithComma=numberWithCommas(costMax);
+        		  $("#cost_custom_max").val(costMaxWithComma);
+        		  
+        	  }
+        	  
+        	  if(workType!=null&&workType.length!=0){
+        		  
+        		  var refine=workType.replace("[","").replace("]","").split(",");
+        		 
+        		  for(var i=0;i<refine.length;i++){
+        			  
+        			  console.log("refine"+refine[i]);
+        			  
+        			  if(refine[i].includes('외주')){
+        				  $("#process_outsource").attr("checked","true");
+        			  }
+        			  
+        			  if(refine[i].includes('상주')){
+        				  $("#process_insource").attr("checked","true");
+        			  }
+        		  }
+        	  }
+        	  
+        	  
+        	 if(mCate!=null&&mCate.length!=0){
+        		 
+        		 var refine=mCate.replace("[","").replace("]","").split(",");
+        		 
+        		 for(var i=0;i<refine.length;i++){
+        			 if(refine[i].includes('개발')){
+        				 $("#main_category_develop").attr("checked","true");
+        			 }
+        			 
+					 if(refine[i].includes('디자인')){
+						 $("#main_category_design").attr("checked","true");
+        			 }
+        		 }
+        		 
+        	 }
+        	 
+        	 if(dCate!=null&&dCate.length!=0){
+        		 
+        		 var refine=dCate.replace("[","").replace("]","").split(",");
+        		 
+        		 for(var i=0;i<refine.length;i++){
+        			 if(refine[i].includes('웹')){
+        				 $("#sub_category_web").attr("checked","true");
+        			 }
+        			 
+					 if(refine[i].includes('어플리케이션')){
+						 $("#sub_category_app").attr("checked","true");
+        			 }
+					 
+					 if(refine[i].includes('퍼블리싱')){
+        				 $("#sub_category_pub").attr("checked","true");
+        			 }
+        			 
+					 if(refine[i].includes('기타')){
+						 $("#sub_category_etc").attr("checked","true");
+        			 }
+        		 }
+        		 
+        	 }
+        	 
+        	  }//filter!=null의 끝
+        	  
+        	  
+          });
+        	  
+         
+          </script>
 			
           <section id="searchFilter">
 
@@ -335,7 +847,7 @@
               <h6 class="font-weight-bold mb-3">프로젝트 진행 방식
                 <i tabindex="0" role="button"  data-trigger="focus" id="process_notice" class="fas fa-exclamation-circle"></i>
               </h6>
-
+              
               <div class="form-check mb-3">
                 <input type="checkbox" class="form-check-input" name="workType" id="process_outsource" value="외주" />
                 <label class="form-check-label small" for="process_outsource">외주(도급)</label>
@@ -344,7 +856,7 @@
                 <input type="checkbox" class="form-check-input" name="workType" id="process_insource" value="상주" />
                 <label class="form-check-label small" for="process_insource">상주</label>
               </div>
-
+              
             </section>
             <script>
               $(function(){
@@ -415,7 +927,7 @@
                 <button id="cost_btn_min" style="width:7.5rem; box-shadow: none;" class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  	 금액 선택
                 </button>
-                <input type="hidden" name="cost_min">
+                <input type="hidden" name="cost_min" id="cost_min">
                 <div id="cost_min_menu" class="dropdown-menu" style="max-height:7.5rem; overflow-y:auto;">
                   <a class="dropdown-item">100만원</a>
                   <a class="dropdown-item">200만원</a>
@@ -433,11 +945,86 @@
               </div>
               
               <script>
-
+              
                   $("#cost_min_menu>a").click(function(){
                   
                       var selected=$(this).text();
                       $("#cost_btn_min").text(selected);
+                      
+                      var max=$("#cost_btn_max").text();
+                      
+                      switch(selected) {
+                      case "100만원":
+                        $("#cost_min").val("1000000").trigger('change');
+                        break;
+                      case "200만원":
+                    	  $("#cost_min").val("2000000").trigger('change');
+                        break;
+                      case "300만원":
+                          $("#cost_min").val("3000000").trigger('change');
+                          break;
+                      case "400만원":
+                      	  $("#cost_min").val("4000000").trigger('change');
+                          break;
+                      case "500만원":
+                          $("#cost_min").val("5000000").trigger('change');
+                          break;
+                      case "600만원":
+                      	  $("#cost_min").val("6000000").trigger('change');
+                          break;
+                      case "700만원":
+                          $("#cost_min").val("7000000").trigger('change');
+                          break;
+                      case "800만원":
+                      	  $("#cost_min").val("8000000").trigger('change');
+                          break;
+                      case "900만원":
+                          $("#cost_min").val("9000000").trigger('change');
+                          break;
+                      case "1000만원":
+                      	  $("#cost_min").val("10000000").trigger('change');
+                          break;
+                          
+                      default:
+                    	  $("#cost_min").val("0").trigger('change');
+                    }
+                      
+                      
+                      switch(max) {
+                      case "100만원":
+                        $("#cost_max").val("1000000").trigger('change');
+                        break;
+                      case "200만원":
+                    	  $("#cost_max").val("2000000").trigger('change');
+                        break;
+                      case "300만원":
+                          $("#cost_max").val("3000000").trigger('change');
+                          break;
+                      case "400만원":
+                      	  $("#cost_max").val("4000000").trigger('change');
+                          break;
+                      case "500만원":
+                          $("#cost_max").val("5000000").trigger('change');
+                          break;
+                      case "600만원":
+                      	  $("#cost_max").val("6000000").trigger('change');
+                          break;
+                      case "700만원":
+                          $("#cost_max").val("7000000").trigger('change');
+                          break;
+                      case "800만원":
+                      	  $("#cost_max").val("8000000").trigger('change');
+                          break;
+                      case "900만원":
+                          $("#cost_max").val("9000000").trigger('change');
+                          break;
+                      case "1000만원":
+                      	  $("#cost_max").val("10000000").trigger('change');
+                          break;
+                          
+                      default:
+                    	  $("#cost_max").val("10000000").trigger('change');
+                    }
                   })
 
               </script>
@@ -448,7 +1035,7 @@
                   <button id="cost_btn_max" style="width: 7.5rem; box-shadow: none;" class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     	금액 선택
                   </button>
-                  <input type="hidden" name="cost_max">
+                  <input type="hidden" name="cost_max" id="cost_max">
                   <div id="cost_max_menu" class="dropdown-menu" style="max-height: 7.5rem; overflow-y: auto;">
                     <a class="dropdown-item">100만원</a>
                     <a class="dropdown-item">200만원</a>
@@ -466,9 +1053,86 @@
               </div>
               <script>
                    $("#cost_max_menu>a").click(function(){
-                    var selected=$(this).text();
+                      var selected=$(this).text();
                       $("#cost_btn_max").text(selected);
+                      
+                      var min=$("#cost_btn_min").text();
+                      
+                      
+                      switch(min) {
+                      case "100만원":
+                        $("#cost_min").val("1000000").trigger('change');
+                        break;
+                      case "200만원":
+                    	  $("#cost_min").val("2000000").trigger('change');
+                        break;
+                      case "300만원":
+                          $("#cost_min").val("3000000").trigger('change');
+                          break;
+                      case "400만원":
+                      	  $("#cost_min").val("4000000").trigger('change');
+                          break;
+                      case "500만원":
+                          $("#cost_min").val("5000000").trigger('change');
+                          break;
+                      case "600만원":
+                      	  $("#cost_min").val("6000000").trigger('change');
+                          break;
+                      case "700만원":
+                          $("#cost_min").val("7000000").trigger('change');
+                          break;
+                      case "800만원":
+                      	  $("#cost_min").val("8000000").trigger('change');
+                          break;
+                      case "900만원":
+                          $("#cost_min").val("9000000").trigger('change');
+                          break;
+                      case "1000만원":
+                      	  $("#cost_min").val("10000000").trigger('change');
+                          break;
+                          
+                      default:
+                    	  $("#cost_min").val("0").trigger('change');
+                    }
+                      
+                      
+                      switch(selected) {
+                      case "100만원":
+                        $("#cost_max").val("1000000").trigger('change');
+                        break;
+                      case "200만원":
+                    	  $("#cost_max").val("2000000").trigger('change');
+                        break;
+                      case "300만원":
+                          $("#cost_max").val("3000000").trigger('change');
+                          break;
+                      case "400만원":
+                      	  $("#cost_max").val("4000000").trigger('change');
+                          break;
+                      case "500만원":
+                          $("#cost_max").val("5000000").trigger('change');
+                          break;
+                      case "600만원":
+                      	  $("#cost_max").val("6000000").trigger('change');
+                          break;
+                      case "700만원":
+                          $("#cost_max").val("7000000").trigger('change');
+                          break;
+                      case "800만원":
+                      	  $("#cost_max").val("8000000").trigger('change');
+                          break;
+                      case "900만원":
+                          $("#cost_max").val("9000000").trigger('change');
+                          break;
+                      case "1000만원":
+                      	  $("#cost_max").val("10000000").trigger('change');
+                          break;
+                          
+                      default:
+                    	  $("#cost_max").val("10000000").trigger('change');
+                    }
                   })
+                  
               </script>
 
 
@@ -488,16 +1152,16 @@
                 <div class="mb-3">
                   <div class="btn-group">
                    <input id="cost_custom_max" type="text" class="form-control" style="width: 7.5rem;height: 1.875rem;">
-                    <label class="small ml-3 mr-2">원</label><button class="btn btn-outline-info btn-sm rounded" type="button">적용</button>
+                    <label class="small ml-3 mr-2">원</label><button id="cost_custom_btn" class="btn btn-outline-info btn-sm rounded" type="button">적용</button>
                   </div>
                   </div>
             </section>
 
             <section>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="cost_custom_check" />
+                <input type="checkbox" class="form-check-input" id="cost_custom_check" name="costCustom" value="Y"/>
                 <label class="form-check-label small" for="cost_custom">직접입력</label>
-                <a class="btn btn-link text-muted p-0 ml-5"  href="#" style="font-size: 1rem;">초기화</a>
+                <a id="cost_reset" class="btn btn-link text-muted p-0 ml-5" style="font-size: 1rem;">초기화</a>
               </div>
 
             </section>
@@ -553,6 +1217,8 @@
 
                   
                     $("#cost_custom_min").val(result);
+                    
+                    
                   }else{
                     $(this).val("");
                   }
@@ -566,22 +1232,24 @@
 
                   if(numberonly.test($(this).val())){
                    
-                    var minCost="";
+                    var maxCost="";
                     var refined="";
 
-                    minCost=$(this).val();
+                    maxCost=$(this).val();
                     
-                    if(minCost.includes(",")){
-                      refined=removeCommas(minCost);
+                    if(maxCost.includes(",")){
+                      refined=removeCommas(maxCost);
                      
                     }else{
-                      refined=minCost;
+                      refined=maxCost;
                     }
 
                     result=numberWithCommas(refined);
 
                   
                     $("#cost_custom_max").val(result);
+                    
+                    
                   }else{
                     $(this).val("");
                   }
@@ -602,6 +1270,20 @@
               function removeCommas(x){
                 return x.toString().replace(/\,/g,"").trim();
               }
+              
+              
+              //적용 버튼을 누르면 input hidden tag에 값 세팅
+              $(document).on("click","#cost_custom_btn",function(){
+            	  
+            	  var min= $("#cost_custom_min").val();
+            	  var max= $("#cost_custom_max").val();
+            	  var refinedMin=removeCommas(min);
+            	  var refinedMax=removeCommas(max);
+            	  $("#cost_min").val(refinedMin).trigger('change');
+            	  $("#cost_max").val(refinedMax).trigger('change');
+            	  
+              })
+             
 
             </script>
             </section>
@@ -613,11 +1295,11 @@
               <h6 class="font-weight-bold mb-3">검증된 클라이언트</h6>
 
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="highRate"/>
+                <input type="checkbox" class="form-check-input" id="highRate" name="clientRate" value="4"/>
                 <label class="form-check-label small" for="highRate">평가우수</label>
               </div>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="qualified" />
+                <input type="checkbox" class="form-check-input" id="qualified" name="clientSign" value="COMPLETE" />
                 <label class="form-check-label small" for="qualified">인증완료</label>
               </div>
               
@@ -630,16 +1312,16 @@
 
               <section id="location_display">
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" name="location_modal_check" id="m_seoul" value="서울특별시"/>
-                <label class="form-check-label small" for="m_seoul">서울특별시</label>
+                <input type="checkbox" class="form-check-input" name="location_modal_check" id="m_seoul" value="서울"/>
+                <label class="form-check-label small" for="m_seoul">서울</label>
               </div>
               <div class="form-check mb-3">
                 <input type="checkbox" class="form-check-input" name="location_modal_check" id="m_kyeongki" value="경기도" />
                 <label class="form-check-label small" for="m_kyeongki">경기도</label>
               </div>
               <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" name="location_modal_check" id="m_pusan" value="부산광역시" />
-                <label class="form-check-label small" for="m_pusan">부산광역시</label>
+                <input type="checkbox" class="form-check-input" name="location_modal_check" id="m_pusan" value="부산" />
+                <label class="form-check-label small" for="m_pusan">부산</label>
               </div>
             </section>
               <a id="location_add" class="btn btn-link text-muted p-0" data-toggle="modal" href="#location_modal" aria-expanded="false" aria-controls="collapseExample" style="font-size: 1rem;">
@@ -647,7 +1329,34 @@
               </a>
             </section>
 
-            <!-- 지역 추가 Modal -->
+            
+
+            
+            <!-- Section: 클라이언트 위치 끝 -->
+
+             <!-- Section: 지원자 모집 상태 시작 -->
+             <section class="mb-5">
+              <h6 class="font-weight-bold mb-3">지원자 모집 상태</h6>
+
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="hide_finished" name="recruit" value="Y"/>
+                <label class="form-check-label small" for="hide_finished">모집 마감 숨기기</label>
+              </div>
+
+            </section>
+            <!-- Section: 지원자 모집 상태 끝 -->
+            
+            <section>
+            <button id="resetFilter" class="btn btn-outline-secondary">필터 초기화</button>
+            
+            </section>
+            
+
+          </section>
+          <!-- Section: 필터끝 -->
+          
+          
+          <!-- 지역 추가 Modal -->
             <div class="modal fade" id="location_modal" tabindex="-1" role="dialog" aria-labelledby="location_modal_Label" aria-hidden="true">
               <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
@@ -662,8 +1371,8 @@
                       <tr style="height: 1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_seoul" name="location_modal_check" value="서울특별시"/>
-                            <label class="form-check-label" for="m_seoul">서울특별시</label>
+                            <input type="checkbox" class="form-check-input" id="m_seoul" name="location_modal_check" value="서울"/>
+                            <label class="form-check-label" for="m_seoul">서울</label>
                           </div>
                         </td>
                         <td>
@@ -692,8 +1401,8 @@
                       <tr style="height:1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_pusan" name="location_modal_check" value="부산광역시"/>
-                            <label class="form-check-label" for="m_pusan">부산광역시</label>
+                            <input type="checkbox" class="form-check-input" id="m_pusan" name="location_modal_check" value="부산"/>
+                            <label class="form-check-label" for="m_pusan">부산</label>
                           </div>
                         </td>
                         <td>
@@ -707,8 +1416,8 @@
                       <tr style="height:1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_incheon" name="location_modal_check" value="인천광역시"/>
-                            <label class="form-check-label" for="m_incheon">인천광역시</label>
+                            <input type="checkbox" class="form-check-input" id="m_incheon" name="location_modal_check" value="인천"/>
+                            <label class="form-check-label" for="m_incheon">인천</label>
                           </div>
                         </td>
                         <td>
@@ -722,8 +1431,8 @@
                       <tr style="height:1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_daejeon" name="location_modal_check" value="대전광역시"/>
-                            <label class="form-check-label" for="m_daejeon">대전광역시</label>
+                            <input type="checkbox" class="form-check-input" id="m_daejeon" name="location_modal_check" value="대전"/>
+                            <label class="form-check-label" for="m_daejeon">대전</label>
                           </div>
                         </td>
                         <td>
@@ -737,8 +1446,8 @@
                       <tr style="height:1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_daegu" name="location_modal_check" value="대구광역시"/>
-                            <label class="form-check-label" for="m_daegu">대구광역시</label>
+                            <input type="checkbox" class="form-check-input" id="m_daegu" name="location_modal_check" value="대구"/>
+                            <label class="form-check-label" for="m_daegu">대구</label>
                           </div>
                         </td>
                         <td>
@@ -752,8 +1461,8 @@
                       <tr style="height:1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_kwangju" name="location_modal_check" value="광주광역시"/>
-                            <label class="form-check-label" for="m_kwangju">광주광역시</label>
+                            <input type="checkbox" class="form-check-input" id="m_kwangju" name="location_modal_check" value="광주"/>
+                            <label class="form-check-label" for="m_kwangju">광주</label>
                           </div>
                         </td>
                         <td>
@@ -767,14 +1476,14 @@
                       <tr style="height:1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_ulsan" name="location_modal_check" value="울산광역시"/>
-                            <label class="form-check-label" for="m_ulsan">울산광역시</label>
+                            <input type="checkbox" class="form-check-input" id="m_ulsan" name="location_modal_check" value="울산"/>
+                            <label class="form-check-label" for="m_ulsan">울산</label>
                           </div>
                         </td>
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_jeju" name="location_modal_check" value="제주특별자치도"/>
-                            <label class="form-check-label" for="m_jeju">제주특별자치도</label>
+                            <input type="checkbox" class="form-check-input" id="m_jeju" name="location_modal_check" value="제주"/>
+                            <label class="form-check-label" for="m_jeju">제주</label>
                           </div>
                         </td>
                       </tr>
@@ -782,8 +1491,8 @@
                       <tr style="height:1.875rem;">
                         <td>
                           <div class="form-check ml-2">
-                            <input type="checkbox" class="form-check-input" id="m_sejong" name="location_modal_check" value="세종특별자치시"/>
-                            <label class="form-check-label" for="m_sejong">세종특별자치시</label>
+                            <input type="checkbox" class="form-check-input" id="m_sejong" name="location_modal_check" value="세종"/>
+                            <label class="form-check-label" for="m_sejong">세종</label>
                           </div>
                         </td>
                         <td>
@@ -802,8 +1511,6 @@
                 </div>
               </div>
             </div>
-
-
             <script>
 
               $("#location_modal_submit").click(function(){
@@ -837,7 +1544,12 @@
                   $div.append($input);
                   $div.append($label);
                   $section.append($div);
+                  
+                 
                 }
+                
+                //모달을 통해 지역이 추가되면 필터 메소드를 trigger하여 필터 전송한다.
+                $("#searchFilter").find("input").eq(0).trigger("change");
 
               });
 
@@ -910,22 +1622,7 @@
                     }
 
             </script>
-            <!-- Section: 클라이언트 위치 끝 -->
-
-             <!-- Section: 지원자 모집 상태 시작 -->
-             <section class="mb-5">
-              <h6 class="font-weight-bold mb-3">지원자 모집 상태</h6>
-
-              <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="hide_finished" />
-                <label class="form-check-label small" for="hide_finished">모집 마감 숨기기</label>
-              </div>
-
-            </section>
-            <!-- Section: 지원자 모집 상태 끝 -->
-
-          </section>
-          <!-- Section: 필터끝 -->
+			<!-- 지역 추가 Modal 끝 -->
         
         </div>
         <!--Grid column 사이드바 column 끝-->
@@ -937,12 +1634,736 @@
           //4.조회결과 프로젝트 리스트와 페이지 네이션을 data로 받아온다.
           //5.새로 리스트를 작성하여 갖다 붙인다.
           
-          $(function(){
+          function usingFilter(sorting){
+        	  
         	
         	  
+        	//필터 내부의 모든 input 태그가 담길 것
+        	  filter=$("#searchFilter").find("input");
+    		  
+        	  var loginUser="${loginUser}";
+        	  var userLike;
         	  
+    		  var page="${pi.currentPage}";
+    		
+        	  var workType=[];
+        	  var mCate=[];
+        	  var dCate=[];
+        	  var costMin;
+        	  var costMax;
+        	  var costCustom;
+        	  var rate;
+        	  var sign;
+        	  var location=[];
+        	  var recruit;
+        	  
+        	  //검색 필터도 보내자
+        	  var category=$("#searchDrop").text().trim();
+        	  console.log("category"+$("#search_category").val());
+        	  var keyword=$("#search_text").val();
+        	  
+        	  //정렬 기준도 보내자
+        	  var sorting=sorting;
+        	  
+    		  console.log(filter);
+    		  
+    		//필터 중 하나의 값이 바뀌면 전체 필터의 체크 값을 담는다.
+    		  for(var i=0;i<filter.length;i++){
+    			  
+    			  
+    			//전체 필터의 수 만큼 도는 반복문
+    			//i번째 필터가 1.value가 null이 아닌지 확인 2.체크박스라면 체크가 되어있는지 확인 3.switch문을 통해 input name에 따라 변수 값 설정
+    			
+    			if(filter[i]!=null){
+    				
+    				if(filter[i].type=="checkbox"){
+    					
+    					console.log("체크박스야")
+    					
+    					if(filter[i].checked==true){
+    						
+    						console.log("체크가 되었어");
+    						
+    						switch(filter[i].name){
+    						 case "workType":
+    							console.log("workType이야");
+    							workType.push(filter[i].value);
+    						 break;
+    					     case "mCate":
+    						 	mCate.push(filter[i].value);
+    					     break;
+    					     case "dCate":
+     						 	dCate.push(filter[i].value);
+     					     break;
+    					     case "clientRate":
+      						 	rate=filter[i].value;
+      					     break;
+    					     case "clientSign":
+       						 	sign=filter[i].value;
+       					     break;
+    					     case "location_modal_check":
+        						 location.push(filter[i].value);
+        					 break;
+    					     case "recruit":
+        						 recruit=filter[i].value;
+        					 break;
+    					     case "costCustom":
+        						 costCustom=filter[i].value;
+        					 break;
+    						 default:
+    						 console.log("알 수 없는 이름:"+filter[i]);
+    						
+    						}
+    						
+    					}
+    				
+    				}
+    				
+    				//최소금액, 최대금액은 input hidden 태그로 넘어온다.
+    				if(filter[i].type=="hidden"){
+    					
+    					console.log("히든 태그야.")
+    					
+    					switch(filter[i].name){
+   					     case "cost_min":
+   						 	costMin=filter[i].value;
+   					     break;
+   					     case "cost_max":
+    						costMax=filter[i].value;
+    					 break;
+   						 default:
+   						 console.log("알 수 없는 이름:"+filter[i]);
+   						
+   						}
+    					
+    				}
+    				
+    				
+    			}else{
+    				console.log(filter[i]);
+    			}
+    			
+    			 //값을 담은 변수를 form에 붙여 controller에 전송한다.
+    			
+    			
+    		  }//for문의 끝
+    		  
+    		  
+    		  	console.log(workType);
+    		  
+    		  	var obj=new Object();
+    		  	
+    		  	obj.page=page;
+    		  
+    		  	if(workType!=null){
+    				obj.workType=workType;
+    			}
+    		  	
+    		  	if(mCate!=null){
+    				obj.mCate=mCate;
+    			}
+    			
+    			if(dCate!=null){
+    				obj.dCate=dCate;
+    			}
+    			
+    			if(costMin!=null){
+    				obj.costMin=costMin;
+    			}
+    			
+    			if(costMax!=null){
+    				obj.costMax=costMax;
+    			}
+    			
+    			if(rate!=null){
+    				obj.rate=rate;
+    			}
+    			
+    			if(sign!=null){
+    				obj.sign=sign;
+    			}
+    			
+    			if(location!=null){
+    				obj.location=location;
+    			}
+    			
+    			if(recruit!=null){
+    				obj.recruit=recruit;
+    			}
+    			
+    			if(costCustom!=null){
+    				obj.costCustom=costCustom;
+    			}
+    			 
+    			//검색 조건도 함께 보낸다
+    			if(category!=null){
+    				obj.category=category;
+    			}
+    			
+    			if(keyword!=null){
+    				obj.keyword=keyword;
+    			}
+    			
+    			//정렬 기준
+    			if(sorting!=null){
+    				obj.sorting=sorting;
+    			}
+    		
+    			console.log(obj);
+    			
+    			//객체를 제출
+    			 $.ajax({
+      				url:"collectFilter.do",
+      				data:JSON.stringify(obj),
+      				type:"post",
+      				contentType : 'application/json; charset=utf-8',
+      				dataType:"json",
+      				success:function(data){
+      					
+      					
+      					//게시물을 append할 준비
+      					$section=$("#projectList");
+      					
+      					$section.html("");//section 안을 비우고 for문을 돌릴 것
+      					
+      					console.log("data"+data);
+      					
+      					$list=data.list;//프로젝트 리스트
+        				$techList=data.tech;//프로젝트 기술 리스트
+        				$pi=data.pi;//페이지네이션 객체
+        				
+        				console.log("list"+$list);
+        			
+        				$("#projectCount").text(data.listCount);
+      					
+        				
+        				
+        				//for문 시작
+      					for(var i=0;i<$list.length;i++){
+      						
+      					//기본
+	      					var $outRow=$("<div>").addClass("row my-2 project");
+	      					var $inRow=$("<div>").addClass("row mb-2 mx-auto").css("width","100%");
+	      					var $col=$("<div>").addClass("col-md-12 px-0");
+	      					var $div=$("<div>");
+	      					var $card=$("<div>").addClass("card flex-md-row mb-4 box-shadow h-md-250");
+	      					var $cardBody=$("<div>").addClass("card-body d-flex flex-column align-items-start");
+	      					var $likeFlag=false;
+	      					
+	      					//배지
+	  						var $badgeDiv=$("<div>").addClass("d-inline-block mb-2");
+	  						var $recruitY=$("<span>").addClass("badge badge-success mr-2").text("모집중");
+	  						var $recruitN=$("<span>").addClass("badge badge-secondary mr-2").text("모집마감");
+	  						var $today=$("<span>").addClass("badge badge-info").text("TODAY");
+	  						var $new=$("<span>").addClass("badge badge-info").text("NEW");
+	      					
+	  						//상단
+	  						var $head=$("<div>").css("width","100%");
+	  						var $h3=$("<h3>").addClass("mb-0 float-left");
+	  						var $title=$("<a>").addClass("projectTitle");
+	  						var $identify=$("<a>").addClass("btn").attr("data-toggle","tooltip").attr("data-placement","right").attr("title","이 프로젝트의 클라이언트는 신원인증을 완료했습니다.");
+	      					var $icon=$("<i>").addClass("far fa-check-circle");
+	      					var $likeDiv=$("<div>").addClass("float-right mr-3");
+	      					var $likeSpan=$("<span>").addClass("heart");
+	      					var $heart=$("<i>").addClass("fa fa-heart-o").attr("aria-hidden","true");
+	      					var $likeHeart=$("<i>").addClass("fa fa-heart").attr("aria-hidden","true");
+	      					
+	      					var $likeLabel=$("<label>").text("관심");
+	      					var $hiddenId=$("<input type='hidden'>").attr("name","pId");
+	      					var $hiddenLikeId=$("<input type='hidden'>").attr("name","likeId");
+	      					
+	      					//기획 상태
+	      					var $plan=$("<div>").addClass("project_plan_progress").css("width","20rem");
+	      					var $planP=$("<div>").addClass("text-muted progress_label").css("float","left").css("margin-right","1rem").css("margin-bottom","0").css("font-size","0.875rem").text("기획상태");
+	      					var $progressDiv=$("<div>").addClass("progress mt-1");
+	      					var $20=$("<div>").addClass("progress-bar bg-info").attr("role","progressbar").css("width","20%").attr("aria-valuenow","20").attr("aria-valuemin","0").attr("aria-valuemax","100").text("20%");
+	      					var $40=$("<div>").addClass("progress-bar bg-info").attr("role","progressbar").css("width","40%").attr("aria-valuenow","40").attr("aria-valuemin","0").attr("aria-valuemax","100").text("40%");
+	      					var $60=$("<div>").addClass("progress-bar bg-info").attr("role","progressbar").css("width","60%").attr("aria-valuenow","60").attr("aria-valuemin","0").attr("aria-valuemax","100").text("60%");
+	      					var $80=$("<div>").addClass("progress-bar bg-info").attr("role","progressbar").css("width","80%").attr("aria-valuenow","80").attr("aria-valuemin","0").attr("aria-valuemax","100").text("80%");
+	      					var $98=$("<div>").addClass("progress-bar bg-info").attr("role","progressbar").css("width","98%").attr("aria-valuenow","98").attr("aria-valuemin","0").attr("aria-valuemax","100").text("98%");
+	      					
+	      					//요약 내용
+	      					var $sRow=$("<div>").addClass("row mt-3 mb-3").css("width","100%");
+	      					
+	      					var $sCol9=$("<div>").addClass("col-md-9");
+	      					
+	      					var $sTable=$("<table>").css("width","80%").css("height","100%");
+	      					
+	      					var $tr1=$("<tr>");
+	      					
+	      					var $tdPrice=$("<td>").css("border-right","dashed 1px white");
+	      					var $priceLabel=$("<label>").addClass("mr-3").html("예상금액  &#8361;");
+	      					var $price=$("<label>");
+	      					var $won=$("<label>").text("원");
+	      					
+	      					var $tdMCate=$("<td>");
+	      					var $mCateLabel=$("<label>").addClass("ml-3 mCate");
+	      					
+	      					
+	      					var $tr2=$("<tr>");
+	      					
+	      					var $tdDuration=$("<td>").css("border-right","dashed 1px white");
+	      					var $durationLabel=$("<label>").addClass("mr-3").text("예상기간");
+	      					var $duration=$("<label>");
+	      					var $day=$("<label>").text("일");
+	      					
+	      					var $tdDCate=$("<td>");
+	      					var $dCateLabel=$("<label>").addClass("ml-3 dCate");
+	      					
+	      					var $sCol3=$("<div>").addClass("col-md-3");
+	      					
+	      					var $endDiv=$("<div>").addClass("mt-3").css("text-align","right");
+	      					var $endIcon=$("<i>").addClass("fas fa-history mr-3");
+	      					var $endLabelHead=$("<label>").text("마감");
+	      					var $end=$("<label>");
+	      					var $endLabelFoot=$("<label>").text("일 전");
+	      					
+	      					var $applyDiv=$("<div>").css("text-align","right");
+	      					var $applyIcon=$("<i>").addClass("fas fa-user mr-3");
+	      					var $applyLabelHead=$("<label>").text("총");
+	      					var $apply=$("<label>");
+	      					var $applyLabelFoot=$("<label>").text("명 지원");
+	      					
+	      					
+	      					//세부내용
+	      					var $dRow=$("<div>").addClass("row mb-3").css("width","100%").css("height","100%");
+	      					var $dCol9=$("<div>").addClass("col-md-9");
+	      					var $cardText=$("<div>").addClass("card-text mb-4").css("font-size","0.875rem");
+	      					var $cardTextLabel=$("<label>").text("프로젝트 개요");
+	      					var $cardTextarea=$("<textarea>").attr("readonly","true").attr("maxlength","100");
+	      					
+	      					var $dTable=$("<table>").css("width","100%");
+	      					
+	      					var $dTr=$("<tr>");
+	      					
+	      					var $tdWorkType=$("<td>").css("border-right","dashed 1px white").css("width","20%");
+	      					var $workType=$("<span>").addClass("badge badge-info");
+	      					
+	      					var $tdTech=$("<td>").css("border-right","dashed 1px white").css("width","40%").css("padding-left","1rem");
+	      					
+	      					
+	      					var $tdLocation=$("<td>").css("width","10%").css("padding-left","1rem").css("padding-top","0.375rem").css("font-size","0.875rem");
+	      					var $locationIcon=$("<i>").addClass("fas fa-map-marker-alt mr-2");
+	      					var $location=$("<label>");
+	      					
+	      					var $tdCDate=$("<td>").css("width","30%").css("font-size","0.875rem");
+	      					var $cDateLabel=$("<label>").addClass("mt-2 mr-2 ml-4 text-muted").text("등록일자:");
+	      					var $cDate=$("<label>").addClass("text-muted");
+	      					
+	      					var $dCol3=$("<div>").addClass("col-md-3").css("height","100%").css("border-top","1px dashed white");
+	      					
+	      					var $numDiv=$("<div>").addClass("mt-5").css("text-align","right");
+	      					var $replyIcon=$("<i>").addClass("far fa-comment-dots mr-1");
+	      					var $replyNum=$("<label>");
+	      					var $likeIcon=$("<i>").addClass("far fa-heart mr-1");
+	      					var $likeNum=$("<label>").addClass("likeNum");
+      						
+      						
+      						
+      						
+      						//배지
+      						if($list[i].project.proRecruit=='Y'){
+      							$badgeDiv.append($recruitY);
+      						}
+      						
+      						if($list[i].project.proRecruit=='N'){
+      							$badgeDiv.append($recruitN);
+      						}
+      						
+      						var today=new Date();
+      						var ago = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000));
+      						
+      						console.log("ago?"+ago);
+      						
+      						if($list[i].project.proCreateDate==today){
+      							$badgeDiv.append($today);
+      						}
+      						
+      						if(ago<$list[i].project.proCreateDate){
+      							$badgeDiv.append($new);
+      						}
+      						
+      						$cardBody.append($badgeDiv);
+      						
+      						//상단
+      						$title.text($list[i].project.proName);
+      						$h3.append($title);
+      						
+      						$identify.append($icon);
+      						if($list[i].identify=="COMPLETE"){
+      							$h3.append($identify);
+      						}
+      						
+      						$head.append($h3);
+      						
+      						if(loginUser==""){
+      							//로그인 하지 않은 상태
+      							$likeSpan.append($heart);
+      						}else{
+      							
+      							
+      							//로그인을 했다
+      							console.log("로그인을 했다.")
+      							<%if(likeList!=null){%>
+      							//관심 프로젝트 리스트가 있다면
+      							console.log("관심 리스트가 있다.");
+      							
+      							<%for(int k=0;k<likeList.size();k++){%>
+      							
+      							if($list[i].id=="<%=likeList.get(k).getpList().getId()%>"){
+      								//관심 프로젝트 리스트에 있는 프로젝트 아이디와 일치하는 아이디가 있을 경우,
+      								console.log("일치하는 리스트가 있다"+$list[i].id);
+      								$likeFlag=true;
+      								console.log("likeFlag"+$likeFlag);
+      								
+      								$likeSpan.addClass("liked");
+      								$hiddenLikeId.val("<%=likeList.get(k).getProLId()%>");
+      								$likeDiv.append($hiddenLikeId);
+      								
+      							}
+      							
+      							
+      							<%}%>
+      							
+      							
+      							if($likeFlag){
+      								//채워진 하트를 붙인다.
+      								console.log("채워진 하트");
+      								$likeSpan.append($likeHeart);
+      							}else{
+      								console.log("빈 하트");
+      								$likeSpan.append($heart);
+      							}
+      							
+      							
+      							
+      							<%}else{%>
+      							//관심 프로젝트 리스트가 없다면
+      								console.log("관심 리스트가 없다.");
+      								$likeSpan.append($heart);
+      							
+      							<%}%>
+      						}
+      						
+      						
+      						$likeDiv.append($likeSpan);
+      						$likeDiv.append($likeLabel);
+      						
+      						$hiddenId.val($list[i].id);
+      						$likeDiv.append($hiddenId);
+      						
+      						$head.append($likeDiv);
+      						
+      						$cardBody.append($head);
+      						
+      						//기획상태
+      						
+      						if($list[i].project.proPlanDetail==1){
+      							$progressDiv.append($20);
+      						}
+      						
+      						if($list[i].project.proPlanDetail==2){
+      							$progressDiv.append($20);
+      						}
+      						
+      						if($list[i].project.proPlanDetail==3){
+      							$progressDiv.append($20);
+      						}
+      						
+      						if($list[i].project.proPlanDetail==4){
+      							$progressDiv.append($20);
+      						}
+      						
+      						if($list[i].project.proPlanDetail==5){
+      							$progressDiv.append($20);
+      						}
+      						
+      					
+      						$plan.append($planP);
+      						$plan.append($progressDiv);
+      						
+      						$cardBody.append($plan);
+      						
+      						
+      						//요약내용
+      						
+      						var price=$list[i].project.proPayment;
+      						var priceWithComma=price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      						
+      						$price.text(priceWithComma);
+      						
+      						$tdPrice.append($priceLabel);
+      						$tdPrice.append($price);
+      						$tdPrice.append($won);
+      						
+      						$tr1.append($tdPrice);
+      						
+      						$mCateLabel.text($list[i].mCategory);
+      						$tdMCate.append($mCateLabel);
+      						
+      						$tr1.append($tdMCate);
+      						
+      						$duration.text($list[i].project.proDuration);
+      						$tdDuration.append($durationLabel);
+      						$tdDuration.append($duration);
+      						$tdDuration.append($day);
+      						
+      						$tr2.append($tdDuration);
+      						
+      						$dCateLabel.text($list[i].dCategory);
+      						$tdDCate.append($dCateLabel);
+      						
+      						$tr2.append($tdDCate);
+      						
+      						$sTable.append($tr1);
+      						$sTable.append($tr2);
+      						$sCol9.append($sTable);
+      						
+      						$sRow.append($sCol9);
+      						
+      						var endDate=new Date($list[i].project.proREndDate);
+      						var diff=Math.floor((endDate.getTime() - today.getTime()) / (1000*60*60*24))+1;
+      						
+      						$end.text(diff);
+      						$endDiv.append($endIcon);
+      						$endDiv.append($endLabelHead);
+      						$endDiv.append($end);
+      						$endDiv.append($endLabelFoot);
+      						
+      						if($list[i].project.proRecruit=='Y'){
+      						$sCol3.append($endDiv);
+      						}
+      						
+      						$apply.text($list[i].applyNum);
+      						$applyDiv.append($applyIcon);
+      						$applyDiv.append($applyLabelHead);
+      						$applyDiv.append($apply);
+      						$applyDiv.append($applyLabelFoot);
+      						
+      						$sCol3.append($applyDiv);
+      						
+      						$sRow.append($sCol3);
+      						
+      						$cardBody.append($sRow);
+      						
+      						//세부내용
+      						
+      						$cardTextarea.val($list[i].project.proSummary);
+      						$cardText.append($cardTextLabel);
+      						$cardText.append($cardTextarea);
+      						
+      						$dCol9.append($cardText);
+      						
+      						$workType.text($list[i].workType);
+      						$tdWorkType.append($workType);
+      						$dTr.append($tdWorkType);
+      						
+      						for(var t in $techList){
+      							
+      							var $tech=$("<a>").addClass("badge badge-secondary mr-2");
+      							
+      							if($techList[t].pId==$list[i].id){
+      								$tech.text($techList[t].tName);
+      								$tdTech.append($tech);
+      							}
+      						}
+      						
+      						$dTr.append($tdTech);
+      						
+      						$location.text($list[i].project.proLocation);
+      						$tdLocation.append($locationIcon);
+      						$tdLocation.append($location);
+      						
+      						$dTr.append($tdLocation);
+      						
+      						$cDate.text($list[i].project.proCreateDate);
+      						$tdCDate.append($cDateLabel);
+      						$tdCDate.append($cDate);
+      						
+      						$dTr.append($tdCDate);
+      						
+      						$dTable.append($dTr);
+      						
+      						$dCol9.append($dTable);
+      						
+      						$dRow.append($dCol9);
+      						
+      						$replyNum.text($list[i].replyNum);
+      						$likeNum.text($list[i].likeNum);
+      						
+      						$numDiv.append($replyIcon);
+      						$numDiv.append($replyNum);
+      						$numDiv.append($likeIcon);
+      						$numDiv.append($likeNum);
+      						
+      						$dCol3.append($numDiv);
+      						
+      						$dRow.append($dCol3);
+      						
+      						//카드 붙이기
+      						
+      						$cardBody.append($dRow);
+      						
+      						$card.append($cardBody);
+      						$div.append($card);
+      						$col.append($div);
+      						$inRow.append($col);
+      						$outRow.append($inRow);
+      						
+      						
+      						$section.append($outRow);
+      					
+      						
+      					}//for문 끝
+      					
+      					
+      					//pagination을 append할 준비
+      					
+						console.log("$pi?"+$pi);
+						var start=$pi.startPage;
+      					var end=$pi.endPage;
+      					var current=$pi.currentPage;
+      					var max=$pi.maxPage;
+      					console.log("start:"+start+"end:"+end+"current:"+current+"max:"+max);
+      					
+      					var $pageSection=$("#pagination");
+      					
+      					$pageSection.html("");
+      					
+      					var $pageRow=$("<div>").addClass("row d-flex justify-content-around align-items-center");
+      					var $pageCol=$("<div>").addClass("col-12 col-md-4 text-center");
+      					var $pageNav=$("<nav>");
+      					
+      					var $ul=$("<ul>").addClass("pagination justify-content-center mb-0 text-dark");
+      					var $backLi=$("<li>").addClass("page-item");
+      					var $backA=$("<a>").addClass("page-link");
+      					var $backIcon=$("<i>").addClass("fas fa-chevron-left");
+      					
+      					var $numLi;
+      					var $numA;
+      					
+      					var $frontLi=$("<li>").addClass("page-item");
+      					var $frontA=$("<a>").addClass("page-link");
+      					var $frontIcon=$("<i>").addClass("fas fa-chevron-right")
+      					
+      					
+      					if(current==1){
+      						$backA.append($backIcon);
+      						$backLi.append($backA);
+      						$ul.append($backLi);
+      					}
+      					
+      					if(current>1){
+      						$backA.addClass("goBack");
+      						$backA.append($backIcon);
+      						$backLi.append($backA);
+      						$ul.append($backLi);
+      					}
+      					
+      					
+      					for(var i=start;i<end+1;i++){
+      						
+      						console.log(i);
+      						
+      						$numLi=$("<li>").addClass("page-item");
+	      					$numA=$("<a>").addClass("page-link");
+      						
+      						if(current==i){
+      							$numA.text(i);
+      							$numLi.addClass("active");
+      							$numLi.append($numA);
+      							$ul.append($numLi);
+      						}
+      						
+      						if(current!=i){
+      							$numA.addClass("goThisNum");
+      							$numA.text(i);
+      							$numLi.append($numA);
+      							$ul.append($numLi);
+      						}
+      						
+      					}
+      					
+      					if(current==$pi.maxPage){
+      						$frontA.append($frontIcon);
+      						$frontLi.append($frontA);
+      						$ul.append($frontLi);
+      					}
+      					
+      					if(current<$pi.maxPage){
+      						$frontA.addClass("goFront");
+      						$frontA.append($frontIcon);
+      						$frontLi.append($frontA);
+      						$ul.append($frontLi);
+      					}
+      					
+      					$pageNav.append($ul);
+      					$pageCol.append($pageNav);
+      					$pageRow.append($pageCol);
+      					$pageSection.append($pageRow);
+      					
+      					
+      					
+      					
+      				},
+      				error:function(request, status, errorData){
+                          alert("error code: " + request.status + "\n"
+                                +"message: " + request.responseText
+                                +"error: " + errorData);
+                       } 
+  				
+  			})//ajax의 끝
+    		  
+    	 
+    	  
+    	  
+        	  
+        	  
+        	  
+        	  
+          }
+          
+          
+          //정렬을 클릭하면 usingFilter 함수를 사용한다.
+          
+          $(function(){
+        	  
+        	  
+        	  var sorting=$("input[name='sorting']");
+        	  var sortingValue;
+        	  
+        	  sorting.change(function(){
+
+					sortingValue=$(this).val();
+					usingFilter(sortingValue);
+        	  })
+        	  
+          })
+          
+          
+          
+          //필터 컬럼의 input태그의 값이 변하면 usingFilter 함수를 사용한다.
+          $(function(){
+        	
+        	  var filter=$("#searchFilter").find("input");
+        	  
+        	 
+        	  
+        	  filter.change(function(){
+        		  
+        	  usingFilter();
         	  
           });
+        	  
+          })
+          
+          
+          //필터 초기화
+          $(document).on("click","#resetFilter",function(){
+        	  
+        	location.href="removeFilter.do";
+        	  
+          })
           
           
           </script>
@@ -950,7 +2371,7 @@
         <!--Grid column 프로젝트 리스트 시작-->
         <div class="col-md-6 mb-4">
 
-          <h4><strong>${pi.listCount}</strong>개의 프로젝트</h4>
+          <h4><strong id="projectCount">${pi.listCount}</strong>개의 프로젝트</h4>
           <button class="btn btn-outline-info" style="box-shadow: none;" type="button" data-toggle="collapse" data-target="#sortingDiv">정렬하기</button>
 
           <!-- 정렬하기 Section: Block Content -->
@@ -993,18 +2414,7 @@
             </div>
 
           </section>
-          <script>
-          		$(function(){
-          			
-          			$("#sortingDiv").find("input[type='radio']").change(function(){
-          				
-          				//$("#sortingForm").submit();
-          				
-          			});
-          			
-          		})
-          		
-          </script>
+         
           <!-- Section: Block Content 상단 정렬 끝 -->
 
           <!--Section: Block Content 프로젝트 리스트 시작-->
@@ -1043,10 +2453,10 @@
                       <div class="d-inline-block mb-2">
                        <c:choose>
                        	<c:when test="${p.project.proRecruit eq 'Y'}">
-                       		<span class="badge badge-secondary">모집중</span>
+                       		<span class="badge badge-success">모집중</span>
                        	</c:when>
                        	<c:when test="${p.project.proRecruit eq 'N'}">
-                       		<span class="badge badge-success">모집마감</span>
+                       		<span class="badge badge-secondary">모집마감</span>
                        	</c:when>
                        </c:choose>
                        
@@ -1077,9 +2487,40 @@
                      	</c:if>
                       </h3>
                         <div class="float-right mr-3">
-                          <span class ="heart"><i class="fa fa-heart-o" aria-hidden="true" ></i></span>
-                          <label for="heart">관심</label>
-                          <input type="hidden" name="like" value="${p.id}">
+                        
+                        <c:if test="${empty loginUser}">
+                        <span class ="heart"><i class="fa fa-heart-o" aria-hidden="true" ></i></span>
+                        </c:if>
+                        
+                        <c:if test="${not empty loginUser}">
+                        
+                       
+                        <c:forEach items="${loginUser.likeList}" var="like">
+                        
+                        <c:if test="${p.id eq like.pList.id}">
+                        <c:set var="isLike" value="Y"/>
+                        <input type="hidden" name="likeId" value="${like.proLId}">
+                        </c:if>
+                        </c:forEach>
+                        
+                        <c:choose>
+                        <c:when test="${isLike eq 'Y'}">
+                        
+                        <span class ="heart liked"><i class="fa fa-heart" aria-hidden="true" ></i></span>
+                        
+                        </c:when>
+                        <c:otherwise>
+                        <span class ="heart"><i class="fa fa-heart-o" aria-hidden="true" ></i></span>
+                        </c:otherwise>
+                        </c:choose>
+                        
+                        <c:remove var="isLike"/>
+                        
+                        </c:if>
+                        
+                          <label>관심</label>
+                          <input type="hidden" name="pId" value="${p.id}">
+                          
                         </div>
                       </div>
                       
@@ -1139,11 +2580,13 @@
                         </div>
                         <div class="col-md-3">
                         
+                        	<c:if test="${p.project.proRecruit eq 'Y'}">
                               <div class="mt-3" style="text-align: right;">
                                 <i class="fas fa-history mr-3"></i><label>마감</label><label>
                                 <fmt:parseNumber value="${(p.project.proREndDate.time-today.time)/(1000*60*60*24)+1}" integerOnly="true"/>
                                 </label><label>일 전</label>
                               </div>
+                            </c:if>
                             
                               <div style="text-align: right;">
                                 <i class="fas fa-user mr-3"></i><label>총</label><label>
@@ -1162,7 +2605,7 @@
                             <label>프로젝트 개요</label>
                             <textarea readonly maxlength="100">${p.project.proSummary}</textarea>
                           </div>
-                          <table style="width:100%; height: 20px;">
+                          <table style="width:100%;">
                             <tr>
                               <td style="border-right: 1px dashed white;width:20%;">
                                 <span class="badge badge-info">${p.workType}</span>
@@ -1190,13 +2633,11 @@
 
                           <div class="mt-5" style="text-align: right;">
                             <i class="far fa-comment-dots mr-1"></i><label>${p.replyNum}</label>
-                            <i class="far fa-heart mr-1"></i><label>${p.likeNum}</label>
+                            <i class="far fa-heart mr-1"></i><label class="likeNum">${p.likeNum}</label>
                           </div>
                         </div>
                       </div>
                       
-
-
                     </div>
                    
                   </div>
@@ -1204,74 +2645,128 @@
                 </div>
               </div>
 
-
-
             </div>
             </c:forEach>
-            
-            <c:choose>
-            <c:when test="${empty loginUser}">
-            <script>
-            $(function(){
-                $(".heart").click(function(){
-              	  
-              		location.href="loginpage.do";
-                });
-              });
-            
-            </script>
-            </c:when>
-            <c:when test="${not empty loginUser}">
-             <script>
-              //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
-                                        
-                $(function(){
-                  $(".heart").click(function(){
-                	  
-                	var pId=$(this).parent().find("input[type='hidden']").val();
-                	var memId=4;//나중에 세션에서 가져와야 해  
-                	  
-                    if($(this).hasClass("liked")){
-                      $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
-                      $(this).removeClass("liked");
-                 
-                      
-                    }else{
-                      $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-                      $(this).addClass("liked");
-                      
-                      $.ajax({
-              			
-              			url:"addLikeProject.do",
-              			data:{pId:pId,memId:memId},
-              			success:function(data){
-              				if(data=="success"){
-          						alert("관심 등록 되었습니다.")
-              				}
-              			},
-              			error:function(request, status, errorData){
-                              alert("error code: " + request.status + "\n"
-                                      +"message: " + request.responseText
-                                      +"error: " + errorData);
-                             }  
-              			
-              		})
-                      
-                    }
-                  });
-                });
-              
-              
-              </script>
-            </c:when>
-            </c:choose>
-           
-                         
             
             <!-- Project list row 끝-->
 
           </section>
           <!--Section: Block Content project list 끝-->
+          
+           <c:choose>
+            <c:when test="${empty loginUser}">
+            <script>
+           
+            
+            $(document).on("click",".heart",function(){
+            	
+                	  
+              		location.href="loginpage.do";
+               
+            })
+            
+            
+            </script>
+            </c:when>
+            <c:when test="${not empty loginUser}">
+            <script>
+              //찜하기 버튼 스크립트 +나중에 관심 프로젝트에 추가하는거 넣자
+                                        
+               
+              
+              $(document).on("click",".heart",function(){
+            	  
+              	var pId=$(this).parent().find("input[name='pId']").val();
+              	var lId=$(this).parent().find("input[name='likeId']").val();
+            	var memId="${loginUser.memId}";
+            	
+            	if(memId==""){
+            		//로그인 안 된 상태
+            		location.href="loginpage.do";
+            	}else{
+            	
+            		//로그인이 되었다.
+            	
+                if($(this).hasClass("liked")){
+                	//관심등록 취소
+                  $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
+                  $(this).removeClass("liked");
+                  
+                  
+                  $.ajax({
+            			
+            			url:"deleteLikeProject.do",
+            			data:{lId:lId},
+            			success:function(data){
+            				if(data=="success"){
+        						alert("관심 프로젝트 목록에서 삭제 되었습니다.")
+        						
+        						usingFilter();
+        						
+            				}
+            			},
+            			error:function(request, status, errorData){
+                            alert("error code: " + request.status + "\n"
+                                    +"message: " + request.responseText
+                                    +"error: " + errorData);
+                           }  
+            			
+            		})
+             
+                  
+                }else{
+                	
+                	//관심 등록
+                  $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+                  $(this).addClass("liked");
+                  
+                  $.ajax({
+          			
+          			url:"addLikeProject.do",
+          			data:{pId:pId,memId:memId},
+          			success:function(data){
+          				if(data=="success"){
+      						alert("관심 프로젝트로 등록 되었습니다.")
+      						
+      						usingFilter();
+    						
+          				}
+          			},
+          			error:function(request, status, errorData){
+                          alert("error code: " + request.status + "\n"
+                                  +"message: " + request.responseText
+                                  +"error: " + errorData);
+                         }  
+          			
+          		})
+                  
+                }
+                
+            	}
+            	  
+              })
+              
+              
+              </script>
+        
+            </c:when>
+            </c:choose>
+            
+            <script>
+            
+            $(document).on("click",".projectTitle",function(){
+            	
+            	var pId=$(this).parent().parent().find("input").val();
+            	var mCate=$(this).parents(".card-body").find(".mCate").text();
+            	var dCate=$(this).parents(".card-body").find(".dCate").text();
+            	var page=${pi.currentPage};
+            	
+            	location.href="searchProjectDetail.do?id="+pId+"&page="+page+"&mCategory="+mCate+"$dCategory="+dCate;
+            	
+            })
+            
+            </script>
+           
 
           <!-- Section: Block Content 하단 페이지네이션 시작 -->
           <section class="mt-5 mb-5" id="pagination">
@@ -1288,6 +2783,7 @@
                     <c:if test="${pi.currentPage gt 1}">
                     <c:url var="plistBack" value="searchProjectList.do">
                     	<c:param name="page" value="${pi.currentPage-1}"/>
+                    	<c:param name="filter" value="${filter}"/>
                     </c:url>
                     <li class="page-item"><a class="page-link" href="${plistBack}"><i class="fas fa-chevron-left"></i></a></li>
                     </c:if>
@@ -1299,6 +2795,7 @@
                     <c:if test="${pi.currentPage ne pn}">
                     <c:url var="plistCheck" value="searchProjectList.do">
                     <c:param name="page" value="${pn}"/>
+                    <c:param name="filter" value="${filter}"/>
                     </c:url>
                     <li class="page-item"><a class="page-link" href="${plistCheck}">${pn}</a></li>
                     </c:if>
@@ -1310,6 +2807,7 @@
                   	<c:if test="${pi.currentPage lt pi.maxPage}">
                   	<c:url var="plistFront" value="searchProjectList.do">
                     	<c:param name="page" value="${pi.currentPage+1}"/>
+                    	<c:param name="filter" value="${filter}"/>
                     </c:url>
                     <li class="page-item"><a class="page-link" href="${plistFront}"><i class="fas fa-chevron-right"></i></a></li>
                   	</c:if>
@@ -1320,6 +2818,32 @@
 
           </section>
           <!-- Section: Block Content 페이지 네이션 끝 -->
+          
+          <script>
+          //ajax로 붙인 페이지 네이션 조작하기
+          
+          $(document).on("click",".goBack",function(){
+        	  var page=${pi.currentPage}-1;
+        	  console.log("뒤로 가줘"+page);
+        	  location.href="searchProjectList.do?page="+page;
+        	 
+          })
+          
+           $(document).on("click",".goFront",function(){
+        	  var page=${pi.currentPage}+1;
+        	  console.log("앞으로 가줘"+page);
+        	  location.href="searchProjectList.do?page="+page;
+          })
+          
+           $(document).on("click",".goThisNum",function(){
+        	  var page=$(this).text();
+        	  console.log("이 숫자로 가줘"+page);
+        	  location.href="searchProjectList.do?page="+page;
+          })
+          
+          
+          
+          </script>
 
         </div>
         <!-- 프로젝트 리스트 column 끝-->

@@ -391,11 +391,11 @@
                                   </table>
                                 </div>
                                 <div class="col-md-3">
-                                  <div class="applyCancel" onclick="cancelation(${apply.aId});"><i class="fas fa-times float-right">삭제</i></div>
+                                  <c:set var="aId" value="${apply.aId}" />
+                                  <div class="applyCancel" onclick="cancelation(${aId});"><i class="fas fa-times float-right">삭제</i></div>
                                   <button type="button" class="btn btn-info btn-block" onclick="location.href='${pdetail}'">상세보기</button>
-                                  <c:set var="aId" value="${apply.aId}"/>
-                                  <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal" data-target="#${aId}Modal">지원서보기</button>
-                                  <button type="button" class="btn btn-danger btn-block" onclick="cancelation(${apply.aId});">지원취소</button>
+                                  <button type="button" class="btn btn-outline-info btn-block" onclick="popApplyModal(${aId})">지원서보기</button>
+                                  <button type="button" class="btn btn-danger btn-block" onclick="cancelation(${aId});">지원취소</button>
                                 </div>
                               </div>
                             </div>
@@ -404,9 +404,177 @@
                     
                 </div>
                 
-          <!--지원서 모달 시작-->
+			</c:forEach>
+            </div>
+          </section>
+           <!--Section: Block Content 프로젝트 리스트 끝-->
+           
+           <script>
+           //지원서 보기 클릭 시 모달에 내용을 채워넣어야 한다.
+          
+           
+           function popApplyModal(aId){
+        	   
+        	   var aId=aId;
+        	   
+        	   var aPayment;
+        	   var aDuration;
+        	   var aContent;
+        	   
+        	   
+        	   var originalResume;
+        	   var reNameResume;
+        	   var answer;
+        	   var portfolio;
+        	   
+        	   var $qnaDiv=$("#applyQnA");
+        	   
+        	   var $question=$("<div>").addClass("applyQuestion");
+        	   var $icon=$("<i>").addClass("fas fa-question float-left mt-1").css("color","#2793F2");
+        	   var $p=$("<p>");
+        	   
+        	   var $answer=$("<div>").addClass("applyAnswer");
+        	   var $textarea=$("<textarea>").attr("maxlength","10").attr("rows","3").addClass("form-control apply_answer_textarea").css("width","100%").attr("readonly",true).attr("name","aaContent")
+        	   var $br=$("<br both='clear'>")
+        	   
+        	   
+        	   var $pofoDiv=$("#pofoDiv");
+        	   var $portList=$("#portList");
+        	   var $ul=$("<ul>");
+        	   var $li=$("<li>");
+        	   
+        	   var $resumeList=$("#resumeList");
+        	   var $rul=$("<ul>");
+        	   var $rli=$("<li>");
+        	   var $rp=$("<p>");
+        	   var $ra=$("<a>")
+        	  	 
+        	   
+        	   <c:forEach items="${apply}" var="a">
+        	   
+        	  if(${a.aId}==aId){
+        		  
+        		  aPayment=${a.aPayment};
+        		  aDuration=${a.aDuration};
+        		  aContent="${a.aContent}";
+        		  originalResume="${a.originalResume}";
+        		  reNameResume="${a.reNameResume}";
+        		  answer="${a.answer}";//배열
+        		  portfolio="${a.portfolio}";//배열
+        		  
+        		  $("#nego_price_input").val(aPayment);
+        		  $("#duration").val(aDuration);
+        		  $("#apply_textarea").val(aContent);
+        		  
+        		  $qnaDiv.html("");
+        		  
+        		 <c:if test="${not empty a.answer}">
+        		 	
+        		 //answer가 있다면,
+        		 <c:forEach items="${a.answer}" var="an">
+        		 
+        		 $p.text("${an.aqContent}");
+        		 $question.append($icon);
+        		 $question.append($p);
+        		 
+        		 $textarea.val("${an.aaContent}");
+        		 $answer.append($textarea);
+        		 $qnaDiv.append($question);
+        		 $qnaDiv.append($answer);
+        		 $qnaDiv.append($br);
+        		 
+        		 
+        		 </c:forEach>
+        		 
+        		 
+        		 
+        		 </c:if>
+        		 
+        		 //answer가 없다면
+        		 <c:if test="${empty a.answer}">
+        		 $p.text("등록된 질문과 답변이 없습니다.");
+         		 $qnaDiv.append($p);
+         		  
+        		 </c:if>
+        		 
+        		 $portList.html("");
+        		 
+        		 
+        		 <c:if test="${not empty a.portfolio}">
+        		 
+        		 //포트폴리오가 있다면,
+        		 //리스트 출력 + 추후에 포트폴리오 디테일로 연결되도록 추가
+        		 <c:forEach items="${a.portfolio}" var="po">
+        		 
+        		 $span1=$("<span>").text("${po.portfolio.portName}");
+        		 $span2=$("<span>").text("참여도:${po.portfolio.portJoin}");
+        		 $span3=$("<span>").text("기간:${po.portfolio.startDate}~${[po.portfolio.endDate]}")
+        		 
+        		 $li.append($span1);
+        		 $li.append($span2);
+        		 $li.append($span3);
+        		 $ul.append($li);
+        		 
+        		 </c:forEach>
+        		 
+        		 $portList.append($ul);
+        		 $("#portfolio_describe_textarea").val("${a.portfolio[0].apContent}");
+        		 
+        		 
+        		 </c:if>
+        		 
+				<c:if test="${empty a.portfolio}">
+        		 
+        		 //포트폴리오가 없다면,
+        		 $pofoDiv.html("");
+        		 $row=$("<div>").addClass("row");
+      			 $col=$("<div>").addClass("col-md-12");
+      			 $label=$("<label>").text("제출한 포트폴리오가 없습니다.");
+        		 
+      			 $col.append($label);
+      			 $row.append($col);
+      			 $pofoDiv.append($row);
+        		 
+        		 </c:if>
+        		 
+        		 $resumeList.html("");
+        		 
+        		 //이력서가 있다면,
+        		 <c:if test="${not empty a.originalResume}">
+        		 
+        		 $ra.attr("href","DeVenue/resources/resume/${a.reNameResume}").attr("download","${a.originalResume}").text("${a.originalResume}");
+        		 $rli.append($ra);
+        		 $rul.append($rli);
+        		 $resumeList.append($rul);
+        		 
+        		 </c:if>
+        		 
+        		 //이력서가 없다면
+        		 <c:if test="${empty a.originalResume}">
+        		 
+        		 $rp.text("제출한 이력서가 없습니다.");
+        		 $resumeList.append($rp);
+        		 
+        		 
+        		 </c:if>
+        		  
+        		  
+        	  }
+        	  
+        	  
+        	 
+        	   </c:forEach>
+        	  
+        	   $('#applyModal').modal('show');
+        	   
+           };
+           
+           
+           </script>
+           
+            <!--지원서 모달 시작-->
           <!-- Modal -->
-          <div class="modal fade" id="${apply.aId}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -431,8 +599,8 @@
                                         <span class="input-group-text" id="basic-addon1"><i
                                                 class="fas fa-won-sign"></i></span>
                                     </div>
-                                    <input type="text" class="form-control"
-                                         aria-label="Username" readonly value="${apply.aPayment}"
+                                    <input id="nego_price_input" type="text" class="form-control"
+                                         aria-label="Username" readonly 
                                         aria-describedby="basic-addon1">
                                    
                                 </div>
@@ -448,7 +616,7 @@
                             <h5>지원 기간</h5>
                            
                             <div id="calendarDisplay">
-                                <input type="text" class="form-control" readonly value="${apply.aDuration}">
+                                <input id="duration" type="text" class="form-control" readonly>
                             </div>
                           
                         </div>
@@ -461,28 +629,18 @@
                                 	이메일, 전화번호 등을 게시해 직거래를 유도하는 경우 서비스 이용에 제재를 받을 수 있습니다.</p>
                             <div>
                                 <textarea id="apply_textarea" rows="10" class="form-control"
-                                    style="width: 100%;" readonly>${apply.aContent}</textarea>
+                                    style="width: 100%;" readonly></textarea>
                             </div>
                         </div>
                         <!--지원 내용 끝-->
 
                         <!--지원 전 질문 시작-->
-                        <div class="mt-5 mb-5 col-md-12" style="width:100%;">
+                        <div class="mt-5 col-md-12" style="width:100%;">
                             <h5>지원 전 질문</h5>
                             
-                            <c:forEach items="${apply.answer}" var="a">
-                                <div class="mt-4 applyQuestion">
-				                	<i class="fas fa-question float-left mt-1" style="color: #2793F2;"></i>
-				                	<p>${a.aqContent}</p>
-				  
+                            	<div id="applyQnA">
+                                
 				                </div>
-				                	
-				                <div class="applyAnswer">
-                                    <textarea id="${a.aaId}" maxlength="10" rows="3" class="form-control apply_answer_textarea" style="width: 100%;" required readonly name="aaContent">${a.aaContent}</textarea>
-                                    
-                                </div>
-								<br both="clear">
-				                </c:forEach>
 
                         </div>
                         
@@ -492,19 +650,14 @@
                         <div class="mt-5 mb-5 col-md-12" style="width:100%;">
                             <h5>포트폴리오</h5>
                             
-                            <!--포트폴리오 존재 시,-->
+                            
                             <div class="row" id="portfolio_upload_detail">
-                            	<c:if test="${not empty apply.portfolio}">
-                                <div class="col-md-12">
+                            	
+                                <div class="col-md-12" id="pofoDiv">
                                
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <ul>
-                                            <c:forEach items="${apply.portfolio}" var="pf">
-                                              <li>${pf.portfolio.portName}/참여도:${pf.portfolio.portJoin}/기간:${pf.portfolio.startDate}~${pf.portfolio.endDate}</li>
-                                            </c:forEach>
-                                              
-                                            </ul>
+                                        <div class="col-md-12" id="portList">
+                                            
                                         </div>
                                     </div>
                                     <div class="row">
@@ -512,20 +665,13 @@
                                             <h6>관련 포트폴리오 설명</h6>
                                             <div>
                                                 <textarea id="portfolio_describe_textarea" class="form-control"
-                                                    rows="10" maxlength="2000" readonly>${apply.portfolio[0].apContent}</textarea>
+                                                    rows="10" maxlength="2000" readonly></textarea>
                                                 
                                             </div>
                                         </div>
                                     </div>
-
-                                </div>
-                                </c:if>
-                                <c:if test="${empty apply.portfolio}">
-                                <div class="col-md-12">
-                                <p>포트폴리오를 제출하지 않았습니다.</p>
                                 </div>
                                 
-                                </c:if>
                             </div>
                             
                         </div>
@@ -535,23 +681,13 @@
                         <!--이력서-->
                         <div class="mt-5 mb-5 col-md-12" style="width:100%;">
                             <h5>이력서(경력기술서)</h5>
-							<c:if test="${not empty apply.originalResume}">
+							
                             <div class="row">
-                                <div class="col-md-12">
-                                  <ul>
-                                    <li><a href="${contextPath}/resources/resume/${apply.reNameResume}"
-                                    download="${apply.originalResume}">${apply.originalResume}</a></li>
-                                  </ul>
+                                <div class="col-md-12" id="resumeList">
+                                 
                                 </div>
                             </div>
-                            </c:if>
-                            <c:if test="${empty apply.originalResume}">
-                            <div class="row">
-                            	<div class="col-md-12">
-                            	<p>이력서를 제출하지 않았습니다.</p>
-                            	</div>
-                            </div>
-                            </c:if>
+                            
                             </div>
          				</div>
                 <!--지원 양식 끝-->
@@ -564,10 +700,6 @@
             </div>
           </div>
           <!--지원서 모달 끝-->
-			</c:forEach>
-            </div>
-          </section>
-           <!--Section: Block Content 프로젝트 리스트 끝-->
          
           <script>
           	//지원 취소 관련
