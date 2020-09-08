@@ -1056,14 +1056,14 @@
 	<select id="isAnswerExist" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM P_ANSWER
-		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{each.aqId}
 	</select>
 	
 	<update id="updateTempAnswer" parameterType="hashmap">
 		UPDATE P_ANSWER
-		SET PRO_AA_CONTENT=#{answer.aaContent},
+		SET PRO_AA_CONTENT=#{each.aaContent},
 		PRO_AAC_DATE=SYSDATE
-		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{each.aqId}
 	</update>
 	
 	<select id="isPofoExist" parameterType="hashmap" resultType="_int">
@@ -1088,7 +1088,6 @@
 	(#{aaId},#{aaContent},SYSDATE,#{aId},#{aqId})
 	
 	</insert>
-	
 	
 	<insert id="insertTempPofo" parameterType="ApplyPF">
 	

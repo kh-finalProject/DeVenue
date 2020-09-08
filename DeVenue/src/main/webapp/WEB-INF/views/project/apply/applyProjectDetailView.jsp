@@ -2004,10 +2004,10 @@
 								
 								
 								var aaContent=[];
-								var answer=$("input[name='aaContent']");
+								var answer=$(".apply_answer_textarea");
 								
 								
-								if(answer.length!=0){
+								if(answer!=null){
 								
 								for(var a=0;a<answer.length;a++){
 									aaContent.push(answer[a].value);
@@ -2018,7 +2018,7 @@
 								var port=$("input[name='portId']");
 								
 								
-								if(port.length!=0){
+								if(port!=null){
 								for(var i=0;i<port.length;i++){
 									portId.push(port[i].value);
 								}
@@ -2069,6 +2069,10 @@
 								form.append("resume",resume);
 								}
 								
+								console.log("aaContent"+aaContent);
+								console.log("aqId"+aqId);
+								console.log("portId"+portId);
+								
 								$.ajax({
 									url:"saveTempApplication.do",
 									type:"post",
@@ -2094,7 +2098,7 @@
 								})
 								
 							
-							}, 30000);
+							}, 10000);
 					})
                     </script>
                     <!--지원 양식 끝-->

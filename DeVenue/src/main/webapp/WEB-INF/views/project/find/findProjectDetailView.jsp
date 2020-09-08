@@ -1801,9 +1801,10 @@
         						tempId=data.tempId;
         						agree=confirm("임시저장된 지원서가 있습니다. 계속 작성하시겠습니까?");
         						
-        						console.log("동의여부?"+agree);
         						if(agree){
         							location.href="loadTempApplication.do?pId="+pId+"&aId"+tempId;
+        							return;
+        							
         						}else{
         							return;
         						}
