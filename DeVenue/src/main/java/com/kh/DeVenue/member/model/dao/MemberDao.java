@@ -17,12 +17,10 @@ import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.util.model.vo.MemChatSet;
-
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
-
 
 @Repository("mDao")
 public class MemberDao {
@@ -64,16 +62,15 @@ public class MemberDao {
 	}
 
 
-//	public ArrayList<FindClient> selectList(PageInfo pi) {
-//		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-//		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-//		
-//		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
-//	}
-	public ArrayList<FindClient> selectList() {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList");
+	public ArrayList<FindClient> selectList(PageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
 	}
-
+//	public ArrayList<FindClient> selectList() {
+//		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList");
+//	}
 
 	public int insertPartInfo(PartInfo partInfo) {
 		
@@ -92,8 +89,11 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.getCPevalCount", cId);
 	}
 
-	public ArrayList<CPeval> selectCPeval(Integer cId) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectCPeval", cId);
+	public ArrayList<CPeval> selectCPeval(Integer cId, PageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectCPeval", cId, rowBounds);
 	}
 
 	public FCeval getFCeval(Integer cId) {
@@ -106,6 +106,10 @@ public class MemberDao {
 
 	public ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id) {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.getMatchingPartners", id);
+	}
+
+	public int insertEval(HashMap id) {
+		return sqlSessionTemplate.insert("memberMapper.insertEval", id);
 	}
 
 	public Member selectMemberId(Member mEmail) {
@@ -128,7 +132,31 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.memberemail", email);
 	}
 
+	public int getListCount(String memNick) {
+		return sqlSessionTemplate.selectOne("memberMapper.countClientList", memNick);
+	}
 
+	public ArrayList<FindClient> selectList(PageInfo pi, String memNick) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.searchMemNickClientList", memNick, rowBounds);
+	}
+
+	public int getListCount2(String introduction) {
+		return sqlSessionTemplate.selectOne("memberMapper.countClientList2", introduction);
+	}
 	
+	public ArrayList<FindClient> selectList2(PageInfo pi, String introduction) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.searchIntroductionClientList", introduction, rowBounds);
+	}
+	
+	public int insertIden(int memId) {
+		
+		return sqlSessionTemplate.insert("memberAccountMapper.signInsert", memId);
 
+	}
 }

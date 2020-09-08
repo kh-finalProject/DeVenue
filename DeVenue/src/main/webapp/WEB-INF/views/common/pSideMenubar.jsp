@@ -139,7 +139,7 @@
 			<div id="subAccountMenu" class="myPage_sideNav_serveC">
 				<div id="clientComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">기본 정보 수정</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoIdentityVerification.do'">신원 인증</div>
-				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">날인 방법 관리</div>
+				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoSignatureList.do'">날인 방법 관리</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountChangePwd.do'">비밀번호 변경</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/outOfMember.do'">회원 탈퇴</div>
 			</div>
@@ -169,7 +169,11 @@
 						}
 					});
 				});
-
+				
+				// 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
+		        $(function(){
+			        $('.myPage_sideNav_area').height($('.allWrap').height());
+		        })
 			</script>
 		</div>
 	</div>

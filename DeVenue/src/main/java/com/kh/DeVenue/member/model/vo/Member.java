@@ -15,7 +15,6 @@ public class Member implements Serializable {
 	private static final long serialVersionUID = -6563273375076952851L;
 
 
-
 	private int memId; // 회원 기본키
 	private String userType; // 사용자 분류
 	private String memType; // 회원 형태
@@ -26,8 +25,8 @@ public class Member implements Serializable {
 	private String address1; // 회원 우편번호
 	private String address2; // 화원 주소
 	private String address3; // 회원 상세주소
-	private int phone; // 회원 전화번호
-	private int cellPhone; // 회원 핸드폰번호
+	private String phone; // 회원 전화번호
+	private String cellPhone; // 회원 핸드폰번호
 	private int faxNo; // 회원 팩스번호
 	private String taxEmail; // 세금관리용 이메일
 	private int decCount; // 신고 당한 횟수
@@ -41,12 +40,13 @@ public class Member implements Serializable {
 	private ArrayList<ProjectLike> likeList;//관심 프로젝트 리스트
 	private ArrayList<ProjectList> applyList;// 지원 프로젝트 리스트
 
+
 	public Member() {
 		super();
 	}
 
 	public Member(int memId, String userType, String memType, String memEmail, String memNick, String memName,
-			String memPwd, String address1, String address2, String address3, int phone, int cellPhone, int faxNo,
+			String memPwd, String address1, String address2, String address3, String phone, String cellPhone, int faxNo,
 			String taxEmail, int decCount, String memAction, String isAdvertise, Date memCreateDate, Date memModifyDate,
 			String memStatus, String memTypeName, ArrayList<Signature> sigs, ArrayList<ProjectLike> likeList,
 			ArrayList<ProjectList> applyList) {
@@ -78,7 +78,6 @@ public class Member implements Serializable {
 	}
 
 
-
 	// 로그인용
 	public Member(String memEmail, String memPwd) {
 		super();
@@ -88,7 +87,7 @@ public class Member implements Serializable {
 
 	// 회원가입용
 	public Member(String userType, String memType, String memEmail, String memNick, String memName, String memPwd,
-			String address1, String address2, String address3, int phone) {
+			String address1, String address2, String address3, String cellPhone) {
 		super();
 		this.userType = userType;
 		this.memType = memType;
@@ -99,7 +98,7 @@ public class Member implements Serializable {
 		this.address1 = address1;
 		this.address2 = address2;
 		this.address3 = address3;
-		this.phone = phone;
+		this.cellPhone = cellPhone;
 	}
 	
 	// 이메일로 memId를 검색해옴
@@ -189,19 +188,19 @@ public class Member implements Serializable {
 		this.address3 = address3;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
-	public int getCellPhone() {
+	public String getCellPhone() {
 		return cellPhone;
 	}
 
-	public void setCellphone(int cellPhone) {
+	public void setCellphone(String cellPhone) {
 		this.cellPhone = cellPhone;
 	}
 

@@ -177,10 +177,9 @@
 	<!-- 메인 메뉴바 -->
    	<jsp:include page="../common/menubar.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
-    <!-- Section -->
-    <div>
 	<!-- 마이페이지 사이드 메뉴바 -->
 	<jsp:include page="../common/pSideMenubar.jsp"/>
+    <!-- Section -->
     <div class="allWrap">
         <div class="password_change_title">
             <div>비밀번호 변경</div>
@@ -262,7 +261,8 @@
             </form>
         </div>
     </div>
-</div>
+	<!-- 풋터 가져오기  -->
+    <jsp:include page="../common/footer.jsp"/>
    
 	<script>
 		// !!정규표현식은 상의해서 8자~32자 이하의 아무 문자로 하자

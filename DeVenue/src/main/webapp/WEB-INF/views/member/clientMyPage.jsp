@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,9 +31,13 @@
 	<div class="container">
 		<div class="row text-white"
 			style="border-bottom: 1px solid lightgray;">
-			<div class="col-2" style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-				마이페이지
-			</div>
+			<div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+		      <c:url var="clientProfile" value="clientProfile.do">
+		      	<c:param name="cId" value="${loginUser.memId }"/>
+		      </c:url>
+		      
+		        <p href="${clientProfile }">마이페이지</p>
+		      </div>
 		</div>
 
 		<div class="row">
@@ -77,13 +83,13 @@
 			            });
 			
 			            $("#clientInfo").on("click", function () {
-			              location.href = "clientInfo.jsp";
+			              location.href = "clientInfo.do?cId=${loginUser.memId}";
 			            }).on("mouseenter", function () {
 			
 			            });
 			
 			            $("#projectHistory").on("click", function () {
-			              location.href = "projectHistory.jsp";
+			              location.href = "cMyPageProjectHistory.do?cId=${loginUser.memId}";
 			            });
 			
 			
@@ -106,7 +112,7 @@
 							<tr>
 								<td>
 									<div class="image-profile">
-										<img src="${contextPath }/resources/images/showcase.jpg" style="object-fit: cover; width: 100px;">
+										<img src="${contextPath }/resources/proImg/${ph.proImg}" style="object-fit: cover; width: 100px;">
 									</div>
 								</td>
 								<td>&emsp;&emsp;</td>
@@ -118,21 +124,25 @@
 									&emsp;<i class="fas fa-phone-alt"></i>연락처등록<br> -->
 									
 									${loginUser.memNick }&emsp;
-									<a class="badge badge-info">${loginUser.memType}</a><br>
+									<a class="badge badge-info">${ph.memTypeKind}</a><br>
 									<p>${loginUser.memEmail }</p>
-									<i class="far fa-address-card"></i>&nbsp;신원인증
-									&emsp;<i class="fas fa-phone-alt"></i>연락처등록<br>
+									<c:if test="${ph.ideStatus eq 'COMPLETE' }">
+			                        <i class="far fa-address-card"></i>&nbsp;신원인증
+			                        </c:if>
+			                        <c:if test="${!empty ph.phone }">
+			                        &emsp;<i class="fas fa-phone-alt"></i>연락처등록<br>
+			                        </c:if>
 								</td>
 							</tr>
 							<tr>
 								<td><br>등록한 프로젝트</td>
 								<td></td>
-								<td style="padding-left: 25%"><br>22</td>
+								<td style="padding-left: 25%"><br>${ph.addProject }</td>
 							</tr>
 							<tr>
 								<td><br>계약한 프로젝트</td>
 								<td></td>
-								<td style="padding-left: 25%"><br>10</td>
+								<td style="padding-left: 25%"><br>${ph.stopProject+ph.ingProject }</td>
 							</tr>
 						</table>
 
@@ -154,14 +164,31 @@
 								</tr>
 							</thead>
 							<tbody>
+							<c:forEach var="s" items="${suggest }" begin="0" end="4" varStatus="status">
 								<tr>
-									<td>p01</td>
-									<td>개발자</td>
-									<td>개인</td>
-									<td>신입</td>
-									<td>위시켓</td>
+									<td>${s.memNick }</td>
+									<td>${s.mcType }</td>
+									<td>${s.memTypeKind }</td>
+									<td>
+										<c:choose>
+											<c:when test="${s.career >= 1 && s.career <= 36  }">
+												신입
+											</c:when>
+											<c:when test="${s.career >= 37 && s.career <= 60  }">
+												3년 이상
+											</c:when>
+											<c:when test="${s.career >= 61 && s.career <= 120  }">
+												5년 이상
+											</c:when>
+											<c:when test="${s.career >= 121 }">
+												10년 이상
+											</c:when>
+										</c:choose>
+									</td>
+									<td>${s.proName }</td>
 								</tr>
-								<tr>
+							</c:forEach>
+								<!-- <tr>
 									<td>p02</td>
 									<td>웹 디자이너</td>
 									<td>팀</td>
@@ -188,7 +215,7 @@
 									<td>개인</td>
 									<td>신입</td>
 									<td>위시켓</td>
-								</tr>
+								</tr> -->
 							</tbody>
 						</table>
 					</div>
@@ -214,7 +241,21 @@
 										<th>예상 마감일</th>
 										<th>참여 파트너스 수</th>
 									</tr>
-									<tr>
+									<c:forEach var="p" items="${process }" begin="0" end="4" varStatus="status"> 
+										<tr>
+										<td>${p.proName }</td>
+										<td>
+											<a class="badge badge-info">${p.mcType }</a>
+											&nbsp;/
+											<a class="badge badge-info">${p.dcType }</a>
+										</td>
+										<td><fmt:formatNumber value="${p.proPayment }" type="number" groupingUsed="true"/>원</td>
+										<td>${p.proStartDate }</td>
+										<td>${p.proEndDate }</td>
+										<td>4명</td>
+									</tr>
+									</c:forEach>
+									<!-- <tr>
 										<td>miniProject 유지보수</td>
 										<td>
 											<a class="badge badge-info">개인</a>
@@ -261,7 +302,7 @@
 										<td>2020-07-07</td>
 										<td>2020-09-14</td>
 										<td>2명</td>
-									</tr>
+									</tr> -->
 								</table>
 							</div>
 						</div>

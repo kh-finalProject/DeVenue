@@ -14,14 +14,11 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
-
-
+import com.kh.DeVenue.util.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
-import com.kh.DeVenue.util.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.PageInfo;
-
 
 @Service("mService")
 
@@ -34,12 +31,9 @@ public class MemberServiceImpl implements MemberService{
 	public Member loginUserMember(Member m) {
 		
 		return mDao.loginMember(m);
-
 	}
 	
-
 	@Override
-
 	public int insertMember(Member m) {
 		
 		return mDao.insertMember(m);
@@ -62,20 +56,20 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.insertProfile(memId);
 	}
 
-
+	
 	public int getListCount() {
 		
 		return mDao.getListCount();
 	}
 
-//	@Override
-//	public ArrayList<FindClient> selectList(PageInfo pi) {
-//		return mDao.selectList(pi);
-//	}
 	@Override
-	public ArrayList<FindClient> selectList() {
-		return mDao.selectList();
+	public ArrayList<FindClient> selectList(PageInfo pi) {
+		return mDao.selectList(pi);
 	}
+//	@Override
+//	public ArrayList<FindClient> selectList() {
+//		return mDao.selectList();
+//	}
 
 	@Override
 	public FindClientDetail selectClientDetail(Integer cId) {
@@ -93,8 +87,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public ArrayList<CPeval> selectCPeval(Integer cId) {
-		return mDao.selectCPeval(cId);
+	public ArrayList<CPeval> selectCPeval(Integer cId, PageInfo pi) {
+		return mDao.selectCPeval(cId, pi);
 	}
 
 	@Override
@@ -111,7 +105,6 @@ public class MemberServiceImpl implements MemberService{
 	public ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id) {
 		return mDao.getMatchingPartners(id);
 	}
-
 
 	@Override
 	public int insertPartInfo(PartInfo partInfo) {
@@ -143,5 +136,35 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.memberemail(email);
 	}
 
-	
+	@Override
+
+	public int insertIden(int memId) {
+		
+		return mDao.insertIden(memId);
+	}
+
+	public int insertEval(HashMap id) {
+		return mDao.insertEval(id);
+	}
+
+	@Override
+	public int getListCount(String memNick) {
+		return mDao.getListCount(memNick);
+	}
+
+	@Override
+	public ArrayList<FindClient> selectList(PageInfo pi, String memNick) {
+		return mDao.selectList(pi, memNick);
+	}
+
+	@Override
+	public int getListCount2(String introduction) {
+		return mDao.getListCount2(introduction);
+	}
+
+	@Override
+	public ArrayList<FindClient> selectList2(PageInfo pi, String introduction) {
+		return mDao.selectList2(pi, introduction);
+	}
+
 }

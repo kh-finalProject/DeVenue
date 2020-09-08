@@ -184,6 +184,8 @@ i {
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
+	
+
 	<c:set var="contextPath"
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
@@ -230,19 +232,14 @@ i {
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do">프로젝트찾기</a>
 				</li>
-				
-				<c:url var="addProject" value="addProject.do">
-						<c:param name="memId" value="${loginUser.memId}"></c:param>
-					</c:url>
-					
 				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center mr-2" href="${addProject}">프로젝트등록</a>
+					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>
 					<div class="dropdown-content">
 						<a href="clientList.do ">클라이언트 찾기</a>
-						<a href="#">파트너스 찾기</a>
+						<a href="partnersList.do">파트너스 찾기</a>
 					</div>
 		        </li>
 			</ul>
@@ -274,22 +271,42 @@ i {
 						</h3>
 					</c:if>
 					<!-- 사용자 로그인 -->
-					<c:if test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
+					<c:if test="${loginUser.userType eq 'UT3'}">
 						<h3 align="right" style="color: white">
 							<c:out value="${loginUser.userType }사용자"/>
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							  <!-- 클라이언트시 기본 이미지 -->
-							  <c:if test="${loginUser.userType eq 'UT3' }">
 							    <img src="${contextPath }/resources/images/client.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
-							  </c:if>
+							  </button>
+							  <div class="dropdown-menu">
+							  	<c:url var="clientProfile" value="clientProfile.do">
+			                    	<c:param name="cId" value="${loginUser.memId }"/>
+			                    </c:url>
+							  
+							    <a href="${clientProfile }" class="dropdown-item">profile</a>
+							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
+							    <div class="dropdown-divider"></div>
+							    <c:url var="logout" value="logout.do"/>
+							    <a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+							  </div>
+							</div>
+						</h3>
+					</c:if>
+					<c:if test="${loginUser.userType eq 'UT4'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }사용자"/>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							  <!-- 파트너스 기본 이미지 -->
 							  <c:if test="${loginUser.userType eq 'UT4' }">
 							    <img src="${contextPath }/resources/images/partners.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
 							  </c:if>
 							  </button>
 							  <div class="dropdown-menu">
-							    <a href="profile.do" class="dropdown-item">profile</a>
+							  <c:url var="partnersProfile" value="partnersProfile.do">
+						      	<c:param name="pId" value="${loginUser.memId }"/>
+						      </c:url>
+							    <a href="${partnersProfile }" class="dropdown-item">profile</a>
 							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>

@@ -5,25 +5,29 @@ import static com.kh.DeVenue.common.Pagination.getPageInfo;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -41,12 +45,14 @@ import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
+import com.kh.DeVenue.project.model.vo.ProjectFilter;
+import com.kh.DeVenue.project.model.vo.ProjectLike;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.ProjectSearch;
 import com.kh.DeVenue.project.model.vo.Reply;
 import com.kh.DeVenue.project.model.vo.Tech;
 
-import net.sf.json.JSONObject;
 
 @Controller
 public class ProjectController {
@@ -541,47 +547,35 @@ ProjectService pService;
 		return "project/extendProjectList";
 	}
 	
-	@RequestMapping("searchProjectList.do")
-	public ModelAndView projectList(ModelAndView mv, @RequestParam(value="page",required=false) Integer page) {
-	
-		//페이지네이션 처리
-		int currentPage=1;
+	@RequestMapping(value="searchProjectDetail.do")
+	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="page", required=false) Integer page) {
 		
-		if(page!=null) {
-			currentPage=page;
-		}
+		System.out.println("parameter 뭐 넘어왔나?"+project);
+		//프로젝트 디테일 가져오기
 		
-		//페이징 처리를 위해 게시물 수 알아오기
-		int listCount=pService.getListCount();
+		ProjectDetail detail=pService.selectProjectDetail(project.getId());
 		
-		//현재페이지+전체 게시물 수>>페이지네이션 정보 추출
-		PageInfo pi=getPageInfo(currentPage, listCount);
+		// 클라이언트의 전체 프로젝트 수 
+		ProjectDetail number=pService.selectAllNumber(detail.getProject().getMemId());
+		detail.setAllProject(number.getAllProject());
+		detail.setProcessProject(number.getProcessProject());
+		detail.setCompleteProject(number.getCompleteProject());
+		detail.setTotal(number.getTotal());
+		detail.setEvalCount(number.getEvalCount());
 		
+		System.out.println("화면단 가기 전, 프로젝트 디테일:"+detail);
 		
-		//게시물 가져오기
-		ArrayList<ProjectList> list=pService.selectProjectList(pi);
+		//추천 프로젝트 리스트 가져오기
+		ArrayList<ProjectList> candidate=pService.selectRecommend(project);
+		System.out.println("화면단 가기 전, 추천 프로젝트 리스트"+candidate);
 		
-		System.out.println("화면단 가기 전, 프로젝트 페이지네이션:"+pi);
-		System.out.println("화면단 가기 전, 프로젝트 리스트:"+list);
-		
-		//프로젝트 기술 가져오기
-		ArrayList<Tech> tech=pService.selectTechList();
-		
-		if(list!=null) {
-			mv.addObject("list",list);
-			mv.addObject("pi", pi);
-			mv.addObject("tech", tech);
-			mv.setViewName("project/find/findProjectListView");
-			
-		}else {
-			throw new ProjectException("프로젝트 전체 조회 실패");
-		}
-	
+		mv.addObject("page",page);
+		mv.addObject("detail", detail);
+		mv.addObject("candidate", candidate);
+		mv.setViewName("project/find/findProjectDetailView");
 		return mv;
 		
 	}
-	
-	
 	
 	@RequestMapping(value="addProjectReply.do", method=RequestMethod.POST)
 	public void insertProjectReply(HttpServletResponse response,@ModelAttribute Reply r, @ModelAttribute Member m) throws IOException {
@@ -737,7 +731,7 @@ ProjectService pService;
 	}
 	
 	@RequestMapping(value = "addLikeProject.do")
-	public void addLikeProject(HttpServletResponse response,@RequestParam(value="pId") Integer pId, @RequestParam(value="memId") Integer memId) throws IOException {
+	public void addLikeProject(HttpServletResponse response,@RequestParam(value="pId", required = false) Integer pId, @RequestParam(value="memId", required = false) Integer memId) throws IOException {
 		
 		
 		int result=0;
@@ -781,7 +775,7 @@ ProjectService pService;
 		PageInfo pi=getPageInfo(currentPage, listCount);
 		
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectList> likeList=pService.selectLikeProject(memId,pi);
+		ArrayList<ProjectLike> likeList=pService.selectLikeProject(memId,pi);
 		
 		System.out.println("화면단 가기전 관심 등록 리스트:"+likeList);
 		
@@ -793,13 +787,23 @@ ProjectService pService;
 	}
 	
 	@RequestMapping(value = "deleteLikeProject.do")
-	public void deleteLikeProject(HttpServletResponse response, @RequestParam(value = "lId") Integer lId) throws IOException {
+	public void deleteLikeProject(HttpServletResponse response, @RequestParam(value = "lId", required=false) Integer lId) throws IOException {
 		
 		System.out.println("관심프로젝트 삭제 전:"+lId);
 		
 		PrintWriter out=response.getWriter();
 		int result=0;
 		result=pService.deleteLikeProject(lId);
+		
+		if(result>0) {
+			out.append("success");
+			out.flush();
+			out.close();
+		}else {
+			out.append("fail");
+			out.flush();
+			out.close();
+		}
 		
 	}
 	
@@ -972,7 +976,6 @@ ProjectService pService;
 		//지원한 프로젝트 리스트 서브메뉴로 이동하기 위해 다른 컨트롤러로 간다.
 		mv.setViewName("redirect:selectApplyProject.do");
 		return mv;
-
 	}
 
 
@@ -1016,7 +1019,7 @@ ProjectService pService;
 		PageInfo pi=getPageInfo(currentPage, listCount);
 				
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectList> applyList=pService.selectApplyProject(memId,pi);
+		ArrayList<Application> applyList=pService.selectApplyProject(memId,pi);
 				
 		System.out.println("화면단 가기전 지원 프로젝트 리스트:"+applyList);
 		
@@ -1295,7 +1298,14 @@ ProjectService pService;
 	
 	
 	@RequestMapping(value="loadTempApplication.do")
-	public ModelAndView loadTempApplication(HttpServletRequest request,ModelAndView mv,@RequestParam(value="pId") Integer pId, @RequestParam(value="aId") Integer aId, @RequestParam(value="page") Integer page) {
+	public ModelAndView loadTempApplication(HttpServletRequest request,ModelAndView mv,@RequestParam(value="pId",required = false) Integer pId, @RequestParam(value="aId",required = false) Integer aId, @RequestParam(value="page", required = false) Integer page) {
+		
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+			}
+		
+		
 		//프로젝트 디테일 정보 가져오기
 		ProjectDetail detail=pService.selectProjectDetail(pId);
 				
@@ -1311,7 +1321,7 @@ ProjectService pService;
 		Application application=pService.selectTempApplication(aId);
 		mv.addObject("app", application);
 				
-		mv.addObject("page", page);
+		mv.addObject("page", currentPage);
 		mv.addObject("pofol", pf);
 		
 		
@@ -1320,42 +1330,282 @@ ProjectService pService;
 	
 	
 	@RequestMapping(value = "cancelThisApply.do")
-	public ModelAndView cancelThisApply(ModelAndView mv,
+	public String cancelThisApply(
 			@RequestParam(value="page", required=false) Integer page,
-			@RequestParam(value="aId") Integer aId) {
+			@RequestParam(value="aId") Integer aId,
+			RedirectAttributes redirect) {
 		
 		
 		int result=pService.cancelThisApply(aId);
 		
+		redirect.addAttribute("page", page);
 		
-		mv.addObject("page", page);
-		mv.setViewName("redirect:selectApplyProject.do");
-		return mv;
+		return "redirect:selectApplyProject.do";
 	}
 	
 	
 	@RequestMapping(value = "cancelThisTempApply.do")
-	public ModelAndView cancelThisTempApply(ModelAndView mv,
+	public String cancelThisTempApply(
 			@RequestParam(value="page", required=false) Integer page,
-			@RequestParam(value="aId") Integer aId) {
+			@RequestParam(value="aId") Integer aId,
+			RedirectAttributes redirect) {
 		
 		
 		int result=pService.cancelThisTempApply(aId);
-		mv.addObject("page", page);
-		mv.setViewName("redirect:selectTempApplicationList.do");
 		
-		
-		
+		redirect.addAttribute("page", page);
 		
 		if(result>0) {
 			
-			return mv;
+			return "redirect:selectTempApplicationList.do";
 		}else {
 			throw new ProjectException("임시 저장 지원서 삭제 실패!");
 		}
 		
 	}
 	
+	@RequestMapping(value = "collectFilter.do", method=RequestMethod.POST)
+	@ResponseBody
+	public void collectFilter(
+			@RequestBody ProjectFilter filter,
+			ProjectSearch search,
+			HttpServletResponse response,
+			HttpServletRequest request
+			) throws IOException, ParseException {
+		
+		
+				response.setContentType("application/json;charset=utf-8");
+				
+				if(filter.getCategory()!=null) {
+					search.setCategory(filter.getCategory());
+				}
+				
+				if(filter.getKeyword()!=null) {
+					search.setKeyword(filter.getKeyword());
+				}
+				
+				
+				System.out.println("filter"+filter);
+				
+				
+				if(search!=null) {
+					filter.setSearch(search);
+				}
+				
+				request.getSession().setAttribute("filter", filter);
+				
+			
+				//페이지네이션 처리
+				int currentPage=1;
+				
+				
+				//페이징 처리를 위해 게시물 수 알아오기
+				int listCount=pService.getListCount(filter);
+				
+				System.out.println("필터있는 listCount:"+listCount);
+				
+				//현재페이지+전체 게시물 수>>페이지네이션 정보 추출
+				PageInfo pi=getPageInfo(currentPage, listCount);
+				
+				
+				//게시물 가져오기
+				ArrayList<ProjectList> list=pService.selectProjectList(pi,filter);
+				
+				System.out.println("ajax, 프로젝트 페이지네이션:"+pi);
+				System.out.println("ajax, 프로젝트 리스트:"+list);
+				
+				//프로젝트 기술 가져오기
+				ArrayList<Tech> tech=pService.selectTechList();
+				
+				HashMap pList=new HashMap();
+				pList.put("listCount",listCount);
+				pList.put("list", list);
+				pList.put("tech",tech);
+				pList.put("pi",pi);
+				
+				Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+				gson.toJson(pList, response.getWriter());
+				
+		
+	
+		
+	}
+	
+	
+	@RequestMapping(value = "removeFilter.do")
+	public ModelAndView removeFilter(HttpServletRequest request,ModelAndView mv) {
+		
+		HttpSession session=request.getSession();
+		session.removeAttribute("filter");
+		
+		mv.setViewName("redirect:searchProjectList.do");
+		return mv;
+	}
+	
+	
+	@RequestMapping(value = "checkThisApply.do")
+	public void checkThisApply(HttpServletResponse response, 
+			HttpServletRequest request,
+			@RequestParam(value="pId") Integer pId, 
+			@RequestParam(value="memId") Integer memId) throws JsonIOException, IOException {
+		
+		
+		
+		/*이 지원자를 검증하기 위해 필요한 정보
+		 * 1.이미 지원했는가? P_APPLY 
+		 * 2.신고가 3번 이상인지? MEMBER
+		 * 3.임시저장된 지원서가 있는지? P_APPLY
+		 * 4.날인이 있는지 SIGNATURE
+		 * 5.이미 매칭되어있지는 않은지?
+		 * 
+		 */
+		
+		
+		int applyCount=0;
+		int decCount=0;
+		int tempCount=0;//계속 작성할 수도 있으니까
+		int sigCount=0;
+		int matchCount=0;
+		
+		int tempId=0;
+		
+		HashMap application=new HashMap();
+		application.put("memId", memId);
+		application.put("pId",pId);
+		
+		System.out.println("가기 전 ids"+application);
+		
+		
+		applyCount=pService.checkApplyId(application);
+		decCount=((Member)request.getSession().getAttribute("loginUser")).getDecCount();
+		tempCount=pService.checkTempApplyId(application);
+		
+		if(tempCount>0) {
+			tempId=pService.selectTempId(application);
+		}
+		
+		sigCount=pService.checkSigCount(application);
+		matchCount=pService.checkMatched(application);
+		
+		HashMap result=new HashMap();
+		result.put("applyCount", applyCount);
+		result.put("decCount", decCount);
+		result.put("tempCount", tempCount);
+		result.put("sigCount", sigCount);
+		result.put("matchCount", matchCount);
+		
+		if(tempCount>0) {
+			result.put("tempId", tempId);
+		}
+		
+		Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(result, response.getWriter());
+		
+		
+		
+	}
+	
+	
+	@RequestMapping(value = "ongoingProjectList.do")
+	public ModelAndView ongoingProjectList(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="page", required = false) Integer page) {
+		
+		//세션에서 로그인 유저의 정보를 가져온다.
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+		
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+				}
+		
+		//전체 진행중 프로젝트 수
+		int listCount=pService.getOngoingListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		//진행중 프로젝트 리스트 가져오기
+		ArrayList<ProjectList> ongoing=pService.selectOngoingList(memId,pi);
+		
+		System.out.println("화면단 가기 전 진행중 리스트"+ongoing);
+		
+		mv.addObject("ongoing", ongoing);
+		mv.addObject("pi", pi);
+		mv.setViewName("partnerSubMenu/ongoingProjectView");
+		
+		
+		return mv;
+	}
+	
+	
+	
+	
+	
+	@RequestMapping(value="completeProjectList.do")
+	public ModelAndView completeProjectList(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="page", required = false) Integer page) {
+		
+		
+				//세션에서 로그인 유저의 정보를 가져온다.
+				Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+				int memId=loginUser.getMemId();
+				
+				//페이지네이션
+				int currentPage=1;
+				if(page!=null) {
+					currentPage=page;
+						}
+				
+				//전체 종료 프로젝트 리스트 수
+				int listCount=pService.getCompleteListCount(memId);
+				PageInfo pi=getPageInfo(currentPage, listCount);
+				
+				//
+				ArrayList<ProjectList> complete=pService.selectCompleteList(memId,pi);
+				
+				System.out.println("화면단 가기 전 완료 프로젝트"+complete);
+				
+				mv.addObject("complete", complete);
+				mv.addObject("pi", pi);
+				mv.setViewName("partnerSubMenu/completeProjectView");
+				
+		return mv;
+		
+	}
+	
+	
+	@RequestMapping(value="suggestProjectList.do")
+	public ModelAndView requestProjectList(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="page", required = false) Integer page) {
+		
+		
+		//세션에서 로그인 유저의 정보를 가져온다.
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+		
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+				}
+		
+		//전체 제안 프로젝트 리스트 수
+		int listCount=pService.getRequestListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		//제안 프로젝트 리스트
+		ArrayList<ProjectList> suggest=pService.selectSuggestList(memId,pi);
+		
+		System.out.println("화면단 가기 전 제안 프로젝트"+suggest);
+		
+		mv.addObject("suggest", suggest);
+		mv.addObject("pi", pi);
+		mv.setViewName("partnerSubMenu/requestProjectView");
+		
+		
+		return mv;
+		
+	}
 
 
 

@@ -90,6 +90,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+
 	@Override
 	public ArrayList<Tech> selectTechList() {
 		return proDao.selectTechList();
@@ -181,14 +182,13 @@ public class ProjectServiceImpl implements ProjectService {
 		return proDao.checkLikeNum(ids);
 
 	}
+	
 
 	@Override
 	public int addLikeProject(HashMap ids) {
 		
 		return proDao.addLikeProject(ids);
 	}
-
-	
 
 
 	@Override
@@ -198,7 +198,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
 		
 		return proDao.selectLikeProject(memId,pi);
 	}
@@ -244,7 +244,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi) {
+	public ArrayList<Application> selectApplyProject(int memId, PageInfo pi) {
 		
 		return proDao.selectApplyProject(memId,pi);
 	}
@@ -402,6 +402,121 @@ public class ProjectServiceImpl implements ProjectService {
 	public int cancelThisTempApply(Integer aId) {
 		
 		return proDao.cancelThisTempApply(aId);
+	}
+
+
+
+	@Override
+	public int getListCount() {
+		
+		return proDao.getListCount();
+	}
+
+
+
+	@Override
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
+		
+		return proDao.selectProjectList(pi);
+	}
+
+
+
+	@Override
+	public int getListCount(ProjectSearch search) {
+		
+		return proDao.getListCount(search);
+	}
+
+
+
+	@Override
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi, ProjectSearch search) {
+		
+		return proDao.selectProjectList(pi,search);
+	}
+
+
+
+	@Override
+	public int checkApplyId(HashMap application) {
+		
+		return proDao.checkApplyId(application);
+	}
+
+
+
+	@Override
+	public int checkTempApplyId(HashMap application) {
+		
+		return proDao.checkTempApplyId(application);
+	}
+
+
+
+	@Override
+	public int checkSigCount(HashMap application) {
+		
+		return proDao.checkSigCount(application);
+	}
+
+
+
+	@Override
+	public int checkMatched(HashMap application) {
+		
+		return proDao.checkMatched(application);
+	}
+
+
+
+	@Override
+	public ArrayList<ProjectLike> selectUserLike(int memId) {
+		
+		return proDao.selectUserLike(memId);
+	}
+
+
+
+	@Override
+	public int getOngoingListCount(int memId) {
+		
+		return proDao.getOngoingListCount(memId);
+	}
+	
+	
+	@Override
+	public ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi) {
+		
+		return proDao.selectOngoingList(memId,pi);
+	}
+
+
+
+	@Override
+	public int getCompleteListCount(int memId) {
+		
+		return proDao.getCompleteListCount(memId);
+	}
+	
+	@Override
+	public ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi){
+		
+		return proDao.selectCompleteList(memId,pi);
+	}
+	
+	@Override
+	public int getRequestListCount(int memId) {
+		
+		return proDao.getRequestListCount(memId);
+	}
+
+
+
+	@Override
+	public ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi) {
+		
+		return proDao.selectSuggestList(memId,pi);
 	}
 
 

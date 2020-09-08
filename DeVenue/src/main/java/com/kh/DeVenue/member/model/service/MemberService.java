@@ -1,8 +1,4 @@
-
 package com.kh.DeVenue.member.model.service;
-
-
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,16 +11,14 @@ import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.util.model.vo.MemChatSet;
-
 import com.kh.DeVenue.member.model.vo.Member;
-
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
-
-
-
+import com.kh.DeVenue.member.model.vo.PageInfo;
 
 public interface MemberService {
+
+	Member loginUserMember(Member m);
 
 	int insertMember(Member m);
 
@@ -34,14 +28,10 @@ public interface MemberService {
 
 	int profileInsert(int memId);
 
-	Member loginUserMember(Member m);
-
-
-
 	int getListCount();
 
-//	ArrayList<FindClient> selectList(PageInfo pi);
-	ArrayList<FindClient> selectList();
+	ArrayList<FindClient> selectList(PageInfo pi);
+//	ArrayList<FindClient> selectList();
 
 	int insertPartInfo(PartInfo partInfo);
 
@@ -49,7 +39,7 @@ public interface MemberService {
 
 	int getCPevalCount(Integer cId);
 
-	ArrayList<CPeval> selectCPeval(Integer cId);
+	ArrayList<CPeval> selectCPeval(Integer cId, PageInfo pi);
 
 	FCeval getFCeval(Integer cId);
 
@@ -59,6 +49,8 @@ public interface MemberService {
 
 	FindClientDetail selectClientDetail(Integer cId);
 
+	int insertEval(HashMap id);
+	
 	Member selectMember(Member mEmail);
 
 	int insertChatSet(MemChatSet mc);
@@ -67,6 +59,15 @@ public interface MemberService {
 
 	int memberemail(String email);
 
+	int getListCount(String memNick);
+
+	ArrayList<FindClient> selectList(PageInfo pi, String memNick);
+
+	int getListCount2(String introduction);
+
+	ArrayList<FindClient> selectList2(PageInfo pi, String introduction);
+	
+	int insertIden(int memId);
+
 	
 }
-

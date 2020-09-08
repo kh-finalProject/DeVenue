@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +31,11 @@
 	<div class="container">
     <div class="row text-white" style="border-bottom: 1px solid lightgray;">
       <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-        마이페이지
+      <c:url var="clientProfile" value="clientProfile.do">
+      	<c:param name="cId" value="${loginUser.memId }"/>
+      </c:url>
+      
+        <p href="${clientProfile }">마이페이지</p>
       </div>
 
     </div>
@@ -78,8 +84,8 @@
             });
 
             $("#projectHistory").on("click", function () {
-              location.href = "projectHistory.html";
-            });
+	              location.href = "cMyPageProjectHistory.do?cId=${loginUser.memId}";
+	            });
 
 
             $("#clientComment").on("click", function () {
@@ -101,15 +107,24 @@
               <tr>
                 <td>
                   <div class="image-profile">
-                    <img src="${contextPath }/resources/images/showcase.jpg" style="object-fit: cover; width:100px;">
+                    <img src="${contextPath }/resources/proImg/${info.proImg}" style="object-fit: cover; width:100px;">
                   </div>
                 </td>
                 <td>&emsp;&emsp;</td>
                 <td>
-                  user01(닉네임)&emsp;<a class="badge badge-info">개인</a><br>
+                  <!-- user01(닉네임)&emsp;<a class="badge badge-info">개인</a><br>
                   <p>user01@google.com</p>
                   <i class="far fa-address-card"></i>&nbsp;신원인증
-                  &emsp;<i class="fas fa-phone-alt"></i>연락처등록<br>
+                  &emsp;<i class="fas fa-phone-alt"></i>연락처등록<br> -->
+                  ${info.memNick }&emsp;<a class="badge badge-info">${info.memTypeKind }</a><br>
+                  <p>${info.memEmail }</p>
+                  <c:if test="${info.ideStatus eq 'COMPLETE' }">
+			        <i class="far fa-address-card"></i>&nbsp;신원인증
+			      </c:if>
+			      <c:if test="${!empty info.phone || !empty info.cellPhone }">
+			      	&emsp;<i class="fas fa-phone-alt"></i>연락처등록<br>
+			      </c:if>
+                  
                 </td>
               </tr>
               <tr>
@@ -118,7 +133,7 @@
                 </td>
                 <td></td>
                 <td style="padding-left:25%">
-                  <br>22
+                  <br>${info.addProject }
                 </td>
               </tr>
               <tr>
@@ -127,7 +142,7 @@
                 </td>
                 <td></td>
                 <td style="padding-left:25%">
-                  <br>10
+                  <br>${info.stopProject + info.ingProject }
                 </td>
               </tr>
             </table>
@@ -148,15 +163,8 @@
                 </div>
                 <div style="margin-left: 3%;">
                   <div style=" width:80%;">
-                    <p>
-                      당시 마르셀리노 감독이 경질될 때 유스 선수들을 중용하지 않는 점이 이유 중 하나로 꼽힌 바 있다. 새롭게 부임한 그라시아 감독 역시 수뇌부로부터 유스 선수들을 많이 기용하라는
-                      주문을 받은 것로 알려졌다.
-
-                      이어 페란은 “마르셀리노는 훌륭한 감독이다. 나는 그에게 많은 빚을 졌다”면서 “이강인을 정말 좋아한다. 그 역시 알고 있다. 나와 소브리노가 이강인에게 많은 도움을 줬다.
-                      이강인은 위대한 선수가 될 것이다. 발렌시아가 나와 같은 실수를 하지 않기를 바란다. 이강인은 매우 힘들고 외로움을 느꼈기 때문에 사랑과 신뢰가 필요하다”고 덧붙였다.
-
-                      한편 이강인은 2022년 6월이면 발렌시아와의 계약이 만료된다. 발렌시아는 올해 혹은 내년 이강인이 떠나지 않도록 하기 위해 재계약 제안을 건넨 것으로 알려졌다. 하지만 다수
-                      스페인 매체들은 “이강인이 출전 기회를 잡고자 이적을 원한다”고 보도 중이다.
+                    <p style="line-height:2.0rem;">
+                      ${info.introduction }
                     </p>
                     <a href="#" style="float: right;">자기소개 더 보기 ></a>
                   </div>
@@ -172,7 +180,7 @@
                 </div>
                 <div style="margin-left: 3%;">
                   <div style=" width:80%;">
-                    <a href="http://www.naver.com" style="color:white;">http://www.naver.com</a>
+                    <a href="http://www.naver.com" style="color:white;">http://${info.url }</a>
 		              <button class="btn-info" type="button" style="float: right; border-radius: 0.3rem; padding: 1%;">수정하기</button>
                   </div>
                 </div>
