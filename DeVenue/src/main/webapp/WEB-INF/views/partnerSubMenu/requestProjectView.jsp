@@ -294,7 +294,7 @@
           <!--Section: Block Content 프로젝트 리스트 시작-->
            
           <section id="projectList">
-
+          
             <div class="mx-2" id="projectList_items">
                 <div class="row">
                     <div class="col-md-12">
@@ -302,6 +302,13 @@
                             <div class="card-body">
                             
                             <c:forEach items="${suggest}" var="su">
+                            
+                            <c:url var="pdetail" value="searchProjectDetail.do">
+				            	<c:param name="id" value="${su.project.proId}"/>
+				            	<c:param name="page" value="${pi.currentPage}"/>
+				            	<c:param name="mCategory" value="${su.mCategory}"/>
+				            	<c:param name="dCategory" value="${su.dCategory}"/>
+				            </c:url>
                            
                               <div class="row">
                                 <div class="col-md-9">
@@ -334,7 +341,7 @@
 			                       </c:if>  
                                   
                                   </div>
-                                  <h5 class="card-title">${su.project.proName}</h5>
+                                  <h5 class="card-title"><a href="${pdetail}">${su.project.proName}</a></h5>
                                   <table>
                                     <tr>
                                       <td><i class="fas fa-won-sign"></i>예상금액<strong>
@@ -354,8 +361,8 @@
                                   </table>
                                 </div>
                                 <div class="col-md-3">
-                                  <div class="likeCancel"><i class="fas fa-times float-right">삭제</i></div>
-                                  <button type="button" class="btn btn-secondary btn-block">상세보기</button>
+                                  <div class="suggestCancel"><i class="fas fa-times float-right mb-2">삭제</i></div>
+                                  <button type="button" class="btn btn-secondary btn-block" onclick="location.href='${pdetail}'">상세보기</button>
                                   <button type="button" class="btn btn-info btn-block">지원하기</button>
                                 </div>
                               </div>
