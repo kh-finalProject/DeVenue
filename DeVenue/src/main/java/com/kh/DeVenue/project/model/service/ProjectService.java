@@ -69,7 +69,7 @@ public interface ProjectService {
 
 	int addLikeProject(HashMap ids);
 
-	ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi);
+	ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi);
 
 	int getLikeListCount(int memId);
 
@@ -94,7 +94,7 @@ public interface ProjectService {
 	int getapplyListCount(int memId);
 
 
-	ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi);
+	ArrayList<Application> selectApplyProject(int memId, PageInfo pi);
 
 
 	int getTempSave(HashMap application);
@@ -173,6 +173,24 @@ public interface ProjectService {
 
 
 	ArrayList<ProjectLike> selectUserLike(int memId);
+
+
+	int getOngoingListCount(int memId);
+
+
+	ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi);
+
+
+	int getCompleteListCount(int memId);
+
+
+	ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi);
+
+
+	int getRequestListCount(int memId);
+
+
+	ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi);
 
 
 	

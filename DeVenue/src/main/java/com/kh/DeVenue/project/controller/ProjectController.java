@@ -438,7 +438,7 @@ ProjectService pService;
 		
 		System.out.println("parameter 뭐 넘어왔나?"+project);
 		//프로젝트 디테일 가져오기
-		System.out.println(project);
+		
 		ProjectDetail detail=pService.selectProjectDetail(project.getId());
 		
 		// 클라이언트의 전체 프로젝트 수 
@@ -661,7 +661,7 @@ ProjectService pService;
 		PageInfo pi=getPageInfo(currentPage, listCount);
 		
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectList> likeList=pService.selectLikeProject(memId,pi);
+		ArrayList<ProjectLike> likeList=pService.selectLikeProject(memId,pi);
 		
 		System.out.println("화면단 가기전 관심 등록 리스트:"+likeList);
 		
@@ -905,7 +905,7 @@ ProjectService pService;
 		PageInfo pi=getPageInfo(currentPage, listCount);
 				
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectList> applyList=pService.selectApplyProject(memId,pi);
+		ArrayList<Application> applyList=pService.selectApplyProject(memId,pi);
 				
 		System.out.println("화면단 가기전 지원 프로젝트 리스트:"+applyList);
 		
@@ -1390,6 +1390,109 @@ ProjectService pService;
 		
 		
 	}
+	
+	
+	@RequestMapping(value = "ongoingProjectList.do")
+	public ModelAndView ongoingProjectList(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="page", required = false) Integer page) {
+		
+		//세션에서 로그인 유저의 정보를 가져온다.
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+		
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+				}
+		
+		//전체 진행중 프로젝트 수
+		int listCount=pService.getOngoingListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		//진행중 프로젝트 리스트 가져오기
+		ArrayList<ProjectList> ongoing=pService.selectOngoingList(memId,pi);
+		
+		System.out.println("화면단 가기 전 진행중 리스트"+ongoing);
+		
+		mv.addObject("ongoing", ongoing);
+		mv.addObject("pi", pi);
+		mv.setViewName("partnerSubMenu/ongoingProjectView");
+		
+		
+		return mv;
+	}
+	
+	
+	
+	
+	
+	@RequestMapping(value="completeProjectList.do")
+	public ModelAndView completeProjectList(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="page", required = false) Integer page) {
+		
+		
+				//세션에서 로그인 유저의 정보를 가져온다.
+				Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+				int memId=loginUser.getMemId();
+				
+				//페이지네이션
+				int currentPage=1;
+				if(page!=null) {
+					currentPage=page;
+						}
+				
+				//전체 종료 프로젝트 리스트 수
+				int listCount=pService.getCompleteListCount(memId);
+				PageInfo pi=getPageInfo(currentPage, listCount);
+				
+				//
+				ArrayList<ProjectList> complete=pService.selectCompleteList(memId,pi);
+				
+				System.out.println("화면단 가기 전 완료 프로젝트"+complete);
+				
+				mv.addObject("complete", complete);
+				mv.addObject("pi", pi);
+				mv.setViewName("partnerSubMenu/completeProjectView");
+				
+		return mv;
+		
+	}
+	
+	
+	@RequestMapping(value="suggestProjectList.do")
+	public ModelAndView requestProjectList(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="page", required = false) Integer page) {
+		
+		
+		//세션에서 로그인 유저의 정보를 가져온다.
+		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
+		int memId=loginUser.getMemId();
+		
+		//페이지네이션
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+				}
+		
+		//전체 제안 프로젝트 리스트 수
+		int listCount=pService.getRequestListCount(memId);
+		PageInfo pi=getPageInfo(currentPage, listCount);
+		
+		//제안 프로젝트 리스트
+		ArrayList<ProjectList> suggest=pService.selectSuggestList(memId,pi);
+		
+		System.out.println("화면단 가기 전 제안 프로젝트"+suggest);
+		
+		mv.addObject("suggest", suggest);
+		mv.addObject("pi", pi);
+		mv.setViewName("partnerSubMenu/requestProjectView");
+		
+		
+		return mv;
+		
+	}
+	
 	
 
 

@@ -193,7 +193,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
 		
 		return proDao.selectLikeProject(memId,pi);
 	}
@@ -239,7 +239,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi) {
+	public ArrayList<Application> selectApplyProject(int memId, PageInfo pi) {
 		
 		return proDao.selectApplyProject(memId,pi);
 	}
@@ -470,6 +470,50 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return proDao.selectUserLike(memId);
 	}
+
+
+
+	@Override
+	public int getOngoingListCount(int memId) {
+		
+		return proDao.getOngoingListCount(memId);
+	}
+	
+	
+	@Override
+	public ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi) {
+		
+		return proDao.selectOngoingList(memId,pi);
+	}
+
+
+
+	@Override
+	public int getCompleteListCount(int memId) {
+		
+		return proDao.getCompleteListCount(memId);
+	}
+	
+	@Override
+	public ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi){
+		
+		return proDao.selectCompleteList(memId,pi);
+	}
+	
+	@Override
+	public int getRequestListCount(int memId) {
+		
+		return proDao.getRequestListCount(memId);
+	}
+
+
+
+	@Override
+	public ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi) {
+		
+		return proDao.selectSuggestList(memId,pi);
+	}
+
 
 
 

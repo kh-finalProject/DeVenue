@@ -7,11 +7,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>서브메뉴-지원한 프로젝트</title>
+<title>완료 프로젝트</title>
 
 <style>
-   
-
+    
     /*body 색상*/
     main {
       background-color: #212529;
@@ -89,9 +88,6 @@
          margin-right: 0.1rem;
       }
 
-      #sidebar_subMenu div>button:first-child{
-        margin-bottom: 1rem;
-      }
 
       /*헤더 타이틀*/
 
@@ -146,19 +142,19 @@
         
       }
 
-      /* 삭제*/
-      .applyCancel{
+      /*삭제*/
+      .likeCancel{
           position: relative;
           bottom:0.5rem;
           margin-bottom: 1rem;
 
       }
 
-      .applyCancel>i{
+      .likeCancel>i{
           font-size:0.75rem;
       }
 
-      .applyCancel>i:hover{
+      .likeCancel>i:hover{
          color: #2793F2;
       }
 
@@ -170,16 +166,6 @@
       #pagination>div{
         margin-top: 1rem;
       }
-      
-       /*자원서*/
-      .modal-title, .modal-body{
-        color:black
-      }
-
-      .modal-body div ul{
-        padding-left: 0;
-        list-style-type: none;
-      }
 
 
   </style>
@@ -187,19 +173,18 @@
 
 </head>
 <body>
-
 <jsp:include page="../common/menubar.jsp"></jsp:include>
 <jsp:include page="../common/pSubMenubar.jsp"></jsp:include>
 
-
-<!--Main layout-->
+ <!--Main layout-->
 
   <main>
+  
 
       <div class="row mt-3">
 
         <div class="col-md-2 mb-4" style="text-align: center;">
-         
+          
         </div>
         <!--Grid column 시작-->
         <div class="col-md-2 mb-4 mt-5">
@@ -231,27 +216,12 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-secondary btn-block" id="showApplyList">지원완료 프로젝트</button> 
-                    <button class="btn btn-info btn-block" id="showTempApplyList">임시저장 프로젝트</button> 
+                    <button class="btn btn-secondary btn-block">전체 프로젝트</button>
                 </div>
             </div>
 
             
           </section>
-          <script>
-          
-          $(function(){
-        	  
-        	  $("#showApplyList").click(function(){
-        		  location.href="selectApplyProject.do";
-        	  });
-        	  
-        	  $("#showTempApplication").click(function(){
-        		  location.href="selectTempApplicationList.do";
-        	  })
-          })
-          	
-          </script>
           <!-- Section: Sidebar의 끝 -->
 
         </div>
@@ -265,20 +235,20 @@
           <div id="subMenu_header" class="row">
             
             <div class="col-md-12 mt-3">
-            <h4>임시저장 지원 프로젝트</h4>
+            <h4>완료 프로젝트</h4>
             <div class="checkbox">
             <div class="custom-control custom-radio">
                 <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent">
                 <label class="custom-control-label" for="sorting_recent">최신 순</label>
             </div>
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_price">
-                <label class="custom-control-label" for="sorting_price">금액 오름차순</label>
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_finished">
+                <label class="custom-control-label" for="sorting_finished">완료</label>
             </div>
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_endday">
-                <label class="custom-control-label" for="sorting_endday">마감일 임박 순</label>
-              </div>
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_suspended">
+                <label class="custom-control-label" for="sorting_suspended">중단</label>
+            </div>
 
             </div>
             </div>
@@ -328,21 +298,7 @@
 
             <div class="mx-2" id="projectList_items">
             
-            <c:forEach items="${apply}" var="apply">
-            
-            	<c:url var="pdetail" value="searchProjectDetail.do">
-            	<c:param name="id" value="${apply.pList.id}"/>
-            	<c:param name="page" value="${pi.currentPage}"/>
-            	<c:param name="mCategory" value="${apply.pList.mCategory}"/>
-            	<c:param name="dCategory" value="${apply.pList.dCategory}"/>
-            	</c:url>
-            	
-            	<c:url var="loadTemp" value="loadTempApplication.do">
-            	<c:param name="pId" value="${apply.pList.id}"/>
-            	<c:param name="aId" value="${apply.aId}"/>
-            	<c:param name="page" value="${pi.currentPage}"/>
-            	</c:url>
-            
+            <c:forEach items="${complete}" var="co">
             
                 <div class="row">
                     <div class="col-md-12">
@@ -351,81 +307,56 @@
                               <div class="row">
                                 <div class="col-md-9">
                                   <div class="d-inline-block mb-2">
-                                       <c:choose>
-				                       	<c:when test="${apply.pList.project.proRecruit eq 'Y'}">
-				                       		<span class="badge badge-secondary">모집중</span>
-				                       	</c:when>
-				                       	<c:when test="${apply.pList.project.proRecruit eq 'N'}">
-				                       		<span class="badge badge-success">모집마감</span>
-				                       	</c:when>
-				                       </c:choose>
-				                       
-				                        <jsp:useBean id="today" class="java.util.Date"/>
-				                       <jsp:useBean id="aweekAgo" class="java.util.Date"/>
-				                       <jsp:setProperty property="time" name="aweekAgo" value="${today.time-(1000*60*60*24*7)}"/>
-				                       <fmt:formatDate value="${today}" pattern="yyyyMMdd" var="now"/>
-				                       <fmt:formatDate value="${aweekAgo}" pattern="yyyyMMdd" var="ago"/>
-				                       <fmt:formatDate value="${apply.pList.project.proCreateDate}" pattern="yyyyMMdd" var="cdate"/>
-				                       
-				                       <c:if test="${cdate eq now}">
-				                       		<span class="badge badge-info">TODAY</span>
-				                       </c:if>
-				                       <c:if test="${cdate lt now}">
-				                       		<c:if test="${cdate gt ago}">
-				                       		<span class="badge badge-info">NEW</span>
-				                       		</c:if>
-				                       </c:if>  
-				                       
+                                  
+                                  <c:if test="${co.project.proStaId eq 'PST5'}">
+                                  <span class="badge badge-success">완료</span>
+                                  </c:if>
+                                   <c:if test="${co.project.proStaId eq 'PST6'}">
+                                  <span class="badge badge-warning">중단</span>
+                                  </c:if>
+                                  
                                   </div>
-                                  <h5 class="card-title"><a href="${pdetail}">${apply.pList.project.proName}</a></h5>
+                                  <h5 class="card-title">${co.project.proName}</h5>
                                   <table>
                                     <tr>
                                       <td><i class="fas fa-won-sign"></i>예상금액<strong>
-                                      <fmt:setLocale value="ko"/><fmt:formatNumber value="${apply.pList.project.proPayment}" type="currency"/>
+                                      <fmt:setLocale value="ko"/><fmt:formatNumber value="${co.project.proPayment}" type="currency"/>
                                       </strong>원</td>
-                                      <td><i class="far fa-circle"></i>예상기간<strong>${apply.pList.project.proDuration}</strong>일</td>
+                                      <td><i class="far fa-circle"></i>예상기간<strong>
+                                      ${co.project.proDuration}
+                                      </strong>일</td>
                                     </tr>
                                   </table>
                                   <table>
                                     <tr>
-                                      <td><i class="far fa-circle"></i>${apply.pList.mCategory}</td>
-                                      <td><i class="far fa-circle"></i>${apply.pList.dCategory}</td>
-                                      <td><i class="fas fa-map-marker-alt"></i>${apply.pList.project.proLocation}</td>
+                                      <td><i class="far fa-circle"></i>${co.mCategory}</td>
+                                      <td><i class="far fa-circle"></i>${co.dCategory}</td>
+                                      <td><i class="fas fa-map-marker-alt"></i>${co.project.proLocation}</td>
                                     </tr>
                                   </table>
                                 </div>
                                 <div class="col-md-3">
-                                  <div class="applyCancel" onclick="cancelation(${apply.aId});"><i class="fas fa-times float-right">삭제</i></div>
-                                  <button type="button" class="btn btn-info btn-block" onclick="location.href='${pdetail}'">상세보기</button>
-                                  <button type="button" class="btn btn-outline-info btn-block" onclick="location.href='${loadTemp}'">이어서 쓰기</button>
-                                  
+                                  <div class="likeCancel"><i class="fas fa-times float-right">삭제</i></div>
+                                  <button type="button" class="btn btn-outline-info btn-block">계약서 보기</button>
+                                  <button type="button" class="btn btn-outline-danger btn-block" disabled>정산중</button>
+                                  <button type="button" class="btn btn-info btn-block">후기작성</button>
                                 </div>
                               </div>
                             </div>
                           </div>
                     </div>
-                    
+                  
                 </div>
-			</c:forEach>
+                
+                </c:forEach>
             </div>
+
           </section>
           <script>
-          	//지원 취소 관련
-          	
-          	function cancelation(aId){
-          		
-				var aId=aId;
-				var page=${pi.currentPage};
-          		
-      				console.log(aId);
-      				location.href="cancelThisTempApply.do?aId="+aId+"&page="+page;
-      				
-      			
-          	}
-          	
-         
+              $(".likeCancel").click(function(){
+                confirm("삭제하시겠어요?");
+              })
           </script>
-           <!--Section: Block Content 프로젝트 리스트 끝-->
           <!--Section: Block Content project list 끝-->
 
           <!-- Section: Block Content 하단 페이지네이션 시작 -->
@@ -488,14 +419,12 @@
       <!--row 끝 왼/중/오-->
 
 
-   
+    
     <!--컨테이너 끝-->
 
-   
+    
   </main>
   <!--Main layout-->
-
-
 <jsp:include page="../common/footer.jsp"></jsp:include>
 </body>
 </html>

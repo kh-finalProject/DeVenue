@@ -9,14 +9,20 @@
 <%
 
 Member loginUser=null;
-ArrayList<ProjectLike> likeList =null;
+ArrayList<ProjectLike> likeList=new ArrayList();
 
-if(session!=null||!request.isRequestedSessionIdValid()){
+if(session!=null){
+	
+	if(session.getAttribute("loginUser")!=null){
 	
 	loginUser=(Member)session.getAttribute("loginUser");
-	likeList=loginUser.getLikeList();
+	likeList =loginUser.getLikeList();
+
+	}
+	
 	System.out.println("화면단에서, 로그인유저의 관심 리스트"+likeList);
 }
+
 %>
 
 <!DOCTYPE html>
@@ -2001,23 +2007,32 @@ if(session!=null||!request.isRequestedSessionIdValid()){
       							$likeSpan.append($heart);
       						}else{
       							
-      							
       							//로그인을 했다
+      							
+      							<%if(loginUser!=null){%>
       							console.log("로그인을 했다.")
-      							<%if(likeList!=null){%>
+      							<%if(!likeList.isEmpty()){%>
       							//관심 프로젝트 리스트가 있다면
       							console.log("관심 리스트가 있다.");
       							
-      							<%for(int k=0;k<likeList.size();k++){%>
+      							<%for(int i=0;i<likeList.size();i++){
       							
-      							if($list[i].id=="<%=likeList.get(k).getpList().getId()%>"){
+      								int pId=likeList.get(i).getpList().getId();
+      								int lId=likeList.get(i).getProLId();
+      								System.out.println("화면단 널 체크 pId:"+pId);
+      								System.out.println("화면단 널 체크 lId:"+lId);
+      							
+      							%>
+      							console.log("pId"+$list[i].id);
+      							
+      							if($list[i].id=='<%=pId%>'){
       								//관심 프로젝트 리스트에 있는 프로젝트 아이디와 일치하는 아이디가 있을 경우,
       								console.log("일치하는 리스트가 있다"+$list[i].id);
       								$likeFlag=true;
       								console.log("likeFlag"+$likeFlag);
       								
       								$likeSpan.addClass("liked");
-      								$hiddenLikeId.val("<%=likeList.get(k).getProLId()%>");
+      								$hiddenLikeId.val("<%=lId%>");
       								$likeDiv.append($hiddenLikeId);
       								
       							}
@@ -2042,6 +2057,10 @@ if(session!=null||!request.isRequestedSessionIdValid()){
       								console.log("관심 리스트가 없다.");
       								$likeSpan.append($heart);
       							
+      							<%}%>
+      							
+      							<%}else{%>
+      								$likeSpan.append($heart);
       							<%}%>
       						}
       						

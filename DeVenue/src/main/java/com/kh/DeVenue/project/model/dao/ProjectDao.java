@@ -162,7 +162,7 @@ public ArrayList<Tech> selectTechList() {
 		return sqlSessionTemplate.insert("projectMapper.addLikeProject",ids );
 	}
 
-	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
 		
 		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
@@ -217,7 +217,7 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
-	public ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi) {
+	public ArrayList<Application> selectApplyProject(int memId, PageInfo pi) {
 		
 		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
@@ -392,6 +392,52 @@ public ArrayList<Tech> selectTechList() {
 	public ArrayList<ProjectLike> selectUserLike(int memId) {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectUserLike", memId);
+	}
+
+
+	public int getOngoingListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getOngoingCount", memId);
+	}
+
+
+
+	public ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi) {
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectOngoingList", memId, rowBounds);
+	}
+
+
+	public int getCompleteListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getCompleteCount",memId);
+	}
+
+
+	public ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi) {
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCompleteList", memId, rowBounds);
+	}
+
+
+	public int getRequestListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getRequestCount", memId);
+	}
+
+
+	public ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi) {
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectSuggestList", memId, rowBounds);
 	}
 
 
