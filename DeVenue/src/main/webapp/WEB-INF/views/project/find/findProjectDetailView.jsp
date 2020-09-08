@@ -1589,7 +1589,7 @@
                 <button type="button" id="likeThisProject" class="btn btn-outline-light btn-lg btn-block mt-3 mb-3">관심 프로젝트 등록</button>
                 </c:if>
                 <c:if test="${loginUser.userType eq 'UT3'}">
-                <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="createProjectBtn">프로젝트 생성하기</button>
+                <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="createProjectBtn" onclick="location.href='addProject.do'">프로젝트 생성하기</button>
                 </c:if>
                 
                 <div style="width: 100%; border-top: 1px solid white;"></div>

@@ -389,7 +389,7 @@
             width: 200px;
             height: 40px;
             position: absolute;
-            margin-left: 200px;
+            margin-left: 150px;
             margin-top: 10px;
         }
 
@@ -490,7 +490,7 @@
                         <button type="button" class="btn btn-warning btn-lg" style="font-size: 15px; width: 200px;">카카오톡으로 로그인</button>
                     </div>
                     <div class="sign">
-                        <p>아직 회원이 아니신가요?<br><a href="sign.do">회원가입 하기</a></p>
+                        <p>아직 회원이 아니신가요?<br><a href="signpage.do">회원가입 하기</a></p>
                     </div>
                 </div>
             </div>

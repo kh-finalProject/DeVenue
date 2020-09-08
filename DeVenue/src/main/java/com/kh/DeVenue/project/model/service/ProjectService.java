@@ -3,10 +3,14 @@ package com.kh.DeVenue.project.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+import com.kh.DeVenue.member.model.vo.Member;
+
 import com.kh.DeVenue.member.model.vo.Portfolio;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
+
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -24,7 +28,7 @@ public interface ProjectService {
 	int addProject(Project p);
 
 	
-	ArrayList<Project> selectCheckList();
+	ArrayList<Project> selectCheckList(String memId);
 
 	int getListCount(ProjectFilter filter);
 
@@ -34,10 +38,10 @@ public interface ProjectService {
 
 
 
-	ArrayList<Project> selectunderwayList();
+	ArrayList<Project> selectunderwayList(int memId1);
 
 
-	ArrayList<Project> selectrecruitList();
+	ArrayList<Project> selectrecruitList(int memId);
 
 
 	ArrayList<Project> selectendList();
@@ -193,7 +197,64 @@ public interface ProjectService {
 	ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi);
 
 
+	int deleteThisSuggest(Integer sgId);
+
+
+
+
+	int temStoreProject(Project p);
+
+
+	int temStoreQuestion(ProjectQuestion q);
+
+
+	int getUpdateForm(Integer proId);
+
+
+	Project selectOne(int proId);
+
+
+	ArrayList<ProjectQuestion> getQuestion(int proId);
+
+
+	int updateProject(Project p);
+
+
+	int updateQuestion(ProjectQuestion q);
+
+
+	ArrayList<Member> selectrecruitMember(HashMap prof);
+
+
+	int deleteProject(Integer proId);
+
+
+	int deleteQuestion(Integer proId);
+
+
+	ArrayList<Project> selectTemStoreList(int a);
+
+
+	Project selectOne1(int proId);
+
+
+	ArrayList<Member> selectModal(String proId);
+
+
+
 	
+
+
+//	ProjectQuestion getQuestion(int proId);
+
+
+	
+
+
+
+
+
+
 
 
 }

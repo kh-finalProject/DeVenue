@@ -1,8 +1,13 @@
 package com.kh.DeVenue.memberAccount.model.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
+import com.kh.DeVenue.memberAccount.model.dto.MemBasicInfo;
+import com.kh.DeVenue.memberAccount.model.vo.Bank;
 import com.kh.DeVenue.memberAccount.model.vo.Identify;
+import com.kh.DeVenue.memberAccount.model.vo.MemType;
+import com.kh.DeVenue.memberAccount.model.vo.Signature2;
 
 public interface MemberAccountService {
 
@@ -15,5 +20,32 @@ public interface MemberAccountService {
 	int insertIden(Map map);
 
 	int resetIden(String memId);
+
+	MemBasicInfo selectMemBasicInfo(int mId);
+
+	ArrayList<Bank> selectBankName();
+
+	ArrayList<MemType> selectMemType();
+
+	int updateBasicInfo(Map map);
+
+	int updateProfileImg(Map map);
+
+	int updatePhoneInfo(Map map);
+
+	int updateInsertAccountInfo(Map map);
+
+	ArrayList<Signature2> selectSignatureList(int memId);
+
+	Integer searchProjectForSigDelete(String sigId);
+	
+	int deleteSignature(String id);
+
+	int changeMainSignature(Map map);
+	
+	int changeCommonSignature(Map map);
+
+	int insertSign(Map map);
+
 	
 }

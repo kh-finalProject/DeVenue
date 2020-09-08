@@ -627,9 +627,12 @@ section {
 					${loginUser.memNick } 마이페이지</div>
 			</div>
 			<div class="row">
-				<jsp:include page="../common/myPageMenubar.jsp" />
+				<!-- 구 sideMenubar -->
+				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새 sidMenubar -->
+				<jsp:include page="../common/pSideMenubar.jsp"/>
 			</div>
-			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12 main-title">
@@ -647,15 +650,16 @@ section {
 					</div>
 					<div class="col-12 portfolio-view">
 						<!-- 하나의 포트폴리오 시작 -->
-						<form method="get" action="delPort.do">
-						<c:forEach var="port" items="${portList }"  varStatus="status">
+						<c:forEach var="port" items="${portList }">
+						<form method="POST" action="delPort.do">
 						<%-- <c:forEach begin="0" end="2"> --%>
-						<input type="hidden" name="profileId" value="${port.profileId }">
-						<input type="hidden" name="portId" value="${port.portId }">
 							 <table class="pTable">
 								<tr>
 									<td class="img" rowspan="2"><img src="../image/test.png"
-										style="max-width: 100%; height: auto;"></td>
+										style="max-width: 100%; height: auto;">
+										<input type="hidden" id="profileId" name="profileId" value="${profile.profileId }">
+										<input type="hidden" id="portId" name="portId" value="${port.portId }">
+										</td>
 									<td class="category">
 										<!-- port.mcId에 따른 출력 --> <c:choose>
 											<c:when test="${port.mcId eq 'MC1'}">
@@ -682,7 +686,7 @@ section {
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<td class="title">${port.portName }</td>
+									<td class="title">${port.portName }, ${port.portId }</td>
 								</tr>
 								<tr>
 									<td colspan="2" rowspan="2" class="text">
@@ -691,14 +695,32 @@ section {
 								</tr>
 								<tr></tr>
 								<tr>
-									<td><button class="btn btn-info" style="width: 100%;">삭제</button></td>
+									<td><button type="submit" id="${port.portId }" class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
 									<td class="join">참여율 : ${port.portJoin }%</td>
 									<td class="tec">java, css</td>
 								</tr>
 							</table>
 							<br>
+							
+						</form> 
 						</c:forEach>
-						</form>
+						<!-- <script type="text/javascript">
+								$(".delPort").on("click",function(){
+									var id1 = $("#profileId").val();
+									var id2 = (this.id);
+									
+									$.ajax({
+										url:"delPort.do",
+										data:{id1:id1, id2:id2},
+										success:function(data){
+											
+										},error:function(request, status, errorData){
+											
+										}	
+									})
+									
+								})
+						</script> -->
 					</div>
 				</div>
 			</div>

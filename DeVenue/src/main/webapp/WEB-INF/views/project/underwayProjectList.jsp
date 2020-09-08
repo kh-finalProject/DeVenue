@@ -387,6 +387,7 @@ button{
            <c:choose>
        <c:when test="${!empty list1}">
        <c:forEach var ="p" items="${list1}">
+             <c:if test="${loginUser.memId eq p.memId }">
         <div id ="projectbox" style ="margin-top:50px;" >
           <table width="533px"   >
               <thead>
@@ -396,20 +397,19 @@ button{
                       
                       
                   </tr>
-                  
-                  <tr id ="sText" >
+                    <tr id ="sText" >
                       <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                        <span class="badge badge-primary">${p.proMCId}</span>
-                        <span class="badge badge-success">${p.proDCId}</span></td>
+                        <span class="badge badge-primary">${p.proMCType}</span>
+                        <span class="badge badge-success">${p.proDCType}</span></td>
                       
                   </tr>
                   <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
                      
                       <td><img
 						src="${contextPath}/resources/images/money	.png" height="30px"
-						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>
+						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span> ${p.proPayment}원
                     </td>
-                      <td > ${p.proPayment}원&nbsp;&nbsp;&nbsp;</td>
+                     
               
                       <td ><img
 						src="${contextPath}/resources/images/period.png" height="30px"
@@ -425,21 +425,21 @@ button{
                       <table  id ="sText" width="534px">
                           <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
                             
-                              <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">기획상태    </span></td>
-                              <td  >${p.proPlan}</td>
-                              <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">매니징 경험</span></td>
-                              <td  >${p.proManage}</td>
+                              <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트번호    </span></td>
+                              <td  >${p.proId}</td>
+                              <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 종료일</span></td>
+                              <td  >${p.proEndDate}</td>
                               <td  style = "  padding:1px;" ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 시작일</span></td>
                               <td  >${p.proStartDate}</td>
                               
                           </tr>
                           <tr  align ="center" style ="border-bottom:2px solid #2098d1; height:50px;" id ="sText">
-                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트 종류</span></td>
-                              <td  >${p.proMaintain }</td>
+                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">회원형태</span></td>
+                              <td  >${p.proMTK }</td>
                               <td style   ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px; width:80px;">위치</span></td>
-                              <td >서울시<br>강남구</td>
+                              <td>${p.proLocation }</td>
                               <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">파트너스 수 </span></td>
-                              <td width="120px; " >${p.proStartDate}</td>
+                              <td width="120px; " >${p.proRecruitNum}</td>
                             
                           </tr>
                        
@@ -508,6 +508,7 @@ button{
               </table>      
       </form>
       </div>
+      </c:if>
      </c:forEach>
       </c:when>
     <c:when test="${empty list1}">

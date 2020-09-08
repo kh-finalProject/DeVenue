@@ -26,7 +26,11 @@ public class HomeController {
 //		return "member/login";
 //		return "common/pSideMenubar";
 //		return "findMember/findClient/main";
+
 //		return "findMember/findPartnersDetail";
+
+
+
 	}
 	
 //	@RequestMapping("clientList.do")

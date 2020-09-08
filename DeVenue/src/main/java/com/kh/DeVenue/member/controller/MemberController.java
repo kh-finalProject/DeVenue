@@ -158,7 +158,15 @@ public class MemberController {
 			String userType = request.getParameter("purpose");	// 사용자 분류(클라이언트/파트너스)
 			String memType = request.getParameter("memtype");	// 사용자 형태(개인,팀,기업,개인사업자,법인사업자..)
 			String memName = request.getParameter("name");		// 사용자 이름
-			String cellPhone = request.getParameter("phone");	// 사용자 핸드폰 번호
+//			String cellPhone = request.getParameter("phone");	// 사용자 핸드폰 번호
+			String cellPhone0 = request.getParameter("cellPhone0");
+			String cellPhone1 = request.getParameter("cellPhone1");
+			String cellPhone2 = request.getParameter("cellPhone2");
+			String cellPhone3 = request.getParameter("cellPhone3");
+			
+			// 4가지를 합치기
+			String cellPhone = cellPhone0+","+cellPhone1+","+cellPhone2+","+cellPhone3;
+			System.out.println(cellPhone);
 			String memNick =request.getParameter("nickname");	// 사용자 닉네임
 			String memEmail = request.getParameter("email");	// 사용자 이메일
 			String memPwd = request.getParameter("pwd");		// 사용자 비밀번호

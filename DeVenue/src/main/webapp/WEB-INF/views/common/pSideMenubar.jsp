@@ -106,6 +106,21 @@
 			color: rgb(205, 215, 226);
 			/* background-color: rgb(51, 57, 61); */
 		}
+		
+		/* 서브메뉴바 */
+        .aTag{
+	      background-color: #212426;
+	      border: none;
+	      /* padding-top: 7px; */
+			padding-bottom: 7px;
+			padding-left: 7px;
+			padding-right: 7px;
+			font-size: 16px;
+			color: rgb(205, 215, 226);
+			/* background-color: rgb(51, 57, 61); */
+			
+	    }
+	    
 	</style>
 </head>
 
@@ -125,21 +140,46 @@
 			<div id="infoMenu" class="myPage_sideNav_mainC">정보 관리<i style="float: right; margin-right: 5%;"
 					class="fas fa-angle-right"></i></div>
 			<div id="subInfoMenu" class="myPage_sideNav_serveC">
-				<div id="userTypeInfo">${clOrPt } 정보</div>
-				<div id="pPrfile">프로필</div>
-				<div id="pPR">자기소개</div>
-				<div id="pPortfolio">포트폴리오</div>
-				<div id="pSkill">보유기술</div>
-				<div id="pCareer">경력</div>
-				<div id="pLicense">학력ㆍ자격증</div>
-				<div id="pProjectHistory">프로젝트 히스토리</div>
+				<%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
+				<form method="GET" action="partInfo.do">
+					<input type="hidden" name="profileId" value="${profile.profileId }">
+					<button class="aTag" style="cursor: text;">${clOrPt } 정보</button>
+				</form>
+				<div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div>
+				<!-- <div id="pPR">자기소개</div> -->
+				<!-- <div id="pPortfolio">포트폴리오</div> -->
+				<form method="GET" action="portfolioAll.do">
+					<input type="hidden" name="profileId" value="${profile.profileId }">
+					<button class="aTag" style="cursor: text;">포트폴리오</button>
+				</form>
+				<!-- <div id="pSkill">보유기술</div> -->
+				<form method="GET" action="skill.do">
+					<input type="hidden" name="profileId" value="${profile.profileId }">
+					<button class="aTag" style="cursor: text;">보유 기술</button>
+				</form>
+				<!-- <div id="pCareer">경력</div> -->
+				<form method="GET" action="career.do">
+					<input type="hidden" name="profileId" value="${profile.profileId }">
+					<button class="aTag" style="cursor: text;">경력</button>
+				</form>
+				<!-- <div id="pLicense">학력ㆍ자격증</div> -->
+				<form method="GET" action="academic.do">
+					<input type="hidden" name="profileId" value="${profile.profileId }">
+					<button class="aTag" style="cursor: text;">학력</button>
+				</form>
+				<form method="GET" action="certificate.do">
+					<input type="hidden" name="profileId" value="${profile.profileId }">
+					<button class="aTag" style="cursor: text;">자격증</button>
+				</form>
+				<!-- <div id="pProjectHistory">프로젝트 히스토리</div> -->
+				<div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/PH.do'">프로젝트히스토리</div>
 			</div>
 			<div id="accountMenu" class="myPage_sideNav_mainC">계정 관리<i style="float: right; margin-right: 5%;"
 					class="fas fa-angle-right"></i></div>
 			<div id="subAccountMenu" class="myPage_sideNav_serveC">
 				<div id="clientComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">기본 정보 수정</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoIdentityVerification.do'">신원 인증</div>
-				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">날인 방법 관리</div>
+				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoSignatureList.do'">날인 방법 관리</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountChangePwd.do'">비밀번호 변경</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/outOfMember.do'">회원 탈퇴</div>
 			</div>
@@ -169,7 +209,11 @@
 						}
 					});
 				});
-
+				
+				// 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
+		        $(function(){
+			        $('.myPage_sideNav_area').height($('.allWrap').height());
+		        })
 			</script>
 		</div>
 	</div>
