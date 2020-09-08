@@ -141,5 +141,25 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.insertEval(id);
 	}
 
+	@Override
+	public int getListCount(String memNick) {
+		return mDao.getListCount(memNick);
+	}
+
+	@Override
+	public ArrayList<FindClient> selectList(PageInfo pi, String memNick) {
+		return mDao.selectList(pi, memNick);
+	}
+
+	@Override
+	public int getListCount2(String introduction) {
+		return mDao.getListCount2(introduction);
+	}
+
+	@Override
+	public ArrayList<FindClient> selectList2(PageInfo pi, String introduction) {
+		return mDao.selectList2(pi, introduction);
+	}
+
 
 }

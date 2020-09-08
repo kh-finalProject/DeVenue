@@ -59,5 +59,13 @@ public interface MemberService {
 
 	int memberemail(String email);
 
+	int getListCount(String memNick);
+
+	ArrayList<FindClient> selectList(PageInfo pi, String memNick);
+
+	int getListCount2(String introduction);
+
+	ArrayList<FindClient> selectList2(PageInfo pi, String introduction);
+
 	
 }

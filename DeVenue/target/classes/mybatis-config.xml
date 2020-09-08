@@ -67,6 +67,12 @@
 	    
 		<!-- member 회원채팅설정 -->
 	    <!-- <typeAlias type="com.kh.DeVenue.member.model.vo.MemChatSet" alias="MemChatSet"/> -->
+	    
+	    <!-- 클라이언트 마이페이지 메인 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory" alias="CmypageProjectHistory"/>
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageSuggest" alias="CmypageSuggest"/>
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageProcess" alias="CmypageProcess"/>
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageClientInfo" alias="CmypageClientInfo"/>
 
 	</typeAliases>
 

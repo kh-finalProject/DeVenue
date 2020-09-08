@@ -1,13 +1,13 @@
-package com.kh.DeVenue.member.model.vo;
+package com.kh.DeVenue.myPage.model.vo;
 
 import java.io.Serializable;
 
-public class FCprojectHistory implements Serializable {
+public class CmypageProjectHistory implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1230062537489302198L;
+	private static final long serialVersionUID = 8587340940760040260L;
 
 	private int memId;
 	private String memNick;		// 닉네임
@@ -28,13 +28,13 @@ public class FCprojectHistory implements Serializable {
 	private double star4;
 	private double star5;
 	
-	public FCprojectHistory() {
+	public CmypageProjectHistory() {
 		super();
 	}
 
-	public FCprojectHistory(int memId, String memNick, String memTypeKind, String ideStatus, int phone, String proImg,
-			int addProject, int stopProject, int ingProject, int allPayment, int avgEagv, int completeProject,
-			int countEagv, double star1, double star2, double star3, double star4, double star5) {
+	public CmypageProjectHistory(int memId, String memNick, String memTypeKind, String ideStatus, int phone,
+			String proImg, int addProject, int stopProject, int ingProject, int allPayment, int avgEagv,
+			int completeProject, int countEagv, double star1, double star2, double star3, double star4, double star5) {
 		super();
 		this.memId = memId;
 		this.memNick = memNick;
@@ -206,7 +206,7 @@ public class FCprojectHistory implements Serializable {
 
 	@Override
 	public String toString() {
-		return "FCprojectHistory [memId=" + memId + ", memNick=" + memNick + ", memTypeKind=" + memTypeKind
+		return "CmypageProjectHistory [memId=" + memId + ", memNick=" + memNick + ", memTypeKind=" + memTypeKind
 				+ ", ideStatus=" + ideStatus + ", phone=" + phone + ", proImg=" + proImg + ", addProject=" + addProject
 				+ ", stopProject=" + stopProject + ", ingProject=" + ingProject + ", allPayment=" + allPayment
 				+ ", avgEagv=" + avgEagv + ", completeProject=" + completeProject + ", countEagv=" + countEagv
@@ -214,4 +214,6 @@ public class FCprojectHistory implements Serializable {
 				+ "]";
 	}
 
+		
+	
 }

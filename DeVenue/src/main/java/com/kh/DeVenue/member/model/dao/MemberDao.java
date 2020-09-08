@@ -131,4 +131,26 @@ public class MemberDao {
 		
 		return sqlSessionTemplate.selectOne("memberMapper.memberemail", email);
 	}
+
+	public int getListCount(String memNick) {
+		return sqlSessionTemplate.selectOne("memberMapper.countClientList", memNick);
+	}
+
+	public ArrayList<FindClient> selectList(PageInfo pi, String memNick) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.searchMemNickClientList", memNick, rowBounds);
+	}
+
+	public int getListCount2(String introduction) {
+		return sqlSessionTemplate.selectOne("memberMapper.countClientList2", introduction);
+	}
+	
+	public ArrayList<FindClient> selectList2(PageInfo pi, String introduction) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.searchIntroductionClientList", introduction, rowBounds);
+	}
 }

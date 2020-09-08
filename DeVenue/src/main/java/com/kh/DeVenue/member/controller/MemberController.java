@@ -27,12 +27,10 @@ import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.member.model.vo.Member;
-<<<<<<< HEAD
 
 import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
-=======
->>>>>>> refs/remotes/origin/master
+
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
@@ -124,6 +122,8 @@ public class MemberController {
 				// 채팅을 위해 관리자 정보를 죄다 불러옴(주관리자 여부는 웹단에서 구분하여 쓰자)
 				ArrayList<ChatUserInfo> admins = mmService.allAdmin();
 				session.setAttribute("admins", admins);
+				// 로그인유저 추가(재환)
+				session.setAttribute("loginUser", loginUser);
 				
 				// 채팅평시상태를 위해 안읽은 메시지를 모두 카운트해서 불러옴
 				int allUnReadCount = cService.selectAllUnReadCount(loginUser.getMemId());
@@ -249,9 +249,12 @@ public class MemberController {
 		System.out.println("list : " + list);
 		System.out.println("pi" + pi);
 		
+		String msg=null;
+		
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
+			mv.addObject("msg", msg);
 			mv.setViewName("findMember/findClient");
 		}else {
 			throw new MemberException("게시글 전체 조회 실패!");
@@ -392,4 +395,78 @@ public class MemberController {
 		}		
 		out.close();
 	}
+	
+	@RequestMapping(value="memNickSearch.do")
+	public ModelAndView memNickSearch(ModelAndView mv, String memNick,
+			@RequestParam(value="page",required=false) Integer page) {
+		
+		System.out.println("닉네임 : " + memNick);
+		
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		int listCount=mService.getListCount(memNick);
+		System.out.println("listcount : " + listCount);
+				
+		PageInfo pi= getPageInfo(currentPage, listCount);
+		
+		ArrayList<FindClient> list=mService.selectList(pi, memNick);
+		System.out.println("list : " + list);
+		System.out.println("pi" + pi);
+		
+		String msg=null;
+		
+		if(!list.isEmpty()) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			mv.addObject("msg", msg);
+			mv.setViewName("findMember/findClient");
+		}else {
+			msg="검색 결과가 존재하지 않습니다.";
+			
+			mv.addObject("msg", msg)
+			.setViewName("findMember/findClient");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="introductionSearch.do")
+	public ModelAndView introductionSearch(ModelAndView mv, String introduction,
+			@RequestParam(value="page",required=false) Integer page) {
+		System.out.println("내용 : " + introduction);
+		
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		int listCount=mService.getListCount2(introduction);
+		System.out.println("listcount : " + listCount);
+				
+		PageInfo pi= getPageInfo(currentPage, listCount);
+		
+		ArrayList<FindClient> list=mService.selectList2(pi, introduction);
+		System.out.println("list : " + list);
+		System.out.println("pi" + pi);
+		
+		String msg=null;
+		
+		if(!list.isEmpty()) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			mv.addObject("msg", msg);
+			mv.setViewName("findMember/findClient");
+		}else {
+			msg="검색 결과가 존재하지 않습니다.";
+			
+			mv.addObject("msg", msg)
+			.setViewName("findMember/findClient");
+		}
+		
+		return mv;
+	}
+	
 }
