@@ -160,7 +160,7 @@ public class MemberController {
 			String address2 = request.getParameter("address2");	// 사용자 주소
 			String address3 = request.getParameter("address3");	// 사용자 상세 주소
 			
-			Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phone);
+			Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phonechange);
 //			System.out.println(m);
 			int result = mService.insertMember(m);
 			if(result > 0) {

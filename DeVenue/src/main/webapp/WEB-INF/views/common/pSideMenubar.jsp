@@ -139,7 +139,7 @@
 			<div id="subAccountMenu" class="myPage_sideNav_serveC">
 				<div id="clientComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">기본 정보 수정</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoIdentityVerification.do'">신원 인증</div>
-				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountMypage.do'">날인 방법 관리</div>
+				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoSignatureList.do'">날인 방법 관리</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountChangePwd.do'">비밀번호 변경</div>
 				<div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/outOfMember.do'">회원 탈퇴</div>
 			</div>

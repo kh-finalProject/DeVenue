@@ -36,6 +36,7 @@
 		<typeAlias type="com.kh.DeVenue.memberAccount.model.dto.MemBasicInfo" alias="MemBasicInfo"/>
 		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.Bank" alias="Bank"/>
 		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.MemType" alias="MemType"/>
+		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.Signature2" alias="Signature2"/>
 
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FindClientDetail" alias="FindClientDetail"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FCprojectHistory" alias="FCprojectHistory"/>

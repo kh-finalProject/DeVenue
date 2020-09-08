@@ -1,4 +1,4 @@
-package com.kh.DeVenue.memberAccount.dto;
+package com.kh.DeVenue.memberAccount.model.dto;
 
 import java.io.Serializable;
 
