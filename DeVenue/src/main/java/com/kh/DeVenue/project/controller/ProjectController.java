@@ -5,23 +5,24 @@ import static com.kh.DeVenue.common.Pagination.getPageInfo;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -546,36 +547,178 @@ ProjectService pService;
 		
 		return "project/extendProjectList";
 	}
+
+	@RequestMapping("searchProjectList.do")
+	public ModelAndView projectList(
+			ModelAndView mv, 
+			@RequestParam(value="page",required=false) Integer page,
+			HttpServletRequest request,
+			@ModelAttribute ProjectSearch search
+			) {
+		
+		
+		//필터 설정 한 이후에 페이지이동을하면 세션에 필터가 담겨져 있다.
+		HttpSession session=request.getSession();
+		ProjectFilter filter=(ProjectFilter)session.getAttribute("filter");
+		
+		System.out.println("페이지네이션 필터"+filter);
+		
+		int listCount=0;
+		PageInfo pi=new PageInfo();
+		ArrayList<ProjectList> list=new ArrayList();
+		ArrayList<Tech> tech=new ArrayList();
+		
+		//페이지네이션 처리
+		int currentPage=1;
+				
+		if(page!=null) {
+			currentPage=page;
+				}
+		
+		
+		
+		//로그인 유저가 존재할 경우, 그 유저의 관심 프로젝트 목록을 가져와서 session에 추가하자
+		Member loginUser=(Member)session.getAttribute("loginUser");
+		ArrayList<ProjectLike> like=new ArrayList();
+		
+		if(loginUser!=null) {
+			like=pService.selectUserLike(loginUser.getMemId());
+			loginUser.setLikeList(like);
+			session.setAttribute("loginUser", loginUser);
+		}
+		
+		System.out.println("로그인 유저의 관심 프로젝트 목록"+like);
+		
+			
+		//필터가 존재하지 않을 때
+		if(filter==null) {
+			
+		//검색 조건이 존재하지 않을때,	
+		if(search==null) {	
+		
+		//페이징 처리를 위해 게시물 수 알아오기
+		listCount=pService.getListCount();
+		
+		//현재페이지+전체 게시물 수>>페이지네이션 정보 추출
+		pi=getPageInfo(currentPage, listCount);
+		
+		
+		//게시물 가져오기
+		list=pService.selectProjectList(pi);
+		
+		System.out.println("프로젝트 찾기, 프로젝트 페이지네이션:"+pi);
+		System.out.println("프로젝트 찾기, 프로젝트 리스트:"+list);
+		
+		//프로젝트 기술 가져오기
+		tech=pService.selectTechList();
+		
+		if(list!=null) {
+			mv.addObject("list",list);
+			mv.addObject("pi", pi);
+			mv.addObject("tech", tech);
+			
+			mv.setViewName("project/find/findProjectListView");
+			
+		}else {
+			throw new ProjectException("프로젝트 전체 조회 실패");
+		}
+		
+		
+		}
+		
+		//검색 조건이 존재할 때
+		if(search!=null) {
+			
+			//페이징 처리를 위해 게시물 수 알아오기
+			listCount=pService.getListCount(search);
+			
+			//현재페이지+전체 게시물 수>>페이지네이션 정보 추출
+			pi=getPageInfo(currentPage, listCount);
+			
+			
+			//게시물 가져오기
+			list=pService.selectProjectList(pi,search);
+			
+			System.out.println("프로젝트 찾기, 프로젝트 페이지네이션:"+pi);
+			System.out.println("프로젝트 찾기, 프로젝트 리스트:"+list);
+			
+			//프로젝트 기술 가져오기
+			tech=pService.selectTechList();
+			
+			if(list!=null) {
+				mv.addObject("list",list);
+				mv.addObject("pi", pi);
+				mv.addObject("tech", tech);
+				mv.addObject("search", search);
+				
+				mv.setViewName("project/find/findProjectListView");
+				
+			}else {
+				throw new ProjectException("프로젝트 전체 조회 실패");
+			}	
+			
+			
+		}
+		
+		}
+		
+		
+		//필터가 존재할 때,
+		if(filter!=null) {
+			
+			if(search!=null) {
+				filter.setSearch(search);
+			}
+			
+			
+			//페이징 처리를 위해 게시물 수 알아오기
+			listCount=pService.getListCount(filter);
+			
+			System.out.println("필터있는 listCount"+listCount);
+			
+			//현재페이지+전체 게시물 수>>페이지네이션 정보 추출
+			pi=getPageInfo(currentPage, listCount);
+			
+			
+			//게시물 가져오기
+			list=pService.selectProjectList(pi,filter);
+			
+			System.out.println("프로젝트 찾기+필터, 프로젝트 페이지네이션:"+pi);
+			System.out.println("프로젝트 찾기+필터, 프로젝트 리스트:"+list);
+			
+			//프로젝트 기술 가져오기
+			tech=pService.selectTechList();
+			
+			if(list!=null) {
+				mv.addObject("list",list);
+				mv.addObject("pi", pi);
+				mv.addObject("tech", tech);
+				mv.addObject("filter", filter);
+				
+				if(search!=null) {
+					mv.addObject("search", search);
+				}
+				
+				mv.setViewName("project/find/findProjectListView");
+				
+				
+				
+			}else {
+				throw new ProjectException("프로젝트 전체 조회 실패");
+			}
+			
+			
+		}
+		
+		
+		
+		
 	
-	@RequestMapping(value="searchProjectDetail.do")
-	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="page", required=false) Integer page) {
-		
-		System.out.println("parameter 뭐 넘어왔나?"+project);
-		//프로젝트 디테일 가져오기
-		
-		ProjectDetail detail=pService.selectProjectDetail(project.getId());
-		
-		// 클라이언트의 전체 프로젝트 수 
-		ProjectDetail number=pService.selectAllNumber(detail.getProject().getMemId());
-		detail.setAllProject(number.getAllProject());
-		detail.setProcessProject(number.getProcessProject());
-		detail.setCompleteProject(number.getCompleteProject());
-		detail.setTotal(number.getTotal());
-		detail.setEvalCount(number.getEvalCount());
-		
-		System.out.println("화면단 가기 전, 프로젝트 디테일:"+detail);
-		
-		//추천 프로젝트 리스트 가져오기
-		ArrayList<ProjectList> candidate=pService.selectRecommend(project);
-		System.out.println("화면단 가기 전, 추천 프로젝트 리스트"+candidate);
-		
-		mv.addObject("page",page);
-		mv.addObject("detail", detail);
-		mv.addObject("candidate", candidate);
-		mv.setViewName("project/find/findProjectDetailView");
 		return mv;
 		
 	}
+	
+
 	
 	@RequestMapping(value="addProjectReply.do", method=RequestMethod.POST)
 	public void insertProjectReply(HttpServletResponse response,@ModelAttribute Reply r, @ModelAttribute Member m) throws IOException {
@@ -1606,7 +1749,6 @@ ProjectService pService;
 		return mv;
 		
 	}
-
 
 
 }

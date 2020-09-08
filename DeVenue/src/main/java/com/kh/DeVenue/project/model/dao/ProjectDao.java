@@ -18,8 +18,11 @@ import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
+import com.kh.DeVenue.project.model.vo.ProjectFilter;
+import com.kh.DeVenue.project.model.vo.ProjectLike;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.ProjectSearch;
 import com.kh.DeVenue.project.model.vo.Reply;
 import com.kh.DeVenue.project.model.vo.Tech;
 
@@ -37,17 +40,19 @@ public class ProjectDao {
 	}
 
 	
-	public int getListCount() {
+	public int getListCount(ProjectFilter filter) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getListCount");
+		return sqlSessionTemplate.selectOne("projectMapper.getListCount",filter);
 	}
 
-	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi, ProjectFilter filter) {
+		
+		System.out.println("필터있는 프로젝트 리스트");
 		
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getProjectList", null, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getProjectList", filter, rowBounds);
 	}
 
 
@@ -453,12 +458,6 @@ public ArrayList<Tech> selectTechList() {
 
 
 
-
-
-
-
-
-
 	public int temStoreQuestion(ProjectQuestion q) {
 		
 		return sqlSessionTemplate.insert("projectMapper.temStoreQuestion",q);
@@ -566,11 +565,6 @@ public ArrayList<Tech> selectTechList() {
 //		return sqlSessionTemplate.selectOne("projectMapper.getQuestion",proId);
 //	
 //	}
-
-
-	
-
-
 
 
 

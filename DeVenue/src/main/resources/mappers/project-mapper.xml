@@ -68,7 +68,9 @@
 		<result property="evaluation" column="EVALUATION"/>
 
 	<association property="project" javaType="Project">
+		<result property="proId" column="PROID"/>
 		<result property="proName" column="NAME"/>
+		<result property="proStaId" column="STATUS"/>
 		<result property="proPlanDetail" column="PLANDETAIL"/>
 		<result property="proDuration" column="DURATION"/>
 		<result property="proSummary" column="SUMMARY"/>
@@ -77,6 +79,7 @@
 		<result property="proRecruit" column="RECRUIT"/>
 		<result property="proCreateDate" column="CDATE"/>
 		<result property="proREndDate" column="RENDDATE"/>
+		<result property="proContract" column="CONTRACT"/>
 		<result property="memId" column="CLIENTID"/>
 	</association>	
 				
@@ -541,7 +544,6 @@
 	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST5'
 	ORDER BY PRO_ID DESC
 </select>
-		
 
 <select id="getListCountNoFilter" resultType="_int">
 	SELECT COUNT(DISTINCT(ID)) 
@@ -1254,7 +1256,9 @@
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	WHERE S.MEM_ID=#{memId} AND P.PRO_STA_ID='PST3'
 	
+
 	</select>
+
 
 
 </mapper>

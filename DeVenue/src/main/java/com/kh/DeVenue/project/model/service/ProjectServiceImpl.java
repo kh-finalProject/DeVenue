@@ -19,8 +19,11 @@ import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
+import com.kh.DeVenue.project.model.vo.ProjectFilter;
+import com.kh.DeVenue.project.model.vo.ProjectLike;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.ProjectSearch;
 import com.kh.DeVenue.project.model.vo.Reply;
 import com.kh.DeVenue.project.model.vo.Tech;
 
@@ -40,15 +43,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public int getListCount() {
+	public int getListCount(ProjectFilter filter) {
 		
-		return proDao.getListCount();
+		return proDao.getListCount(filter);
 	}
 
 	@Override
-	public ArrayList<ProjectList> selectProjectList(PageInfo pi) {
+	public ArrayList<ProjectList> selectProjectList(PageInfo pi, ProjectFilter filter) {
 		
-		return proDao.selectProjectList(pi);
+		return proDao.selectProjectList(pi,filter);
 	}
 
 	@Override
@@ -521,6 +524,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+
 	@Override
 	public int temStoreProject(Project p) {
 		
@@ -640,24 +644,6 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return proDao.selectModal(proId);
 	}
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
 
 
 

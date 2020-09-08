@@ -293,7 +293,11 @@
 	<insert id="insertEval" parameterType="hashmap">
 		INSERT INTO EVAL VALUES(EVAL_SEQ.NEXTVAL, #{파트너스}, #{클라이언트}, #{프로젝트}, #{평가점수}
 			, #{평가내용}, #{전문성}, #{적극성}, #{의사소통}, #{일정준수}, #{만족도}, SYSDATE, 'Y')
+
 	</insert>
+
+
+
 
 	<!-- 회원 채팅 설정 -->
 	<resultMap type="MemChatSet" id="memChatSetResultSet">
@@ -358,6 +362,9 @@
 		WHERE USER_TYPE = 'UT4'
 		AND MEM_STATUS = 'Y'
 	</select>
+	
+	
+	
 	
 	
 </mapper>
