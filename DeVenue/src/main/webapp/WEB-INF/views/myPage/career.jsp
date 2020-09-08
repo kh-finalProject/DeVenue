@@ -483,8 +483,8 @@ section {
 					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
 						찾기</a>
 					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a>
-						<a href="partnersList.do">파트너스 찾기</a>
+						<a href="clientList.do ">클라이언트 찾기</a> <a href="partnersList.do">파트너스
+							찾기</a>
 					</div></li>
 			</ul>
 
@@ -601,10 +601,10 @@ section {
 						</h3>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<form method="get" action="delCareer.do">
-							<c:forEach var="career" items="${careerlist }">
+						<c:forEach var="career" items="${careerlist }">
+							<form method="get" action="delCareer.do">
 								<table class="Ctable">
-								
+
 									<tr>
 										<td class="career-title">회사명</td>
 										<td>${career.cName }</td>
@@ -622,22 +622,21 @@ section {
 									</tr>
 									<tr>
 										<td class="career-title">근무시간</td>
-										<td colspan="2">${career.cEndDate }</td>
+										<td colspan="2">${career.cStartDate }</td>
 									</tr>
 									<tr>
 										<td class="career-title">설명</td>
 										<td colspan="2">${career.cContent }</td>
 									</tr>
 									<tr>
-										<td>
-											<input type="hidden" name="cId" value="${career.cId }">
-											<input type="hidden" name="profileId" value="${career.profileId }">
-										</td>
+										<td><input type="hidden" name="cId"
+											value="${career.cId }"> <input type="hidden"
+											name="profileId" value="${career.profileId }"></td>
 									</tr>
 								</table>
 								<br>
-							</c:forEach>
-						</form>
+							</form>
+						</c:forEach>
 					</div>
 				</div>
 			</div>

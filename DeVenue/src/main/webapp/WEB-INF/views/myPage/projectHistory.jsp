@@ -630,9 +630,12 @@ section {
 					${loginUser.memNick } 마이페이지</div>
 			</div>
 			<div class="row">
-				<jsp:include page="../common/myPageMenubar.jsp" />
+				<!-- 구 sideMenubar -->
+				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새 sidMenubar -->
+				<jsp:include page="../common/pSideMenubar.jsp"/>
 			</div>
-			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12"
@@ -757,12 +760,13 @@ section {
 							<h3>클라이언트 평가</h3>
 						</div>
 						<div class="col-7" style="float: right;">
-							<select name="title" style="width: 150px; height: 30px;">
+							<select name="title" style="width: 120px; height: 30px;">
 								<option value="development">개발</option>
 								<option value="design">디자인</option>
-							</select> <select name="category" style="width: 150px; height: 30px;">
+								<option value="all">개발 + 디자인</option>
+							</select> <select name="category" style="width: 120px; height: 30px;">
 								<option value="web">웹</option>
-								<option value="app">앱</option>
+								<option value="app">어플리케이션</option>
 								<option value="publishing">퍼블리싱</option>
 								<option value="etc">기타</option>
 							</select>

@@ -1170,6 +1170,7 @@ ul li input {
 							<div class="col-12 inner">
 								<!-- 하나의 파트너스 정보 -->
 								<c:forEach var="mem" items="${mList }">
+								<input type="text" name="memId" value="${mem.memId }">
 									<div class="col-12 partnes-info">
 										<div class="left">
 											<div class="img">

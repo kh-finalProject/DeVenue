@@ -466,8 +466,8 @@ section {
 					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
 						찾기</a>
 					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a>
-						<a href="partnersList.do">파트너스 찾기</a>
+						<a href="clientList.do ">클라이언트 찾기</a> <a href="partnersList.do">파트너스
+							찾기</a>
 					</div></li>
 			</ul>
 
@@ -566,9 +566,13 @@ section {
 					${loginUser.memNick } 마이페이지</div>
 			</div>
 			<div class="row">
-				<jsp:include page="../common/myPageMenubar.jsp" />
+				<!-- 구 sideMenubar -->
+				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새 sidMenubar -->
+				<jsp:include page="../common/pSideMenubar.jsp" />
 			</div>
-			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+			<div class="col-8 text-white"
+				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12"
@@ -584,8 +588,8 @@ section {
 						</h3>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<form method="get" action="delCerti.do">
-							<c:forEach var="certi" items="${certilist }">
+						<c:forEach var="certi" items="${certilist }">
+							<form method="get" action="delCerti.do">
 								<table class="table">
 									<tr class="table-secondary" style="text-align: center;">
 										<td>자격증명</td>
@@ -600,15 +604,15 @@ section {
 										<td>${certi.ccPlace }</td>
 										<td>2020년 09월 03일</td>
 										<td>${certi.ccNumber }</td>
-										<td>
-										<input type="hidden" name="ccId" value="${certi.ccId }">
-										<input type="hidden" name="profileId" value="${certi.profileId }">
-										<a href="certificateUpdate.html" class="btn btn-info">수정</a>
-										<button id="del" class="btn btn-info">삭제</button></td>
+										<td><input type="hidden" name="ccId"
+											value="${certi.ccId }"> <input type="hidden"
+											name="profileId" value="${certi.profileId }"> <a
+											href="certificateUpdate.html" class="btn btn-info">수정</a>
+											<button id="del" class="btn btn-info">삭제</button></td>
 									</tr>
 								</table>
-							</c:forEach>
-						</form>
+							</form>
+						</c:forEach>
 					</div>
 				</div>
 			</div>

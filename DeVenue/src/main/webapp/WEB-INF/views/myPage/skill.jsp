@@ -468,8 +468,8 @@ section {
 					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
 						찾기</a>
 					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a>
-						<a href="partnersList.do">파트너스 찾기</a>
+						<a href="clientList.do ">클라이언트 찾기</a> <a href="partnersList.do">파트너스
+							찾기</a>
 					</div></li>
 			</ul>
 
@@ -569,9 +569,13 @@ section {
 					${loginUser.memNick } 마이페이지</div>
 			</div>
 			<div class="row">
-				<jsp:include page="../common/myPageMenubar.jsp" />
+				<!-- 구 sideMenubar -->
+				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새 sidMenubar -->
+				<jsp:include page="../common/pSideMenubar.jsp" />
 			</div>
-			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+			<div class="col-8 text-white"
+				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12"
@@ -581,7 +585,7 @@ section {
 							프로필에서 보기</a>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-					<form method="get" action="delSkill.do">
+
 						<table class="table">
 							<tr class="table-secondary"
 								style="font-size: 20px; text-align: center;">
@@ -591,10 +595,10 @@ section {
 								<td>도구</td>
 							</tr>
 							<c:forEach var="skill" items="${skilllist }">
-							<input type="hidden" name="profileId" value="${profile.profileId }">
-							<c:out value="${profile.profileId }"/>
-							<input type="hidden" name="skillId" value="${skill.skillId }">
-							
+								<form method="get" action="delSkill.do">
+									<input type="hidden" name="profileId"
+										value="${profile.profileId }"> <input type="hidden"
+										name="skillId" value="${skill.skillId }">
 								<tr class="skill">
 									<!-- <td class="checkbox"><input type="checkbox" id="checkbox"
 										name="checkbox"></td> -->
@@ -612,9 +616,9 @@ section {
 									<td><button type="submit" id="${skill.skillId }"
 											class="btn btn-info">삭제</button></td>
 								</tr>
+								</form>
 							</c:forEach>
 						</table>
-						</form>
 					</div>
 					<!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script> -->
 					<script>
