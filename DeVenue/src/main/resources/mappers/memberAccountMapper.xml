@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberAccountMapper">
+	<!--  -->
+	<resultMap type="Identify" id="identifyResultSet">
+		<id property="ideId" column="IDE_ID"/>
+		<result property="ideName" column="IDE_NAME"/>
+		<result property="ideAdress" column="IDE_ADDRESS"/>
+		<result property="originalFileName" column="IDE_ORIGINFILE"/>
+		<result property="renameFileName" column="IDE_RENAMEFILE"/>
+		<result property="ideStatus" column="IDE_STATUS"/>
+	</resultMap>
+	
+	<!-- 회원 비밀번호 변경 쿼리 -->
+	<select id="updatePwd" parameterType="map">
+		UPDATE MEMBER
+		SET MEM_PWD = #{password}
+		WHERE MEM_ID = #{memId}
+	</select>
+	
+	<!-- 회원 탈퇴 처리 -->
+	<update id="decideOut" parameterType="string">
+		UPDATE MEMBER
+		SET MEM_STATUS = 'N'
+		WHERE MEM_ID = #{memId}
+	</update>
+	
+	<!-- 신원인증 관련 정보 조회(1인당 1회) -->
+	<select id="selectIdentityInform" parameterType="_int" resultMap="identifyResultSet">
+		SELECT * FROM IDENTIFY
+		WHERE IDE_ID = #{memId}
+	</select>
+
+	<!-- 신원인증 데이터 등록 -->
+	<update id="insertIden" parameterType="map">
+		UPDATE IDENTIFY
+		SET IDE_NAME = #{idenName}, IDE_ADDRESS = #{idenAddress}, IDE_ORIGINFILE = #{originFileName}, IDE_RENAMEFILE = #{renameFileName}, IDE_STATUS = 'ING'
+		WHERE IDE_ID = #{memId}
+	</update>
+	
+	<!-- 신원인증 초기화 -->
+	<update id="resetIden" parameterType="string">
+		UPDATE IDENTIFY
+		SET IDE_NAME = NULL, IDE_ADDRESS = NULL, IDE_ORIGINFILE = NULL, IDE_RENAMEFILE = NULL, IDE_STATUS = DEFAULT
+		WHERE IDE_ID = #{memId}
+	</update>
+</mapper>

@@ -1,8 +1,6 @@
 package com.kh.DeVenue.common;
 
 import com.kh.DeVenue.project.model.vo.PageInfo;
-//import com.kh.DeVenue.member.model.vo.PageInfo;
-
 
 public class Pagination {
 	

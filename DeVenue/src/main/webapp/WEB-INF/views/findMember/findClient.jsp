@@ -31,6 +31,14 @@ hr {
 .fas{
 	margin-right:0;
 }
+.far{
+	margin-right:0;
+}
+
+		/*페이지네이션*/
+      #pagination>div{
+        margin-top: 1rem;
+      }
 </style>
 
 </head>
@@ -215,14 +223,15 @@ hr {
             <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
             
            <c:forEach var="b" items="${list }"> 
-                <div class="userBoard">
+                    <!-- 클릭이벤트 넣어야함 -->
+                    <c:url var="cDetail" value="cDetail.do">
+                    	<c:param name="cId" value="${b.memId }"/>
+                    	<%-- <c:param name="page" value="${pi.currentPage }"/> --%>
+                    </c:url>
+                <div class="userBoard" onclick="location.href='${cDetail }'" style="cursor:pointer;">
                     &emsp;
                     <input type="hidden" value="${b.memId }">
                     
-                    <c:url var="cDetail" value="cDetail.do">
-                    	<c:param name="cId" value="${b.memId }"/>
-                    	<c:param name="page" value="${pi.currentPage }"/>
-                    </c:url>
                     
                     <ul style="list-style: none;">
                         <li>
@@ -249,26 +258,14 @@ hr {
                                                 <!-- <a class="badge badge-info">개인</a> -->
                                                 <a class="badge badge-info">${b.memTypeKind }</a>
                                             </li>
-                                            <li>
-                                                <!-- 예아! 호우! 예예예~
-                                                싹쓰리 인더 하우스
-                                                커커커커커몬! 싹!쓰리!투 렛츠고!
-
-                                                나 다시 또 설레어
-                                                이렇게 너를 만나서
-                                                함께 하고 있는 지금 이 공기가
-
-                                                다시는 널 볼 순 없을 거라고
-                                                추억일 뿐이라
-                                                서랍 속에 꼭 넣어뒀는데
-
-                                                흐르는 시간 속에서
-                                                너와 내 기억은
-                                                점점 희미해져만 가
-                                                끝난 줄 알았 -->
+                                            <li id="introduction" style="line-height:2.4rem; -webkit-box-orient: vertical; word-wrap:break-word;">
                                                 ${b.introduction }
                                                 <br><br>
                                             </li>
+                                            
+                                            <script>
+                                            	$("#introduction").text().css("");
+                                            </script>
                                         </ul>
                                     </div>
                                 </div>
@@ -354,7 +351,7 @@ hr {
 										</c:when>
                                     </c:choose>
                                         <!-- <b>4.5 / 평가 4개</b>  -->
-                                        <b>${b.avgEagv } / 평가 ${b.countEagv }개</b> 
+                                        ${b.avgEagv } / 평가 ${b.countEagv }개 
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
                                     <div class="point">
@@ -409,13 +406,9 @@ hr {
                                                 kh_Bclass(소속)&emsp;
                                                 <a class="badge badge-info">개인</a>
                                             </li>
-                                            <li>
-                                                예아! 호우! 예예예~
-                                                싹쓰리 인더 하우스
-                                                커커커커커몬! 싹!쓰리!투 렛츠고!
-
-                                                나 다시 또 설레어
-                                                이렇게 너를 만나서
+                                            <li style="line-height:2.4rem;">
+                                                예아! 호우! 예예예~ 싹쓰리 인더 하우스   커커커커커몬! 싹!쓰리!투 렛츠고!
+                                                나 다시 또 설레어                이렇게 너를 만나서
                                                 함께 하고 있는 지금 이 공기가
 
                                                 다시는 널 볼 순 없을 거라고
@@ -537,6 +530,52 @@ hr {
                         </li>
                     </ul>
                 </div>
+                
+                <section class="mt-5 mb-5" id="pagination">
+
+            <div class="row d-flex justify-content-around align-items-center">
+
+              <!--페이지네이션-->
+              <div class="col-12 col-md-4 text-center">
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center mb-0 text-dark">
+                  	<c:if test="${pi.currentPage eq 1 }">
+                    <li class="page-item"><a class="page-link"><i class="fas fa-chevron-left"></i></a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage gt 1}">
+                    <c:url var="plistBack" value="clientList.do">
+                    	<c:param name="page" value="${pi.currentPage-1}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistBack}"><i class="fas fa-chevron-left"></i></a></li>
+                    </c:if>
+                    
+                    <c:forEach begin="${pi.startPage}" end="${pi.endPage}" step="1" var="pn">
+                    <c:if test="${pi.currentPage eq pn}">
+                    <li class="page-item active"><a class="page-link">${pn}</a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage ne pn}">
+                    <c:url var="plistCheck" value="clientList.do">
+                    <c:param name="page" value="${pn}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistCheck}">${pn}</a></li>
+                    </c:if>
+                    </c:forEach>
+                   
+                    <c:if test="${pi.currentPage eq pi.maxPage}">
+                    <li class="page-item"><a class="page-link"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
+                  	<c:if test="${pi.currentPage lt pi.maxPage}">
+                  	<c:url var="plistFront" value="clientList.do">
+                    	<c:param name="page" value="${pi.currentPage+1}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistFront}"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+
+          </section>
             </div>
 
         </div>

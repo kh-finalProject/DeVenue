@@ -20,7 +20,7 @@
 		<result property="profileId" column="PROFILE_ID"/>
 		<result property="mcId" column="MC_ID"/>
 		<result property="dcId" column="DC_ID"/>
-		<result property="portName" column="PORT_NAME"/>
+		<result property="portName" column="PROT_NAME"/>
 		<result property="portJoin" column="PORT_JOIN"/>
 		<result property="content" column="PORT_CONTENT"/>
 		<result property="portStartDate" column="PORT_START_DATE"/>
@@ -93,17 +93,29 @@
 	</resultMap>
 
 	<!-- 학력 -->
-	<resultMap type="SSCareer" id="sscareerResltSet">
+	<resultMap type="SCCareer" id="sccareerResltSet">
 		<id property="scId" column="SC_ID"/>
 		
 		<result property="sgId" column="SG_ID"/>
-		<result property="ssId;" column="SS_ID"/>
+		<result property="ssId" column="SS_ID"/>
 		<result property="scName" column="SC_NAME"/>
 		<result property="scMajor" column="SC_MAJOR"/>
 		<result property="scStartDate" column="SC_START_DATE"/>
 		<result property="scEndDate" column="SC_END_DATE"/>
 		<result property="profileId" column="PROFILE_ID"/>
 		
+	</resultMap>
+	
+	<!-- 자격증 -->
+	<resultMap type="Certificate" id="certificateResultSet">
+		<id property="ccId" column="CC_ID"/>
+		
+		<result property="profileId" column="PROFILE_ID"/>
+		<result property="ccName" column="CC_NAME"/>
+		<result property="ccPlace" column="CC_PLACE"/>
+		<result property="ccCreateDate" column="CC_CREATE_DATE"/>
+		<result property="ccNumber" column="CC_NUMBER"/>
+
 	</resultMap>
 
 	<!-- <resultMap type="PartInfoDetail" id="PIDetail">
@@ -140,6 +152,7 @@
 		WHERE PROFILE_ID = #{profileId}
 	</update>
 	
+	<!-- myPage insert -->
 	
 	<!-- 포트폴리오 추가 -->
 	<insert id="insertPortfolio" parameterType="PortFolio">
@@ -148,11 +161,6 @@
 		#{portJoin},#{content},TO_DATE(#{portStartDate},'YYYY-MM'),TO_DATE(#{portEndDate},'YYYY-MM'))
 	</insert>
 	
-	<!-- 포트폴리오 id 검색 -->
-	<select id="selectPortfolio" parameterType="PortFolio" resultMap="portFolioResultSet">
-		SELECT * FROM PORTFOLIO
-		WHERE PROFILE_ID=#{profileId}
-	</select>
 	
 	<!-- 포트폴리오 이미지 추가 -->
 	<insert id="insertPortImg" parameterType="PortImg">
@@ -172,11 +180,6 @@
 		VALUES(SKILL_SEQ.NEXTVAL,#{profileId},#{skillKind},#{skillLevel},#{skillYear})
 	</insert>
 	
-	<select id="selectSkill" parameterType="Skill" resultMap="skillResultSet">
-		SELECT * FROM SKILL
-		WHERE PROFILE_ID=#{profileId}
-	</select>
-	
 	<!-- 경력 추가 -->
 	<insert id="insertCareer" parameterType="Career">
 		INSERT INTO CAREER
@@ -190,9 +193,88 @@
 	</insert>
 	
 	<!-- 학력 추가 -->
-	<insert id="insertSSCareer" parameterType="SSCareer">
+	<insert id="insertSCCareer" parameterType="SCCareer">
 		INSERT INTO SC_CAREER
 		VALUES(SC_SEQ.nextval,#{sgId},#{ssId},#{scName},#{scMajor},TO_DATE(#{scStartDate},'YYYY-MM'),TO_DATE(#{scEndDate},'YYYY-MM'),#{profileId})
 	</insert>
+	
+	
+	<!-- myPage 포트폴리오 전체 Select -->
+	<select id="selectListPortFolio" parameterType="_int" resultMap="portFolioResultSet">
+		SELECT * FROM PORTFOLIO
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 보유 기술 전체 Select -->
+	<select id="selectListSKill" parameterType="_int" resultMap="skillResultSet">
+		SELECT * FROM SKILL
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 경력 전체 Select -->
+	<select id="selectListCareer" parameterType="_int" resultMap="careerResultSet">
+		SELECT * FROM CAREER
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 학력 전체 Select -->
+	<select id="selectListSCCareer" parameterType="_int" resultMap="sccareerResltSet">
+		SELECT * FROM SC_CAREER
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 자격증 전체 Select -->
+	<select id="selectListCertificate" parameterType="_int" resultMap="certificateResultSet">
+		SELECT * FROM CERTIFICATE
+		WHERE PROFILE_ID=#{profileId}
+	</select>
+	
+	<!-- myPage 스킬 delete -->
+	<delete id="deleteSkill" parameterType="_int">
+		DELETE FROM SKILL
+		WHERE SKILL_ID=#{skillId}
+	</delete>
+	
+	<!-- myPage 경력 delete -->
+	<delete id="deleteCareer" parameterType="_int">
+		DELETE FROM CAREER
+		WHERE C_ID=#{cId}
+	</delete>
+	
+	<!-- myPage 학력 delete -->
+	<delete id="deleteAca" parameterType="_int">
+		DELETE FROM SC_CAREER
+		WHERE SC_ID=#{scId}
+	</delete>
+	
+	<!-- myPage 자격증 delete -->
+	<delete id="deleteCerti" parameterType="_int">
+		DELETE FROM CERTIFICATE
+		WHERE CC_ID=#{ccId}
+	</delete>
+	
+	<!-- myPage 포트폴리오 포트번호 select -->
+	<select id="selectPortId" parameterType="String" resultType="_int">
+		SELECT port_id FROM PORTFOLIO
+		WHERE PROT_NAME=#{portName}
+	</select>
+	
+	<!-- myPage 포트폴리오 이미지 삭제 -->
+	<delete id="deletePortImg" parameterType="_int">
+		DELETE FROM PORT_IMG
+		WHERE PORT_ID=#{portId}
+	</delete>
+	
+	<!-- myPage 포트폴리오 기술 삭제 -->
+	<delete id="deletePortTec" parameterType="_int">
+		DELETE FROM PORT_TEC
+		WHERE PORT_ID=#{portId}
+	</delete>
+	
+	<!-- myPage 포트폴리오 삭제 -->
+	<delete id="deletePortFolio" parameterType="_int">
+		DELETE FROM PORTFOLIO
+		WHERE PORT_ID=#{portId}
+	</delete>
 
 </mapper>

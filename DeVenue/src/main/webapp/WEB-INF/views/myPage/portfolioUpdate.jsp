@@ -42,7 +42,13 @@
 	rel="stylesheet" type="text/css">
 
 <!--jQuery-->
+
 <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script> -->
+<!-- <script src="jquery.min.js"></script> -->
+
+
+
 
 <style>
 body {
@@ -340,7 +346,7 @@ span.round-tab i {
 section {
 	background-color: #212426;
 	width: 100%;
-	height: 1600px;
+	height: 1800px;
 	padding: 50px 0 30px 0;
 	color: white;
 }
@@ -352,25 +358,11 @@ section {
 	margin-left: 40px;
 }
 
-/* 포트폴리오 가로 하나의 크기 */
-.port-container {
-	margin-left: 5%;
-	height: 20px;
-	margin-top: 5%;
-	position: relative;
-}
-
 /* 포트폴리오 가로의 제목 div */
 .port-title {
-	position: absolute;
-	margin-left: 5%;
+	margin-left: 10%;
 	font-size: 20px;
-}
-
-/* title틀과 input 사이조절 */
-.port-input {
-	position: absolute;
-	margin-left: 20%;
+	width: 150px;
 }
 
 /* 이미지 추가할 곳의 한줄평가 div */
@@ -378,7 +370,6 @@ section {
 	margin-left: 5%;
 	height: 50px;
 	margin-top: 5%;
-	position: relative;
 }
 
 /* 서브로 보여줄 내용 */
@@ -399,6 +390,47 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	text-decoration-line: none;
 	color: white;
 }
+
+/* 회원찾기 드롭다운 메뉴 */
+.dropbtn {
+	color: white;
+	font-size: 16px;
+	border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+	background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+	display: block;
+}
 </style>
 <script src="https://kit.fontawesome.com/4b6b63d8f6.js"
 	crossorigin="anonymous"></script>
@@ -411,21 +443,155 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 </head>
 
 <body>
+
+	<!-- munubar -->
+	<%-- <jsp:include page="../common/menubar.jsp"/> --%>
+
 	<c:set var="contextPath"
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
-	<!-- munubar -->
-	<jsp:include page="../common/menubar.jsp"/>
+	<!--Top Button-->
+	<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top"
+		role="button"><i class="fas fa-chevron-up" style="margin: 0"></i></a>
+	<script>
+		$(document).ready(function() {
+			$(window).scroll(function() {
+				if ($(this).scrollTop() > 10) {
+					$('#back-to-top').css("display", "block")
+
+				} else {
+					$('#back-to-top').css("display", "none")
+
+				}
+			});
+			// scroll body to 0px on click
+			$('#back-to-top').click(function() {
+				$('body,html').animate({
+					scrollTop : 0
+				}, 400);
+				return false;
+			});
+		});
+	</script>
+
+	<!--navigation bar 1-->
+	<nav class="navbar navbar-expand-lg" style="background-color: black;">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarMain" aria-controls="navbarMain"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarMain">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link" href="#"><img
+						src="${contextPath }/resources/images/logo.png" height="80px"
+						style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;"><span
+						class="sr-only">(current)</span></a></li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a
+					class="nav-link hvr-underline-from-center mr-2"
+					href="searchProjectList.do">프로젝트찾기</a></li>
+				<li class="nav-item"><a
+					class="nav-link hvr-underline-from-center mr-2"
+					href="addProject.do">프로젝트등록</a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
+						찾기</a>
+					<div class="dropdown-content">
+						<a href="clientList.do ">클라이언트 찾기</a> <a href="#">파트너스 찾기</a>
+					</div></li>
+			</ul>
+
+			<ul class="navbar-nav ml-auto">
+				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
+				<c:if test="${empty sessionScope.loginUser }">
+					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
+					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
+					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
+					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
+				</c:if>
+				<c:if test="${!empty sessionScope.loginUser }">
+					<!-- 관리자 로그인 -->
+					<c:if
+						test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }관리자" />
+							<div class="btn-group">
+								<button type="button" class="btn btn-info dropdown-toggle"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<img src="${contextPath }/resources/images/admin.png"
+										height="50px" width="50px"
+										style="border-radius: 50px 50px 50px 50px">
+								</button>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#">profile</a>
+									<div class="dropdown-divider"></div>
+									<c:url var="logout" value="logout.do" />
+									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+								</div>
+							</div>
+						</h3>
+					</c:if>
+					<!-- 사용자 로그인 -->
+					<c:if
+						test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }사용자" />
+							<div class="btn-group">
+								<button type="button" class="btn btn-info dropdown-toggle"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<!-- 클라이언트시 기본 이미지 -->
+									<c:if test="${loginUser.userType eq 'UT3' }">
+										<img src="${contextPath }/resources/images/client.png"
+											height="50px" width="50px"
+											style="border-radius: 50px 50px 50px 50px">
+									</c:if>
+									<!-- 파트너스 기본 이미지 -->
+									<c:if test="${loginUser.userType eq 'UT4' }">
+										<img src="${contextPath }/resources/images/partners.png"
+											height="50px" width="50px"
+											style="border-radius: 50px 50px 50px 50px">
+									</c:if>
+								</button>
+								<div class="dropdown-menu">
+									<a href="profile.do" class="dropdown-item">profile</a>
+									<div class="dropdown-divider"></div>
+									<c:url var="logout" value="logout.do" />
+									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+								</div>
+							</div>
+						</h3>
+					</c:if>
+				</c:if>
+		</div>
+		</ul>
+		</div>
+		</ul>
+		</div>
+	</nav>
+
+	<script>
+		$(function() {
+			$("#navbarMain .nav-link").mouseenter(function() {
+				$(this).css("font-size", "105%");
+			})
+
+			$("#navbarMain .nav-link").mouseleave(function() {
+				$(this).css("font-size", "100%");
+			})
+		})
+	</script>
+
 	<!-- sidebar -->
-	<jsp:include page="../common/sideMenubarAll.jsp" />S
+	<jsp:include page="../common/sideMenubarAll.jsp" />
 
 
 	<!-- Section -->
 	<section>
-		<!-- 왼쪽 공백 -->
-		<!-- <div class="left-null" style="width: 15%; height: 1600px; border: 1px solid yellow; float: left;"></div> -->
-		<!-- 실제 들어갈 값 -->
-		<!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
 		<div class="container">
 			<div class="row text-white"
 				style="border-bottom: 1px solid lightgray; width: 1000px;">
@@ -445,225 +611,254 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<p style="float: left; font-size: 30px;">마이페이지 - 포트폴리오 추가</p>
 					</div>
 					<div class="col-12" style="width: 100%; height: 1200px;">
-						<form method="POST" action="piInsert.do" enctype="multipart/form-data">
-							<input type="hidden" name="profileId" value=${profile.profileId }>
-							<div class="col-12 port-container">
-								<div class="col-4 port-title">
-									<label for="title">* 제목</label>
-								</div>
-								<div class="col-4 port-input">
-									<input type="text" id="title" name="title"
-										style="width: 400px; height: 40px;">
-								</div>
-							</div>
-							<div class="col-12 port-container">
-								<div class="col-4 port-title">
-									<label for="jobtype">* 카테고리</label>
-								</div>
-								<div class="col-8 port-input">
-									<select name="jobtype" id="jobtype" name="jobtype"
+						<form method="POST" action="piInsert.do"
+							enctype="multipart/form-data">
+							<input type="hidden" id="profileId" name="profileId" value=${profile.profileId }>
+							<table
+								style="border-collapse: separate; border-spacing: 0 15px; margin-left: 5%; margin-top: 3%;">
+								<tr>
+									<td class="port-title">* 제목</td>
+									<td><input type="text" id="title" name="title"
+										style="width: 380px; height: 40px;">
+										<!-- <button type="button" id="title-chk" class="btn btn-info btn-lg"
+								style="margin-left: 5px;">중복체크</button> -->
+								</td>
+								</tr>
+								
+								<script type="text/javascript">
+									$("#title").focusout(function(){
+										alert("실행");
+										
+										var id = $("#profileId").val();
+										var title = $("#title").val();
+										console.log ($. ajax);
+										
+										$.ajax({
+											
+										})
+										
+										// profileId를 이용해서 portName을 리스트에 담아 가져와 비교
+									})
+								</script>
+								<tr>
+									<td class="port-title">* 카테고리</td>
+									<td><select name="jobtype" id="jobtype" name="jobtype"
 										style="width: 150px; height: 40px;">
-										<option value="MC1">개발</option>
-										<option value="MC2">디자인</option>
-										<option value="MC3">개발/디자인</option>
+											<option value="MC1">개발</option>
+											<option value="MC2">디자인</option>
+											<option value="MC3">개발/디자인</option>
 									</select> <select name="jobaction" name="jobaction"
 										style="width: 150px; height: 40px;">
-										<option value="DC1">웹</option>
-										<option value="DC2">어플리케이션</option>
-										<option value="DC3">퍼플리싱</option>
-										<option value="DC4">기타</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-12 port-container" style="height: 250px;">
-								<div class="col-4 port-title">
-									<label for="portfolio-content">* 설명</label>
-								</div>
-								<div class="col-4 port-input">
-									<textarea id="portfolio-content" name="portfolio-content"
-										cols="60" rows="10"></textarea>
-								</div>
-							</div>
-							<div class="col-12" style="margin-left: 27%; color: grey;">
-								<span>한글 기준 5,000자 이하로 작성해주세요</span>
-							</div>
-							<div class="col-12 port-container">
-								<div class="col-4 port-title">
-									<label for="start-year">* 참여 시작일</label>
-								</div>
-								<div class="col-7" id="start-year"
-									style="position: absolute; margin-left: 20%;">
-									<select id="start-year" name="start-year"
+											<option value="DC1">웹</option>
+											<option value="DC2">어플리케이션</option>
+											<option value="DC3">퍼플리싱</option>
+											<option value="DC4">기타</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td class="port-title" style="vertical-align: top;">* 설명</td>
+									<td><textarea id="portfolio-content"
+											name="portfolio-content" cols="60" rows="10"></textarea></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td style="color: gray; margin-left: 20%;"><span>한글
+											기준 5,000자 이하로 작성해주세요</span></td>
+								</tr>
+								<tr>
+									<td class="port-title">* 참여시작일</td>
+									<td><select id="start-year" name="start-year"
 										style="width: 150px; height: 40px;">
-										<option value="year">년</option>
-										<option value="2010">2010</option>
-										<option value="2011">2011</option>
-										<option value="2012">2012</option>
-										<option value="2013">2013</option>
-										<option value="2014">2014</option>
-										<option value="2015">2015</option>
-										<option value="2016">2016</option>
-										<option value="2017">2017</option>
-										<option value="2018">2018</option>
-										<option value="2019">2019</option>
-										<option value="2020">2020</option>
+											<option value="year">년</option>
+											<option value="2010">2010</option>
+											<option value="2011">2011</option>
+											<option value="2012">2012</option>
+											<option value="2013">2013</option>
+											<option value="2014">2014</option>
+											<option value="2015">2015</option>
+											<option value="2016">2016</option>
+											<option value="2017">2017</option>
+											<option value="2018">2018</option>
+											<option value="2019">2019</option>
+											<option value="2020">2020</option>
 									</select> <select name="start-month" name="start-month"
 										style="width: 150px; height: 40px;">
-										<option value="month">월</option>
-										<option value="01">1</option>
-										<option value="02">2</option>
-										<option value="03">3</option>
-										<option value="04">4</option>
-										<option value="05">5</option>
-										<option value="06">6</option>
-										<option value="07">7</option>
-										<option value="08">8</option>
-										<option value="09">9</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-										<option value="12">12</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-12 port-container">
-								<div class="col-4 port-title">
-									<label for="start-year">* 참여 종료일</label>
-								</div>
-								<div class="col-7" id="start-year"
-									style="position: absolute; margin-left: 20%;">
-									<select id="end-year" name="end-year"
+											<option value="month">월</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td class="port-title">* 참여 종료일</td>
+									<td><select id="end-year" name="end-year"
 										style="width: 150px; height: 40px;">
-										<option value="year">년</option>
-										<option value="2010">2010</option>
-										<option value="2011">2011</option>
-										<option value="2012">2012</option>
-										<option value="2013">2013</option>
-										<option value="2014">2014</option>
-										<option value="2015">2015</option>
-										<option value="2016">2016</option>
-										<option value="2017">2017</option>
-										<option value="2018">2018</option>
-										<option value="2019">2019</option>
-										<option value="2020">2020</option>
+											<option value="year">년</option>
+											<option value="2010">2010</option>
+											<option value="2011">2011</option>
+											<option value="2012">2012</option>
+											<option value="2013">2013</option>
+											<option value="2014">2014</option>
+											<option value="2015">2015</option>
+											<option value="2016">2016</option>
+											<option value="2017">2017</option>
+											<option value="2018">2018</option>
+											<option value="2019">2019</option>
+											<option value="2020">2020</option>
 									</select> <select name="end-month" name="end-month"
 										style="width: 150px; height: 40px;">
-										<option value="month">월</option>
-										<option value="01">1</option>
-										<option value="02">2</option>
-										<option value="03">3</option>
-										<option value="04">4</option>
-										<option value="05">5</option>
-										<option value="06">6</option>
-										<option value="07">7</option>
-										<option value="08">8</option>
-										<option value="09">9</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-										<option value="12">12</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-12 port-container" style="height: 50px;">
-								<div class="col-4 port-title">
-									<label for="participation">* 참여율</label>
-								</div>
-								<div class="col-4 port-input">
-									<!-- 제약조건 걸어주자 -->
-									<input type="number" id="participation" name="participation"
+											<option value="month">월</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td class="port-title">* 참여율</td>
+									<td>
+										<!-- <input type="number" id="participation" name="participation" onkeydown="return isNumberKey(event)" style="width: 150px; height: 40px;"> % -->
+										<input type="text" id="participation" name="participation"
+										class="data_col9 w100p" onkeydown="return isNumberKey(event)"
+										onkeyup="return delHangle(event)"
 										style="width: 150px; height: 40px;"> %
-								</div>
-							</div>
-							<div class="col-12 sub-content">
-								<span>참여율은 1~100까지 정수로 입력해주세요</span>
-							</div>
-							<!-- 하나의 이미지를 추가할 공간-->
-							<div class="col-12 port-container">
-								<div class="col-4 port-title">
-									<label for="img">* 이미지</label>
-								</div>
-								<div class="col-10 port-input">
-									<input type="file" id="img1" name="img1" class="btn btn-info">
-									<span class="btn btn-info select1">선택</span> <span
-										class="btn btn-info img-delete1">삭제</span>
-									<p id="view"></p>
-								</div>
-							</div>
-							<div class="col-12 img-content">
-								<div class="col-4 port-title">
-									<label for="img-content1">* 한 줄 설명</label>
-								</div>
-								<div class="col-4 port-input">
-									<input type="text" id="img-content1" name="img-content1"
-										readonly placeholder="이미지를 선택해주세요"
-										style="width: 500px; height: 40px; background-color: gray;">
-								</div>
-							</div>
-							<div class="col-12 sub-content">
-								<span>한글 기준 120자 미만</span>
-							</div>
-							<!-- 하나의 이미지를 추가할 공간-->
-							<!--<div class="col-12 port-container">
-								<div class="col-4 port-title">
-									<label for="img">* 이미지</label>
-								</div>
-								<div class="col-10 port-input">
-									<input type="file" id="img2" name="img2" class="btn btn-info">
-									<span class="btn btn-info select2">선택</span> <span
-										class="btn btn-info img-delete2">삭제</span>
-									<p id="view"></p>
-								</div>
-							</div>
-							<div class="col-12 img-content">
-								<div class="col-4 port-title">
-									<label for="img-content2">* 한 줄 설명</label>
-								</div>
-								<div class="col-4 port-input">
-									<input type="text" id="img-content2" name="img-content2"
-										readonly placeholder="이미지를 선택해주세요"
-										style="width: 500px; height: 40px; background-color: gray;">
-								</div>
-							</div>
-							<div class="col-12 sub-content">
-								<span>한글 기준 120자 미만</span>
-							</div>
-							하나의 이미지를 추가할 공간
-							<div class="col-12 port-container">
-								<div class="col-4 port-title">
-									<label for="img">* 이미지</label>
-								</div>
-								<div class="col-10 port-input">
-									<input type="file" id="img3" name="img3" class="btn btn-info">
-									<span class="btn btn-info select3">선택</span> <span
-										class="btn btn-info img-delete3">삭제</span>
-									<p id="view"></p>
-								</div>
-							</div>
-							<div class="col-12 img-content">
-								<div class="col-4 port-title">
-									<label for="img-content2">* 한 줄 설명</label>
-								</div>
-								<div class="col-4 port-input">
-									<input type="text" id="img-content3" name="img-content3"
-										readonly placeholder="이미지를 선택해주세요"
-										style="width: 500px; height: 40px; background-color: gray;">
-								</div>
-							</div>
-							<div class="col-12 sub-content">
-								<span>한글 기준 120자 미만</span>
-							</div> -->
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td class="subtitle" style="color: gray; margin-left: 20%;">
+										<span>1~100이하 정수로 입력해주세요.</span>
+									</td>
+								</tr>
+								<script>
 
-							<script>
+                      $("#participation").keyup(function(event){
+                        if(event.keyCode == 8){
+                          $("#participation").val("");
+                        }
+                      })
+
+                      function delHangle(ent){
+                            var objTarget = evt.srcElement || evt.target;
+                            var _value = event.srcElement.value;
+                            if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(_value)){
+                              objTarget.value = null;
+                            }
+                          }
+
+                          function isNumberKey(evt){
+                            var charCode = (evt.which)?evt.which : evnet.keyCode;
+                            var _value = event.srcElement.value;
+
+                            if(event.keyCode < 48 || event.keyCode > 57){
+                              if(event.keyCode != 46){
+                                return false;
+                              }
+                            }
+
+                            var _pattern1 = /^\d{3}$/;
+                            var num = $("#participation").val();
+                            
+                            if(_pattern1.test(_value)){
+                              if(charCode != 46 || num < 101){
+                                $("#participation").val(100);
+                                return false;
+                              }
+                            }
+                          }
+                    </script>
+								<tr>
+									<td class="port-title">* 첫 번째 이미지</td>
+									<td><input type="file" id="img1" name="img1"
+										class="btn btn-info"> <span
+										class="btn btn-info select1">선택</span> <span
+										class="btn btn-info img-delete1">삭제</span>
+										<p id="view"></p></td>
+								</tr>
+								<tr>
+									<td class="port-title">* 한 줄 설명</td>
+									<td><input type="text" id="img-content1"
+										name="img-content1" readonly placeholder="이미지를 선택해주세요"
+										style="width: 500px; height: 40px; background-color: gray;">
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
+								</tr>
+								<tr>
+									<td class="port-title">* 두 번째 이미지</td>
+									<td><input type="file" id="img2" name="img2"
+										class="btn btn-info"> <span
+										class="btn btn-info select2">선택</span> <span
+										class="btn btn-info img-delete2">삭제</span>
+										<p id="view"></p></td>
+								</tr>
+								<tr>
+									<td>* 한 줄 설명</td>
+									<td><input type="text" id="img-content2"
+										name="img-content2" readonly placeholder="이미지를 선택해주세요"
+										style="width: 500px; height: 40px; background-color: gray;">
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
+								</tr>
+								<tr>
+									<td class="port-title">* 세 번째 이미지</td>
+									<td><input type="file" id="img3" name="img3"
+										class="btn btn-info"> <span
+										class="btn btn-info select3">선택</span> <span
+										class="btn btn-info img-delete3">삭제</span>
+										<p id="view"></p></td>
+								</tr>
+								<tr>
+									<td>* 한 줄 설명</td>
+									<td><input type="text" id="img-content3"
+										name="img-content3" readonly placeholder="이미지를 선택해주세요"
+										style="width: 500px; height: 40px; background-color: gray;">
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
+								</tr>
+								<script>
                   // 1번째 이미지 관련 기능
                   // 이미지를 저장하게 되면 글자를 쓸수있게한다.
                   $(".select1").click(function(){
+                    var filecheck = $("#img1").val();
+                    if(!filecheck){
+                      alert("첫 번째 파일을 첨부해주세요.");
+                    }else{
                     // 파일명 추출하기
                     var fileValue = $("#img1").val().split("\\");
-                    var fileName = fileValue[fileValue.length-1];
-                    
-                    if(fileName != null){
-                      $("#img-content1").prop("readonly",false);
-                      $("#img-content1").css("background-color","white");
+                      var fileName = fileValue[fileValue.length-1];
+                      
+                      if(fileName != null){
+                        $("#img-content1").prop("readonly",false);
+                        $("#img-content1").css("background-color","white");
+                      }
                     }
+                    
                   })
                   // 삭제 버튼을 누르면 브라우저에 올라온 img 삭제
                   $(".img-delete1").click(function() {
@@ -678,14 +873,19 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
                   // 2번째 이미지 관련 기능
                   // 이미지를 저장하게 되면 글자를 쓸수있게한다.
                   $(".select2").click(function(){
+                    var filecheck = $("#img2").val();
+                    if(!filecheck){
+                      alert("두 번째 파일을 첨부해주세요.");
+                    }else{
                     // 파일명 추출하기
                     var fileValue = $("#img2").val().split("\\");
-                    var fileName = fileValue[fileValue.length-1];
-                    
-                    if(fileName != null){
-                      $("#img-content2").prop("readonly",false);
-                      $("#img-content2").css("background-color","white");
-                    }
+                      var fileName = fileValue[fileValue.length-1];
+                      
+                      if(fileName != null){
+                        $("#img-content2").prop("readonly",false);
+                        $("#img-content2").css("background-color","white");
+                      }
+                    } 
                   })
                   // 삭제 버튼을 누르면 브라우저에 올라온 img 삭제
                   $(".img-delete2").click(function() {
@@ -699,13 +899,18 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
                   // 3번째 이미지 관련 기능
                   // 이미지를 저장하게 되면 글자를 쓸수있게한다.
                   $(".select3").click(function(){
+                    var filecheck = $("#img3").val();
+                    if(!filecheck){
+                      alert("세 번째 파일을 첨부해주세요.");
+                    }else{
                     // 파일명 추출하기
                     var fileValue = $("#img3").val().split("\\");
-                    var fileName = fileValue[fileValue.length-1];
-                    
-                    if(fileName != null){
-                      $("#img-content3").prop("readonly",false);
-                      $("#img-content3").css("background-color","white");
+                      var fileName = fileValue[fileValue.length-1];
+                      
+                      if(fileName != null){
+                        $("#img-content3").prop("readonly",false);
+                        $("#img-content3").css("background-color","white");
+                      }
                     }
                   })
                   // 삭제 버튼을 누르면 브라우저에 올라온 img 삭제
@@ -717,17 +922,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
                     $("#img-content3").prop("readonly",true);
                     $("#img-content3").css("background-color","gray");
                   });
-                  
-
-                </script>
-
-							<div class="col-12"
-								style="margin-left: 5%; height: 100px; margin-top: 5%; position: relative;">
-								<div class="col-4 port-title">
-									<label>* 관련 기술</label>
-								</div>
-								<div class="col-9 port-input" style="font-size: 25px;">
-									<input type="checkbox" id="java" name="subject" value="T1">&nbsp;&nbsp;<label
+                    </script>
+								<tr>
+									<td class="port-title">* 관련 기술</td>
+									<td style="font-size: 25px;"><input type="checkbox"
+										id="java" name="subject" value="T1">&nbsp;&nbsp<label
 										for="java" style="margin-right: 3%;">java</label> <input
 										type="checkbox" id="oracle" name="subject" value="T2">&nbsp;&nbsp;<label
 										for="oracle" style="margin-right: 3%;">oracle</label> <input
@@ -735,68 +934,30 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										for="html5" style="margin-right: 3%;">html5</label> <input
 										type="checkbox" id="css" name="subject" value="T4">&nbsp;&nbsp;<label
 										for="css" style="margin-right: 3%;">css</label> <br> <input
-										type="checkbox" id="javascript" name="subject"
-										value="javascript">&nbsp;&nbsp;<label for="T5"
-										style="margin-right: 3%;">javascript</label> <input
-										type="checkbox" id="jquery" name="subject" value="T6">&nbsp;&nbsp;<label
+										type="checkbox" id="javascript" name="subject" value="T5">&nbsp;&nbsp;<label
+										for="javascript" style="margin-right: 3%;">javascript</label>
+										<input type="checkbox" id="jquery" name="subject" value="T6">&nbsp;&nbsp;<label
 										for="jquery" style="margin-right: 3%;">jquery</label> <input
 										type="checkbox" id="etc" name="subject" value="T7">&nbsp;&nbsp;<label
-										for="etc" style="margin-right: 3%;">etc</label>
-								</div>
-							</div>
-
-							<div class="col-12" style="height: 50px; text-align: right;">
-								<a href="mypagePortfolioAll.html" class="btn btn-info">취소</a>
-								<button type="submit" class="btn btn-info">수정완료</button>
-							</div>
+										for="etc" style="margin-right: 3%;">etc</label></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td style="float: right;"><a
+										href="mypagePortfolioAll.html" class="btn btn-info">취소</a>
+										<button type="submit" class="btn btn-info">수정완료</button></td>
+								</tr>
+							</table>
+						</form>
 					</div>
-					</form>
 				</div>
 			</div>
 		</div>
-		</div>
-
-		<!-- </div> -->
-
-		<!-- 오른쪽 공백 -->
-		<!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
 	</section>
 	<br>
 
-
 	<!-- Footer -->
-	<footer class="footer" style="background-color: #212426;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-					<ul class="list-inline mb-2">
-						<li class="list-inline-item"><a href="#">고객센터</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">운영시간</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">이용약관</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">공지사항</a></li>
-					</ul>
-					<p class="text-muted small mb-4 mb-lg-0">&copy; Your Website
-						2020. All Rights Reserved.</p>
-				</div>
-				<div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-					<ul class="list-inline mb-0">
-						<li class="list-inline-item mr-3"><a href="#"> <i
-								class="fab fa-facebook fa-2x fa-fw"></i>
-						</a></li>
-						<li class="list-inline-item mr-3"><a href="#"> <i
-								class="fab fa-twitter-square fa-2x fa-fw"></i>
-						</a></li>
-						<li class="list-inline-item"><a href="#"> <i
-								class="fab fa-instagram fa-2x fa-fw"></i>
-						</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</footer>
+	<jsp:include page="../common/footer.jsp" />
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->

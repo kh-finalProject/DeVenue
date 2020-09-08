@@ -1,12 +1,20 @@
 package com.kh.DeVenue.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.DeVenue.member.model.dao.MemberDao;
+import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EvalProjectList;
+import com.kh.DeVenue.member.model.vo.FCeval;
+import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
+import com.kh.DeVenue.member.model.vo.FindClientDetail;
+import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
+import com.kh.DeVenue.util.model.vo.MemChatSet;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
@@ -22,9 +30,8 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member loginUserMember(Member m) {
 		
-		return mDao.selectMember(m);
+		return mDao.loginMember(m);
 	}
-
 	
 	@Override
 	public int insertMember(Member m) {
@@ -40,7 +47,6 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Profile profile(Profile memId) {
-
 		return mDao.selectProfile(memId);
 	}
 
@@ -58,8 +64,46 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public ArrayList<FindClient> selectList(PageInfo pi) {
-
 		return mDao.selectList(pi);
+	}
+//	@Override
+//	public ArrayList<FindClient> selectList() {
+//		return mDao.selectList();
+//	}
+
+	@Override
+	public FindClientDetail selectClientDetail(Integer cId) {
+		return mDao.selectClientDetail(cId);
+	}
+
+	@Override
+	public FCprojectHistory selectProjectHistory(Integer cId) {
+		return mDao.selectProjectHistory(cId);
+	}
+
+	@Override
+	public int getCPevalCount(Integer cId) {
+		return mDao.getCPevalCount(cId);
+	}
+
+	@Override
+	public ArrayList<CPeval> selectCPeval(Integer cId, PageInfo pi) {
+		return mDao.selectCPeval(cId, pi);
+	}
+
+	@Override
+	public FCeval getFCeval(Integer cId) {
+		return mDao.getFCeval(cId);
+	}
+
+	@Override
+	public ArrayList<EvalProjectList> getClientInfo(Integer cId) {
+		return mDao.getClientInfo(cId);
+	}
+
+	@Override
+	public ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id) {
+		return mDao.getMatchingPartners(id);
 	}
 
 	@Override
@@ -68,9 +112,33 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.insertPartInfo(partInfo);
 	}
 
-	public FindClient selectClientDetail(Integer cId) {
+	@Override
+	public Member selectMember(Member mEmail) {
 		
-		return mDao.selectClientDetail(cId);
+		return mDao.selectMemberId(mEmail);
+	}
+
+	@Override
+	public int insertChatSet(MemChatSet mc) {
+		
+		return mDao.insertChatSet(mc);
+	}
+
+	@Override
+	public int membernick(String nick) {
+		
+		return mDao.membernick(nick);
+	}
+
+	@Override
+	public int memberemail(String email) {
+		
+		return mDao.memberemail(email);
+	}
+
+	@Override
+	public int insertEval(HashMap id) {
+		return mDao.insertEval(id);
 	}
 
 

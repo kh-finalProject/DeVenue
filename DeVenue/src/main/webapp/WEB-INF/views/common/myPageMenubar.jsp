@@ -34,8 +34,14 @@
 		<br>
 		<div class="partnes-img"
 			style="width: 90%; height: 150px; margin: auto;">
-			<img src="${contextPath }/resources/images/admin.png"
-				style="width: 100%; height: 100%; border-radius: 50px 50px 50px 50px;">
+			<!-- 클라이언트시 이미지 -->
+			<c:if test="${loginUser.userType eq 'UT3'}">
+				<img src="${contextPath }/resources/images/client.png" style="width: 100%; height: 100%; border-radius: 50px 50px 50px 50px;">
+			</c:if>
+			<!-- 파트너스 이미지 -->
+			<c:if test="${loginUser.userType eq 'UT4'}">
+				<img src="${contextPath }/resources/images/partners.png" style="width: 100%; height: 100%; border-radius: 50px 50px 50px 50px;">
+			</c:if>
 		</div>
 		<!-- 닉네임 -->
 		<div class="partnes-nickname"
@@ -80,19 +86,39 @@
 						<a href="PR.do">자기소개</a>
 					</p>
 					<p id="pPortfolio">
-						<a href="portfolioAll.do">포트폴리오</a>
+						<!-- <a href="portfolioAll.do">포트폴리오</a> -->
+						<form method="GET" action="portfolioAll.do">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<button class="aTag">포트폴리오</button>
+						</form>
 					</p>
 					<p id="pSkill">
-						<a href="skill.do">보유기술</a>
+						<!-- <a href="skill.do">보유기술</a> -->
+						<form method="GET" action="skill.do">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<button class="aTag">보유 기술</button>
+						</form>
 					</p>
 					<p id="pCareer">
-						<a href="career.do">경력</a>
+						<!-- <a href="career.do">경력</a> -->
+						<form method="GET" action="career.do">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<button class="aTag">경력</button>
+						</form>
 					</p>
 					<p id="pLicense">
-						<a href="academic.do">학력</a>
+						<!-- <a href="academic.do">학력</a> -->
+						<form method="GET" action="academic.do">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<button class="aTag">학력</button>
+						</form>
 					</p>
 					<p id="pStack">
-						<a href="certificate.do">자격증</a>
+						<!-- <a href="certificate.do">자격증</a> -->
+						<form method="GET" action="certificate.do">
+							<input type="hidden" name="profileId" value="${profile.profileId }">
+							<button class="aTag">자격증</button>
+						</form>
 					</p>
 					<p id="pProjectHistory">
 						<a href="PH.do">프로젝트 히스토리</a>

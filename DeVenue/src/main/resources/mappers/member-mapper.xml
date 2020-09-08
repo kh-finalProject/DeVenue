@@ -54,7 +54,7 @@
   <!-- 로그인하면서 프로필 없으면 생성 -->
   <insert id="insertProfile" parameterType="Profile">
   	INSERT INTO PROFILE
-  	VALUES(PROFILE_SEQ.nextval,#{memId},NULL,NULL,NULL)
+  	VALUES(PROFILE_SEQ.nextval,#{memId},'자기소개를 작성해주세요.',NULL,NULL)
   </insert>
    
   
@@ -67,7 +67,7 @@
   </update>
 
   <!-- 클라이언트 찾기 리스트 -->
-  <resultMap type="FindClient" id="findCLient">
+  <resultMap type="FindClient" id="selectListResult">
   	<id property="memId" column="MEM_ID"/>
   	<result property="memNick" column="MEM_NICK"/>
   	<result property="memEmail" column="MEM_EMAIL"/>
@@ -83,14 +83,100 @@
   	<result property="phone" column="PHONE"/>
   </resultMap>
   
-  <resultMap type="FindClientDetail" id="findClientDetail">
-  	
+  <resultMap type="FindClientDetail" id="selectDetailResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="ideStatus" column="IDE_STATUS"/>
+  	<result property="phone" column="PHONE"/>
+  	<result property="avgEagv" column="AVG_E_AGV"/>
+  	<result property="countEagv" column="COUNT_E_AGV"/>
+  	<result property="countProId" column="COUNT_PRO_ID"/>
+  	<result property="maxDcType" column="MAX_DC_TYPE"/>
+  	<result property="memTypeName" column="MEM_TYPE_NAME"/>
+  	<result property="star1" column="STAR1"/>
+  	<result property="star2" column="STAR2"/>
+  	<result property="star3" column="STAR3"/>
+  	<result property="star4" column="STAR4"/>
+  	<result property="star5" column="STAR5"/>
+  	<result property="memTypeKind" column="DC_TYPE"/>
+  	<result property="introduction" column="INTRODUCTION"/>
+  	<result property="profileImg" column="PROFILE_IMG"/>
   </resultMap>
   
+  <resultMap type="FCprojectHistory" id="projectHistoryResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+  	<result property="ideStatus" column="IDE_STATUS"/>
+  	<result property="phone" column="PHONE"/>
+  	<result property="addProject" column="ADD_PROJECT"/>
+  	<result property="stopProject" column="STOP_PROJECT"/>
+  	<result property="ingProject" column="ING_PROJECT"/>
+  	<result property="allPayment" column="ALL_PAYMENT"/>
+  	<result property="avgEagv" column="AVG_E_AGV"/>
+  	<result property="completeProject" column="COMPLETE_PROJECT"/>
+  	<result property="countEagv" column="COUNT_E_AGV"/>
+  	<result property="star1" column="STAR1"/>
+  	<result property="star2" column="STAR2"/>
+  	<result property="star3" column="STAR3"/>
+  	<result property="star4" column="STAR4"/>
+  	<result property="star5" column="STAR5"/>
+  </resultMap>
+  
+  <resultMap type="CPeval" id="cpEvalListResult">
+  	<id property="eId" column="E_ID"/>
+  	<result property="proName" column="PRO_NAME"/>
+  	<result property="mcId" column="MC_ID"/>
+  	<result property="dcType" column="DC_TYPE"/>
+  	<result property="eWriter" column="E_WRITER"/>
+  	<result property="eTarget" column="E_TARGET"/>
+  	<result property="epId" column="EP_ID"/>
+  	<result property="eAgv" column="E_AGV"/>
+  	<result property="eContent" column="E_CONTENT"/>
+  	<result property="star1" column="E_STAR1"/>
+  	<result property="star2" column="E_STAR2"/>
+  	<result property="star3" column="E_STAR3"/>
+  	<result property="star4" column="E_STAR4"/>
+  	<result property="star5" column="E_STAR5"/>
+  	<result property="eCreateDate" column="E_CREATE_DATE"/>
+  	<result property="eStatus" column="E_STATUS"/>
+  </resultMap>
 
+	<resultMap type="FCeval" id="fcEvalResult">
+		<id property="memId" column="MEM_ID"/>
+		<result property="memNick" column="MEM_NICK"/>
+		<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+		<result property="ideStatus" column="IDE_STATUS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="profileImg" column="PROFILE_IMG"/>
+		<result property="avgEagv" column="AVG_E_AGV"/>
+		<result property="stopProject" column="STOP_PROJECT"/>
+		<result property="ingProject" column="ING_PROJECT"/>
+		<result property="completeProject" column="COMPLETE_PROJECT"/>
+	</resultMap>
+	
+	<resultMap type="EvalProjectList" id="clientInfoResult">
+		<result property="memId" column="MEM_ID"/>
+		<result property="memNick" column="MEM_ID"/>
+		<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+		<result property="ideStatus" column="IDE_STATUS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="profileImg" column="PROFILE_IMG"/>
+		<result property="proId" column="PRO_ID"/>
+		<result property="proName" column="PRO_NAME"/>
+	</resultMap>
+	
+	<resultMap type="MatchingPartnersList" id="partnersListResult">
+		<result property="proPmId" column="PRO_PM_ID"/>
+		<result property="partnersId" column="PARTNERS_ID"/>
+		<result property="partnersNick" column="PARTNERS_NICK"/>
+		<result property="proName" column="PRO_NAME"/>
+		<result property="clientId" column="CLIENT_ID"/>
+		<result property="clientNick" column="CLIENT_NICK"/>
+	</resultMap>
   
   <!-- 로그인 -->
-  <select id="selectMember" parameterType="Member" resultMap="memberResultSet">
+  <select id="loginMember" parameterType="Member" resultMap="memberResultSet">
   	SELECT * FROM MEMBER
 	WHERE MEM_EMAIL = #{memEmail}
 	AND MEM_PWD = #{memPwd}
@@ -145,15 +231,100 @@
   </select>
   
   <!-- 클라이언트 리스트 조회 -->
-  <select id="selectList" resultMap="findCLient">
+  <select id="selectList" resultMap="selectListResult">
   	SELECT *
-  	FROM CLIENTLIST_VIEW
-  	WHERE MEM_ID=#{memId}
+	FROM CLIENTLIST_VIEW
   </select>
   
   <!-- 클라이언트 디테일 -->
-  <select id="selectClientDetail" resultMap="findClientDetail">
-  	<!-- 쿼리 결과 2개 나오는거 수정하고 -->
+  <select id="selectClientDetail" parameterType="int" resultMap="selectDetailResult">
+  	<!-- 쿼리 결과 2개 나오는거 수정하고 
+  		DISTINCT로 임시로 중복제거함
+  	-->
+  	SELECT * 
+  	FROM CLIENTDETAIL_VIEW
+  	WHERE MEM_ID=#{cId }
   </select>
 
+	<!-- 프로젝트 히스토리 -->
+	<select id="selectProjectHistory" parameterType="int" resultMap="projectHistoryResult">
+		SELECT * 
+		FROM PROJECTHISTORY_VIEW
+		WHERE MEM_ID=#{cId }
+	</select>
+	
+	<!-- 클라이언트 평가조회 개수 -->
+	<select id="getCPevalCount" parameterType="int" resultType="_int">
+		SELECT COUNT(*)
+		FROM CP_EVAL_VIEW
+		WHERE E_TARGET=#{cId}
+	</select>
+	
+	<!-- 클라이언트  << 파트너스 평가 뷰 리스트 -->
+	<select id="selectCPeval" parameterType="int" resultMap="cpEvalListResult">
+		SELECT *
+		FROM CP_EVAL_VIEW
+		WHERE E_TARGET=#{cId}
+	</select>
+	
+	<!-- 클라이언트 평가조회 (클라이언트 정보) -->
+	<select id="getFCeval" parameterType="int" resultMap="fcEvalResult">
+		SELECT *
+		FROM CLIENT_EVAL_VIEW
+		WHERE MEM_ID=#{cId}
+	</select>
+	
+	<!-- 클라이언트 평가등록(클라이언트 정보) -->
+	<select id="getClientInfo" parameterType="int" resultMap="clientInfoResult">
+		SELECT *
+		FROM EVAL_INSERT_VIEW
+		WHERE MEM_ID=#{cId}
+	</select>
+	
+	<!-- 매칭 파트너스확인 -->
+	<select id="getMatchingPartners" parameterType="hashmap" resultMap="partnersListResult">
+		SELECT *
+		FROM MATCHING_PARTNERS_LIST_VIEW
+		WHERE PARTNERS_ID=#{pId} AND CLIENT_ID=#{cId}
+	</select>
+	
+	<!-- 평가 등록 -->
+	<insert id="insertEval" parameterType="hashmap">
+		INSERT INTO EVAL VALUES(EVAL_SEQ.NEXTVAL, #{파트너스}, #{클라이언트}, #{프로젝트}, #{평가점수}
+			, #{평가내용}, #{전문성}, #{적극성}, #{의사소통}, #{일정준수}, #{만족도}, SYSDATE, 'Y')
+	</insert>
+
+	<!-- 회원 채팅 설정 -->
+	<resultMap type="MemChatSet" id="memChatSetResultSet">
+		<id property="mId" column="MEM_ID"/>
+		
+		<result property="is_TransChat" column="IS_TRANS_CHAT"/>
+		<result property="is_ShowPastChat" column="IS_SHOWPASTCHAT"/>
+
+	</resultMap>
+	
+	<!-- 회원가입시 회원 채팅 설정 기본 생성 -->
+	<insert id="insertcharSet" parameterType="MemChatSet">
+		INSERT INTO MEM_CHATSET
+		VALUES(#{mId},DEFAULT,DEFAULT)
+	</insert>
+	
+	<!-- 회원가입한후에 memId 추출하기 -->
+	<select id="selectMemId" parameterType="Member" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEM_EMAIL=#{memEmail}
+	</select>
+	
+	<!-- 닉네임 중복체크 -->
+	<select id="membernick" resultType="int">
+		SELECT COUNT(*) FROM MEMBER
+		WHERE MEM_NICK=#{memNick}
+	</select>
+	
+	<!-- 이메일 중복체크 -->
+	<select id="memberemail" resultType="int">
+		SELECT COUNT(*) FROM MEMBER
+		WHERE MEM_EMAIL=#{memEmail}
+	</select>
+	
 </mapper>

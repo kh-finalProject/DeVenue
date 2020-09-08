@@ -367,38 +367,97 @@ section {
 	height: 350px;
 	margin-left: 5%;
 	margin-top: 2%;
-	border-bottom: 2px dashed grey;
 	position: relative;
 }
 
-/* 포트폴리오의 각 div */
-.portfolio-view .portfolio-info {
-	width: 220px;
-	height: 310px;
-	margin-left: 2%;
-	border: 2px solid white;
-	display: inline-block;
+/* 포트폴리오 전체 보여줄 테이블 */
+.pTable {
+	width: 100%;
+	/* border: 1px solid white; */
+	/* border-collapse: separate;
+            border-spacing: 20px 10px; */
 }
 
-/* 포트폴리오의 카테고리 */
-.portfolio-category {
-	position: absolute;
+/* 포트폴리오 td */
+.pTable tr td {
+	border: 1px solid white;
+	/* width: 25%; */
+	/* height: 300px; */
+	font-size: 20px;
+}
+
+/* 이미지 보여주기 */
+.img {
+	width: 30%;
+	height: 200px;
+}
+
+/* 포트폴리오 내용 */
+.category {
+	width: 20%;
 	text-align: center;
-	margin: auto;
+	vertical-align: middle;
+	height: 30%;
 }
 
-/* 포트폴리오의 제목 */
-.portfolio-title {
-	position: absolute;
-	text-align: left;
-	margin: auto;
-	margin-top: 10px;
+/* 포트폴리오 제목 */
+.title {
+	width: 50%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 참여율 과 기술 */
+.join, .tec {
+	text-align: center;
+	vertical-align: middle;
 }
 
 /* a태그 밑줄없애기 */
 #subInfoMenu p a {
 	text-decoration-line: none;
 	color: white;
+}
+
+/* 회원찾기 드롭다운 메뉴 */
+.dropbtn {
+	color: white;
+	font-size: 16px;
+	border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+	background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+	display: block;
 }
 </style>
 <script src="https://kit.fontawesome.com/4b6b63d8f6.js"
@@ -413,17 +472,152 @@ section {
 
 <body>
 	<!-- munubar -->
-	<jsp:include page="../common/menubar.jsp" />
+	<%-- <jsp:include page="../common/menubar.jsp" /> --%>
+
+	<c:set var="contextPath"
+		value="${pageContext.servletContext.contextPath }" scope="application" />
+
+	<!--Top Button-->
+	<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top"
+		role="button"><i class="fas fa-chevron-up" style="margin: 0"></i></a>
+	<script>
+		$(document).ready(function() {
+			$(window).scroll(function() {
+				if ($(this).scrollTop() > 10) {
+					$('#back-to-top').css("display", "block")
+
+				} else {
+					$('#back-to-top').css("display", "none")
+
+				}
+			});
+			// scroll body to 0px on click
+			$('#back-to-top').click(function() {
+				$('body,html').animate({
+					scrollTop : 0
+				}, 400);
+				return false;
+			});
+		});
+	</script>
+
+	<!--navigation bar 1-->
+	<nav class="navbar navbar-expand-lg" style="background-color: black;">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarMain" aria-controls="navbarMain"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarMain">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link" href="#"><img
+						src="${contextPath }/resources/images/logo.png" height="80px"
+						style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;"><span
+						class="sr-only">(current)</span></a></li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a
+					class="nav-link hvr-underline-from-center mr-2"
+					href="searchProjectList.do">프로젝트찾기</a></li>
+				<li class="nav-item"><a
+					class="nav-link hvr-underline-from-center mr-2"
+					href="addProject.do">프로젝트등록</a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
+						찾기</a>
+					<div class="dropdown-content">
+						<a href="clientList.do ">클라이언트 찾기</a> <a href="#">파트너스 찾기</a>
+					</div></li>
+			</ul>
+
+			<ul class="navbar-nav ml-auto">
+				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
+				<c:if test="${empty sessionScope.loginUser }">
+					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
+					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
+					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
+					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
+				</c:if>
+				<c:if test="${!empty sessionScope.loginUser }">
+					<!-- 관리자 로그인 -->
+					<c:if
+						test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }관리자" />
+							<div class="btn-group">
+								<button type="button" class="btn btn-info dropdown-toggle"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<img src="${contextPath }/resources/images/admin.png"
+										height="50px" width="50px"
+										style="border-radius: 50px 50px 50px 50px">
+								</button>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#">profile</a>
+									<div class="dropdown-divider"></div>
+									<c:url var="logout" value="logout.do" />
+									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+								</div>
+							</div>
+						</h3>
+					</c:if>
+					<!-- 사용자 로그인 -->
+					<c:if
+						test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
+						<h3 align="right" style="color: white">
+							<c:out value="${loginUser.userType }사용자" />
+							<div class="btn-group">
+								<button type="button" class="btn btn-info dropdown-toggle"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<!-- 클라이언트시 기본 이미지 -->
+									<c:if test="${loginUser.userType eq 'UT3' }">
+										<img src="${contextPath }/resources/images/client.png"
+											height="50px" width="50px"
+											style="border-radius: 50px 50px 50px 50px">
+									</c:if>
+									<!-- 파트너스 기본 이미지 -->
+									<c:if test="${loginUser.userType eq 'UT4' }">
+										<img src="${contextPath }/resources/images/partners.png"
+											height="50px" width="50px"
+											style="border-radius: 50px 50px 50px 50px">
+									</c:if>
+								</button>
+								<div class="dropdown-menu">
+									<a href="profile.do" class="dropdown-item">profile</a>
+									<div class="dropdown-divider"></div>
+									<c:url var="logout" value="logout.do" />
+									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
+								</div>
+							</div>
+						</h3>
+					</c:if>
+				</c:if>
+		</div>
+		</ul>
+		</div>
+		</ul>
+		</div>
+	</nav>
+
+	<script>
+		$(function() {
+			$("#navbarMain .nav-link").mouseenter(function() {
+				$(this).css("font-size", "105%");
+			})
+
+			$("#navbarMain .nav-link").mouseleave(function() {
+				$(this).css("font-size", "100%");
+			})
+		})
+	</script>
+
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
 
 	<!-- Section -->
-	<br>
 	<section>
-		<!-- 왼쪽 공백 -->
-		<!-- <div class="left-null" style="width: 15%; height: 1600px; border: 1px solid yellow; float: left;"></div> -->
-		<!-- 실제 들어갈 값 -->
-		<!-- <div class="center" style="width: 1140px; margin: auto; text-align: center;"> -->
 		<div class="container">
 			<div class="row text-white"
 				style="border-bottom: 1px solid lightgray; width: 1000px;">
@@ -445,72 +639,70 @@ section {
 
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h4>
-							포트폴리오<span id="num" style="color: grey;"> / 0개 </span> <a
+							포트폴리오<span id="num" style="color: grey;"> / 0개  ${profileId }</span> <a
 								href="portfolioInsert.do" class="btn btn-info"
 								style="float: right;">추가하기</a>
 						</h4>
 					</div>
 					<div class="col-12 portfolio-view">
 						<!-- 하나의 포트폴리오 시작 -->
-						<c:forEach var="i" begin="0" end="2">
-							<div class="col-4 portfolio-info" style="margin-top: 3%;">
-								<div class="col-12" style="height: 70%;">
-									<div class="col-11 portfolio-category looking-btn"
-										style="margin-top: 10px; margin-left: 30px; visibility: visible;">
-										<button type="button" class="btn btn-info">삭제</button>
-										<a href="mypagePortfolioUpdate.html" class="btn btn-info">수정</a>
-									</div>
-									<div class="col-12 portfolio-category"
-										style="margin-top: 50px;">
-										<h4>디자인</h4>
-									</div>
-									<div class="col-12 portfolio-category"
-										style="margin-top: 135px;">
-										<h5>어플리케이션</h5>
-									</div>
-								</div>
-								<div class="col-12"
-									style="height: 30%; border-top: 2px dashed grey;">
-									<!-- <h5>1. 제목을 작성하는 곳입니다.</h5> -->
-									<div class="col-11 portfolio-title">
-										<span>제목을 입력</span>
-									</div>
-								</div>
-							</div>
-							<script>
-								// div 클릭시 그 포트폴리오 정보를 띄어주기
-								$(".portfolio-info").on("click", function() {
-									location.href = "mypagePortfolio.html";
-								})
-
-								// 수정,삭제 숨기고 보이게하기
-								$(".portfolio-info").mouseover(
-										function() {
-											//$(".looking-btn").show();
-											$(".looking-btn").css({"visibility":"visible"});
-										})
-								$(".portfolio-info").mouseout(
-										function() {
-											//$(".looking-btn").hide();
-											$(".looking-btn").css({"visibility":"hidden"});
-										})
-								
-								// 포트폴리오가 증가시 id 생성해서 넣기
-							</script>
-							<!-- 하나의 포트폴리오 끝 -->
+						<form method="get" action="delPort.do">
+						<c:forEach var="port" items="${portList }"  varStatus="status">
+						<%-- <c:forEach begin="0" end="2"> --%>
+						<input type="hidden" name="profileId" value="${port.profileId }">
+						<input type="hidden" name="portId" value="${port.portId }">
+							 <table class="pTable">
+								<tr>
+									<td class="img" rowspan="2"><img src="../image/test.png"
+										style="max-width: 100%; height: auto;"></td>
+									<td class="category">
+										<!-- port.mcId에 따른 출력 --> <c:choose>
+											<c:when test="${port.mcId eq 'MC1'}">
+												<span>개발자</span><br>
+											</c:when>
+											<c:when test="${port.mcId eq 'MC2'}">
+												<span>디자인</span><br>
+											</c:when>
+											<c:otherwise>
+												<span>개발/디자인</span><br>
+											</c:otherwise>
+										</c:choose> <!-- port.dcId에 따른 출력 --> <c:choose>
+											<c:when test="${port.dcId eq 'DC1'}">
+												<span>웹</span>
+											</c:when>
+											<c:when test="${port.dcId eq 'DC2'}">
+												<span>어플리케이션</span>
+											</c:when>
+											<c:when test="${port.dcId eq 'DC3'}">
+												<span>퍼블리싱</span>
+											</c:when>
+											<c:otherwise>
+												<span>기타</span>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td class="title">${port.portName }</td>
+								</tr>
+								<tr>
+									<td colspan="2" rowspan="2" class="text">
+										<p style="margin-left: 3%;">${port.content }</p>
+									</td>
+								</tr>
+								<tr></tr>
+								<tr>
+									<td><button class="btn btn-info" style="width: 100%;">삭제</button></td>
+									<td class="join">참여율 : ${port.portJoin }%</td>
+									<td class="tec">java, css</td>
+								</tr>
+							</table>
+							<br>
 						</c:forEach>
-
-						<!-- <div class="col-4 portfolio-info"></div>
-						<div class="col-4 portfolio-info"></div> -->
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- </div> -->
-
-		<!-- 오른쪽 공백 -->
-		<!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
 	</section>
 	<br>
 

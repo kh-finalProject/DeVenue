@@ -173,6 +173,52 @@ span.round-tab i {
 }
 
 /* 프로세스 style 끝 */
+
+/* 채팅 iframe css */
+.chatIframe {
+	background-color: transparent;
+    position: fixed;
+    right: 40px;
+    bottom: 35px;
+	width:300px;
+	height:500px;
+	border-radius: 10px;
+	border:none;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12) !important;
+    min-height: 500px;
+    display: none;
+    -webkit-animation: appear .15s cubic-bezier(.25, .25, .5, 1.1);
+    animation: appear .15s cubic-bezier(.25, .25, .5, 1.1);
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    z-index:9999999;
+}
+ @-webkit-keyframes appear {
+    0% {
+      opacity: 0;
+      -webkit-transform: scale(0);
+      transform: scale(0)
+    }
+    to {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1)
+    }
+  }
+  @keyframes appear {
+    0% {
+      opacity: 0;
+      -webkit-transform: scale(0);
+      transform: scale(0)
+    }
+    to {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1)
+    }
+  }
+  
 </style>
 
 </head>
@@ -612,28 +658,9 @@ span.round-tab i {
 		</div>
 	</section>
 	<!-- 프로세스 끝 -->
-
-	<script>
-		// ------------step-wizard-------------
-		$(document).ready(function() {
-			$('.nav-tabs > li a[title]').tooltip();
-
-			//Wizard
-			$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-
-				var target = $(e.target);
-
-				if (target.parent().hasClass('disabled')) {
-					return false;
-				}
-			});
-		});
-
-		$('.nav-tabs').on('click', 'li', function() {
-			$('.nav-tabs li.active').removeClass('active');
-			$(this).addClass('active');
-		});
-	</script>
+	
+	<!-- 채팅 불러오기 -->
+	<jsp:include page="../chat/testIframe.jsp"/>
 	
 	<!-- footer -->
 	<jsp:include page="footer.jsp"/>
