@@ -193,6 +193,9 @@ public interface ProjectService {
 	ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi);
 
 
+	int deleteThisSuggest(Integer sgId);
+
+
 	
 
 

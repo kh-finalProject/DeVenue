@@ -441,6 +441,12 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
+	public int deleteThisSuggest(Integer sgId) {
+		
+		return sqlSessionTemplate.delete("projectMapper.deleteThisSuggest", sgId);
+	}
+
+
 
 
 

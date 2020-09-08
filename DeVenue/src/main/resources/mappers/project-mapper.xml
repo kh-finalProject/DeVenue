@@ -1126,5 +1126,10 @@
 	WHERE S.MEM_ID=#{memId} AND P.PRO_STA_ID='PST3'
 	
 	</select>
+	
+	<delete id="deleteThisSuggest" parameterType="_int">
+	DELETE FROM P_SUGGEST
+	WHERE PS_ID=#{sgId}
+	</delete>
 
 </mapper>

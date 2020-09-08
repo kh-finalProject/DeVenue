@@ -516,6 +516,14 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+	@Override
+	public int deleteThisSuggest(Integer sgId) {
+		
+		return proDao.deleteThisSuggest(sgId);
+	}
+
+
+
 
 	
 

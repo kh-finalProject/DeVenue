@@ -1494,6 +1494,30 @@ ProjectService pService;
 	}
 	
 	
+	@RequestMapping(value = "deleteSuggestion.do")
+	public void deleteThisSuggest(HttpServletResponse response, @RequestParam(value = "sgId",required=false) Integer sgId) throws IOException {
+		
+		
+		//지원 아이디를 가지고 삭제
+		int result=pService.deleteThisSuggest(sgId);
+		
+		
+		PrintWriter out=response.getWriter();
+		
+		if(result>0) {
+			out.append("success");
+			out.flush();
+			out.close();
+		}else {
+			out.append("fail");
+			out.flush();
+			out.close();
+		}
+		
+	
+	}
+	
+	
 
 
 }
