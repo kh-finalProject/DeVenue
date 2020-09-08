@@ -133,6 +133,10 @@
 		<result property="introduction" column="INTRODUCTION"/>
 		</association>
 		
+		<association property="client" javaType="Member">
+			<result property="memNick" column="CLIENTNICK"/>
+		</association>
+		
 		<collection property="question" javaType="java.util.ArrayList" resultMap="questionResultSet"/>
 		<collection property="rpList" javaType="java.util.ArrayList" resultMap="pReplyResultSet"/>
 		<collection property="rcList" javaType="java.util.ArrayList" resultMap="cReplyResultSet"/>
@@ -406,23 +410,230 @@
 	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST5'
 	ORDER BY PRO_ID DESC
 </select>
-		
 
-	<select id="getListCount" resultType="_int">
-		SELECT COUNT(DISTINCT(ID)) 
-		FROM PROJECTLIST_VIEW
-	</select>
+<select id="getListCountNoFilter" resultType="_int">
+	SELECT COUNT(DISTINCT(ID)) 
+	FROM PROJECTLIST_VIEW
+</select>
+
+<select id="getProjectListNoFilter" resultMap="projectListResultSet">
+	SELECT * 
+	FROM PROJECTLIST_VIEW 
+	ORDER BY 1 DESC
+</select>
+
+<select id="getListCountWithSearch" parameterType="Search" resultType="_int" >
+	SELECT COUNT(DISTINCT(ID)) 
+	FROM PROJECTLIST_VIEW P
+	LEFT JOIN PROJECTTECH_VIEW T ON (P.ID=T.PRO_ID)
+	<where>
+	<if test="category=='전체'">
+	OR NAME LIKE '%'||#{keyword}||'%'
+	OR TECH_NAME LIKE '%'||#{keyword}||'%'
+	OR SUMMARY LIKE '%'||#{keyword}||'%'
+	</if>
+	<if test="category=='제목'">
+	AND NAME LIKE '%'||#{keyword}||'%'
+	</if>
+	<if test="category=='관련기술'">
+	AND TECH_NAME LIKE '%'||#{keyword}||'%'
+	</if>
+	<if test="category=='프로젝트 상세'">
+	AND SUMMARY LIKE '%'||#{keyword}||'%'
+	</if>
+	</where>
+
+</select> 
+
+<select id="getProjectListWithSearch" parameterType="Search" resultMap="projectListResultSet">
+	SELECT DISTINCT P.*
+	FROM PROJECTLIST_VIEW P
+	LEFT JOIN PROJECTTECH_VIEW T ON (P.ID=T.PRO_ID)
+	<where>
+	<if test="category=='전체'">
+	OR NAME LIKE '%'||#{keyword}||'%'
+	OR TECH_NAME LIKE '%'||#{keyword}||'%'
+	OR SUMMARY LIKE '%'||#{keyword}||'%'
+	</if>
+	<if test="category=='제목'">
+	AND NAME LIKE '%'||#{keyword}||'%'
+	</if>
+	<if test="category=='관련기술'">
+	AND TECH_NAME LIKE '%'||#{keyword}||'%'
+	</if>
+	<if test="category=='프로젝트 상세'">
+	AND SUMMARY LIKE '%'||#{keyword}||'%'
+	</if>
+	</where>
+	ORDER BY 1 DESC
+
+</select>
+		
+<select id="getListCount" parameterType="Filter" resultType="_int">
+	SELECT COUNT(DISTINCT(ID)) 
+	FROM PROJECTLIST_VIEW P
+	LEFT JOIN PROJECTTECH_VIEW T ON (P.ID=T.PRO_ID)
+	<where>
+	<if test="workType!=null and workType.size>0">
+	AND P.WORKTYPE IN
+	<foreach item="item" collection="workType"  open="(" close=")" separator=",">
+	#{item}
+	</foreach>
+	</if>
+	<if test="mCate!=null and mCate.size>0">
+	AND P.MCATEGORY IN
+	<foreach item="item" collection="mCate"  open="(" close=")" separator=",">
+	#{item}
+	</foreach>
+	</if>
+	<if test="dCate!=null and dCate.size>0">
+	AND P.DCATEGORY IN
+	<foreach item="item" collection="dCate"  open="(" close=")" separator=",">
+	#{item}
+	</foreach>
+	</if>
+	<if test="costMin!=null and costMin!=''">
+	AND <![CDATA[P.PAYMENT >= #{costMin}]]>
+	</if>
+	<if test="costMax!=null and costMax!=''">
+	AND <![CDATA[P.PAYMENT <= #{costMax}]]>
+	</if>
+	<if test="rate!=null">
+	AND <![CDATA[ P.EVALUATION >= #{rate}]]>
+	</if>
+	<if test="sign!=null">
+	AND P.IDENTIFY=#{sign}
+	</if>
+	<if test="location!=null and location.size>0">
+	AND P.LOCATION IN
+	<foreach item="item" collection="location"  open="(" close=")" separator=",">
+	#{item}
+	</foreach>
+	</if>
+	<if test="recruit!=null">
+	AND P.RECRUIT='Y'
+	</if>
+	<if test="search.keyword!=null">
+	<if test="search.category=='전체'">
+	AND
+	(P.NAME LIKE '%'||#{search.keyword}||'%'
+	 OR T.TECH_NAME LIKE '%'||#{search.keyword}||'%'
+	 OR P.SUMMARY LIKE '%'||#{search.keyword}||'%')
+	</if>
+	<if test="search.category=='제목'">
+	AND P.NAME LIKE '%'||#{search.keyword}||'%'
+	</if>
+	<if test="search.category=='관련기술'">
+	AND T.TECH_NAME LIKE '%'||#{search.keyword}||'%'
+	</if>
+	<if test="search.category=='프로젝트 상세'">
+	AND P.SUMMARY LIKE '%'||#{search.keyword}||'%'
+	</if>
+	</if>
+	</where>
 	
-	<select id="getProjectList" resultMap="projectListResultSet">
-		SELECT * FROM PROJECTLIST_VIEW ORDER BY 1 DESC
-	</select>
+</select>
+	
+<select id="getProjectList" parameterType="Filter" resultMap="projectListResultSet">
+		SELECT DISTINCT P.*
+		FROM PROJECTLIST_VIEW P
+		LEFT JOIN PROJECTTECH_VIEW T ON (P.ID=T.PRO_ID)
+		<where>
+		<if test="workType!=null and workType.size>0">
+		AND P.WORKTYPE IN
+		<foreach item="item" collection="workType"  open="(" close=")" separator=",">
+		#{item}
+		</foreach>
+		</if>
+		<if test="mCate!=null and mCate.size>0">
+		AND P.MCATEGORY IN
+		<foreach item="item" collection="mCate"  open="(" close=")" separator=",">
+		#{item}
+		</foreach>
+		</if>
+		<if test="dCate!=null and dCate.size>0">
+		AND P.DCATEGORY IN
+		<foreach item="item" collection="dCate"  open="(" close=")" separator=",">
+		#{item}
+		</foreach>
+		</if>
+		<if test="costMin!=null and costMin!=''">
+		AND <![CDATA[P.PAYMENT >= #{costMin}]]>
+		</if>
+		<if test="costMax!=null and costMax!=''">
+		AND <![CDATA[P.PAYMENT <= #{costMax}]]>
+		</if>
+		<if test="rate!=null">
+		AND <![CDATA[ P.EVALUATION >= #{rate}]]>
+		</if>
+		<if test="sign!=null">
+		AND P.IDENTIFY=#{sign}
+		</if>
+		<if test="location!=null and location.size>0">
+		AND P.LOCATION IN
+		<foreach item="item" collection="location"  open="(" close=")" separator=",">
+		#{item}
+		</foreach>
+		</if>
+		<if test="recruit!=null">
+		AND P.RECRUIT='Y'
+		</if>
+		<if test="search.keyword!=null">
+		<if test="search.category=='전체'">
+		AND
+		(P.NAME LIKE '%'||#{search.keyword}||'%'
+		OR T.TECH_NAME LIKE '%'||#{search.keyword}||'%'
+		OR P.SUMMARY LIKE '%'||#{search.keyword}||'%')
+		</if>
+		<if test="search.category=='제목'">
+		AND P.NAME LIKE '%'||#{search.keyword}||'%'
+		</if>
+		<if test="search.category=='관련기술'">
+		AND T.TECH_NAME LIKE '%'||#{search.keyword}||'%'
+		</if>
+		<if test="search.category=='프로젝트 상세'">
+		AND P.SUMMARY LIKE '%'||#{search.keyword}||'%'
+		</if>
+		</if>
+		</where>
+		
+		<if test="sorting!=null">
+		
+		<choose>
+		<when test="sorting=='APPLYNUM'">
+		ORDER BY 11 DESC
+		</when>
+		<when test="sorting=='PAYMENT'">
+		ORDER BY 6 DESC
+		</when>
+		<when test="sorting=='CDATE'">
+		ORDER BY 9 DESC
+		</when>
+		<when test="sorting=='RENDDATE'">
+		ORDER BY 10 ASC
+		</when>
+		<when test="sorting=='LIKENUM'">
+		ORDER BY 12 DESC
+		</when>
+		
+		
+		</choose>
+		
+		
+		</if>
+		
+		<if test="sorting=null">
+		ORDER BY 1 DESC
+		</if>
+		
+</select>
 	
 	<select id="getTechList" resultMap="techResultSet">
 		SELECT * FROM PROJECTTECH_VIEW
 	</select>
 	
 	<select id="getProjectDetail" parameterType="int" resultMap="detailResultSet">
-		SELECT P.*,PJ.*,INTRODUCTION,PRO_AQ_ID,PRO_AQ_CONTENT,PRO_AQC_DATE,
+		SELECT P.*,PJ.*,M.MEM_NICK AS "CLIENTNICK",INTRODUCTION,PRO_AQ_ID,PRO_AQ_CONTENT,PRO_AQC_DATE,
 		RP.PRO_RID AS "RP_RID",RP.PRO_ID AS "RP_PID",RP.PRO_RCONTENT AS "RP_CONTENT",RP.PRO_RCREATE_DATE AS "RP_CDATE",RP.PRO_RMODIFY_DATE AS "RP_MDATE",
 		RP.PRO_RANSWER AS "RP_RANSWER",RP.PRO_RSTATUS AS "RP_STATUS",RP.PRO_PARENT_RID AS "RP_P_RID",RP.PRO_RSECRET AS "RP_SECRET",
 		MP.MEM_NICK AS "RP_MNICK",MP.MEM_ID AS "RP_MID",
@@ -432,6 +643,7 @@
 		T_NAME AS "TECH_NAME"
 		FROM PROJECTLIST_VIEW P
 		LEFT JOIN PROJECT PJ ON (P.ID=PJ.PRO_ID)
+        LEFT JOIN MEMBER M ON (PJ.MEM_ID=M.MEM_ID)
 		LEFT JOIN P_QUESTION Q ON(P.ID=Q.PRO_ID)
 		LEFT JOIN (SELECT *
 		FROM P_REPLY
@@ -806,6 +1018,42 @@
 		SET PRO_ASTATUS='3'
 		WHERE PRO_AID=#{aId}
 	</update>
+	
+	
+	<select id="checkApplyCount" parameterType="hashmap" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_APPLY
+	WHERE PRO_ID=#{pId} AND MEM_PID=#{memId} AND PRO_ASAVE_STATUS='N' AND PRO_ASTATUS=0
+	
+	</select>
+	
+	<select id="checkTempApplyCount" parameterType="hashmap" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_APPLY
+	WHERE PRO_ID=#{pId} AND MEM_PID=#{memId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS=0
+	</select>
+	
+	<select id="checkSigCount" parameterType="hashmap" resultType="_int">
+	SELECT COUNT(*)
+	FROM SIGNATURE
+	WHERE MEM_ID=#{memId}
+	</select>
+	
+	<select id="checkMatched" parameterType="hashmap" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_APPLY
+	WHERE PRO_ID=#{pId} AND MEM_PID=#{memId} AND PRO_ASTATUS=1
+	</select>
+	
+	<select id="selectUserLike" parameterType="_int" resultMap="likeResultSet">
+	SELECT PRO_LID, ID, M.MEM_ID AS "MEM_ID"
+	FROM P_LIKE L
+	LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
+	LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
+	WHERE L.MEM_ID=#{memId}
+	
+	</select>
+	
 	
 
 </mapper>

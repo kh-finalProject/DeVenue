@@ -76,7 +76,7 @@
 
     </script>
     
-<title>Insert title here</title>
+<title>프로젝트 지원하기</title>
 
 <style>
        
@@ -1878,6 +1878,7 @@
                                 </div>
                             </div>
                             <script>
+                               	
                                 //관련 이력서 있음 체크 시 업로드 div 보이게 하기
                                 $(".resume").click(function () {
 
@@ -1970,6 +1971,8 @@
                             }
                             
                         })
+                        
+                       
                     </script>
                     <script>
                     	//임시저장
