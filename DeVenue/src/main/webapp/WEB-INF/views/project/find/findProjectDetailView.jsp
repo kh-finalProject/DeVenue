@@ -725,10 +725,23 @@
                             </div>
                               
                               <c:if test="${r.rSecret eq 'N'}">
-                              <p class="card-text">${r.rContent}${r.rId}</p>
+                              <p class="card-text">${r.rContent}</p>
                               </c:if> 
                               <c:if test="${r.rSecret eq 'Y'}">
-                              <p class="card-text">비밀글입니다.</p>
+                             
+                               <c:choose>
+                                <c:when test="${r.writer.memId eq loginUser.memId}">
+                                <p class="card-text">${r.rContent}</p>
+                                </c:when>
+                                <c:when test="${detail.project.memId eq loginUser.memId}">
+                               <p class="card-text">${r.rContent}</p>
+                                </c:when>
+                                <c:otherwise>
+                                 <p class="card-text">비밀글입니다.</p>
+                                </c:otherwise>
+                                </c:choose>
+                              
+                              
                               </c:if>  
                               
                               <c:choose>
@@ -773,7 +786,19 @@
                                 <p class="card-text">${rc.rContent}</p>
                                 </c:if> 
                                 <c:if test="${rc.rSecret eq 'Y'}">
-                                <p class="card-text">비밀글입니다.</p>
+                                
+                                <c:choose>
+                                <c:when test="${r.writer.memId eq loginUser.memId}">
+                                <p class="card-text">${rc.rContent}</p>
+                                </c:when>
+                                <c:when test="${detail.project.memId eq loginUser.memId}">
+                                <p class="card-text">${rc.rContent}</p>
+                                </c:when>
+                                <c:otherwise>
+                                 <p class="card-text">비밀글입니다.</p>
+                                </c:otherwise>
+                                </c:choose>
+                                
                                 </c:if>  
                                 
                                 <c:choose>
@@ -867,7 +892,8 @@
         	//댓글 리스트 가져오기
         	function getProjectReply(){
         		
-        		var pId=${detail.pId};
+        		var pId="${detail.pId}";
+        		var memId="${loginUser.memId}";
         		
         		$.ajax({
         			
@@ -953,8 +979,25 @@
         						if($parent[i].rSecret=="N"){
         							$text.text($parent[i].rContent);
         						}else{
-        							//나중에 당사자에게만 보이도록 수정할 것! + else if
-        							$text.text("비밀글입니다.");
+        							//작성자와 클라이언트만 볼 수 있다.
+        							
+        							if(memId!=""){
+        							
+        							if($parent[i].writer.memId==memId||${detail.project.memId}==memId){
+        								
+        								$text.text($parent[i].rContent);
+        							}else{
+        								
+        								$text.text("비밀글입니다.");
+        								
+        							}
+        							
+        							}else{
+        								
+        								$text.text("비밀글입니다.");
+        							}
+        							
+        							
         						}
         						
         						$body.append($text);
@@ -1022,8 +1065,24 @@
         								if($child[j].rSecret=='N'){
         									$atext.text($child[j].rContent);
         								}else{
-        									//작성자만 볼 수 있게 수정하자.
-        									$atext.text("비밀글입니다.");
+        									
+        									//작성자와 클라이언트만 볼 수 있다.
+        									
+        									if(memId!=""){
+        	        							
+        	        							if($parent[i].writer.memId==memId||${detail.project.memId}==memId){
+        	        								
+        	        								$text.text($parent[i].rContent);
+        	        							}else{
+        	        								
+        	        								$text.text("비밀글입니다.");
+        	        								
+        	        							}
+        	        							
+        	        							}else{
+        	        								
+        	        								$text.text("비밀글입니다.");
+        	        							}
         								}
         								
         								$abody.append($atext);
@@ -1080,8 +1139,14 @@
         		$("#rSubmit").on("click",function(){
         			
         			var rContent=$("#reply_textarea").val();
-        			var pId=${detail.pId};
-        			var memId=4;
+        			var pId="${detail.pId}";
+        			var memId="${loginUser.memId}";
+        			
+        			
+        			if(memId==""){
+        				alert("로그인한 회원만 문의 댓글을 남길 수 있습니다.");
+        				return;
+        			}
         			
         			var rSecret="";
         			if($("#reply_private").prop("checked")){
@@ -1519,9 +1584,14 @@
             <div id="applyDiv">
             <div class="ml-3" id="applyBtnArea">
                 
-         
+         		<c:if test="${loginUser.userType eq 'UT4'}">
                 <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="applyProjectBtn">프로젝트 지원하기</button>
                 <button type="button" id="likeThisProject" class="btn btn-outline-light btn-lg btn-block mt-3 mb-3">관심 프로젝트 등록</button>
+                </c:if>
+                <c:if test="${loginUser.userType eq 'UT3'}">
+                <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="createProjectBtn">프로젝트 생성하기</button>
+                </c:if>
+                
                 <div style="width: 100%; border-top: 1px solid white;"></div>
                 <div style="text-align: center;" id="likedNum">
                     <i class="far fa-heart"></i> <strong>${detail.pList.likeNum}</strong>
@@ -1635,8 +1705,13 @@
         
         	$(document).on("click","#likeThisProject",function(){
         		
-        		var thisProject=${detail.pId};
-        		var whoLike=4;
+        		var thisProject="${detail.pId}";
+        		var whoLike="${loginUser.memId}";
+        		
+        		if(whoLike==""){
+        			
+        			alert("로그인이 필요합니다.");
+        		}else{
         		
         		//이미 관심등록을 했는지 확인하자.
         		$.ajax({
@@ -1660,6 +1735,8 @@
                      }  
         		})
         		
+        		}
+        		
         	})
         	
         
@@ -1668,14 +1745,103 @@
             
             
             $(document).on("click","#applyProjectBtn",function(){
-            	//0.이미 지원한 프로젝트인지? 1.신고가 3번 이상인지? 2. 임시저장된 지원서가 있는지? 3.날인이 되어있는지?
+            	//(기본).로그인은 했는지? 0.이미 지원한 프로젝트인지? 1.신고가 3번 이상인지? 2. 임시저장된 지원서가 있는지? 3.날인이 되어있는지?
             	//통과하면, 프로젝트 아이디와, 작성자의 id를 넘기자
             	
-            	var thisProject=${detail.pId};
-        		var whoLike=4;
-        		var page=${page};
+            	var pId="${detail.pId}";
+        		var memId="${loginUser.memId}";
+        		var page="${page}";
         		
-        		location.href="applyThisProject.do?pId="+thisProject+"&page="+page;
+        		if(memId==""){
+        			
+        			location.href="loginpage.do";
+        			
+        		}else{
+        			
+        			
+        			var applyCount;
+        			var decCount;
+        			var tempCount;
+        			var sigCount;
+        			var matchCount;
+        			var tempId;
+        			var agree=false;
+        			
+        			//정보를 한 번에 가져오자
+        			$.ajax({
+        			
+        				url:"checkThisApply.do",
+        				data:{memId:memId,pId:pId},
+        				dataType:"json",
+        				success:function(data){
+        					
+        					applyCount=data.applyCount;
+        					decCount=data.decCount;
+        					tempCount=data.tempCount;
+        					sigCount=data.sigCount;
+        					matchCount=data.matchCount;
+        					
+        					console.log("applyCount"+applyCount);
+        					console.log("decCount"+decCount);
+        					console.log("tempCount"+tempCount);
+        					console.log("sigCount"+sigCount);
+        					console.log("matchCount"+matchCount);
+        					
+        					if(applyCount!=0){
+        						confirm("이미 지원한 프로젝트 입니다.");
+        						return;
+        					}
+        					
+        					if(decCount>2){
+        						alert("누적 신고 횟수가 3회를 초과하여 지원할 수 없습니다.");
+        						return;
+        					}
+        					
+        					if(tempCount!=0){
+        						tempId=data.tempId;
+        						agree=confirm("임시저장된 지원서가 있습니다. 계속 작성하시겠습니까?");
+        						
+        						console.log("동의여부?"+agree);
+        						if(agree){
+        							location.href="loadTempApplication.do?pId="+pId+"&aId"+tempId;
+        						}else{
+        							return;
+        						}
+        						
+        					}
+        					
+        					if(sigCount==0){
+        						alert("날인 등록을 한 사용자만 지원할 수 있습니다.");
+        						return;
+        					}
+        					
+        					if(matchCount!=0){
+        						
+        						confirm("클라이언트가 지원서를 승인하였습니다.");
+        						return;
+        						
+        					}
+        					
+        					//위의 모든 조건을 통과해야 지원할 수 있다.
+        					location.href="applyThisProject.do?pId="+pId+"&page="+page;
+        					
+        				},
+        				error:function(request, status, errorData){
+                            alert("error code: " + request.status + "\n"
+                                  +"message: " + request.responseText
+                                  +"error: " + errorData);
+                         }  
+        				
+        				
+        			})
+        			
+        			
+        			
+        			
+        			
+        		}
+        		
+        		
             })
         </script>
         <!--Grid column 사이드바 column 끝-->

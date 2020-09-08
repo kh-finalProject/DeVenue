@@ -66,6 +66,8 @@ public interface MemberService {
 	int getListCount2(String introduction);
 
 	ArrayList<FindClient> selectList2(PageInfo pi, String introduction);
+	
+	int insertIden(int memId);
 
 	
 }

@@ -26,12 +26,13 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
+
 import com.kh.DeVenue.member.model.vo.Member;
 
 import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
-
 import com.kh.DeVenue.member.model.vo.Profile;
+import com.kh.DeVenue.memberAccount.model.vo.Identify;
 import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.util.model.service.ChatService;
@@ -157,8 +158,7 @@ public class MemberController {
 			String userType = request.getParameter("purpose");	// 사용자 분류(클라이언트/파트너스)
 			String memType = request.getParameter("memtype");	// 사용자 형태(개인,팀,기업,개인사업자,법인사업자..)
 			String memName = request.getParameter("name");		// 사용자 이름
-			String phonechange = request.getParameter("phone");	// 사용자 핸드폰 번호
-			int phone = Integer.parseInt(phonechange);
+			String cellPhone = request.getParameter("phone");	// 사용자 핸드폰 번호
 			String memNick =request.getParameter("nickname");	// 사용자 닉네임
 			String memEmail = request.getParameter("email");	// 사용자 이메일
 			String memPwd = request.getParameter("pwd");		// 사용자 비밀번호
@@ -166,7 +166,7 @@ public class MemberController {
 			String address2 = request.getParameter("address2");	// 사용자 주소
 			String address3 = request.getParameter("address3");	// 사용자 상세 주소
 			
-			Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,phone);
+			Member m = new Member(userType,memType,memEmail,memNick,memName,memPwd,address1,address2,address3,cellPhone);
 			System.out.println(m);
 			int result = mService.insertMember(m);
 			if(result > 0) {
@@ -182,32 +182,43 @@ public class MemberController {
 				int insertMc = mService.insertChatSet(mc);
 				
 				if(insertMc > 0) {
-					System.out.println("회원채팅설정 기본생성");
+					System.out.println("회원채팅설정 기본생성 성공");
 					System.out.println(memberId.getUserType());
-					// 만약 파트너스 일경우 (파트너스 기본정보와 포트폴리오id 생성하고)
-					String UT4 = "UT4";
-					if(memberId.getUserType().equals("UT4")) {
-						int proId = mService.profileInsert(memberId.getMemId());
+					
+					// 신원인증 기본 테이블 생성
+					int insertIden = mService.insertIden(memberId.getMemId()); 
+					if(insertIden > 0) {
+						System.out.println("신원인증 생성 성공");
 						
-						if(proId > 0) {
-							System.out.println("프로필 정보 생성 ");
+						// 만약 파트너스 일경우 (파트너스 기본정보와 포트폴리오id 생성하고)
+						String UT4 = "UT4";
+						if(memberId.getUserType().equals("UT4")) {
+							int proId = mService.profileInsert(memberId.getMemId());
 							
-							Profile memId = new Profile(memberId.getMemId());
-							Profile profile = mService.profile(memId);
-							System.out.println(profile);
-							PartInfo partInfo = new PartInfo(profile.getProfileId());
-							int portId = mService.insertPartInfo(partInfo);
-							
-							if(portId > 0) {
-								System.out.println("파트너스 정보 생성 ");
+							if(proId > 0) {
+								System.out.println("프로필 정보 생성 ");
+								
+								Profile memId = new Profile(memberId.getMemId());
+								Profile profile = mService.profile(memId);
+								System.out.println(profile);
+								PartInfo partInfo = new PartInfo(profile.getProfileId());
+								int portId = mService.insertPartInfo(partInfo);
+								
+								if(portId > 0) {
+									System.out.println("파트너스 정보 생성 ");
+								}else {
+									throw new MemberException("파트너스 정보 생성 실패!");
+								}
+								
 							}else {
-								throw new MemberException("파트너스 정보 생성 실패!");
+								throw new MemberException("프로필 생성 실패!");
 							}
-							
-						}else {
-							throw new MemberException("프로필 생성 실패!");
 						}
+						
+					}else {
+						System.out.println("신원인증 생성 실패");
 					}
+					
 				}else {
 					throw new MemberException("회원태칭설정 기본생성 실패!");
 				}

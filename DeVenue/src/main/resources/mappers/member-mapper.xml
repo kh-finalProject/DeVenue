@@ -351,5 +351,13 @@
 		FROM CLIENTLIST_VIEW
 		WHERE INTRODUCTION LIKE '%'||#{introduction}||'%'
 	</select>
+
+	<!-- 파트너스 찾기 부분 -->
+	<select id="memberAll" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE USER_TYPE = 'UT4'
+		AND MEM_STATUS = 'Y'
+	</select>
+	
 	
 </mapper>

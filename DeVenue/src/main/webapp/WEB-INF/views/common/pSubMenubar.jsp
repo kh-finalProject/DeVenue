@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,20 +20,26 @@
 			        	<c:param name="pId" value="${loginUser.memId }"/>
 			        </c:url>
 					<a class="nav-link ml-4 hvr-underline-from-center" href="${partnersProfile }">내 프로필</a></li>
-				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="likeProjectList.do">관심 프로젝트 </a></li>
-				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="#">지원 요청
-				</a></li>
-				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="selectApplyProject.do">지원 내역
-				</a></li>
-				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="#">진행중인 프로젝트
-				</a></li>
-				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="#">완료한 프로젝트
-				</a></li>
+				<li class="nav-item">
+				<a class="nav-link ml-4 hvr-underline-from-center" href="likeProjectList.do">관심 프로젝트 </a></li>
+				
+				<c:url var="suggest" value="suggestProjectList.do">
+				
+				</c:url>
+				
+				<li class="nav-item">
+				<a class="nav-link ml-4 hvr-underline-from-center" href="${suggest}">지원 요청</a></li>
+				<li class="nav-item">
+				<a class="nav-link ml-4 hvr-underline-from-center" href="selectApplyProject.do">지원 내역</a></li>
+				<li class="nav-item">
+				<a class="nav-link ml-4 hvr-underline-from-center" href="ongoingProjectList.do">진행중인 프로젝트</a></li>
+				
+				<c:url var="complete" value="completeProjectList.do">
+				
+				</c:url>
+				
+				<li class="nav-item">
+				<a class="nav-link ml-4 hvr-underline-from-center" href="completeProjectList.do">완료한 프로젝트</a></li>
 			</ul>
 		</div>
 	</nav>

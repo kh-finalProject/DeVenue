@@ -153,4 +153,10 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.searchIntroductionClientList", introduction, rowBounds);
 	}
+	
+	public int insertIden(int memId) {
+		
+		return sqlSessionTemplate.insert("memberAccountMapper.signInsert", memId);
+
+	}
 }

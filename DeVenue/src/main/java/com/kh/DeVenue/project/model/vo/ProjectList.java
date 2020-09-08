@@ -12,7 +12,7 @@ public class ProjectList implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 951063778678382462L;
-	private int id;//프로젝트 id
+	private int id;//id
 	private Project project;//프로젝트
 	private int applyNum;//프로젝트 지원 수 
 	private int likeNum;//프로젝트 관심 수

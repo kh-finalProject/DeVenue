@@ -137,6 +137,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+
+	public int insertIden(int memId) {
+		
+		return mDao.insertIden(memId);
+	}
+
 	public int insertEval(HashMap id) {
 		return mDao.insertEval(id);
 	}
@@ -160,6 +166,5 @@ public class MemberServiceImpl implements MemberService{
 	public ArrayList<FindClient> selectList2(PageInfo pi, String introduction) {
 		return mDao.selectList2(pi, introduction);
 	}
-
 
 }

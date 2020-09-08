@@ -317,6 +317,7 @@ public class MyPageController {
 		MultipartFile file = mtf.getFile(fileTag);
 		System.out.println(file);
 		String fileName = file.getOriginalFilename();
+//		String fileName = pfId + 1;
 		String filePath = folder + "//" + fileName;
 		// 파일 전송
 		try {
