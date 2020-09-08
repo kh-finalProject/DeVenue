@@ -131,6 +131,65 @@
 		<result property="mcType" column="MC_TYPE"/>
 	</resultMap> -->
 	
+	<!-- 클라이언트 마이페이지 메인 -->
+	<resultMap type="CmypageProjectHistory" id="projectHistoryResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+  	<result property="ideStatus" column="IDE_STATUS"/>
+  	<result property="phone" column="PHONE"/>
+  	<result property="proImg" column="PROFILE_IMG"/>
+  	<result property="addProject" column="ADD_PROJECT"/>
+  	<result property="stopProject" column="STOP_PROJECT"/>
+  	<result property="ingProject" column="ING_PROJECT"/>
+  	<result property="allPayment" column="ALL_PAYMENT"/>
+  	<result property="avgEagv" column="AVG_E_AGV"/>
+  	<result property="completeProject" column="COMPLETE_PROJECT"/>
+  	<result property="countEagv" column="COUNT_E_AGV"/>
+  	<result property="star1" column="STAR1"/>
+  	<result property="star2" column="STAR2"/>
+  	<result property="star3" column="STAR3"/>
+  	<result property="star4" column="STAR4"/>
+  	<result property="star5" column="STAR5"/>
+  </resultMap>
+  
+  <resultMap type="CmypageSuggest" id="cmSuggestResult">
+  	<result property="cId" column="CID"/>
+  	<result property="pId" column="PID"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+  	<result property="mcType" column="MC_TYPE"/>
+  	<result property="career" column="CAREER"/>
+  	<result property="proName" column="PRO_NAME"/>
+  </resultMap>
+  
+  <resultMap type="CmypageProcess" id="cmProcessResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="proName" column="PRO_NAME"/>
+  	<result property="mcType" column="MC_TYPE"/>
+  	<result property="dcType" column="DC_TYPE"/>
+  	<result property="proPayment" column="PRO_PAYMENT"/>
+  	<result property="proStartDate" column="PRO_START_DATE"/>
+  	<result property="proEndDate" column="PRO_END_DATE"/>
+  </resultMap>
+  
+  <resultMap type="CmypageClientInfo" id="clientInfoResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="userType" column="USER_TYPE"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+  	<result property="memEmail" column="MEM_EMAIL"/>
+  	<result property="ideStatus" column="IDE_STATUS"/>
+  	<result property="phone" column="PHONE"/>
+  	<result property="cellPhone" column="CELLPHONE"/>
+  	<result property="proImg" column="PROFILE_IMG"/>
+  	<result property="addProject" column="ADD_PROJECT"/>
+  	<result property="stopProject" column="STOP_PROJECT"/>
+  	<result property="ingProject" column="ING_PROJECT"/>
+  	<result property="introduction" column="INTRODUCTION"/>
+  	<result property="url" column="URL"/>
+  </resultMap>
+	
 	<!-- 회원가입시  파트너스 정보 기본으로 생성 -->
 	<insert id="insertPartInfo" parameterType="PartInfo">
 		INSERT INTO PARTINFO
@@ -279,4 +338,31 @@
 		WHERE PORT_ID=#{portId}
 	</delete>
 
+	<!-- 클라이언트 마이페이지 메인 정보 조회 -->
+	<select id="selectProjectHistory" parameterType="int" resultMap="projectHistoryResult">
+		SELECT * 
+		FROM PROJECTHISTORY_VIEW
+		WHERE MEM_ID=#{cId }
+	</select>
+	
+	<!-- 클라이언트 마이페이지 메인 내게 온 제안 -->
+	<select id="selectSuggest" parameterType="int" resultMap="cmSuggestResult">
+		SELECT * 
+		FROM CMYPAGE_SUGGEST_VIEW
+		WHERE CID=#{cId }
+	</select>
+	
+	<!-- 클라이언트 마이페이지 메인 진행중인 프로젝트 -->
+	<select id="selectProcess" parameterType="int" resultMap="cmProcessResult">
+		SELECT *
+		FROM CMYPAGE_PROCESS_VIEW
+		WHERE MEM_ID=#{cId }
+	</select>
+	
+	<!-- 클라이언트 마이페이지 클라이언트 정보 -->
+	<select id="selectClientInfo" parameterType="int" resultMap="clientInfoResult">
+		SELECT *
+		FROM CLIENTINFO_VIEW
+		WHERE MEM_ID=#{cId}
+	</select>
 </mapper>

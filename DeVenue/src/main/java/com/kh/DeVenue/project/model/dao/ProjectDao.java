@@ -8,10 +8,13 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
+import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
+
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -59,10 +62,10 @@ public class ProjectDao {
 	}
 
 
-	public ArrayList<Project> selectCheckList() {
+	public ArrayList<Project> selectCheckList(String memId) {
 		ArrayList list =new ArrayList();
 		
-		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList");
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList",memId);
 		return list;
 	}
 
@@ -75,10 +78,10 @@ public class ProjectDao {
 	}
 
 
-	public ArrayList<Project> selectrecruitList() {
+	public ArrayList<Project> selectrecruitList(int memId) {
 		ArrayList list =new ArrayList();
 		
-		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectrecruitList");
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectrecruitList",memId);
 		return list;
 	}
 
@@ -89,6 +92,17 @@ public class ProjectDao {
 		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectendList");
 		return list;
 	}
+	
+	public int temStoreProject(Project p) {
+		
+		return sqlSessionTemplate.insert("projectMapper.temStoreProject",p);
+	}
+
+	
+	
+	
+	
+
 
 public ArrayList<Tech> selectTechList() {
 		
@@ -162,7 +176,7 @@ public ArrayList<Tech> selectTechList() {
 		return sqlSessionTemplate.insert("projectMapper.addLikeProject",ids );
 	}
 
-	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
 		
 		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
@@ -217,7 +231,7 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
-	public ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi) {
+	public ArrayList<Application> selectApplyProject(int memId, PageInfo pi) {
 		
 		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
@@ -394,6 +408,163 @@ public ArrayList<Tech> selectTechList() {
 		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectUserLike", memId);
 	}
 
+
+	public int getOngoingListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getOngoingCount", memId);
+	}
+
+
+
+	public ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi) {
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectOngoingList", memId, rowBounds);
+	}
+
+
+	public int getCompleteListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getCompleteCount",memId);
+	}
+
+
+	public ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi) {
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCompleteList", memId, rowBounds);
+	}
+
+
+	public int getRequestListCount(int memId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getRequestCount", memId);
+	}
+
+
+	public ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi) {
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectSuggestList", memId, rowBounds);
+	}
+
+
+
+
+
+	public int temStoreQuestion(ProjectQuestion q) {
+		
+		return sqlSessionTemplate.insert("projectMapper.temStoreQuestion",q);
+	}
+
+
+	public int getUpdateForm(int proId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getUpdateForm", proId);
+		
+	}
+
+
+	public ArrayList<ProjectQuestion> getQuestion(int proId) {
+	ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.getQuestion",proId);
+		return list;
+		
+	}
+
+   
+	
+
+
+	public Project selectOne(int proId) {
+		
+		return  sqlSessionTemplate.selectOne("projectMapper.selectOne", proId);
+	}
+
+
+	public int updateProject(Project p) {
+		
+		return sqlSessionTemplate.update("projectMapper.updateProject",p);
+	}
+
+
+	public int updateQuestion(ProjectQuestion q) {
+	
+		return sqlSessionTemplate.update("projectMapper.updateQuestion",q);
+	}
+
+
+	public ArrayList<Member> selectrecruitMember(HashMap prof) {
+	ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectRecruitMember",prof);
+		return list;
+		
+	}
+
+
+	public int deleteProject(int proId) {
+		
+		return sqlSessionTemplate.delete("projectMapper.deleteProject", proId);
+	}
+
+
+	public int deleteQuestion(Integer proId) {
+	
+		return  sqlSessionTemplate.delete("projectMapper.deleteQuestion", proId);
+	}
+
+
+	public ArrayList<Project> selectTemStore(int a) {
+	ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.temStoreList", a);
+		return list;
+		
+	}
+
+
+	public ArrayList<Project> selectunderwayList(int memId1) {
+	ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.underwayList", memId1);
+		return list;
+	}
+
+
+	public Project selectOne1(int proId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.temUpdateForm", proId);
+	}
+
+
+	public ArrayList<Member> selectModal(String proId) {
+	ArrayList list =new ArrayList();
+		
+		list= (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectModal", proId);
+		return list;
+		
+	}
+
+
+
+
+
+
+
+
+//	public ProjectQuestion getQuestion(int proId) {
+//		
+//		return sqlSessionTemplate.selectOne("projectMapper.getQuestion",proId);
+//	
+//	}
 
 
 

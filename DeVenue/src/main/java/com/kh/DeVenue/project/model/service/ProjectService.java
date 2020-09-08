@@ -3,10 +3,14 @@ package com.kh.DeVenue.project.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+import com.kh.DeVenue.member.model.vo.Member;
+
 import com.kh.DeVenue.member.model.vo.Portfolio;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
+
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -24,7 +28,7 @@ public interface ProjectService {
 	int addProject(Project p);
 
 	
-	ArrayList<Project> selectCheckList();
+	ArrayList<Project> selectCheckList(String memId);
 
 	int getListCount(ProjectFilter filter);
 
@@ -34,10 +38,10 @@ public interface ProjectService {
 
 
 
-	ArrayList<Project> selectunderwayList();
+	ArrayList<Project> selectunderwayList(int memId1);
 
 
-	ArrayList<Project> selectrecruitList();
+	ArrayList<Project> selectrecruitList(int memId);
 
 
 	ArrayList<Project> selectendList();
@@ -69,7 +73,7 @@ public interface ProjectService {
 
 	int addLikeProject(HashMap ids);
 
-	ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi);
+	ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi);
 
 	int getLikeListCount(int memId);
 
@@ -94,7 +98,7 @@ public interface ProjectService {
 	int getapplyListCount(int memId);
 
 
-	ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi);
+	ArrayList<Application> selectApplyProject(int memId, PageInfo pi);
 
 
 	int getTempSave(HashMap application);
@@ -175,7 +179,79 @@ public interface ProjectService {
 	ArrayList<ProjectLike> selectUserLike(int memId);
 
 
+	int getOngoingListCount(int memId);
+
+
+	ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi);
+
+
+	int getCompleteListCount(int memId);
+
+
+	ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi);
+
+
+	int getRequestListCount(int memId);
+
+
+	ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi);
+
+
+
+
+	int temStoreProject(Project p);
+
+
+	int temStoreQuestion(ProjectQuestion q);
+
+
+	int getUpdateForm(Integer proId);
+
+
+	Project selectOne(int proId);
+
+
+	ArrayList<ProjectQuestion> getQuestion(int proId);
+
+
+	int updateProject(Project p);
+
+
+	int updateQuestion(ProjectQuestion q);
+
+
+	ArrayList<Member> selectrecruitMember(HashMap prof);
+
+
+	int deleteProject(Integer proId);
+
+
+	int deleteQuestion(Integer proId);
+
+
+	ArrayList<Project> selectTemStoreList(int a);
+
+
+	Project selectOne1(int proId);
+
+
+	ArrayList<Member> selectModal(String proId);
+
+
+
 	
+
+
+//	ProjectQuestion getQuestion(int proId);
+
+
+	
+
+
+
+
+
+
 
 
 }

@@ -1584,9 +1584,14 @@
             <div id="applyDiv">
             <div class="ml-3" id="applyBtnArea">
                 
-         
+         		<c:if test="${loginUser.userType eq 'UT4'}">
                 <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="applyProjectBtn">프로젝트 지원하기</button>
                 <button type="button" id="likeThisProject" class="btn btn-outline-light btn-lg btn-block mt-3 mb-3">관심 프로젝트 등록</button>
+                </c:if>
+                <c:if test="${loginUser.userType eq 'UT3'}">
+                <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="createProjectBtn">프로젝트 생성하기</button>
+                </c:if>
+                
                 <div style="width: 100%; border-top: 1px solid white;"></div>
                 <div style="text-align: center;" id="likedNum">
                     <i class="far fa-heart"></i> <strong>${detail.pList.likeNum}</strong>

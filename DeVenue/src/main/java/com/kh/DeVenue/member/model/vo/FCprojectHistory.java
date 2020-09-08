@@ -14,6 +14,7 @@ public class FCprojectHistory implements Serializable {
 	private String memTypeKind;
 	private String ideStatus;	// 신원확인
 	private int phone;			// 번호등록
+	private String proImg;
 	private int addProject;
 	private int stopProject;
 	private int ingProject;
@@ -31,15 +32,16 @@ public class FCprojectHistory implements Serializable {
 		super();
 	}
 
-	public FCprojectHistory(int memId, String memNick, String memTypeKind, String ideStatus, int phone, int addProject,
-			int stopProject, int ingProject, int allPayment, int avgEagv, int completeProject, int countEagv,
-			double star1, double star2, double star3, double star4, double star5) {
+	public FCprojectHistory(int memId, String memNick, String memTypeKind, String ideStatus, int phone, String proImg,
+			int addProject, int stopProject, int ingProject, int allPayment, int avgEagv, int completeProject,
+			int countEagv, double star1, double star2, double star3, double star4, double star5) {
 		super();
 		this.memId = memId;
 		this.memNick = memNick;
 		this.memTypeKind = memTypeKind;
 		this.ideStatus = ideStatus;
 		this.phone = phone;
+		this.proImg = proImg;
 		this.addProject = addProject;
 		this.stopProject = stopProject;
 		this.ingProject = ingProject;
@@ -92,6 +94,14 @@ public class FCprojectHistory implements Serializable {
 
 	public void setPhone(int phone) {
 		this.phone = phone;
+	}
+
+	public String getProImg() {
+		return proImg;
+	}
+
+	public void setProImg(String proImg) {
+		this.proImg = proImg;
 	}
 
 	public int getAddProject() {
@@ -197,11 +207,11 @@ public class FCprojectHistory implements Serializable {
 	@Override
 	public String toString() {
 		return "FCprojectHistory [memId=" + memId + ", memNick=" + memNick + ", memTypeKind=" + memTypeKind
-				+ ", ideStatus=" + ideStatus + ", phone=" + phone + ", addProject=" + addProject + ", stopProject="
-				+ stopProject + ", ingProject=" + ingProject + ", allPayment=" + allPayment + ", avgEagv=" + avgEagv
-				+ ", completeProject=" + completeProject + ", countEagv=" + countEagv + ", star1=" + star1 + ", star2="
-				+ star2 + ", star3=" + star3 + ", star4=" + star4 + ", star5=" + star5 + "]";
+				+ ", ideStatus=" + ideStatus + ", phone=" + phone + ", proImg=" + proImg + ", addProject=" + addProject
+				+ ", stopProject=" + stopProject + ", ingProject=" + ingProject + ", allPayment=" + allPayment
+				+ ", avgEagv=" + avgEagv + ", completeProject=" + completeProject + ", countEagv=" + countEagv
+				+ ", star1=" + star1 + ", star2=" + star2 + ", star3=" + star3 + ", star4=" + star4 + ", star5=" + star5
+				+ "]";
 	}
-	
-	
+
 }

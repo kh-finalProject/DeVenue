@@ -20,18 +20,22 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.exception.MyPageException;
 import com.kh.DeVenue.myPage.model.service.MyPageService;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
+import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
-import com.kh.DeVenue.project.model.vo.Project;
 
 @Controller
 public class MyPageController {
@@ -657,5 +661,96 @@ public class MyPageController {
 			
 			return "redirect:portfolioAll.do";
 //			return "myPage/portfolioAll";
+		}
+
+		// 클라이언트 마이페이지 메인 이동
+		@RequestMapping(value="clientProfile.do")
+		public ModelAndView clientMypage(ModelAndView mv, Integer cId) {
+			System.out.println("클라이언트 아이디 : "+cId);
+			
+			// 기본정보 및 프로젝트 횟수
+			CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
+			System.out.println("projectHistory : " + projectHistory);
+			
+			// 내게온 제안 조회
+			ArrayList<CmypageSuggest> suggest = myPageService.selectSuggest(cId);
+			System.out.println("내게 온 제안 : "+suggest);
+			
+			// 진행중인 프로젝트 조회
+			ArrayList<CmypageProcess> process = myPageService.selectProcess(cId);
+			System.out.println("진행중인 프로젝트 : "+process);
+				
+			if(projectHistory!=null) {
+				mv.addObject("ph", projectHistory)
+				.addObject("suggest", suggest)
+				.addObject("process", process)
+				.setViewName("member/clientMyPage");
+			}else {
+				throw new MemberException("프로젝트 히스토리 조회 실패!");
+			}
+			
+			return mv;
+		}
+		
+		// 파트너스 내 프로필
+		@RequestMapping(value="partnersProfile.do")
+		public ModelAndView partnersMypage(ModelAndView mv, Integer pId) {
+			System.out.println("파트너스 아이디 : "+pId);
+			
+			// 기본정보 및 프로젝트 횟수
+			CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(pId);
+			System.out.println("projectHistory : " + projectHistory);
+			
+			// 내게온 제안 조회
+			ArrayList<CmypageSuggest> suggest = myPageService.selectSuggest(pId);
+			System.out.println("내게 온 제안 : "+suggest);
+			
+			// 진행중인 프로젝트 조회
+			ArrayList<CmypageProcess> process = myPageService.selectProcess(pId);
+			System.out.println("진행중인 프로젝트 : "+process);
+				
+			if(projectHistory!=null) {
+				mv.addObject("ph", projectHistory)
+				.addObject("suggest", suggest)
+				.addObject("process", process)
+				.setViewName("member/partnersMyPage");
+			}else {
+				throw new MemberException("프로젝트 히스토리 조회 실패!");
+			}
+			
+			return mv;
+		}
+		
+		@RequestMapping(value="clientInfo.do")
+		public ModelAndView cmClientInfo(ModelAndView mv, Integer cId) {
+			System.out.println("클라이언트 아이디 : "+ cId);
+			
+			CmypageClientInfo clientInfo = myPageService.selectClientInfo(cId);
+			System.out.println("clientInfo : " + clientInfo);
+			
+			if(clientInfo!=null) {
+				mv.addObject("info", clientInfo)
+				.setViewName("member/clientInfo");
+			}else {
+			}
+			
+			return mv;
+		}
+		
+		
+		@RequestMapping(value="cMyPageProjectHistory.do")
+		public ModelAndView cmProjectHistory(ModelAndView mv, Integer cId) {
+			System.out.println("클라이언트 아이디 : "+ cId);
+			
+			CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
+			System.out.println("projectHistory : " + projectHistory);
+			
+			if(projectHistory!=null) {
+				mv.addObject("ph", projectHistory)
+				.setViewName("member/cProjectHistory");
+			}else {
+			}
+			
+			return mv;
 		}
 }

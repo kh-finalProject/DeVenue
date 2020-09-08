@@ -162,9 +162,11 @@
         .identify_document_upload_area{
             text-align: left; border-radius: 5px; border: 1px solid gray; margin-top: 10px; margin-bottom: 20px; padding: 25px;
             background-color: #292e33;
+            margin-top:20px !important;
+            margin-bottom:20px !important;
         }
         .upload_title{
-            font-weight: 550; font-size: 18px;
+            font-weight: 550; font-size: 18px; margin-top:20px !important;
         }
         .iden_upload_table{
             margin:auto; text-align: left; margin-top: 5px;
@@ -296,7 +298,7 @@
 	                <br><button type="button" class="btn btn-info reUpBtn" id="reUploadIngBtn" style="margin-top:10px;">다시 등록하기</button>
 	            </div>
 	        	</c:if>
-	        	<c:if test="${iden.ideStatus eq 'COMPLETE'}">
+	        	<c:if test="${iden.ideStatus eq 'RE'}">
 	            <!-- 신원인증 수락을 못받으면 나타남 -->
 	            <div class="alert alert-warning reupload_area" role="alert">
 	                <svg width="10em" height="10em" viewBox="0 0 16 16" class="bi bi-exclamation-diamond" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -309,7 +311,7 @@
 	                <div>신원 인증 서류를 다시 등록해주세요.</div>
 	            </div>
 	        	</c:if>
-	        	<c:if test="${iden.ideStatus eq 'RE'}">
+	        	<c:if test="${iden.ideStatus eq 'COMPLETE'}">
 	            <!-- 신원인증 완료된 경우 나타남 -->
 	            <div class="alert alert-success success_area" role="alert">
 	                <svg width="10em" height="10em" viewBox="0 0 16 16" class="bi bi-emoji-laughing" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -319,7 +321,7 @@
 	                </svg><br>
 	                <label>신원 인증 완료</label>
 	                <br>*&nbsp;인증 갱신을 원하시면 다시 신청 해 주세요.
-	                <br><button type="button" class="btn btn-success reUpBtn" id="reUploadConpleteBtn">다시 등록하기</button>
+	                <br><button type="button" class="btn btn-success reUpBtn" id="reUploadConpleteBtn" style="margin-top:5px;">다시 등록하기</button>
 	            </div>
 	        	</c:if>
 	        </div>
@@ -374,7 +376,9 @@
             </c:if>
         </div>
     </div>
-
+	
+	<!-- 풋터 가져오기  -->
+    <jsp:include page="../common/footer.jsp"/>
     
     <script>
         $('.custom-file-input').change(function(){
@@ -391,6 +395,7 @@
 	        	location.href="resetIden.do?memId=${loginUser.memId}";
         	}
         });
+        
     </script>
 </body>
 

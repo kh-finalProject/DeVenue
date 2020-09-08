@@ -171,7 +171,7 @@
     @media (max-width: 767px) {
 
       .wizard .nav-tabs>li a i {
-        display: none;
+      display: none;
       }
 
     }
@@ -331,14 +331,15 @@ button{
                       
                       
                     </tr>
+                    <c:if test="${loginUser.userType eq 'UT3'}">
                     <td  id="sText" style ="color:gray">클라이언트</td>
-                    
+                    </c:if>
                     
                     <tr>
-                      <td style= "color:#2098D1">닉네임</td>
+                      <td style= "color:#2098D1">${loginUser.memNick}</td>
                     </tr>
                     
-                    <td>sailer5247@gmail.com</td>
+                    <td>${loginUser.memEmail }</td>
                  
                   </tr>
               </table>
@@ -357,7 +358,10 @@ button{
               <br>
               <div>
                 <li class="nav-item" >
-                  <a class="nav-link hvr-underline-from-center mr-2" width="100px;" height="100px;" href="temporaryStoreList.do" style ="color:white">임시 저장</a>
+                	<c:url var="temStoreList" value="temStoreList.do">
+						<c:param name="memId" value= "${loginUser.memId}" ></c:param>
+					</c:url>
+                  <a class="nav-link hvr-underline-from-center mr-2" width="100px;" height="100px;" href="${temStoreList}" style ="color:white">임시 저장</a>
                 </li>
                    <br>
                   
@@ -375,7 +379,6 @@ button{
               </div>
           </div>
       </div>
-
 
 
 
@@ -405,12 +408,15 @@ button{
         </div>
         <br>
            <c:choose>
+           
        <c:when test="${!empty list1}">
        <c:forEach var ="p" items="${list1}">
+         
+       
         <div id ="projectbox" style ="margin-top:50px;" >
           <table width="533px"   >
               <thead>
-
+				<input type ="hidden" value = ${p.proId} >
                   <tr >
                       <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
                       
@@ -419,17 +425,17 @@ button{
                   
                   <tr id ="sText" >
                       <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                        <span class="badge badge-primary">${p.proMCId}</span>
-                        <span class="badge badge-success">${p.proDCId}</span></td>
+                        <span class="badge badge-primary">${p.proMCType}</span>
+                        <span class="badge badge-success">${p.proDCType}</span></td>
                       
                   </tr>
                   <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
                      
                       <td><img
 						src="${contextPath}/resources/images/money	.png" height="30px"
-						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>
+						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span> ${p.proPayment}원
                     </td>
-                      <td > ${p.proPayment}원&nbsp;&nbsp;&nbsp;</td>
+                     
               
                       <td ><img
 						src="${contextPath}/resources/images/period.png" height="30px"
@@ -445,48 +451,38 @@ button{
                       <table  id ="sText" width="534px">
                           <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
                             
-                              <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">기획상태    </span></td>
-                              <td  >${p.proPlan}</td>
-                              <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">매니징 경험</span></td>
-                              <td  >${p.proManage}</td>
+                              <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트번호    </span></td>
+                              <td  >${p.proId}</td>
+                              <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 종료일</span></td>
+                              <td  >${p.proEndDate}</td>
                               <td  style = "  padding:1px;" ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 시작일</span></td>
                               <td  >${p.proStartDate}</td>
                               
                           </tr>
                           <tr  align ="center" style ="border-bottom:2px solid #2098d1; height:50px;" id ="sText">
-                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트 종류</span></td>
-                              <td  >${p.proMaintain }</td>
+                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">회원형태</span></td>
+                              <td  >${p.proMTK }</td>
                               <td style   ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px; width:80px;">위치</span></td>
-                              <td >서울시<br>강남구</td>
+                              <td>${p.proLocation }</td>
                               <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">파트너스 수 </span></td>
-                              <td width="120px; " >${p.proStartDate}</td>
+                              <td width="120px; " >${p.proRecruitNum}</td>
                             
                           </tr>
                        
                           <tr  align ="center" style= "border:1px solid black;" height="30" id ="sText">
                            
+                         
+				
+					
+							
+						
                               <td colspan="6">
                                   <div style= "float:right; margin-right:30px; padding:10px;">
-                                  <button class="btn/middle btn-info" style= "color:black; width:90px;">취소</button>
-                                  <button class="btn/middle btn-info" style= "color:black; width:90px;" id ="btnUpdate">수정</button>
+                                  <button type ='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proUpdateForm.do?proId='+${p.proId}"> 수정</button>
                                   </tr>
 
-<script>
-$(document).on('click', '#btnUpdate', function(){
 
-		var url = "${pageContext.request.contextPath}/project/addProject";
-
-		url = url + "?proId="+${addPorject.proid};
-
-		url = url + "&mode=edit";
-
-
-
-		location.href = url;
-
-	});
-
-</script>
 
 
     </div>
@@ -497,11 +493,13 @@ $(document).on('click', '#btnUpdate', function(){
 </tr>   
                    
             </table>      
-      </form>
+    
       </div>
+       
      </c:forEach>
       </c:when>
     <c:when test="${empty list1}">
+   
     <br>
  <div id= "explainbox" style ="padding:30px;">
               
@@ -513,8 +511,7 @@ $(document).on('click', '#btnUpdate', function(){
     
     </c:when>
     </c:choose>
-           
-    
+    </form>
   </div>
   
 </div>

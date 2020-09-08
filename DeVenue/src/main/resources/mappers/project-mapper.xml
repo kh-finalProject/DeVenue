@@ -38,6 +38,9 @@
 		<result property="proSignId" column="SIG_ID"/>
 		<result property="proPayStatus" column="PRO_PAY_STATUS"/>
 		<result property="proParentId" column="PRO_PARENT_ID"/>
+		<result property ="proMCType" column = "MC_TYPE"/>
+		<result property ="proDCType" column ="DC_TYPE"/>
+		<result property ="proMTK" column ="MEM_TYPE_KIND"/>
 		
 		
 	</resultMap>
@@ -52,6 +55,7 @@
 	</resultMap>
 	
 	
+	
 	<resultMap type="ProjectList" id="projectListResultSet">
 		<id property="id" column="ID"/>
 		<result property="applyNum" column="APPLYNUM"/>
@@ -64,7 +68,9 @@
 		<result property="evaluation" column="EVALUATION"/>
 
 	<association property="project" javaType="Project">
+		<result property="proId" column="PROID"/>
 		<result property="proName" column="NAME"/>
+		<result property="proStaId" column="STATUS"/>
 		<result property="proPlanDetail" column="PLANDETAIL"/>
 		<result property="proDuration" column="DURATION"/>
 		<result property="proSummary" column="SUMMARY"/>
@@ -73,6 +79,7 @@
 		<result property="proRecruit" column="RECRUIT"/>
 		<result property="proCreateDate" column="CDATE"/>
 		<result property="proREndDate" column="RENDDATE"/>
+		<result property="proContract" column="CONTRACT"/>
 		<result property="memId" column="CLIENTID"/>
 	</association>	
 				
@@ -330,45 +337,45 @@
 		<collection property="answer" javaType="java.util.ArrayList" resultMap="AnswerResultSet" />
 	
 	</resultMap>
+
 	
+
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO PROJECT VALUES(
 			SEQ_PRO_ID.NEXTVAL
-			,2
+			,#{memId}
 			,#{proName}
 			,#{proMaintain}
-			,'PST1'
-			,'Y'
+			,'PST2'
+			,DEFAULT
 			,SYSDATE
 			,#{proPlan}
 			,#{proPlanDetail}
 			,#{proSummary}
 			,#{proNeeds}
 			,#{proNeedsDetail}
-			,'리소스'
+			,#{proResource}
 			,#{proPayment}
 			,#{proStartDate}
 			,#{proDuration}
 			,#{proREndDate}
-			,'2018-02-08'
+			,#{proEndDate}
 			,#{proMCId}
 			,#{proDCId}
 			,#{proWTId}
 			,#{proRecruitNum}
 			,#{proPlanPaper}
-			,NULL
-			,'강남구'
+			,#{proPlanRePaper}
+			,#{proLocation}
 			,#{proHelp}
 			,#{proManage}
 			,#{proFuturePlan}
 			,#{proPriority}
 			,NULL
-			,'MT1' <!-- 삭제예상 -->
-			,'no'
+			,#{proTypeCode}
 			,1  <!-- 날인ID -->
-			,'Y'
+			,'N'
 			,SEQ_PRO_ID.CURRVAL
-			,'Y'
 			
 		)
 			</insert>
@@ -379,28 +386,155 @@
 	,#{proAQContent}
 	,SYSDATE
 	,(SELECT MAX(PRO_ID) FROM PROJECT)
+	,'N'
+	)
+	
+	</insert>
+	
+<insert id ="temStoreProject" parameterType = "Project">
+	INSERT INTO PROJECT VALUES(
+			SEQ_PRO_ID.NEXTVAL
+			,#{memId}
+			,#{proName}
+			,#{proMaintain}
+			,'PST2'
+			,DEFAULT
+			,SYSDATE
+			,#{proPlan}
+			,#{proPlanDetail}
+			,#{proSummary}
+			,#{proNeeds}
+			,#{proNeedsDetail}
+			,#{proResource}
+			,#{proPayment}
+			,#{proStartDate}
+			,#{proDuration}
+			,#{proREndDate}
+			,#{proEndDate}
+			,#{proMCId}
+			,#{proDCId}
+			,#{proWTId}
+			,#{proRecruitNum}
+			,#{proPlanPaper}
+			,#{proPlanRePaper}
+			,#{proLocation}
+			,#{proHelp}
+			,#{proManage}
+			,#{proFuturePlan}
+			,#{proPriority}
+			,NULL
+			,#{proTypeCode}<!-- 삭제예상 -->
+			,1  <!-- 날인ID -->
+			,'N'
+			,SEQ_PRO_ID.CURRVAL
+			)
+</insert>	
+	
+	<insert id ="temStoreQuestion" parameterType ="ProjectQuestion">
+	INSERT INTO P_QUESTION VALUES (
+	SEQ_PRO_AQ_ID.NEXTVAL
+	,#{proAQContent}
+	,SYSDATE
+	,(SELECT MAX(PRO_ID) FROM PROJECT)
 	,'Y'
 	)
 	
 	</insert>
 	
+	<select id ="selectOne" parameterType ="int" resultMap ="projectResultSet">
+		SELECT * 
+		FROM PROJECT
+		WHERE PRO_ID = #{proId}
+	</select>
+	
+		
+	
+	
+	<select id ="temUpdateForm" parameterType ="int" resultMap ="projectResultSet">
+			SELECT * 
+		FROM PROJECT
+		WHERE PRO_ID = #{proId}
+	</select>
+		
+		<select id ="temStoreList" parameterType ="int" resultMap ="projectResultSet"> 
+			SELECT * 
+			FROM CHK_PRO
+			WHERE MEM_ID=#{a} AND PRO_STA_ID = 'PST7'
+			ORDER BY PRO_ID DESC
+		</select>
+		
+	<update id ="updateProject"  parameterType ="Project">
+	UPDATE PROJECT
+	SET PRO_NAME = #{proName}
+		,PRO_MAINTAIN = #{proMaintain}
+		,PRO_PLAN = #{proPlan}
+		,PRO_PLANDETAIL = #{proPlanDetail}
+		,PRO_SUMMARY = #{proSummary}
+		,PRO_NEEDS = #{proNeeds}
+		,PRO_NEEDSDETAIL = #{proNeedsDetail}
+		,PRO_RESOURCE = #{proResource}
+		,PRO_PAYMENT = #{proPayment}
+		,PRO_DURATION = #{proDuration}
+		,PRO_R_END_DATE =#{proREndDate}
+		,PRO_END_DATE =#{proREndDate}
+		,MC_ID =#{proMCId}
+		,DC_ID = #{proDCId}
+		,WT_ID = #{proWTId}
+		,PRO_RECRUIT_NUM = #{proRecruitNum}
+		,PRO_PLAN_PAPER =#{proPlanPaper}
+		,PRO_PLAN_REPAPER = #{proPlanRePaper}
+		,PRO_LOCATION = #{proLocation}
+		,PRO_HELP = #{proHelp}
+		,PRO_MANAGE = #{proManage}
+		,PRO_FUTUREPLAN =#{proFuturePlan}
+		,PRO_PRIORTY = #{proPriority}
+		,PRO_STA_ID ='PST2'
+		,MEM_TYPE_CODE = #{proTypeCode}
+		WHERE PRO_ID=#{proId}
+	</update>
+	
+
+	<update id ="updateQuestion"  parameterType ="ProjectQuestion">
+	UPDATE P_QUESTION
+		SET PRO_AQ_CONTENT = #{proAQContent}
+			,PRO_AQC_DATE =SYSDATE
+
+	</update>
+	
+	<delete id ="deleteProject" parameterType ="Project">
+	DELETE FROM PROJECT
+	WHERE PRO_ID = #{proId}
+	
+	</delete>
+	
+	<delete id ="deleteQuestion" parameterType ="ProjectQuestion">
+	DELETE FROM P_QUESTION
+	WHERE PRO_ID = #{proId}
+	
+	</delete>
+	
+	
+	
+	
 <select id = "selectCheckList" resultMap="projectResultSet">
 	SELECT * 
-	FROM PROJECT
-	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST2'
-	ORDER BY PRO_ID DESC
-</select>
-<select id ="selectrecruitList" resultMap="projectResultSet">
-	SELECT * 
-	FROM PROJECT
-	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST2'
+	FROM CHK_PRO
+	WHERE MEM_ID= #{memId} AND PRO_STA_ID = 'PST2'
 	ORDER BY PRO_ID DESC
 </select>
 
-<select id ="selectunderwayList" resultMap = "projectResultSet">
-		SELECT * 
-	FROM PROJECT
-	WHERE MEM_ID= 2 AND PRO_STA_ID = 'PST4'
+<select id ="selectrecruitList" resultMap="projectResultSet">
+	SELECT * 
+	FROM CHK_PRO
+	WHERE MEM_ID= #{memId} AND PRO_STA_ID = 'PST3'
+	ORDER BY PRO_ID DESC
+</select>
+
+
+<select id ="underwayList" resultMap = "projectResultSet">
+	SELECT * 
+	FROM CHK_PRO
+	WHERE MEM_ID= #{memId1} AND PRO_STA_ID = 'PST4'
 	ORDER BY PRO_ID DESC
 </select>
 
@@ -1054,6 +1188,77 @@
 	
 	</select>
 	
+	<select id="getOngoingCount" parameterType="_int" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_PROCESS C
+	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
+	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
+	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
+	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
+	WHERE P.PRO_STA_ID='PST4' AND CH.MEM_ID=#{memId}
+	</select>
 	
+	<select id="selectOngoingList" parameterType="_int" resultMap="projectListResultSet">
+	SELECT c.pro_pid AS "ID",
+	P.PRO_ID AS "PROID",P.PRO_NAME AS "NAME",P.PRO_DURATION AS "DURATION",
+	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",P.PRO_CONTRACT AS "CONTRACT",
+	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY"
+	FROM P_PROCESS C
+	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
+	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
+	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
+	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
+	WHERE P.PRO_STA_ID='PST4' AND CH.MEM_ID=#{memId}
+	</select>
+	
+	<select id="getCompleteCount" parameterType="_int" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_PROCESS C
+	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
+	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
+	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
+	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
+	WHERE P.PRO_STA_ID IN ('PST5','PST6') AND CH.MEM_ID=#{memId}
+	</select>
+	
+	<select id="selectCompleteList" parameterType="_int" resultMap="projectListResultSet">
+	SELECT c.pro_pid AS "ID",
+	P.PRO_ID AS "PROID",P.PRO_NAME AS "NAME",P.PRO_DURATION AS "DURATION",
+    P.PRO_STA_ID AS "STATUS",
+	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",P.PRO_CONTRACT AS "CONTRACT",
+	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY"
+	FROM P_PROCESS C
+	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
+	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
+	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
+	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
+	WHERE P.PRO_STA_ID IN ('PST5','PST6') AND CH.MEM_ID=#{memId}
+	
+	</select>
+	
+	<select id="getRequestCount" parameterType="_int" resultType="_int">
+	SELECT COUNT(*)
+	FROM P_SUGGEST S
+	LEFT JOIN PROJECT P ON (S.PRO_ID=P.PRO_ID)
+	WHERE S.MEM_ID=#{memId} AND P.PRO_STA_ID='PST3'
+	</select>
+	
+	<select id="selectSuggestList" parameterType="_int" resultMap="projectListResultSet">
+	SELECT S.PS_ID AS "ID",
+    P.PRO_ID AS "PROID",P.PRO_NAME AS "NAME",P.PRO_DURATION AS "DURATION",
+    P.PRO_STA_ID AS "STATUS", P.PRO_RECRUIT AS "RECRUIT",
+	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",
+    P.PRO_CREATE_DATE AS "CDATE",
+	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY"
+	FROM P_SUGGEST S
+	LEFT JOIN PROJECT P ON (S.PRO_ID=P.PRO_ID)
+	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
+	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
+	WHERE S.MEM_ID=#{memId} AND P.PRO_STA_ID='PST3'
+	
+
+	</select>
+
+
 
 </mapper>
