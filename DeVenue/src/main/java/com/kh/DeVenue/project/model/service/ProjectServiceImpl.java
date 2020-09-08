@@ -6,7 +6,12 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import com.kh.DeVenue.member.model.dao.MemberDao;
+import com.kh.DeVenue.member.model.vo.Member;
+
 import com.kh.DeVenue.member.model.vo.Portfolio;
+
 import com.kh.DeVenue.project.model.dao.ProjectDao;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
@@ -26,6 +31,8 @@ import com.kh.DeVenue.project.model.vo.Tech;
 public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	ProjectDao proDao;
+	
+	
 
 	@Override
 	public int addProject(Project p) {
@@ -54,26 +61,26 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ArrayList<Project> selectCheckList() {
+	public ArrayList<Project> selectCheckList(String memId) {
 		
-		return proDao.selectCheckList();
+		return proDao.selectCheckList(memId);
 
 	}
 
 
 
 	@Override
-	public ArrayList<Project> selectunderwayList() {
+	public ArrayList<Project> selectunderwayList(int memId1) {
 		
-		return proDao.selectunderwayList();
+		return proDao.selectunderwayList(memId1);
 	}
 
 
 
 	@Override
-	public ArrayList<Project> selectrecruitList() {
+	public ArrayList<Project> selectrecruitList(int memId) {
 		
-		return proDao.selectrecruitList();
+		return proDao.selectrecruitList(memId);
 	}
 
 
@@ -83,6 +90,7 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return proDao.selectendList();
 	}
+
 
 
 
@@ -515,11 +523,107 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
-
 	@Override
 	public int deleteThisSuggest(Integer sgId) {
 		
 		return proDao.deleteThisSuggest(sgId);
+	}
+
+
+	@Override
+	public int temStoreProject(Project p) {
+		
+		return proDao.temStoreProject(p);
+	}
+
+
+
+	@Override
+	public int temStoreQuestion(ProjectQuestion q) {
+		
+		return proDao.temStoreQuestion(q);
+	}
+
+
+	@Override
+	public int getUpdateForm(Integer proId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public ArrayList<ProjectQuestion> getQuestion(int proId) {
+	
+		return proDao.getQuestion(proId);
+	}
+
+
+	@Override
+	public Project selectOne(int proId) {
+		
+		return proDao.selectOne(proId);
+	}
+
+
+	@Override
+	public int updateProject(Project p) {
+	
+		return proDao.updateProject(p);
+	}
+
+
+	@Override
+	public int updateQuestion(ProjectQuestion q) {
+
+		return proDao.updateQuestion(q);
+	}
+
+
+	@Override
+	public ArrayList<Member> selectrecruitMember(HashMap prof) {
+
+		return proDao.selectrecruitMember(prof);
+	}
+
+
+
+	@Override
+	public int deleteProject(Integer proId) {
+		
+		return proDao.deleteProject(proId);
+	}
+
+
+
+	@Override
+	public int deleteQuestion(Integer proId) {
+	
+		return proDao.deleteQuestion(proId);
+	}
+
+
+
+	@Override
+	public ArrayList<Project> selectTemStoreList(int a) {
+
+		return proDao.selectTemStore(a);
+	}
+
+
+
+	@Override
+	public Project selectOne1(int proId) {
+		
+		return proDao.selectOne1(proId);
+	}
+
+
+
+	@Override
+	public ArrayList<Member> selectModal(String proId) {
+		
+		return proDao.selectModal(proId);
 	}
 
 

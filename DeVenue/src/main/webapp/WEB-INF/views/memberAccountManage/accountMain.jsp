@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +38,8 @@
 
     <!--jQuery-->
     <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
-
+	
+   
     <style>
         body {
             font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -147,6 +151,11 @@
         }
 
         /* 컨텐츠 2 - 기본 정보 영역(수정 가능 영역) */
+        .img-thumbnail{
+        	border-radius:50% !important;
+        	min-height:200px;
+        	min-width:200px;
+        }
         /* 기본 정보영역 전체 */
         .basic_inform{
             /* background-color: teal; */
@@ -180,7 +189,8 @@
         }
         .basic_inform_content_table td:first-of-type{
             text-align: right;
-            color:lightgray
+            color:lightgray;
+            width:50%;
         }
         /* 기본 정보영역 프사 영역 업로드 버튼*/
         .uploadFileBtn{
@@ -278,10 +288,17 @@
             font-size: 12px;
             color:#2793F2;
             position: relative;
-            top:-6px;
+            top:-1px;
         }
 
         /* 연락처 정보 전체 영역 ----------------------------- */
+         /* 정보 미입력 텍스트!!!!!!!!!!!!!!!!!!!!!!!!!! */
+        .cHasNoInfo{
+        	font-size: 12px;
+            color:#2793F2;
+            position: relative;
+            top:-1px;
+        }
         .contect_inform{
             padding: 10px;
             border-bottom: 1px dashed gray;
@@ -403,7 +420,7 @@
             font-size: 12px;
             color:#2793F2;
             position: relative;
-            top:-6px;
+            top:-1px;
         }
     </style>
 
@@ -433,11 +450,11 @@
                 <table border="0" class="account_inform_table">
                     <tr>
                         <td><label>닉네임</label></td>
-                        <td><label>니크네임</label></td>
+                        <td><label>${loginUser.memNick }</label></td>
                     </tr>
                     <tr>
                         <td><label>이메일</label></td>
-                        <td><label>potter3786@naver.com</label></td>
+                        <td><label>${loginUser.memEmail }</label></td>
                     </tr>
                 </table>
             </div>
@@ -446,33 +463,45 @@
                     <label>기본 정보</label>
                     <button type="button" class="btn btn-info editBtn" id="basicEditBtn">수정</button>
                 </div>
-                <form action="#" method="">
+                <form action="basicInfoUpdate.do" method="post" enctype="multipart/form-data">
                     <table class="basic_inform_content_table" border="0" style="border-radius: 5px;">
                         <tr>
                             <td colspan="2">
                                 <div class="text-center">
-                                    <img src="image/admin1.jpg" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="35%" height="auto" style="max-width: 100%;">
-                                    <br>
-                                    <button type="button" class="btn btn-info uploadFileBtn" onclick="$('#profileImg_upload_input').click();">Upload Profile</button>
+                                	<c:if test="${mbi.proImgName != null}">
+	                                    <img style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/${mbi.proImgName}" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="35%" height="auto" style="max-width: 100%;">
+                                	</c:if>
+                                	<c:if test="${mbi.proImgName == null}">
+	                                    <img style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="35%" height="auto" style="max-width: 100%;">
+	                                    <br>&nbsp;&nbsp;<label class="bHasNoInfo">프로필 사진 등록이 필요합니다!</label>
+                                	</c:if>
+                                    <br><button type="button" class="btn btn-info uploadFileBtn" onclick="$('#profileImg_upload_input').click();">Upload Profile</button>
                                     <label class="fileNameLabel"></label>
                                     <input id="profileImg_upload_input" type="file" name="profileImg" class="text-center center-block file-upload" style="visibility: hidden; position: absolute;">
-                                    <label class="bHasNoInfo">프로필 사진 등록이 필요합니다!</label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label>클라이언트 형태</label>
+                                <label>회원 형태</label>
                             </td>
                             <td id="clientTypeRow">
-                                <select name="client_category" class="">
+                                <select name="mtCode" class="" style="width:130px;">
                                     <option selected disabled>--</option>
-                                    <option>개인</option>
-                                    <option>팀</option>
-                                    <option>개인 사업자</option>
-                                    <option>법인 사업자</option>
+                                    <c:forEach var="i" begin="0" end="${memTypes.size()-1 }" step="1">
+		                            	<c:if test="${mbi.mtName == memTypes[i].memTypeKind }">
+		                            		<c:set var = "isSelected" value="selected"/>
+		                                </c:if>
+            	                        	<option value="${memTypes[i].memTypeCode }" ${isSelected }>${memTypes[i].memTypeKind }</option>
+    		                                <c:set var = "isSelected" value=""/>
+                                    </c:forEach>
                                 </select>
-                                <label class="basicView">법인 사업자</label>
+                                <c:if test="${mbi.mtName != null}">
+                                	<label class="basicView">${mbi.mtName }</label>
+                                </c:if>
+                                <c:if test="${mbi.mtName == null}">
+                                	<label class="basicView"></label>
+                                </c:if>
                                 <label class="bHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
@@ -481,50 +510,74 @@
                                 <label>이름</label>
                             </td>
                             <td id="userNameRow">
-                                <input type="text" name="userName" class="" id="" value="">
-                                <label class="basicView">배배배</label>
+                                <c:if test="${mbi.memName != null}">
+	                                <input type="text" name="name" class="" id="" value="${mbi.memName }" size="13">
+                                	<label class="basicView">${mbi.memName }</label>
+                                </c:if>
+                                <c:if test="${mbi.memName == null}">
+                                	<input type="text" name="name" class="" id="" value="" size="13">
+                                	<label class="basicView"></label>
+                                </c:if>
                                 <label class="bHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
                         <tr>
                             <td>우편번호</td>
                             <td id="post1Row">
-                                <input type="text" name="post"
-                                class="postcodify_postcode5" value="" size="6">
-                                <button type="button" id="postcodify_search_button" class="addSearchBtn">검색</button>
-                                <label class="basicView">06857</label>
+                                <c:if test="${mbi.address1 != null}">
+	                                <input type="text" name="address1" class="postcodify_postcode5" value="${mbi.address1 }" size="13">
+	                                <button type="button" id="postcodify_search_button" class="addSearchBtn">검색</button>
+                                	<label class="basicView">${mbi.address1 }</label>
+                                </c:if>
+                                <c:if test="${mbi.address1 == null}">
+	                                <input type="text" name="address1" class="postcodify_postcode5" value="" size="13">
+	                                <button type="button" id="postcodify_search_button" class="addSearchBtn">검색</button>
+                                	<label class="basicView"></label>
+                                </c:if>
                                 <label class="bHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
                         <tr>
                             <td>도로명 주소</td>
                             <td id="post2Row">
-                                <input type="text" name="address1"
-                                class="postcodify_address" value="">
-                                <label class="basicView">서동로 18길</label>
+                                <c:if test="${mbi.address2 != null}">
+	                                <input type="text" name="address2" class="postcodify_address" value="${mbi.address2 }" size="38">
+                                	<label class="basicView">${mbi.address2 }</label>
+                                </c:if>
+                                <c:if test="${mbi.address2 == null}">
+	                                <input type="text" name="address2" class="postcodify_address" value="" size="38">
+                                	<label class="basicView"></label>
+                                </c:if>
                                 <label class="bHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
                         <tr>
                             <td>상세 주소</td>
                             <td id="post3Row">
-                                <input type="text" name="address2"
-                                class="postcodify_extra_info" value="">
-                                <label class="basicView">제일아파트 1차 1403호</label>
+                                <c:if test="${mbi.address3 != null}">
+	                                <input type="text" name="address3" class="" value="${mbi.address3 }" size="38">
+                                	<label class="basicView">${mbi.address3 }</label>
+                                </c:if>
+                                <c:if test="${mbi.address3 == null}">
+	                                <input type="text" name="address3" class="" value="" size="38">
+                                	<label class="basicView"></label>
+                                </c:if>
                                 <label class="bHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
-                        <!-- Postcodify를 로딩하자 -->
-                        <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
-                        <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-                        <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
                         <tr>
                             <td>
                                 <label>세금계산서용 이메일</label>
                             </td>
                             <td id="emailRow">
-                                <input type="email" name="email" class="" id="" value="">
-                                <label class="basicView">cjtwo3786@nate.com</label>
+                                <c:if test="${mbi.taxEmail != null}">
+	                                <input type="email" name="email" class="" id="" value="${mbi.taxEmail }" size="38">
+	                                <label class="basicView">${mbi.taxEmail }</label>
+                                </c:if>
+                                <c:if test="${mbi.taxEmail == null}">
+	                                <input type="email" name="email" class="" id="" value="" size="38">
+                                	<label class="basicView"></label>
+                                </c:if>
                                 <label class="bHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
@@ -542,30 +595,53 @@
                     <label>연락처 정보</label>
                     <button type="button" class="btn btn-info editBtn" id="contextEditBtn">수정</button>
                 </div>
-                <form action="#" method="">
+                <form action="updatePhoneInfo.do" method="get">
                     <table border="0" class="context_inform_table">
                         <tr>
                             <td>
                                 <label>핸드폰 번호</label>
                             </td>
                             <td id="portablePhoneRow">
-                                <select name="phone_national" class="smallSelect">
-                                    <option selected>국내</option>
-                                    <option>해외</option>
-                                </select>
-                                <select name="phone1" class="smallSelect">
-                                    <option selected>010</option>
-                                    <option>011</option>
-                                    <option>016</option>
-                                    <option>017</option>
-                                    <option>018</option>
-                                    <option>019</option>
-                                </select>
-                                <span>-</span>
-                                <input type="number" name="phone2" class="smallSelect" id="" value="">
-                                <span>-</span>
-                                <input type="number" name="phone3" class="smallSelect" id="" value="">
-                                <label class="contectView">010-4853-3545</label>
+                                <c:if test="${mbi.cellPhone != null}">
+                                	<c:set var="seper" value=","/>
+                                	<c:set var="cellPhoneSplit" value="${fn:split(mbi.cellPhone, seper) }"/>
+	                                <select name="cellPhone0" class="smallSelect" id="cellPhoneNationSelect">
+	                                    <option selected value="korea">국내</option>
+	                                    <option value="overseas">해외</option>
+	                                </select>
+	                                <select name="cellPhone1" class="smallSelect" id="cellPhoneSelect">
+	                                    <option selected value="010">010</option>
+	                                    <option value="011">011</option>
+	                                    <option value="016">016</option>
+	                                    <option value="017">017</option>
+	                                    <option value="018">018</option>
+	                                    <option value="019">019</option>
+	                                </select>
+	                                <span>-</span>
+	                                <input type="text" name="cellPhone2" class="smallSelect" id="" value="${cellPhoneSplit[2] }" pattern="[0-9]{4}">
+	                                <span>-</span>
+	                                <input type="text" name="cellPhone3" class="smallSelect" id="" value="${cellPhoneSplit[3] }" pattern="[0-9]{4}">
+	                                <label class="contectView">${cellPhoneSplit[1] }-${cellPhoneSplit[2] }-${cellPhoneSplit[3] }</label>
+                                </c:if>
+                                <c:if test="${mbi.cellPhone == null}">
+                        		    <select name="cellPhone0" class="smallSelect">
+	                                    <option selected value="korea">국내</option>
+	                                    <option value="overseas">해외</option>
+	                                </select>
+	                                <select name="cellPhone1" class="smallSelect">
+	                                    <option selected value="010">010</option>
+	                                    <option value="011">011</option>
+	                                    <option value="016">016</option>
+	                                    <option value="017">017</option>
+	                                    <option value="018">018</option>
+	                                    <option value="019">019</option>
+	                                </select>
+	                                <span>-</span>
+	                                <input type="text" name="cellPhone2" class="smallSelect" id="" value="" pattern="[0-9]{4}">
+	                                <span>-</span>
+	                                <input type="text" name="cellPhone3" class="smallSelect" id="" value="" pattern="[0-9]{4}">
+                                	<label class="contectView"></label>
+                                </c:if>
                                 <label class="cHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
@@ -574,29 +650,37 @@
                                 <label>전화번호</label>
                             </td>
                             <td id="homePhoneRow">
-                                <select name="homePhone1" class="smallSelect">
-                                    <option selected>02</option>
-                                    <option>031</option>
-                                    <option>032</option>
-                                    <option>033</option>
-                                    <option>041</option>
-                                    <option>042</option>
-                                    <option>043</option>
-                                    <option>044</option>
-                                    <option>051</option>
-                                    <option>052</option>
-                                    <option>053</option>
-                                    <option>054</option>
-                                    <option>055</option>
-                                    <option>061</option>
-                                    <option>062</option>
-                                    <option>063</option>
-                                    <option>064</option>
-                                    <option>해외</option>
+                                <select name="homePhone1" class="smallSelect" id="phoneSelect">
+                                    <option selected value="02">02</option>
+                                    <option value="031">031</option>
+                                    <option value="032">032</option>
+                                    <option value="033">033</option>
+                                    <option value="041">041</option>
+                                    <option value="042">042</option>
+                                    <option value="043">043</option>
+                                    <option value="044">044</option>
+                                    <option value="051">051</option>
+                                    <option value="052">052</option>
+                                    <option value="053">053</option>
+                                    <option value="054">054</option>
+                                    <option value="055">055</option>
+                                    <option value="061">061</option>
+                                    <option value="062">062</option>
+                                    <option value="063">063</option>
+                                    <option value="064">064</option>
+                                    <option value=" ">해외</option>
                                 </select>
                                 <span>-</span>
-                                <input type="number" name="homePhone12" class="bigSelect" id="" value="">
-                                <label class="contectView">063-858-9887</label>
+                                <c:if test="${mbi.phone != null}">
+                                	<c:set var="seper" value=","/>
+                                	<c:set var="exceptLocal" value="${fn:split(mbi.phone, seper) }"/>
+	                                <input type="text" name="homePhone2" class="bigSelect" id="" value="${exceptLocal[1] }"  pattern="[0-9]{0,}">
+	                                <label class="contectView">${exceptLocal[0] }-${exceptLocal[1] }</label>
+                                </c:if>
+                                <c:if test="${mbi.phone == null}">
+	                                <input type="text" name="homePhone2" class="bigSelect" id="" value=""  pattern="[0-9]{0,}">
+                                	<label class="contectView"></label>
+                                </c:if>
                                 <label class="cHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
@@ -605,8 +689,14 @@
                                 <label>팩스 번호</label>
                             </td>
                             <td id="faxPhoneRow">
-                                <input type="number" name="" class="bigSelect" id="" value="">
-                                <label class="contectView">063-858-9887</label>
+                                <c:if test="${mbi.faxNo != null}">
+	                                <input type="text" name="faxPhone" class="bigSelect" id="" value="${mbi.faxNo }"  pattern="[0-9]{0,}">
+	                                <label class="contectView">${mbi.faxNo }</label>
+                                </c:if>
+                                <c:if test="${mbi.faxNo == null}">
+	                                <input type="text" name="faxPhone" class="bigSelect" id="" value=""  pattern="[0-9]{0,}">
+                                	<label class="contectView"></label>
+                                </c:if>
                                 <label class="cHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
@@ -622,18 +712,17 @@
             <div class="money_account_inform">
                 <div class="money_account_title_area">
                     <label>계좌 관리</label>
-                    <button type="
-                    button" class="btn btn-info editBtn" id="accountEditBtn">수정</button>
+                    <button type="button" class="btn btn-info editBtn" id="accountEditBtn">수정</button>
                     <!-- <br>
                     <label>프로젝트 대금을 지급받을 계좌 정보를 등록해주세요.</label> -->
-                    <div class="alert alert-warning" role="alert" style="font-size: 13px; z-index: 99999;">
+                    <div class="alert alert-warning" role="alert" style="font-size: 13px; z-index: 99999;margin-top:5px;">
                         <svg width="1.5em" height="1.5em" style="position: relative; top:-2px;" viewBox="0 0 16 16" class="bi bi-exclamation-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                         </svg>
                         &nbsp;&nbsp;프로젝트 대금을 지급받을 계좌 정보를 등록해주세요.
                     </div>
                 </div>
-                <form action="#" method="">
+                <form action="updateInsertAccountInfo.do" method="get">
                     <table border="0" class="money_account_table">
                         <tr>
                             <td>
@@ -642,20 +731,21 @@
                             <td id="bankNameRow">
                                 <select name="bankName" class="middleSelect">
                                     <option selected disabled>은행 선택</option>
-                                    <option>농협</option>
-                                    <option>단위농협</option>
-                                    <option>하나은행</option>
-                                    <option>국민은행</option>
-                                    <option>신한은행</option>
-                                    <option>우리은행</option>
-                                    <option>우체국</option>
-                                    <option>기업은행</option>
-                                    <option>카카오뱅크</option>
-                                    <option>새마을금고</option>
-                                    <option>도이치</option>
+                                    <c:forEach var="i" begin="0" end="${banks.size()-1 }" step="1">
+                                    	<c:if test="${mbi.bankName != null && mbi.bankName==banks[i].bankName}">
+                                    		<c:set var="isbanked" value="selected"/>
+	                                    </c:if>
+                                    	<option value="${banks[i].bankId }" ${isbanked }>${banks[i].bankName }</option>
+	                                    <c:set var="isbanked" value=""/>
+                                    </c:forEach>
                                 </select>
-                                <label class="accountView">농협</label>
-                                <lable class="aHasNoInfo">정보 미입력</lable>
+                                <c:if test="${mbi.bankName != null}">
+                                	<label class="accountView">${mbi.bankName }</label>
+                                </c:if>
+                                <c:if test="${mbi.bankName == null}">
+                                	<label class="accountView"></label>
+                                </c:if>
+                                <label class="aHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
                         <tr>
@@ -663,9 +753,15 @@
                                 <label>예금주</label>
                             </td>
                             <td id="accountUserNameRow">
-                                <input type="text" name="bankAccountUser" class="bigSelect" id="" value="">
-                                <label class="accountView"></label>
-                                <lable class="aHasNoInfo">정보 미입력</lable>
+                                <c:if test="${mbi.master != null}">
+	                                <input type="text" name="master" class="bigSelect" id="" value="${mbi.master }">
+	                                <label class="accountView">${mbi.master }</label>
+                                </c:if>
+                                <c:if test="${mbi.master == null}">
+	                                <input type="text" name="master" class="bigSelect" id="" value="">
+                                	<label class="accountView"></label>
+                                </c:if>
+                                <label class="aHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
                         <tr>
@@ -673,9 +769,15 @@
                                 <label>계좌번호</label>
                             </td>
                             <td id="accountNumRow">
-                                <input type="text" name="accountNumber" class="bigSelect" id="" value="">
-                                <label class="accountView">351-0360-5603-13</label>
-                                <lable class="aHasNoInfo">정보 미입력</lable>
+                                <c:if test="${mbi.accNo != null}">
+	                                <input type="number" name="acNum" class="bigSelect" id="" value="${mbi.accNo }">
+	                                <label class="accountView">${mbi.accNo }</label>
+                                </c:if>
+                                <c:if test="${mbi.accNo == null}">
+	                                <input type="number" name="acNum" class="bigSelect" id="" value="">
+                                	<label class="accountView"></label>
+                                </c:if>
+                                <label class="aHasNoInfo">정보 미입력</label>
                             </td>
                         </tr>
                         <tr id="aCompBtnRow">
@@ -689,67 +791,40 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer" style="background-color: #212426;">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-                    <ul class="list-inline mb-2">
-                        <li class="list-inline-item">
-                            <a class="btn-info btn-sm" href="#">고객센터</a>
-                        </li>
-                        <li class="list-inline-item">&sdot;</li>
-                        <li class="list-inline-item">
-                            <a class="btn-info btn-sm" href="#">운영시간</a>
-                        </li>
-                        <li class="list-inline-item">&sdot;</li>
-                        <li class="list-inline-item">
-                            <a class="btn-info btn-sm" href="#">이용약관</a>
-                        </li>
-                        <li class="list-inline-item">&sdot;</li>
-                        <li class="list-inline-item">
-                            <a class="btn-info btn-sm" href="#">공지사항</a>
-                        </li>
-                    </ul>
-                    <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2020. All Rights Reserved.</p>
-                </div>
-                <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item mr-3">
-                            <a href="#">
-                                <i class="fab fa-facebook fa-2x fa-fw"></i>
-                            </a>
-                        </li>
-                        <li class="list-inline-item mr-3">
-                            <a href="#">
-                                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">
-                                <i class="fab fa-instagram fa-2x fa-fw"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
+ 	<!-- 풋터 가져오기  -->
+    <jsp:include page="../common/footer.jsp"/>
+    
 
     <!-- 개인 스크립트 -->
     <script>
+    	// 존제하는 폰컬럼 데이터를 수정영역으로 옮길때, 셀렉트 부분도 옯겨지게 
+	    $('#phoneSelect').find('option').each(function(index, item){
+			if($(item).val()=='${exceptLocal[0]}'){
+				$(item).prop('selected', 'selected');
+				return false;
+			}
+		});
+	 	// 존제하는 셀폰컬럼 데이터를 수정영역으로 옮길때, 셀렉트 부분도 옯겨지게(국내/해외 여부) 
+	    $('#cellPhoneNationSelect').find('option').each(function(index, item){
+			if($(item).val()=='${cellPhoneSplit[0]}'){
+				$(item).prop('selected', 'selected');
+				return false;
+			}
+		});
+	 	// 존제하는 셀폰컬럼 데이터를 수정영역으로 옮길때, 셀렉트 부분도 옯겨지게 (휴대폰 맨앞자리)
+	    $('#cellPhoneSelect').find('option').each(function(index, item){
+			if($(item).val()=='${cellPhoneSplit[1]}'){
+				$(item).prop('selected', 'selected');
+				return false;
+			}
+		})
+    	// 프로필 미리보기 설정?
+    	$('input[name=profileImg]').change(function(){
+    		var fileValue = $(this).val().split("\\");
+			var originFileName = fileValue[fileValue.length-1];
+    		$('.avatar').prop('alt', originFileName)
+    	});
+	 	
         $(document).ready(function(){
             // 파일 업로드하면 파일경로를 확인할 수 있게
             // 웹단에선 사진이 저장이 안되니 구현하기 힘듬
@@ -809,6 +884,7 @@
                     $('.basicView').hide();
                     $('.img-thumbnail').parent().find('.bHasNoInfo').hide();
                 }else{
+                	$('.avatar').prop('src', "${pageContext.servletContext.contextPath }/resources/proImg/${mbi.proImgName}")
                     $(this).text('수정');
                     $('.uploadFileBtn').hide();
                     $('.fileNameLabel').hide();
@@ -919,7 +995,16 @@
                 }
             });
         });
+        
+     // 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
+        $(function(){
+	        $('.myPage_sideNav_area').height($('.allWrap').height());
+        })
     </script>
+    	<!-- Postcodify를 로딩하자 -->
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+   <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
 </body>
 
 </html>

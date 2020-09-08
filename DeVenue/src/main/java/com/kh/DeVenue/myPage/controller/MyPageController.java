@@ -1,8 +1,11 @@
 package com.kh.DeVenue.myPage.controller;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,18 +20,22 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.exception.MyPageException;
 import com.kh.DeVenue.myPage.model.service.MyPageService;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
+import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
-import com.kh.DeVenue.project.model.vo.Project;
 
 @Controller
 public class MyPageController {
@@ -66,7 +73,7 @@ public class MyPageController {
 
 	// 전체 포트폴리오 이동(포트폴리오 전체 출력)
 	@RequestMapping(value = "portfolioAll.do")
-	public ModelAndView protfolioView(@RequestParam("profileId") int profileId, HttpServletRequest request, ModelAndView mv) {
+	public ModelAndView protfolioView(@RequestParam("profileId") int profileId , HttpServletRequest request, ModelAndView mv) {
 		
 		ArrayList<PortFolio> portList = myPageService.selectPortInfo(profileId);
 		System.out.println("포트폴리오에 뿌려줄 "+portList);
@@ -95,7 +102,7 @@ public class MyPageController {
 
 	// 경력 이동(경력 전체 출력)
 	@RequestMapping(value = "career.do")
-	public ModelAndView careerView(@RequestParam("profileId") int profileId, HttpServletRequest request, ModelAndView mv) {
+	public ModelAndView careerView(@RequestParam("profileId") int profileId, HttpServletRequest request, ModelAndView mv) throws ParseException {
 
 		ArrayList<Career> careerlist = myPageService.selectCareerInfo(profileId);
 		System.out.println(careerlist);
@@ -104,8 +111,52 @@ public class MyPageController {
 		for (int i = 0; i < careerlist.size(); i++) {
 //			System.out.println(careerlist.get(i).getcStartDate());
 //			System.out.println(careerlist.get(i).getcEndDate());
-			int comepare = careerlist.get(0).getcEndDate().compareTo(careerlist.get(0).getcStartDate());
-//			System.out.println(comepare);
+//			int a = 0;
+//			int b = 0;
+//			a = Integer.valueOf(careerlist.get(i).getcStartDate());
+//			b = Integer.valueOf(careerlist.get(i).getcEndDate());
+//			int comepare = careerlist.get(i).getcEndDate().compareTo(careerlist.get(i).getcStartDate());
+//			System.out.println(i+"번째 " + comepare);
+//			SimpleDateFormat format = new SimpleDateFormat("YYYYDD");
+//			System.out.println(format.format(careerlist.get(i).getcStartDate()));
+			
+//			SimpleDateFormat fm = new SimpleDateFormat("yyyyMM");
+//			Date to = fm.parse(careerlist.get(i).getcStartDate());
+//			System.out.println(to);
+//			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//			Date date = format.parse(careerlist.get(i).getcStartDate());
+//			System.out.println(date);
+			
+//			DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+//			Date tempDate = sdFormat.parse("2014-12-22");
+//			System.out.println(tempDate);
+			
+//			String date1 = "2017-09-21";
+//		    String date2 = "2016-09-10";
+		 
+//		    try{ // String Type을 Date Type으로 캐스팅하면서 생기는 예외로 인해 여기서 예외처리 해주지 않으면 컴파일러에서 에러가 발생해서 컴파일을 할 수 없다.
+//		        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+//		        // date1, date2 두 날짜를 parse()를 통해 Date형으로 변환.
+//		        Date FirstDate = format.parse(date1);
+//		        Date SecondDate = format.parse(date2);
+//		        
+//		        // Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
+//		        // 연산결과 -950400000. long type 으로 return 된다.
+//		        long calDate = FirstDate.getTime() - SecondDate.getTime(); 
+//		        
+//		        // Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다. 
+//		        // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
+//		        long calDateDays = calDate / ( 24*60*60*1000); 
+//		 
+//		        calDateDays = Math.abs(calDateDays);
+//		        
+//		        System.out.println("두 날짜의 날짜 차이: "+calDateDays);
+//		        }
+//		        catch(ParseException e)
+//		        {
+//		            // 예외 처리
+//		        }
+			
 		}
 
 		mv.addObject("careerlist", careerlist);
@@ -406,7 +457,7 @@ public class MyPageController {
 		String cPosition = request.getParameter("company-position");
 
 		String sYear = request.getParameter("start-year");
-		String sMonth = request.getParameter("end-month");
+		String sMonth = request.getParameter("start-month");
 		String start = sYear + "-" + sMonth;
 
 		String eYear = request.getParameter("end-year");
@@ -417,7 +468,7 @@ public class MyPageController {
 
 		// 퇴사일이 null이냐에따라 다르게 길을 간다.
 		Career c = new Career(cName, cDept, cPosition, start, end, content, profileId);
-		System.out.println(c);
+		System.out.println("경력추가"+c);
 		int careerInfo = myPageService.insertCareer(c);
 		if(careerInfo > 0) {
 			System.out.println("경력 추가 성공");
@@ -571,14 +622,17 @@ public class MyPageController {
 		
 	// 포트폴리오 삭제
 		@RequestMapping(value="delPort.do")
-		public String DelPort(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		public String DelPort(
+//				@RequestParam("id1") String id1, @RequestParam("id2") String id2,
+				HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 			
-			String pfId = request.getParameter("profileId");
-			int profileId = Integer.valueOf(pfId);
-			String id = request.getParameter("portId");
-			int portId = Integer.parseInt(id);
-			
-			// 포트폴리오 이미지 삭제 -> 포트폴리오 기술 삭제 -> 포트폴리오 삭제
+			String id1 = request.getParameter("profileId");
+			String id2 = request.getParameter("portId");
+			int profileId = Integer.valueOf(id1);
+			int portId = Integer.valueOf(id2);
+			System.out.println("프로필번호"+profileId);
+			System.out.println("포트번호"+portId);
+//			 포트폴리오 이미지 삭제 -> 포트폴리오 기술 삭제 -> 포트폴리오 삭제
 			int delPortImg = myPageService.delPortImg(portId);
 			if(delPortImg > 0) {
 				System.out.println("포트폴리오 이미지 삭제 성공");
@@ -607,5 +661,96 @@ public class MyPageController {
 			
 			return "redirect:portfolioAll.do";
 //			return "myPage/portfolioAll";
+		}
+
+		// 클라이언트 마이페이지 메인 이동
+		@RequestMapping(value="clientProfile.do")
+		public ModelAndView clientMypage(ModelAndView mv, Integer cId) {
+			System.out.println("클라이언트 아이디 : "+cId);
+			
+			// 기본정보 및 프로젝트 횟수
+			CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
+			System.out.println("projectHistory : " + projectHistory);
+			
+			// 내게온 제안 조회
+			ArrayList<CmypageSuggest> suggest = myPageService.selectSuggest(cId);
+			System.out.println("내게 온 제안 : "+suggest);
+			
+			// 진행중인 프로젝트 조회
+			ArrayList<CmypageProcess> process = myPageService.selectProcess(cId);
+			System.out.println("진행중인 프로젝트 : "+process);
+				
+			if(projectHistory!=null) {
+				mv.addObject("ph", projectHistory)
+				.addObject("suggest", suggest)
+				.addObject("process", process)
+				.setViewName("member/clientMyPage");
+			}else {
+				throw new MemberException("프로젝트 히스토리 조회 실패!");
+			}
+			
+			return mv;
+		}
+		
+		// 파트너스 내 프로필
+		@RequestMapping(value="partnersProfile.do")
+		public ModelAndView partnersMypage(ModelAndView mv, Integer pId) {
+			System.out.println("파트너스 아이디 : "+pId);
+			
+			// 기본정보 및 프로젝트 횟수
+			CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(pId);
+			System.out.println("projectHistory : " + projectHistory);
+			
+			// 내게온 제안 조회
+			ArrayList<CmypageSuggest> suggest = myPageService.selectSuggest(pId);
+			System.out.println("내게 온 제안 : "+suggest);
+			
+			// 진행중인 프로젝트 조회
+			ArrayList<CmypageProcess> process = myPageService.selectProcess(pId);
+			System.out.println("진행중인 프로젝트 : "+process);
+				
+			if(projectHistory!=null) {
+				mv.addObject("ph", projectHistory)
+				.addObject("suggest", suggest)
+				.addObject("process", process)
+				.setViewName("member/partnersMyPage");
+			}else {
+				throw new MemberException("프로젝트 히스토리 조회 실패!");
+			}
+			
+			return mv;
+		}
+		
+		@RequestMapping(value="clientInfo.do")
+		public ModelAndView cmClientInfo(ModelAndView mv, Integer cId) {
+			System.out.println("클라이언트 아이디 : "+ cId);
+			
+			CmypageClientInfo clientInfo = myPageService.selectClientInfo(cId);
+			System.out.println("clientInfo : " + clientInfo);
+			
+			if(clientInfo!=null) {
+				mv.addObject("info", clientInfo)
+				.setViewName("member/clientInfo");
+			}else {
+			}
+			
+			return mv;
+		}
+		
+		
+		@RequestMapping(value="cMyPageProjectHistory.do")
+		public ModelAndView cmProjectHistory(ModelAndView mv, Integer cId) {
+			System.out.println("클라이언트 아이디 : "+ cId);
+			
+			CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
+			System.out.println("projectHistory : " + projectHistory);
+			
+			if(projectHistory!=null) {
+				mv.addObject("ph", projectHistory)
+				.setViewName("member/cProjectHistory");
+			}else {
+			}
+			
+			return mv;
 		}
 }

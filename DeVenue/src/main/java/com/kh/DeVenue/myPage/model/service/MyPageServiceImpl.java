@@ -9,6 +9,10 @@ import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.dao.MyPageDao;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
+import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
@@ -170,6 +174,26 @@ public class MyPageServiceImpl implements MyPageService{
 	public int delPortFolio(int portId) {
 		
 		return myPageDao.deletePortFolio(portId);
+	}
+
+	@Override
+	public CmypageProjectHistory selectProjectHistory(Integer cId) {
+		return myPageDao.selectProjectHistory(cId);
+	}
+
+	@Override
+	public ArrayList<CmypageSuggest> selectSuggest(Integer cId) {
+		return myPageDao.selectSuggest(cId);
+	}
+
+	@Override
+	public ArrayList<CmypageProcess> selectProcess(Integer cId) {
+		return myPageDao.selectProcess(cId);
+	}
+
+	@Override
+	public CmypageClientInfo selectClientInfo(Integer cId) {
+		return myPageDao.selectClientInfo(cId);
 	}
 
 

@@ -10,6 +10,38 @@
 		<result property="renameFileName" column="IDE_RENAMEFILE"/>
 		<result property="ideStatus" column="IDE_STATUS"/>
 	</resultMap>
+	<resultMap type="MemBasicInfo" id="memBasicInfoResultSet">
+		<result property="proImgName" column="PROFILE_IMG"/>
+		<result property="utName" column="UT_NAME"/>
+		<result property="mtName" column="MEM_TYPE_KIND"/>
+		<result property="memName" column="MEM_NAME"/>
+		<result property="address1" column="ADDRESS1"/>
+		<result property="address2" column="ADDRESS2"/>
+		<result property="address3" column="ADDRESS3"/>
+		<result property="taxEmail" column="TAX_EMAIL"/>
+		<result property="phone" column="PHONE"/>
+		<result property="cellPhone" column="CELLPHONE"/>
+		<result property="faxNo" column="FAX_NO"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="master" column="MASTER"/>
+		<result property="accNo" column="ACC_NO"/>
+	</resultMap>
+	<resultMap type="Bank" id="bankResultSet">
+		<id property="bankId" column="BANK_ID"/>
+		<result property="bankName" column="BANK_NAME"/>
+	</resultMap>
+	<resultMap type="MemType" id="memTypeResultSet">
+		<id property="memTypeCode" column="MEM_TYPE_CODE"/>
+		<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+	</resultMap>
+	<resultMap type="Signature2" id="sigNature2ResultSet">
+		<id property="id" column="SIG_ID"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="originFileName" column="SIG_ORIGIN_FILENAME"/>
+		<result property="renameFileName" column="SIG_RENAME_FILENAME"/>
+		<result property="sigType" column="SIG_TYPE"/>
+		<result property="isMain" column="IS_MAIN"/>
+	</resultMap>
 	
 	<!-- 회원 비밀번호 변경 쿼리 -->
 	<select id="updatePwd" parameterType="map">
@@ -45,7 +77,100 @@
 		WHERE IDE_ID = #{memId}
 	</update>
 	
-	<!-- 회원가입시 테이블 생성 -->
+	<!-- 기본계정관리 정보 셀렉 -->
+	<select id="selectMemBasicInfo" parameterType="_int" resultMap="memBasicInfoResultSet">
+		SELECT
+            PROFILE_IMG, UT_NAME, MEM_TYPE_KIND, MEM_NAME, ADDRESS1, ADDRESS2, ADDRESS3, TAX_EMAIL
+            , PHONE, CELLPHONE, FAX_NO
+            , BANK_NAME, MASTER, ACC_NO
+		FROM MEMBER M
+		LEFT JOIN MEMTYPE MT ON(M.MEM_TYPE = MT.MEM_TYPE_CODE)
+		LEFT JOIN USERTYPE UT ON(UT.UT_CODE = M.USER_TYPE)
+		LEFT JOIN PROFILE P ON (P.MEM_ID = M.MEM_ID)
+		LEFT JOIN ACCOUNT A ON (A.MEM_ID = P.MEM_ID)
+		LEFT JOIN BANK B ON (A.BANK_ID = B.BANK_ID)
+		WHERE M.MEM_ID = #{mId}
+	</select>
+	<!-- 은행 이름들 셀렉 -->
+	<select id="selectBankName" resultMap="bankResultSet">
+		SELECT * FROM BANK
+	</select>
+	<!-- 회원형태 셀렉 -->
+	<select id="selectMemType" resultMap="memTypeResultSet">
+		SELECT * FROM MEMTYPE
+	</select>
+	
+	<!-- 회원 기본정보 수정 -->
+	<update id="updateBasicInfo" parameterType="map">
+		UPDATE MEMBER
+		SET MEM_TYPE = #{mtCode}, MEM_NAME = #{name}, ADDRESS1 = #{address1}, ADDRESS2 = #{address2}, ADDRESS3 = #{address3}, TAX_EMAIL = #{email}
+		WHERE MEM_ID = #{mId} 
+	</update>
+	<update id="updateProfileImg" parameterType="map">
+		UPDATE PROFILE
+		SET PROFILE_IMG = #{renameFileName}
+		WHERE MEM_ID = #{mId}
+	</update>
+	
+	<!-- 회원 연락처 정보 수정 -->
+	<update id="updatePhoneInfo" parameterType="map">
+		UPDATE MEMBER
+		SET PHONE = #{homePhone}, CELLPHONE = #{cellPhone}, FAX_NO = #{faxPhone}
+		WHERE MEM_ID = #{mId}
+	</update>
+	
+	<!-- 회원 계좌정보 생성 혹은 수정 -->
+	<update id="updateInsertAccountInfo" parameterType="map">
+		MERGE INTO ACCOUNT
+		USING DUAL
+		   ON (ACC_ID = 1)
+		WHEN MATCHED THEN
+		    UPDATE SET BANK_ID = #{bankName}, MASTER = #{master}, ACC_NO = #{acNum}
+		    WHERE MEM_ID = #{mId}
+		WHEN NOT MATCHED THEN
+		    INSERT (ACC_ID, BANK_ID, MASTER, ACC_NO, MEM_ID)
+		    VALUES ((SELECT NVL(MAX(ACC_ID),0)+1 FROM ACCOUNT), #{bankName}, #{master}, #{acNum}, #{mId})
+	</update>
+	
+	<!-- 회원 날인리스트 조회 -->
+	<select id="selectSignatureList" parameterType="_int" resultMap="sigNature2ResultSet">
+		SELECT * FROM SIGNATURE
+		WHERE MEM_ID = #{memId}
+		ORDER BY SIG_ID DESC
+	</select>
+	
+	<!-- 날인 삭제 전 프로젝트에서 사용한 이력이 있는 날인인지 여부 조회 -->
+	<select id="searchProjectForSigDelete" parameterType="string" resultType="integer">
+		SELECT S.SIG_ID
+		FROM SIGNATURE S
+		WHERE EXISTS (SELECT SIG_ID FROM PROJECT P WHERE S.SIG_ID = P.SIG_ID AND SIG_ID = #{sigId})
+	</select>
+	
+	<!-- 회원 날인리스트 삭제 -->
+	<delete id="deleteSignature" parameterType="string" >
+		DELETE FROM SIGNATURE
+		WHERE SIG_ID = #{id}
+	</delete>
+	
+	<!-- 주사용날인으로 새등록 혹은 변경 -->
+	<update id="changeMainSignature" parameterType="map">
+		UPDATE SIGNATURE
+		SET IS_MAIN = 'Y'
+		WHERE SIG_ID = #{id}
+	</update>
+	<update id="changeCommonSignature" parameterType="map">
+		UPDATE SIGNATURE
+		SET IS_MAIN = 'N'
+		WHERE SIG_ID = #{cId}
+	</update>
+	
+	<!-- 서명 날인 등록 -->
+	<insert id="insertSign" parameterType="map">
+		INSERT INTO SIGNATURE
+		VALUES ((SELECT NVL(MAX(SIG_ID), 0) + 1 FROM SIGNATURE), #{memId}, #{originFileName}, #{renameFileName}, 'SIGN', 'N')
+	</insert>
+	
+	<!-- 회원가입시 테이블 생성(호준이가 낑겨놓음) -->
 	<insert id="signInsert" parameterType="Identify">
 		INSERT INTO IDENTIFY
 		VALUES(#{memId},NULL,NULL,NULL,NULL,DEFAULT)

@@ -602,9 +602,12 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 			</div>
 			<div class="row">
-				<jsp:include page="../common/myPageMenubar.jsp" />
+				<!-- 구 sideMenubar -->
+				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새 sidMenubar -->
+				<jsp:include page="../common/pSideMenubar.jsp"/>
 			</div>
-			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
+			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12"
