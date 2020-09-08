@@ -9,6 +9,10 @@ import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.dao.MyPageDao;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
+import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
@@ -59,12 +63,6 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 
 	@Override
-	public PortFolio selectPortfolio(PortFolio portId) {
-		
-		return myPageDao.selectPortfolio(portId);
-	}
-
-	@Override
 	public int insertPortImg(PortImg pi) {
 		
 		return myPageDao.insertPartImg(pi);
@@ -80,12 +78,6 @@ public class MyPageServiceImpl implements MyPageService{
 	public int insertSkill(Skill s) {
 		
 		return myPageDao.insertSkill(s);
-	}
-
-	@Override
-	public Skill selectSkill(Skill s) {
-		
-		return myPageDao.selectSkill(s);
 	}
 
 	@Override
@@ -135,6 +127,76 @@ public class MyPageServiceImpl implements MyPageService{
 		
 		return myPageDao.selectListCertificate(profileId);
 	}
+
+	@Override
+	public int delSkill(int skillId) {
+		
+		return myPageDao.deleteSkill(skillId);
+	}
+
+	@Override
+	public int delCareer(int cId) {
+		
+		return myPageDao.deleteCareer(cId);
+	}
+
+	@Override
+	public int delAca(int scId) {
+		
+		return myPageDao.deleteAca(scId);
+	}
+
+	@Override
+	public int delCerti(int ccId) {
+		
+		return myPageDao.deletCerti(ccId);
+	}
+
+	@Override
+	public int selectPortId(String portName) {
+		
+		return myPageDao.selectPortId(portName);
+	}
+
+	@Override
+	public int delPortImg(int portId) {
+		
+		return myPageDao.deletePortImg(portId);
+	}
+
+	@Override
+	public int delPortTec(int portId) {
+
+		return myPageDao.deletePortTec(portId);
+	}
+
+	@Override
+	public int delPortFolio(int portId) {
+		
+		return myPageDao.deletePortFolio(portId);
+	}
+
+	@Override
+	public CmypageProjectHistory selectProjectHistory(Integer cId) {
+		return myPageDao.selectProjectHistory(cId);
+	}
+
+	@Override
+	public ArrayList<CmypageSuggest> selectSuggest(Integer cId) {
+		return myPageDao.selectSuggest(cId);
+	}
+
+	@Override
+	public ArrayList<CmypageProcess> selectProcess(Integer cId) {
+		return myPageDao.selectProcess(cId);
+	}
+
+	@Override
+	public CmypageClientInfo selectClientInfo(Integer cId) {
+		return myPageDao.selectClientInfo(cId);
+	}
+
+
 
 
 

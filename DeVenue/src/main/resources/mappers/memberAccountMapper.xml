@@ -169,4 +169,10 @@
 		INSERT INTO SIGNATURE
 		VALUES ((SELECT NVL(MAX(SIG_ID), 0) + 1 FROM SIGNATURE), #{memId}, #{originFileName}, #{renameFileName}, 'SIGN', 'N')
 	</insert>
+	
+	<!-- 회원가입시 테이블 생성(호준이가 낑겨놓음) -->
+	<insert id="signInsert" parameterType="Identify">
+		INSERT INTO IDENTIFY
+		VALUES(#{memId},NULL,NULL,NULL,NULL,DEFAULT)
+	</insert>
 </mapper>

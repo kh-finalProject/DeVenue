@@ -352,35 +352,21 @@ section {
 	margin-left: 40px;
 }
 
-/* 자격증 div */
-.career-conatiner {
-	width: 100%;
-	height: auto;
+/* 경력 테이블 */
+.Ctable {
 	border: 1px solid white;
-	padding-bottom: 10px;
+	width: 100%;
+	font-size: 20px;
+	border-collapse: separate;
+	border-spacing: 0 10px;
 }
 
-/* 자격증 div 가로줄 */
-.career-inner {
-	height: 50px;
-	border-bottom: 2px dashed gray;
-	margin-top: 2%;
-	font-size: 18px;
-	position: relative;
-}
-
-/* 자격증 div 제목 */
+/* 경력 제목 */
 .career-title {
-	width: 80px;
-	display: inline-block;
-	padding-left: 5px;
+	width: 150px;
+	padding-left: 15px;
 	margin-bottom: 5px;
 	margin-top: 1%;
-}
-
-/* 자격증 div content DB값이 나옴 */
-.career-content {
-	display: inline-block;
 }
 
 /* a태그 밑줄없애기 */
@@ -497,7 +483,8 @@ section {
 					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
 						찾기</a>
 					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a> <a href="#">파트너스 찾기</a>
+						<a href="clientList.do ">클라이언트 찾기</a>
+						<a href="partnersList.do">파트너스 찾기</a>
 					</div></li>
 			</ul>
 
@@ -613,60 +600,47 @@ section {
 								style="float: right;">추가하기</a>
 						</h3>
 					</div>
-					<c:forEach var="career" items="${careerlist }">
-						<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-							<div class="col-12 career-conatiner">
-								<div class="col-12 career-inner">
-									<div class="col-4 career-title">
-										<b>회사명</b>
-									</div>
-									<div class="col-10 career-content">
-										<span>${career.cName }</span>
-										<div class="col-9"
-											style="display: inline-block; text-align: right;">
-											<a href="careerUpdate.html" class="btn btn-info">수정</a>
-											<button type="button" class="btn btn-info">삭제</button>
-										</div>
-									</div>
-								</div>
-								<div class="col-12 career-inner">
-									<div class="col-4 career-title">
-										<b>근무부서</b>
-									</div>
-									<div class="col-10 career-content">
-										<span>${career.cDept }</span>
-									</div>
-								</div>
-								<div class="col-12 career-inner">
-									<div class="col-4 career-title">
-										<b>직위</b>
-									</div>
-									<div class="col-10 career-content">
-										<span>${career.cPosition }</span>
-									</div>
-								</div>
-								<div class="col-12 career-inner">
-									<div class="col-4 career-title">
-										<b>근무시간</b>
-									</div>
-									<div class="col-10 career-content">
-										<span>${career.cEndDate }</span>
-									</div>
-								</div>
-								<div class="col-12 career-inner">
-									<div class="col-4 career-title">
-										<b>설명</b>
-									</div>
-									<div class="col-10 career-content">
-										<p>${career.cContent }</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</c:forEach>
+					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
+						<form method="get" action="delCareer.do">
+							<c:forEach var="career" items="${careerlist }">
+								<table class="Ctable">
+								
+									<tr>
+										<td class="career-title">회사명</td>
+										<td>${career.cName }</td>
+										<td style="float: right; margin-right: 10%;">
+											<button class="btn btn-info">삭제</button>
+										</td>
+									</tr>
+									<tr>
+										<td class="career-title">근무 부서</td>
+										<td colspan="2">${career.cDept }</td>
+									</tr>
+									<tr>
+										<td class="career-title">직위</td>
+										<td colspan="2">${career.cPosition }</td>
+									</tr>
+									<tr>
+										<td class="career-title">근무시간</td>
+										<td colspan="2">${career.cEndDate }</td>
+									</tr>
+									<tr>
+										<td class="career-title">설명</td>
+										<td colspan="2">${career.cContent }</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="hidden" name="cId" value="${career.cId }">
+											<input type="hidden" name="profileId" value="${career.profileId }">
+										</td>
+									</tr>
+								</table>
+								<br>
+							</c:forEach>
+						</form>
+					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 
 		</div>

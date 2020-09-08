@@ -10,8 +10,11 @@ import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
+import com.kh.DeVenue.project.model.vo.ProjectFilter;
+import com.kh.DeVenue.project.model.vo.ProjectLike;
 import com.kh.DeVenue.project.model.vo.ProjectList;
 import com.kh.DeVenue.project.model.vo.ProjectQuestion;
+import com.kh.DeVenue.project.model.vo.ProjectSearch;
 import com.kh.DeVenue.project.model.vo.Reply;
 import com.kh.DeVenue.project.model.vo.Tech;
 
@@ -23,9 +26,9 @@ public interface ProjectService {
 	
 	ArrayList<Project> selectCheckList();
 
-	int getListCount();
+	int getListCount(ProjectFilter filter);
 
-	ArrayList<ProjectList> selectProjectList(PageInfo pi);
+	ArrayList<ProjectList> selectProjectList(PageInfo pi, ProjectFilter filter);
 
 	int addQuestion(ProjectQuestion q);
 
@@ -66,7 +69,7 @@ public interface ProjectService {
 
 	int addLikeProject(HashMap ids);
 
-	ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi);
+	ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi);
 
 	int getLikeListCount(int memId);
 
@@ -91,7 +94,7 @@ public interface ProjectService {
 	int getapplyListCount(int memId);
 
 
-	ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi);
+	ArrayList<Application> selectApplyProject(int memId, PageInfo pi);
 
 
 	int getTempSave(HashMap application);
@@ -143,6 +146,51 @@ public interface ProjectService {
 
 
 	int cancelThisTempApply(Integer aId);
+
+
+	int getListCount();
+
+
+	ArrayList<ProjectList> selectProjectList(PageInfo pi);
+
+
+	int getListCount(ProjectSearch search);
+
+
+	ArrayList<ProjectList> selectProjectList(PageInfo pi, ProjectSearch search);
+
+
+	int checkApplyId(HashMap application);
+
+
+	int checkTempApplyId(HashMap application);
+
+	
+	int checkSigCount(HashMap application);
+
+
+	int checkMatched(HashMap application);
+
+
+	ArrayList<ProjectLike> selectUserLike(int memId);
+
+
+	int getOngoingListCount(int memId);
+
+
+	ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi);
+
+
+	int getCompleteListCount(int memId);
+
+
+	ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi);
+
+
+	int getRequestListCount(int memId);
+
+
+	ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi);
 
 
 	

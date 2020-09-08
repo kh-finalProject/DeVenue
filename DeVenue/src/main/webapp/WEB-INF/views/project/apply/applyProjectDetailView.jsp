@@ -76,7 +76,7 @@
 
     </script>
     
-<title>Insert title here</title>
+<title>프로젝트 지원하기</title>
 
 <style>
        
@@ -1448,7 +1448,7 @@
                                                                         <div class="portfolioPreview"
                                                                             style="width:100%;height:10rem;background-color: lightpink;">
                                                                           
-                                                                            <img src="${contextPath}/resources/projectUpload/${pf.image[0].imgContent}" style="width: 100%;height:100%;"/>
+                                                                            <img src="${contextPath}/resources/portfolioImg/${pf.image[0].imgContent}" style="width: 100%;height:100%;"/>
                                                                             <input type="hidden" id="img${pf.portId}" value="${pf.image[0].imgContent}">
                                                                         </div>
                                                                     </div>
@@ -1566,7 +1566,7 @@
                                                 			
                                                 			
                                                         			img=document.createElement('img');
-                                                        			img.src="/DeVenue/resources/projectUpload/"+images[i];
+                                                        			img.src="/DeVenue/resources/portfolioImg/"+images[i];
                                                         			
                                                         			hiddenId=document.createElement('input');
                                                         			hiddenId.setAttribute('type','hidden');
@@ -1740,7 +1740,7 @@
                                     			$row.append($column7);
                                     			
                                     			$preview=$("<div>").addClass("portfolioPreview").css("width","100%").css("height","10rem").css("background-color","lightpink");
-                                    			$src="/DeVenue/resources/projectUpload/"+$pf[i].image[0].imgContent;
+                                    			$src="/DeVenue/resources/portfolioImg/"+$pf[i].image[0].imgContent;
                                     			$img=$("<img>").attr("src",$src).css("width","100%").css("height","100%");
                                     			$hidden=$("<input type='hidden'>").attr("id","img"+$pf[i].portId).val($pf[i].image[0].imgContent);
                                     			
@@ -1878,6 +1878,7 @@
                                 </div>
                             </div>
                             <script>
+                               	
                                 //관련 이력서 있음 체크 시 업로드 div 보이게 하기
                                 $(".resume").click(function () {
 
@@ -1970,6 +1971,8 @@
                             }
                             
                         })
+                        
+                       
                     </script>
                     <script>
                     	//임시저장

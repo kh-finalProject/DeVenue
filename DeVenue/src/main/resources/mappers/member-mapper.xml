@@ -109,6 +109,7 @@
   	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
   	<result property="ideStatus" column="IDE_STATUS"/>
   	<result property="phone" column="PHONE"/>
+  	<result property="proImg" column="PROFILE_IMG"/>
   	<result property="addProject" column="ADD_PROJECT"/>
   	<result property="stopProject" column="STOP_PROJECT"/>
   	<result property="ingProject" column="ING_PROJECT"/>
@@ -162,6 +163,7 @@
 		<result property="ideStatus" column="IDE_STATUS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="profileImg" column="PROFILE_IMG"/>
+		<result property="proId" column="PRO_ID"/>
 		<result property="proName" column="PRO_NAME"/>
 	</resultMap>
 	
@@ -287,19 +289,25 @@
 		WHERE PARTNERS_ID=#{pId} AND CLIENT_ID=#{cId}
 	</select>
 	
+	<!-- 평가 등록 -->
+	<insert id="insertEval" parameterType="hashmap">
+		INSERT INTO EVAL VALUES(EVAL_SEQ.NEXTVAL, #{파트너스}, #{클라이언트}, #{프로젝트}, #{평가점수}
+			, #{평가내용}, #{전문성}, #{적극성}, #{의사소통}, #{일정준수}, #{만족도}, SYSDATE, 'Y')
+	</insert>
+
 	<!-- 회원 채팅 설정 -->
 	<resultMap type="MemChatSet" id="memChatSetResultSet">
-		<id property="memId" column="MEM_ID"/>
+		<id property="mId" column="MEM_ID"/>
 		
-		<result property="isTransChat" column="IS_TRANS_CHAT"/>
-		<result property="isShowPastChat" column="IS_SHOWPASTCHAT"/>
+		<result property="is_TransChat" column="IS_TRANS_CHAT"/>
+		<result property="is_ShowPastChat" column="IS_SHOWPASTCHAT"/>
 
 	</resultMap>
 	
 	<!-- 회원가입시 회원 채팅 설정 기본 생성 -->
 	<insert id="insertcharSet" parameterType="MemChatSet">
 		INSERT INTO MEM_CHATSET
-		VALUES(#{memId},DEFAULT,DEFAULT)
+		VALUES(#{mId},DEFAULT,DEFAULT)
 	</insert>
 	
 	<!-- 회원가입한후에 memId 추출하기 -->
@@ -319,5 +327,37 @@
 		SELECT COUNT(*) FROM MEMBER
 		WHERE MEM_EMAIL=#{memEmail}
 	</select>
+	
+	<!-- 클라이언트 찾기 닉네임 검색 -->
+	<select id="countClientList" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE USER_TYPE = 'UT3' AND MEM_STATUS = 'Y' AND MEM_NICK LIKE '%'||#{memNick}||'%'
+	</select>
+	<select id="searchMemNickClientList" parameterType="string" resultMap="selectListResult">
+	  	SELECT *
+		FROM CLIENTLIST_VIEW
+		WHERE MEM_NICK LIKE '%'||#{memNick}||'%'
+	</select>
+	
+	<!-- 클라이언트 찾기 프로젝트명 검색 -->
+	<select id="countClientList2" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE USER_TYPE = 'UT3' AND MEM_STATUS = 'Y' AND INTRODUCTION LIKE '%'||#{introduction}||'%'
+	</select>
+	<select id="searchIntroductionClientList" parameterType="string" resultMap="selectListResult">
+	  	SELECT *
+		FROM CLIENTLIST_VIEW
+		WHERE INTRODUCTION LIKE '%'||#{introduction}||'%'
+	</select>
+
+	<!-- 파트너스 찾기 부분 -->
+	<select id="memberAll" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE USER_TYPE = 'UT4'
+		AND MEM_STATUS = 'Y'
+	</select>
+	
 	
 </mapper>

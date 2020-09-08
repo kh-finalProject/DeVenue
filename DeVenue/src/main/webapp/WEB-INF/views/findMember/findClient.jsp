@@ -31,6 +31,14 @@ hr {
 .fas{
 	margin-right:0;
 }
+.far{
+	margin-right:0;
+}
+
+		/*페이지네이션*/
+      #pagination>div{
+        margin-top: 1rem;
+      }
 </style>
 
 </head>
@@ -45,15 +53,16 @@ hr {
             <div class="col-10" style="padding:3%; ">
                 <div style="float:right; margin-right: 2%;">
                     <div class="input-group">
-                        <select class="btn btn-outline-light">
+                        <select id="clientSelect" class="btn btn-outline-light">
                             <option class="dropdown-item">-----</option>
-                            <option id="selectNickname" class="dropdown-item">닉네임</option>
-                            <option id="selectProject" class="dropdown-item">프로젝트</option>
+                            <option id="selectNickname" class="dropdown-item" value="memNick">닉네임</option>
+                            <option id="selectProject" class="dropdown-item" value="introduction">내용</option>
+                            <!-- 시간남으면 닉네임 + 내용 검색 만들기 -->
                         </select>
 
                         <!-- </div> -->
-                        <input type="search" class="form-control">
-                        <div class="input-group-append">
+                        <input type="search" class="form-control" id="searchText">
+                        <div id="searchClient" class="input-group-append">
                             <button class="input-group-text btn btn-info">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search"
                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -68,16 +77,18 @@ hr {
                 </div>
             </div>
             <script>
-                $(function () {
-                    $("#selectNickname").on("click", function () {
-                        $("#clientSelect").text($(this).text());
-                    });
-
-                    $("#selectProject").on("click", function () {
-                        $("#clientSelect").text($(this).text());
-                    })
-                })
-
+                // 검색하기
+               	$("#searchClient").on("click", function(){
+               		var content = $("#searchText").val();
+               		
+               		if($("#clientSelect").val() == "memNick"){
+               			location.href="memNickSearch.do?memNick="+content;
+               		}else if($("#clientSelect").val() == "introduction"){
+               			location.href="introductionSearch.do?introduction="+content;
+               		}else{
+               			location.href="redirect:clientList.do";
+               		}
+               	})
             </script>
         </div>
 
@@ -92,8 +103,17 @@ hr {
             <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
                 <br>
                 <div style="border-bottom: 1px solid lightgray; padding-bottom: 1%;">
-                    &emsp;정렬 기준 :  &emsp;<a href="#">최신 등록 순</a>&emsp;<a href="#">평점 높은 순</a>&emsp;<a href="#">평가 많은 순</a>&emsp;<a href="#">프로젝트 많은 순</a>
+                    &emsp;
+                    	정렬 기준 :  &emsp;
+                    	<a href="#">최신 등록 순</a>&emsp;
+                    	<a href="#">평점 높은 순</a>&emsp;
+                    	<a href="#">평가 많은 순</a>&emsp;
+                    	<a href="#">프로젝트 많은 순</a>
                 </div>
+                
+                <script>
+                	// 정렬 ajax 시작
+                </script>
             </div>
 
         </div>
@@ -213,7 +233,8 @@ hr {
                 </div>
             </div>
             <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
-            
+           
+           <c:if test="${empty msg }"> 
            <c:forEach var="b" items="${list }"> 
                     <!-- 클릭이벤트 넣어야함 -->
                     <c:url var="cDetail" value="cDetail.do">
@@ -250,26 +271,11 @@ hr {
                                                 <!-- <a class="badge badge-info">개인</a> -->
                                                 <a class="badge badge-info">${b.memTypeKind }</a>
                                             </li>
-                                            <li>
-                                                <!-- 예아! 호우! 예예예~
-                                                싹쓰리 인더 하우스
-                                                커커커커커몬! 싹!쓰리!투 렛츠고!
-
-                                                나 다시 또 설레어
-                                                이렇게 너를 만나서
-                                                함께 하고 있는 지금 이 공기가
-
-                                                다시는 널 볼 순 없을 거라고
-                                                추억일 뿐이라
-                                                서랍 속에 꼭 넣어뒀는데
-
-                                                흐르는 시간 속에서
-                                                너와 내 기억은
-                                                점점 희미해져만 가
-                                                끝난 줄 알았 -->
+                                            <li id="introduction" style="line-height:2.4rem; -webkit-box-orient: vertical; word-wrap:break-word;">
                                                 ${b.introduction }
                                                 <br><br>
                                             </li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -355,7 +361,7 @@ hr {
 										</c:when>
                                     </c:choose>
                                         <!-- <b>4.5 / 평가 4개</b>  -->
-                                        <b>${b.avgEagv } / 평가 ${b.countEagv }개</b> 
+                                        ${b.avgEagv } / 평가 ${b.countEagv }개 
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
                                     <div class="point">
@@ -366,16 +372,23 @@ hr {
                                     <div class="point">
                                         <b>자주 진행한 프로젝트</b>
                                         <!-- <a class="badge badge-info" style="float:right;">WEB</a> -->
-                                        <a class="badge badge-info" style="float:right;">${b.maxDcType }</a>
+                                        <c:choose>
+                                        <c:when test="${b.maxDcType eq '웹' }">
+                                        	<a class="badge badge-info" style="float:right;">WEB</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                        	<a class="badge badge-info" style="float:right;">${b.maxDcType }</a>
+                                        </c:otherwise>
+                                        </c:choose>
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
                                     
                                     <div class="point" align="center">
                                     <c:if test="${b.ideStatus eq 'COMPLETE' }">
-                                        <a class="badge badge-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
+                                        <a class="btn btn-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
                                     </c:if>
                                     <c:if test="${!empty b.phone }">    
-                                        <a class="badge badge-info" style="padding:1%;">연락처 등록</a>
+                                        <a class="btn btn-info" style="padding:1%;">연락처 등록</a>
                                     </c:if>
                                     </div>
                                 </div>
@@ -384,160 +397,57 @@ hr {
                     </ul>
                 </div>
 			</c:forEach>
+			
+                
+                <section class="mt-5 mb-5" id="pagination">
 
-                <div class="userBoard">
-                    &emsp;
-                    <input type="hidden" value="선택한 회원 ID">
-                    <ul style="list-style: none;">
-                        <li>
-                            <div class="row" style="margin-left:3%; margin-right:3%;border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
-                                <div class="col-8">
-                                    <div style="float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;" >
-                                        <div>
-                                            <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-                                            <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                            <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <ul style="list-style: none; margin-top: 2%;">
-                                            <li>
-                                                qwer01(닉네임)
-                                            </li>
-                                            <li>
-                                                kh_Bclass(소속)&emsp;
-                                                <a class="badge badge-info">개인</a>
-                                            </li>
-                                            <li>
-                                                예아! 호우! 예예예~
-                                                싹쓰리 인더 하우스
-                                                커커커커커몬! 싹!쓰리!투 렛츠고!
+            <div class="row d-flex justify-content-around align-items-center">
 
-                                                나 다시 또 설레어
-                                                이렇게 너를 만나서
-                                                함께 하고 있는 지금 이 공기가
+              <!--페이지네이션-->
+              <div class="col-12 col-md-4 text-center">
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center mb-0 text-dark">
+                  	<c:if test="${pi.currentPage eq 1 }">
+                    <li class="page-item"><a class="page-link"><i class="fas fa-chevron-left"></i></a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage gt 1}">
+                    <c:url var="plistBack" value="clientList.do">
+                    	<c:param name="page" value="${pi.currentPage-1}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistBack}"><i class="fas fa-chevron-left"></i></a></li>
+                    </c:if>
+                    
+                    <c:forEach begin="${pi.startPage}" end="${pi.endPage}" step="1" var="pn">
+                    <c:if test="${pi.currentPage eq pn}">
+                    <li class="page-item active"><a class="page-link">${pn}</a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage ne pn}">
+                    <c:url var="plistCheck" value="clientList.do">
+                    <c:param name="page" value="${pn}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistCheck}">${pn}</a></li>
+                    </c:if>
+                    </c:forEach>
+                   
+                    <c:if test="${pi.currentPage eq pi.maxPage}">
+                    <li class="page-item"><a class="page-link"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
+                  	<c:if test="${pi.currentPage lt pi.maxPage}">
+                  	<c:url var="plistFront" value="clientList.do">
+                    	<c:param name="page" value="${pi.currentPage+1}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${plistFront}"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
+                  </ul>
+                </nav>
+              </div>
+            </div>
 
-                                                다시는 널 볼 순 없을 거라고
-                                                추억일 뿐이라
-                                                서랍 속에 꼭 넣어뒀는데
-
-                                                흐르는 시간 속에서
-                                                너와 내 기억은
-                                                점점 희미해져만 가
-                                                끝난 줄 알았
-                                                <br><br>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div id="starPoint" class="point">
-                                        <i id="firstStar" class="far fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        
-                                        <b>4.5 / 평가 4개</b> 
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    <div class="point">
-                                        <b>진행한 프로젝트 수</b>
-                                        <b style="float:right">22개</b>
-                                    </div>
-                                    <div class="point">
-                                        <b>자주 진행한 프로젝트</b>
-                                        <a class="badge badge-info" style="float:right;">WEB</a>
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    <div class="point" align="center">
-                                        <a class="btn btn-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
-                                        <a class="btn btn-info" style="padding:1%;">연락처 등록</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="userBoard">
-                    &emsp;
-                    <input type="hidden" value="선택한 회원 ID">
-                    <ul style="list-style: none;">
-                        <li>
-                            <div class="row" style="margin-left:3%; margin-right:3%;border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
-                                <div class="col-8">
-                                    <div style="float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;" >
-                                        <div>
-                                            <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-                                            <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                            <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <ul style="list-style: none; margin-top: 2%;">
-                                            <li>
-                                                qwer01(닉네임)
-                                            </li>
-                                            <li>
-                                                kh_Bclass(소속)&emsp;
-                                                <a class="badge badge-info">개인</a>
-                                            </li>
-                                            <li>
-                                                예아! 호우! 예예예~
-                                                싹쓰리 인더 하우스
-                                                커커커커커몬! 싹!쓰리!투 렛츠고!
-
-                                                나 다시 또 설레어
-                                                이렇게 너를 만나서
-                                                함께 하고 있는 지금 이 공기가
-
-                                                다시는 널 볼 순 없을 거라고
-                                                추억일 뿐이라
-                                                서랍 속에 꼭 넣어뒀는데
-
-                                                흐르는 시간 속에서
-                                                너와 내 기억은
-                                                점점 희미해져만 가
-                                                끝난 줄 알았
-                                                <br><br>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div id="starPoint" class="point">
-                                        <i id="firstStar" class="far fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        
-                                        <b>4.5 / 평가 4개</b> 
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    <div class="point">
-                                        <b>진행한 프로젝트 수</b>
-                                        <b style="float:right">22개</b>
-                                    </div>
-                                    <div class="point">
-                                        <b>자주 진행한 프로젝트</b>
-                                        <a class="badge badge-info" style="float:right;">WEB</a>
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    <div class="point" align="center">
-                                        <a class="btn btn-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
-                                        <a class="btn btn-info" style="padding:1%;">연락처 등록</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+          </section>
+          </c:if>
+			<c:if test="${!empty msg }">
+				<p style="margin-top:5%; margin-left:40%;">${msg }</p>
+			</c:if>
             </div>
 
         </div>

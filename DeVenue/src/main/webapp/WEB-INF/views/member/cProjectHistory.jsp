@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,9 +9,12 @@
 <title>Insert title here</title>
 <style>
 	/* 별점수 */
-	.fas{
-		margin-right:0;
-	}
+        .fas{
+			margin-right:0;
+		}
+		.far{
+			margin-right:0;
+		}
 	
 	#firstStar{
 		margin-right:0;
@@ -111,8 +116,8 @@
 				            });
 				
 				            $("#projectHistory").on("click", function () {
-				              location.href = "projectHistory.html";
-				            });
+					              location.href = "cMyPageProjectHistory.do?cId=${loginUser.memId}";
+					            });
 				
 				
 				            $("#clientComment").on("click", function () {
@@ -144,7 +149,8 @@
 										</td>
 										<td>
 											<div style="text-align: right;">
-												<p>50개</p>
+												<!-- <p>50개</p> -->
+												<p>${ph.addProject }개</p>
 												&emsp;
 											</div>
 										</td>
@@ -155,7 +161,8 @@
 										</td>
 										<td style="height: 10%;">
 											<div style="text-align: right;">
-												<p>22개</p>
+												<!-- <p>22개</p> -->
+												<p>${ph.stopProject + ph.ingProject }개</p>
 											</div>
 										</td>
 									</tr>
@@ -167,7 +174,9 @@
 										</td>
 										<td>
 											<div style="float: right;">
-												&nbsp;100%<br> &emsp;10개<br> &emsp;12개
+												&nbsp;${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}%<br>
+												&emsp;${ph.ingProject }개<br>
+												&emsp;${ph.completeProject }개
 											</div>
 										</td>
 									</tr>
@@ -180,7 +189,7 @@
 										</td>
 										<td>
 											<div style="margin-top: 5%; text-align: right;">
-												<p>1,000,000원</p>
+												<p><fmt:formatNumber value="${ph.allPayment }" type="number" groupingUsed="true"/>원</p>
 												&emsp;
 											</div>
 										</td>
@@ -192,6 +201,514 @@
 									<tr>
 										<td colspan="2"><b>평균 평점</b></td>
 										<td style="text-align: center;">
+										<c:choose>
+                                    	<c:when test="${ph.avgEagv == 0 }">
+	                                        <i id="firstStar" class="far fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv > 0 && ph.avgEagv < 1 }">
+	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv == 1 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv > 1 && ph.avgEagv < 2 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv == 2 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv > 2 && ph.avgEagv < 3 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv == 3 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv > 3 && ph.avgEagv < 4 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv == 4 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv > 4 && ph.avgEagv < 5 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.avgEagv == 5 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+										</c:when>
+                                    	</c:choose>
+										</td>
+										<!-- <td style="text-align: center;"><b>4.5 / 평가 4개</b></td> -->
+										<td style="text-align: center;"><b><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.avgEagv }"/> / 평가 ${ph.countEagv }개</b></td>
+									</tr>
+									<tr><td>&nbsp;</td></tr>
+									<tr>
+										<td colspan="2">전문성</td>
+										<td style="text-align: center;">
+											<c:choose>
+                                    	<c:when test="${ph.star1 == 0 }">
+	                                        <i id="firstStar" class="far fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 > 0 && ph.star1 < 1 }">
+	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 == 1 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 > 1 && ph.star1 < 2 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 == 2 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 > 2 && ph.star1 < 3 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 == 3 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 > 3 && ph.star1 < 4 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 == 4 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 > 4 && ph.star1 < 5 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star1 == 5 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+										</c:when>
+                                    </c:choose>
+										</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star1 }"/></td>
+									</tr>
+									<tr>
+										<td colspan="2">적극성</td>
+										<td style="text-align: center;">
+											<c:choose>
+                                    	<c:when test="${ph.star2 == 0 }">
+	                                        <i id="firstStar" class="far fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 > 0 && ph.star2 < 1 }">
+	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 == 1 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 > 1 && ph.star2 < 2 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 == 2 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 > 2 && ph.star2 < 3 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 == 3 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 > 3 && ph.star2 < 4 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 == 4 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 > 4 && ph.star2 < 5 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star2 == 5 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+										</c:when>
+                                    </c:choose>
+										</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star2 }"/></td>
+									</tr>
+									<tr>
+										<td colspan="2">일정 준수</td>
+										<td style="text-align: center;">
+											<c:choose>
+                                    	<c:when test="${ph.star3 == 0 }">
+	                                        <i id="firstStar" class="far fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 > 0 && ph.star3 < 1 }">
+	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 == 1 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 > 1 && ph.star3 < 2 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 == 2 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 > 2 && ph.star3 < 3 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 == 3 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 > 3 && ph.star3 < 4 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 == 4 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 > 4 && ph.star3 < 5 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star3 == 5 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+										</c:when>
+                                    </c:choose>
+										</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star3 }"/></td>
+									</tr>
+									<tr>
+										<td colspan="2">의사 소통</td>
+										<td style="text-align: center;">
+											<c:choose>
+                                    	<c:when test="${ph.star4 == 0 }">
+	                                        <i id="firstStar" class="far fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 > 0 && ph.star4 < 1 }">
+	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 == 1 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 > 1 && ph.star4 < 2 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 == 2 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 > 2 && ph.star4 < 3 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 == 3 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 > 3 && ph.star4 < 4 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 == 4 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 > 4 && ph.star4 < 5 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star4 == 5 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+										</c:when>
+                                    </c:choose>
+										</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0"  maxFractionDigits="1" value="${ph.star4 }"/></td>
+									</tr>
+									<tr>
+										<td colspan="2">만족도</td>
+										<td style="text-align: center;">
+											<c:choose>
+                                    	<c:when test="${ph.star5 == 0 }">
+	                                        <i id="firstStar" class="far fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 > 0 && ph.star5 < 1 }">
+	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 == 1 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 > 1 && ph.star5 < 2 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 == 2 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 > 2 && ph.star5 < 3 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 == 3 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 > 3 && ph.star5 < 4 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 == 4 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="far fa-star"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 > 4 && ph.star5 < 5 }">
+	                                        <i id="firstStar" class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star"></i>
+	                                        <i class="fas fa-star-half-alt"></i>
+                                        </c:when>
+                                        <c:when test="${ph.star5 == 5 }">
+                                        	<i id="firstStar" class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+                                        	<i class="fas fa-star"></i>
+										</c:when>
+                                    </c:choose>
+										
+										<!-- 
 											<i id="firstStar" class="far fa-star"></i>
 											<i class="fas fa-star"></i>
 											<i class="fas fa-star-half-alt"></i>
@@ -252,9 +769,9 @@
 											<i class="fas fa-star"></i>
 											<i class="fas fa-star-half-alt"></i>
 											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
+											<i class="fas fa-star-half-alt"></i> -->
 										</td>
-										<td style="text-align: center;">4.5</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star5 }"/></td>
 									</tr>
 								</table>
 							</div>

@@ -34,6 +34,13 @@
             margin: 0;
             margin-top: 2%;
         }
+        
+        .fas{
+			margin-right:0;
+		}
+		.far{
+			margin-right:0;
+		}
 
         /* 이미지 사이즈 맞추기 */
         .image-container {
@@ -126,10 +133,18 @@
                     </c:url>
                     <c:url var="cEvalSelect" value="cEvalSelect.do">
                     	<c:param name="cId" value="${ph.memId }"/>
+                    	<c:param name="msg" value="1"/>
                     </c:url>
                     <c:url var="cEvalInsert" value="cEvalInsert.do">
-                    	<c:param name="cId" value="${ph.memId }"/>
-                    	<c:param name="pId" value="${loginUser.memId }"/>
+                    	<c:param name="cId" value="${fc.memId }"/>
+                    	<c:choose>
+                    		<c:when test="${!empty loginUser }">
+	                    		<c:param name="pId" value="${loginUser.memId }"/>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<c:param name="pId" value="0"/>
+                    		</c:otherwise>
+                    	</c:choose>
                     </c:url>
                     <script>
                         $("#clientInfo").on("click", function(){
@@ -311,7 +326,7 @@
                                     	</c:choose>
 										</td>
 										<!-- <td style="text-align: center;"><b>4.5 / 평가 4개</b></td> -->
-										<td style="text-align: center;"><b>${ph.avgEagv } / 평가 ${ph.countEagv }개</b></td>
+										<td style="text-align: center;"><b><fmt:formatNumber type="number" maxFractionDigits="1" value="${ph.avgEagv }"/> / 평가 ${ph.countEagv }개</b></td>
 									</tr>
 									<tr><td>&nbsp;</td></tr>
 									<tr>
@@ -397,7 +412,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;">${ph.star1 }</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${ph.star1 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">적극성</td>
@@ -482,7 +497,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;">${ph.star2 }</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${ph.star2 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">일정 준수</td>
@@ -567,7 +582,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;">${ph.star3 }</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${ph.star3 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">의사 소통</td>
@@ -652,7 +667,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;">${ph.star4 }</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${ph.star4 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">만족도</td>
@@ -737,7 +752,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;">${ph.star5 }</td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${ph.star5 }"/></td>
 									</tr>
 								</table>
                             </div>

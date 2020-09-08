@@ -22,6 +22,13 @@ public class MemChatSet implements Serializable{
 		this.is_showPastChat = is_showPastChat;
 	}
 	
+	// 회원가입시 자동으로 생성될때 필요함
+	public MemChatSet(int mId) {
+		super();
+		this.mId = mId;
+	}
+	
+	
 	
 	public int getmId() {
 		return mId;

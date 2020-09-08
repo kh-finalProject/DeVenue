@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
+import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
@@ -55,11 +59,6 @@ public class MyPageDao {
 		return sqlSessionTemplate.insert("myPageMapper.insertPortfolio",pf);
 	}
 
-	public PortFolio selectPortfolio(PortFolio portId) {
-		
-		return sqlSessionTemplate.selectOne("myPageMapper.selectPortfolio",portId);
-	}
-
 	public int insertPartImg(PortImg pi) {
 		
 		return sqlSessionTemplate.insert("myPageMapper.insertPortImg", pi);
@@ -73,11 +72,6 @@ public class MyPageDao {
 	public int insertSkill(Skill s) {
 		
 		return sqlSessionTemplate.insert("myPageMapper.insertSkill",s);
-	}
-
-	public Skill selectSkill(Skill s) {
-		
-		return sqlSessionTemplate.selectOne("myPageMapper.selectSkill",s);
 	}
 
 	public int insertCareer(Career c) {
@@ -118,6 +112,63 @@ public class MyPageDao {
 	public ArrayList<Certificate> selectListCertificate(int profileId) {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectListCertificate", profileId);
+	}
+
+	public int deleteSkill(int skillId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteSkill", skillId);
+	}
+
+	public int deleteCareer(int cId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteCareer",cId);
+	}
+
+	public int deleteAca(int scId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteAca",scId);
+	}
+
+	public int deletCerti(int ccId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deleteCerti",ccId);
+	}
+
+	public int selectPortId(String portName) {
+
+		return sqlSessionTemplate.selectOne("myPageMapper.selectPortId", portName);
+	}
+
+	public int deletePortImg(int portId) {
+
+		return sqlSessionTemplate.delete("myPageMapper.deletePortImg", portId);
+	}
+
+	public int deletePortTec(int portId) {
+
+		return sqlSessionTemplate.delete("myPageMapper.deletePortTec", portId);
+	}
+
+	public int deletePortFolio(int portId) {
+		
+		return sqlSessionTemplate.delete("myPageMapper.deletePortFolio", portId);
+	}
+
+	public CmypageProjectHistory selectProjectHistory(Integer cId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.selectProjectHistory",cId);
+	}
+
+	public ArrayList<CmypageSuggest> selectSuggest(Integer cId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectSuggest",cId);
+	}
+
+	public ArrayList<CmypageProcess> selectProcess(Integer cId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectProcess",cId);
+	}
+
+	public CmypageClientInfo selectClientInfo(Integer cId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.selectClientInfo",cId);
 	}
 	
 	
