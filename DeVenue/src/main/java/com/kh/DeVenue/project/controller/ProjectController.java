@@ -495,7 +495,7 @@ ProjectService pService;
 		
 		System.out.println("parameter 뭐 넘어왔나?"+project);
 		//프로젝트 디테일 가져오기
-		System.out.println(project);
+		
 		ProjectDetail detail=pService.selectProjectDetail(project.getId());
 		
 		// 클라이언트의 전체 프로젝트 수 
@@ -512,10 +512,10 @@ ProjectService pService;
 		ArrayList<ProjectList> candidate=pService.selectRecommend(project);
 		System.out.println("화면단 가기 전, 추천 프로젝트 리스트"+candidate);
 		
-		
+		mv.addObject("page",page);
 		mv.addObject("detail", detail);
 		mv.addObject("candidate", candidate);
-		mv.setViewName("project/findProjectDetailView");
+		mv.setViewName("project/find/findProjectDetailView");
 		return mv;
 		
 	}
