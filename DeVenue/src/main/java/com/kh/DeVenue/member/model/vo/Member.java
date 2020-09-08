@@ -87,7 +87,7 @@ public class Member implements Serializable {
 
 	// 회원가입용
 	public Member(String userType, String memType, String memEmail, String memNick, String memName, String memPwd,
-			String address1, String address2, String address3, String phone) {
+			String address1, String address2, String address3, String cellPhone) {
 		super();
 		this.userType = userType;
 		this.memType = memType;
@@ -98,7 +98,7 @@ public class Member implements Serializable {
 		this.address1 = address1;
 		this.address2 = address2;
 		this.address3 = address3;
-		this.phone = phone;
+		this.cellPhone = cellPhone;
 	}
 	
 	// 이메일로 memId를 검색해옴

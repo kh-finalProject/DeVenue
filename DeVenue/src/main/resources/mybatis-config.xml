@@ -67,7 +67,21 @@
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.Image" alias="Image"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.Application" alias="Application"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyAnswer" alias="Answer"/>
+	    
+		<!-- member 회원채팅설정 -->
+	    <!-- <typeAlias type="com.kh.DeVenue.member.model.vo.MemChatSet" alias="MemChatSet"/> -->
+	    
+	    <!-- 클라이언트 마이페이지 메인 -->
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory" alias="CmypageProjectHistory"/>
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageSuggest" alias="CmypageSuggest"/>
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageProcess" alias="CmypageProcess"/>
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageClientInfo" alias="CmypageClientInfo"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyPortfolio" alias="ApplyPF"/>
+		<typeAlias type="com.kh.DeVenue.member.model.vo.FindClientDetail" alias="FindClientDetail"/>
+		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectFilter" alias="Filter"/>
+		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectSearch" alias="Search"/>
+		
+
 	</typeAliases>
 
 	<mappers>
