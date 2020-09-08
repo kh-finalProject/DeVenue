@@ -210,7 +210,6 @@
             height: 30px;
         }
     </style>
-
 </head>
  <script type="text/javascript">
 	 window.history.forward();
