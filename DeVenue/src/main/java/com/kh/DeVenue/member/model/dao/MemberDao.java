@@ -124,4 +124,9 @@ public class MemberDao {
 		
 		return sqlSessionTemplate.selectOne("memberMapper.memberemail", email);
 	}
+
+	public int insertIden(int memId) {
+		
+		return sqlSessionTemplate.insert("memberAccountMapper.signInsert", memId);
+	}
 }

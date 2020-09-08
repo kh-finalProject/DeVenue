@@ -44,4 +44,10 @@
 		SET IDE_NAME = NULL, IDE_ADDRESS = NULL, IDE_ORIGINFILE = NULL, IDE_RENAMEFILE = NULL, IDE_STATUS = DEFAULT
 		WHERE IDE_ID = #{memId}
 	</update>
+	
+	<!-- 회원가입시 테이블 생성 -->
+	<insert id="signInsert" parameterType="Identify">
+		INSERT INTO IDENTIFY
+		VALUES(#{memId},NULL,NULL,NULL,NULL,DEFAULT)
+	</insert>
 </mapper>

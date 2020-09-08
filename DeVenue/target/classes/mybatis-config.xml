@@ -65,8 +65,8 @@
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyAnswer" alias="Answer"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyPortfolio" alias="ApplyPF"/>
 	    
-		<!-- member 회원채팅설정 -->
-	    <!-- <typeAlias type="com.kh.DeVenue.member.model.vo.MemChatSet" alias="MemChatSet"/> -->
+		
+		
 
 	</typeAliases>
 

@@ -135,4 +135,10 @@ public class MemberServiceImpl implements MemberService{
 		
 		return mDao.memberemail(email);
 	}
+
+	@Override
+	public int insertIden(int memId) {
+		
+		return mDao.insertIden(memId);
+	}
 }

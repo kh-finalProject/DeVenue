@@ -500,7 +500,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
 						찾기</a>
 					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a> <a href="#">파트너스 찾기</a>
+						<a href="clientList.do ">클라이언트 찾기</a>
+						<a href="partnersList.do">파트너스 찾기</a>
 					</div></li>
 			</ul>
 
@@ -803,7 +804,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									<td></td>
 									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
 								</tr>
-								<tr>
+								<!-- <tr>
 									<td class="port-title">* 두 번째 이미지</td>
 									<td><input type="file" id="img2" name="img2"
 										class="btn btn-info"> <span
@@ -840,7 +841,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								<tr>
 									<td></td>
 									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
-								</tr>
+								</tr> -->
 								<script>
                   // 1번째 이미지 관련 기능
                   // 이미지를 저장하게 되면 글자를 쓸수있게한다.
@@ -944,7 +945,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								<tr>
 									<td></td>
 									<td style="float: right;"><a
-										href="mypagePortfolioAll.html" class="btn btn-info">취소</a>
+										href="profile.do" class="btn btn-info">취소</a>
 										<button type="submit" class="btn btn-info">수정완료</button></td>
 								</tr>
 							</table>
