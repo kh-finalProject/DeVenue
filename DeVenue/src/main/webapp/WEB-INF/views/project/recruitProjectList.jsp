@@ -391,26 +391,25 @@ button{
         <div id ="projectbox" style ="margin-top:50px;" >
           <table width="533px"   >
               <thead>
-
+<input type ="hidden" value = ${p.proId} >
                   <tr >
                       <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
                       
                       
                   </tr>
-                  
-                  <tr id ="sText" >
+               <tr id ="sText" >
                       <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                        <span class="badge badge-primary">${p.proMCId}</span>
-                        <span class="badge badge-success">${p.proDCId}</span></td>
+                        <span class="badge badge-primary">${p.proMCType}</span>
+                        <span class="badge badge-success">${p.proDCType}</span></td>
                       
                   </tr>
                   <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
                      
                       <td><img
 						src="${contextPath}/resources/images/money	.png" height="30px"
-						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>
+						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span> ${p.proPayment}원
                     </td>
-                      <td > ${p.proPayment}원&nbsp;&nbsp;&nbsp;</td>
+                     
               
                       <td ><img
 						src="${contextPath}/resources/images/period.png" height="30px"
@@ -426,21 +425,21 @@ button{
                       <table  id ="sText" width="534px">
                           <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
                             
-                              <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">기획상태    </span></td>
-                              <td  >${p.proPlan}</td>
-                              <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">매니징 경험</span></td>
-                              <td  >${p.proManage}</td>
+                              <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트번호    </span></td>
+                              <td  >${p.proId}</td>
+                              <td  style = "  margin-left:10px;"><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 종료일</span></td>
+                              <td  >${p.proEndDate}</td>
                               <td  style = "  padding:1px;" ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">예상 시작일</span></td>
                               <td  >${p.proStartDate}</td>
                               
                           </tr>
                           <tr  align ="center" style ="border-bottom:2px solid #2098d1; height:50px;" id ="sText">
-                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트 종류</span></td>
-                              <td  >${p.proMaintain }</td>
+                              <td  style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">회원형태</span></td>
+                              <td  >${p.proMTK }</td>
                               <td style   ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px; width:80px;">위치</span></td>
-                              <td >서울시<br>강남구</td>
+                              <td>${p.proLocation }</td>
                               <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">파트너스 수 </span></td>
-                              <td width="120px; " >${p.proStartDate}</td>
+                              <td width="120px; " >${p.proRecruitNum}</td>
                             
                           </tr>
                             <tr  align ="center" style= "border:1px solid black;" height="30" id ="sText">
@@ -449,9 +448,70 @@ button{
                                     <div style= "float:right; margin-right:30px; padding:10px;">
                                     <button class="btn/middle btn-info" style= "color:black; width:90px;">취소</button>
                                     <!-- Button trigger modal -->
-<button type="button" class="btn/middle btn-info" style= "color:black; width:90px;" data-toggle="modal" data-target="#exampleModal">
+<button type="button" onclick="rListCheck(this)" value="p.proId" id = "modal"
+class="btn/middle btn-info" style= "color:black; width:90px;" data-toggle="modal" data-target="#exampleModal">
  지원자 목록
   </button>
+  <script>
+  function rListCheck(id){
+	var proId = $(id).val();
+
+	$.ajax({
+	url:"recruitModal.do",
+        	data:{proId:proId, pro},
+        	success:function(data){
+	
+	},
+	error:function(request, status, errorData){
+        		alert("error code: " + request.status + "\n"
+        		+"message: " + request.responseText
+        		+"error: " + errorData);
+        	}
+	})
+
+// 에이작스가 완료되면 모달안에 데이터가 다 붙어있게 되고 그 이후 감춰둔 모달 버튼을 클릭되도록 해서
+// 모달이 실행되면 결과적으로 너가 누른 프로젝트의 지원자 목록이 붙어있게 된다.
+	$("#modal").click(){
+		$tableBody = $("#inquiryTable tbody");
+    	$tableBody.html("");
+
+		var $tr;
+		var $proId;
+		var $boardTitle;
+		var $boardWriter;
+    	var $inquiryName;
+    	var $boardUpdateDate;
+    	var $inquiryYN;
+    					
+    	if(data.inquiry.length > 0){	// 조회된 문의가 존재하면
+    	for(var i in data.inquiry){
+    		$tr = $("<tr>");
+    		$proId = $("<td style='display: none'>").text(data.inquiry[i].proId);
+    		$memNick = $("<td>").text(data.inquiry[i].boardTitle);
+    		$boardWriter = $("<td>").text(data.inquiry[i].nickname);
+    		$inquiryName = $("<td>").text(data.inquiry[i].inquiryName);
+    		$boardUpdateDate = $("<td>").text(data.inquiry[i].boardUpdateDate);
+    		$inquiryYN = $("<td>").text(data.inquiry[i].inquiryYN);
+    		$tr.append($boardId);
+    		$tr.append($boardTitle);
+    		$tr.append($boardWriter);
+    		$tr.append($inquiryName);
+    		$tr.append($boardUpdateDate);
+    		$tr.append($inquiryYN);
+    		
+    		$tableBody.append($tr);        							
+    	}
+    	}else{					// 조회된 문의가 없으면
+    		$tr = $("<tr>");
+    		$boardTitle = $("<td colspan='5'>").text("조회된 문의가 없습니다.");
+    	
+    		$tr.append($boardTitle);
+    		$tableBody.append($tr);
+    	
+    	}
+	}
+}
+  </script>
   
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
@@ -502,18 +562,7 @@ button{
                                             </li>
                                             <li>
                                                 <!-- 예아! 호우! 예예예~
-                                                싹쓰리 인더 하우스
-                                                커커커커커몬! 싹!쓰리!투 렛츠고!
-                                                나 다시 또 설레어
-                                                이렇게 너를 만나서
-                                                함께 하고 있는 지금 이 공기가
-                                                다시는 널 볼 순 없을 거라고
-                                                추억일 뿐이라
-                                                서랍 속에 꼭 넣어뒀는데
-                                                흐르는 시간 속에서
-                                                너와 내 기억은
-                                                점점 희미해져만 가
-                                                끝난 줄 알았 -->
+                                             
                                                 ${b.introduction }
                                                 <br><br>
                                             </li>
@@ -630,7 +679,7 @@ button{
                         </li>
                     </ul>
                 </div>
-                </c:if>
+                
 			</c:forEach>
         </div>
         <div class="modal-footer">

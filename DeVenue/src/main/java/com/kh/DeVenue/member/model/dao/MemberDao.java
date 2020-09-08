@@ -17,17 +17,12 @@ import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
 import com.kh.DeVenue.util.model.vo.MemChatSet;
-<<<<<<< HEAD
+
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
-=======
-import com.kh.DeVenue.member.model.vo.Member;
-import com.kh.DeVenue.member.model.vo.Profile;
-import com.kh.DeVenue.myPage.model.vo.PartInfo;
-import com.kh.DeVenue.member.model.vo.PageInfo;
->>>>>>> refs/remotes/origin/master
+
 
 @Repository("mDao")
 public class MemberDao {
@@ -78,7 +73,7 @@ public class MemberDao {
 	public ArrayList<FindClient> selectList() {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList");
 	}
-<<<<<<< HEAD
+
 
 	public int insertPartInfo(PartInfo partInfo) {
 		
@@ -132,59 +127,8 @@ public class MemberDao {
 		
 		return sqlSessionTemplate.selectOne("memberMapper.memberemail", email);
 	}
-=======
 
-	public int insertPartInfo(PartInfo partInfo) {
-		
-		return sqlSessionTemplate.insert("myPageMapper.insertPartInfo",partInfo);
-	}
 
-	public FindClientDetail selectClientDetail(Integer cId) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectClientDetail", cId);
-	}
+	
 
-	public FCprojectHistory selectProjectHistory(Integer cId) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectProjectHistory",cId);
-	}
-
-	public int getCPevalCount(Integer cId) {
-		return sqlSessionTemplate.selectOne("memberMapper.getCPevalCount", cId);
-	}
-
-	public ArrayList<CPeval> selectCPeval(Integer cId) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectCPeval", cId);
-	}
-
-	public FCeval getFCeval(Integer cId) {
-		return sqlSessionTemplate.selectOne("memberMapper.getFCeval", cId);
-	}
-
-	public ArrayList<EvalProjectList> getClientInfo(Integer cId) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.getClientInfo", cId);
-	}
-
-	public ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.getMatchingPartners", id);
-	}
-
-	public Member selectMemberId(Member mEmail) {
-		
-		return sqlSessionTemplate.selectOne("memberMapper.selectMemId", mEmail);
-	}
-
-	public int insertChatSet(MemChatSet mc) {
-		
-		return sqlSessionTemplate.insert("memberMapper.insertcharSet",mc);
-	}
-
-	public int membernick(String nick) {
-		
-		return sqlSessionTemplate.selectOne("memberMapper.membernick", nick);
-	}
-
-	public int memberemail(String email) {
-		
-		return sqlSessionTemplate.selectOne("memberMapper.memberemail", email);
-	}
->>>>>>> refs/remotes/origin/master
 }

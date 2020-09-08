@@ -3,14 +3,14 @@ package com.kh.DeVenue.project.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-<<<<<<< HEAD
+
 import com.kh.DeVenue.member.model.vo.Member;
-=======
+
 import com.kh.DeVenue.member.model.vo.Portfolio;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
->>>>>>> refs/remotes/origin/master
+
 import com.kh.DeVenue.project.model.vo.PageInfo;
 import com.kh.DeVenue.project.model.vo.Project;
 import com.kh.DeVenue.project.model.vo.ProjectDetail;
@@ -38,7 +38,7 @@ public interface ProjectService {
 	ArrayList<Project> selectunderwayList(int memId1);
 
 
-	ArrayList<Project> selectrecruitList();
+	ArrayList<Project> selectrecruitList(int memId);
 
 
 	ArrayList<Project> selectendList();
@@ -147,7 +147,7 @@ public interface ProjectService {
 
 
 	int cancelThisTempApply(Integer aId);
-<<<<<<< HEAD
+
 
 
 
@@ -173,7 +173,7 @@ public interface ProjectService {
 	int updateQuestion(ProjectQuestion q);
 
 
-	ArrayList<Member> selectrecruitMember();
+	ArrayList<Member> selectrecruitMember(HashMap prof);
 
 
 	int deleteProject(Integer proId);
@@ -183,6 +183,13 @@ public interface ProjectService {
 
 
 	ArrayList<Project> selectTemStoreList(int a);
+
+
+	Project selectOne1(int proId);
+
+
+	ArrayList<Member> selectModal(String proId);
+
 
 
 	
@@ -198,12 +205,6 @@ public interface ProjectService {
 
 
 
-
-
-
-
-=======
->>>>>>> refs/remotes/origin/master
 
 
 	

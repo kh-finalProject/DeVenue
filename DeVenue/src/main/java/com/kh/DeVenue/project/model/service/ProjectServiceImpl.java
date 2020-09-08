@@ -6,12 +6,12 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
+
 import com.kh.DeVenue.member.model.dao.MemberDao;
 import com.kh.DeVenue.member.model.vo.Member;
-=======
+
 import com.kh.DeVenue.member.model.vo.Portfolio;
->>>>>>> refs/remotes/origin/master
+
 import com.kh.DeVenue.project.model.dao.ProjectDao;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
@@ -75,9 +75,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public ArrayList<Project> selectrecruitList() {
+	public ArrayList<Project> selectrecruitList(int memId) {
 		
-		return proDao.selectrecruitList();
+		return proDao.selectrecruitList(memId);
 	}
 
 
@@ -175,33 +175,20 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-<<<<<<< HEAD
 
 	public int checkLikeNum(HashMap ids) {
 		
 		return proDao.checkLikeNum(ids);
 
-=======
-
-	public int checkLikeNum(HashMap ids) {
-		
-		return proDao.checkLikeNum(ids);
-
->>>>>>> refs/remotes/origin/master
 	}
+
+	@Override
+	public int addLikeProject(HashMap ids) {
+		
+		return proDao.addLikeProject(ids);
+	}
+
 	
-
-	@Override
-	public int addLikeProject(HashMap ids) {
-		
-		return proDao.addLikeProject(ids);
-	}
-
-	@Override
-	public int addLikeProject(HashMap ids) {
-		
-		return proDao.addLikeProject(ids);
-	}
 
 
 	@Override
@@ -494,9 +481,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public ArrayList<Member> selectrecruitMember() {
+	public ArrayList<Member> selectrecruitMember(HashMap prof) {
 
-		return proDao.selectrecruitMember();
+		return proDao.selectrecruitMember(prof);
 	}
 
 
@@ -525,6 +512,29 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+	@Override
+	public Project selectOne1(int proId) {
+		
+		return proDao.selectOne1(proId);
+	}
+
+
+
+	@Override
+	public ArrayList<Member> selectModal(String proId) {
+		
+		return proDao.selectModal(proId);
+	}
+
+
+
+	
+
+
+
+
+
+
 
 
 
@@ -533,218 +543,6 @@ public class ProjectServiceImpl implements ProjectService {
 
 	
 
-	@Override
-	public int getLikeListCount(int memId) {
-		
-		return proDao.getLikeListCount(memId);
-	}
-
-	@Override
-	public ArrayList<ProjectList> selectLikeProject(int memId, PageInfo pi) {
-		
-		return proDao.selectLikeProject(memId,pi);
-	}
-
-	@Override
-	public int deleteLikeProject(Integer lId) {
-		
-		return proDao.deleteLikeProject(lId);
-	}
-
-
-
-	@Override
-	public ArrayList<Portfolio> selectPortfolio(int memId) {
-		
-		return proDao.selectPortfolio(memId);
-	}
-
-
-
-	@Override
-	public ArrayList<Portfolio> findPortfolio(HashMap cate) {
-		
-		return proDao.findPortfolio(cate);
-	}
-
-
-
-	@Override
-	public int addApplication(Application application) {
-		
-		return proDao.addApplication(application);
-	}
-
-
-
-	@Override
-	public int getapplyListCount(int memId) {
-		
-		return proDao.getApplyListCount(memId);
-	}
-
-
-
-	@Override
-	public ArrayList<ProjectList> selectApplyProject(int memId, PageInfo pi) {
-		
-		return proDao.selectApplyProject(memId,pi);
-	}
-
-
-
-	
-
-
-	@Override
-	public int addApplyAnswer(ApplyAnswer answer) {
-		
-		return proDao.addApplyAnswer(answer);
-	}
-
-
-
-	@Override
-	public int addApplyPofol(ApplyPortfolio portfolio) {
-		
-		return proDao.addApplyPofol(portfolio);
-	}
-
-
-
-	@Override
-	public int getTempSave(HashMap application) {
-		
-		return proDao.getTempSave(application);
-	}
-
-
-
-	@Override
-	public int addTempApplication(HashMap application) {
-		
-		return proDao.addTempApplication(application);
-	}
-
-
-
-	@Override
-	public int updateTempApplication(HashMap application) {
-		
-		return proDao.updateTempApplication(application);
-	}
-
-
-
-	@Override
-	public int selectTempId(HashMap application) {
-		
-		return proDao.selectTempId(application);
-	}
-
-
-
-	@Override
-	public int isAnswerExist(HashMap application) {
-		
-		return proDao.isAnswerExist(application);
-	}
-
-
-
-	@Override
-	public int updateTempAnswer(HashMap application) {
-		
-		return proDao.updateTempAnswer(application);
-	}
-
-
-
-	@Override
-	public int isPofoExist(HashMap application) {
-		
-		return proDao.isPofoExist(application);
-	}
-
-
-
-	@Override
-	public int deleteExistPofo(HashMap application) {
-		
-		return proDao.deleteExistPofo(application);
-	}
-
-
-
-	@Override
-	public int addTempApplyAnswer(ApplyAnswer answer) {
-		
-		return proDao.addTempApplyAnswer(answer);
-	}
-
-
-
-	@Override
-	public int addTempApplyPofol(ApplyPortfolio portfolio) {
-		
-		return proDao.addTempPofol(portfolio);
-	}
-
-
-
-	@Override
-	public Application selectTempResume(int aId) {
-		
-		return proDao.selectTempResume(aId);
-	}
-
-
-
-	@Override
-	public int getTempApplyListCount(int memId) {
-		
-		return proDao.getTempApplyListCount(memId);
-	}
-
-
-
-	@Override
-	public ArrayList<ProjectList> selectTempApplyProject(int memId, PageInfo pi) {
-		
-		return proDao.selectTempApplyProject(memId,pi);
-	}
-
-
-
-	@Override
-	public Application selectTempApplication(Integer aId) {
-		
-		return proDao.selectTempApplication(aId);
-	}
-
-
-
-	@Override
-	public int deleteTempApplication(Application application) {
-		
-		return proDao.deleteTempApplication(application);
-	}
-
-
-
-	@Override
-	public int cancelThisApply(Integer aId) {
-		
-		return proDao.cancelThisApply(aId);
-	}
-
-
-
-	@Override
-	public int cancelThisTempApply(Integer aId) {
-		
-		return proDao.cancelThisTempApply(aId);
-	}
 
 
 

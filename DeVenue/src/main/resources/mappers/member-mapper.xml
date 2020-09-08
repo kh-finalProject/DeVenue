@@ -81,6 +81,12 @@
   	<result property="maxDcType" column="MAX_DC_TYPE"/>
   	<result property="ideStatus" column="IDE_STATUS"/>
   	<result property="phone" column="PHONE"/>
+ 
+   	<association property="project" javaType="Project">
+  		<id property="proId" column="PRO_ID"/>
+  		
+  	</association>
+  	
   </resultMap>
   
   <resultMap type="FindClientDetail" id="selectDetailResult">
@@ -289,31 +295,16 @@
 	
 	<!-- 회원 채팅 설정 -->
 	<resultMap type="MemChatSet" id="memChatSetResultSet">
-<<<<<<< HEAD
 		<id property="memId" column="MEM_ID"/>
-		
 		<result property="isTransChat" column="IS_TRANS_CHAT"/>
 		<result property="isShowPastChat" column="IS_SHOWPASTCHAT"/>
-
 	</resultMap>
 	
-	<!-- 회원가입시 회원 채팅 설정 기본 생성 -->
-	<insert id="insertcharSet" parameterType="MemChatSet">
-		INSERT INTO MEM_CHATSET
-		VALUES(#{memId},DEFAULT,DEFAULT)
-=======
-		<id property="mId" column="MEM_ID"/>
-		
-		<result property="is_TransChat" column="IS_TRANS_CHAT"/>
-		<result property="is_ShowPastChat" column="IS_SHOWPASTCHAT"/>
-
-	</resultMap>
 	
 	<!-- 회원가입시 회원 채팅 설정 기본 생성 -->
 	<insert id="insertcharSet" parameterType="MemChatSet">
 		INSERT INTO MEM_CHATSET
 		VALUES(#{mId},DEFAULT,DEFAULT)
->>>>>>> refs/remotes/origin/master
 	</insert>
 	
 	<!-- 회원가입한후에 memId 추출하기 -->
@@ -332,6 +323,12 @@
 	<select id="memberemail" resultType="int">
 		SELECT COUNT(*) FROM MEMBER
 		WHERE MEM_EMAIL=#{memEmail}
+	</select>
+	
+	<select id ="selectModal" parameterType="hashmap" resultMap ="selectListResult"> 
+		SELECT M.* FROM MEMBER M LEFT JOIN P_APPLY PA ON(M.MEM_ID = PA.MEM_PID)
+		WHERE PA.PRO_ID={proId}
+
 	</select>
 	
 </mapper>

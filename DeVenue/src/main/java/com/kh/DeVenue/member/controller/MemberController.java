@@ -33,13 +33,7 @@ import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.util.model.service.ChatService;
 import com.kh.DeVenue.util.model.vo.ChatUserInfo;
 import com.kh.DeVenue.util.model.vo.MemChatSet;
-<<<<<<< HEAD
 
-
-=======
-
-
->>>>>>> refs/remotes/origin/master
 
 @Controller
 public class MemberController {
@@ -82,15 +76,9 @@ public class MemberController {
 		
 		String memEmail = request.getParameter("email");
 		String memPwd = request.getParameter("pwd");
-<<<<<<< HEAD
 
-
-=======
-
-
->>>>>>> refs/remotes/origin/master
 		Member m = new Member(memEmail,memPwd);
-//		System.out.println(m);
+//		System.out.println(m);	
 		Member loginUser = mService.loginUserMember(m);
 		System.out.println(loginUser);
 //		System.out.println(loginUser.getMemId());
@@ -104,11 +92,7 @@ public class MemberController {
 			
 //			if(logincheck != null) { // true이냐(로그인 유지 선택시)
 //			}else { // 로그인 유지 체크 안할시
-<<<<<<< HEAD
-			
-=======
-			
->>>>>>> refs/remotes/origin/master
+
 //				
 //			}
 			
@@ -145,11 +129,7 @@ public class MemberController {
 			
 			
 		}else { // 로그인 실패시
-<<<<<<< HEAD
 
-=======
-
->>>>>>> refs/remotes/origin/master
 			// 아이디랑 비밀번호 잘못 입력했다는 창
 //			if(memEmail.equals(loginUser.getMemEmail())) {
 //				
@@ -233,37 +213,28 @@ public class MemberController {
 	
 	// 로그 아웃
 	@RequestMapping(value="logout.do")
-<<<<<<< HEAD
 
-=======
-
->>>>>>> refs/remotes/origin/master
 	public String logout(HttpSession session) {
 		
 		session.invalidate();
-<<<<<<< HEAD
 
-=======
-
->>>>>>> refs/remotes/origin/master
 		return "common/mainPage";
 	}
-	
-<<<<<<< HEAD
+
 
 	// 클라이언트 찾기
 //	@RequestMapping(value="clientList.do")
 //	public ModelAndView clientList(ModelAndView mv,
 //			@RequestParam(value="page",required=false) Integer page) {
 //		
-=======
+
 
 	// 클라이언트 찾기
 //	@RequestMapping(value="clientList.do")
 //	public ModelAndView clientList(ModelAndView mv,
 //			@RequestParam(value="page",required=false) Integer page) {
 //		
->>>>>>> refs/remotes/origin/master
+
 //		int currentPage=1;
 //		if(page!=null) {
 //			currentPage=page;
@@ -353,53 +324,8 @@ public class MemberController {
 		return mv;
 	}
 	
-<<<<<<< HEAD
-//	@RequestMapping(value="cDetail.do")
-//	public ModelAndView clientDetail(ModelAndView mv, Integer cId,
-//					@RequestParam(value="page") Integer page) {
-//		int currentPage=page;
-//		
-//		FindClient fc=mService.selectClientDetail(cId);
-//		if(fc!=null) {
-//			mv.addObject("fc", fc)
-//			.addObject("currentPage", currentPage)
-//			.setViewName("findMember/findClientDetail");
-//		}else {
-//			throw new MemberException("게시글 조회 실패!");
-//		}
-//		
-//		return mv;
-//	}
-	
-	@RequestMapping(value="cDetail.do")
-	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {
-		FindClientDetail fc=mService.selectClientDetail(cId);
-		System.out.println("fc : " + fc);
-		
-		if(fc!=null) {
-			mv.addObject("fc", fc)
-			.setViewName("findMember/findClientDetail");
-		}else {
-			throw new MemberException("게시글 조회 실패!");
-		}
-		
-		return mv;
-	}
-	
-	@RequestMapping(value="cProjectHistory.do")
-	public ModelAndView projectHistory(ModelAndView mv, Integer cId) {
-		FCprojectHistory projectHistory = mService.selectProjectHistory(cId);
-		System.out.println("projectHistory : " + projectHistory);
-		
-		if(projectHistory!=null) {
-			mv.addObject("ph", projectHistory)
-			.setViewName("findMember/clientProjectHistory");
-		}else {
-			throw new MemberException("프로젝트 히스토리 조회 실패!");
-		}
-		
-		return mv;
-	}
+
+
 	
 	@RequestMapping(value="cEvalSelect.do")
 	public ModelAndView evalSelect(ModelAndView mv, Integer cId) {
@@ -422,42 +348,8 @@ public class MemberController {
 		return mv;
 	}
 	
-	// 클라이언트 평가등록 페이지
-	@RequestMapping(value="cEvalInsert.do")
-	public ModelAndView evalInsert(ModelAndView mv, Integer cId, Integer pId) {
-		ArrayList<EvalProjectList> epList = mService.getClientInfo(cId);
-		System.out.println("epList" + epList);
-		
-		// 로그인한 유저의 memId가 partnersId와 일치하지 않는다면 에러처리
-		HashMap id=new HashMap();
-		id.put("pId", pId);
-		id.put("cId", cId);
-		
-		ArrayList<MatchingPartnersList> mpList = mService.getMatchingPartners(id);
-		System.out.println("매칭파트너 리스트 : "+ mpList);
-		
-		if(mpList!=null) {
-=======
-	@RequestMapping(value="cEvalSelect.do")
-	public ModelAndView evalSelect(ModelAndView mv, Integer cId) {
-		// 페이지네이션 필요
-		
-		int cpEvalCount = mService.getCPevalCount(cId);
-		System.out.println("평가 총 개수 : " + cpEvalCount);
-		
-		ArrayList<CPeval> cpEval = mService.selectCPeval(cId);	// 파트너스 평가 리스트
-		System.out.println("cpEval : " + cpEval);
-		
-		FCeval fcEval = mService.getFCeval(cId);	// 클라이언트 정보
-		
-		if(cpEval!=null) {
-			mv.addObject("cp", cpEval)	// 파트너스 평가 리스트
-			.addObject("fc", fcEval)	// 클라이언트 정보
-			.setViewName("findMember/clientComment");
-		}
-		
-		return mv;
-	}
+
+
 	
 	// 클라이언트 평가등록 페이지
 	@RequestMapping(value="cEvalInsert.do")
@@ -474,7 +366,7 @@ public class MemberController {
 		System.out.println("매칭파트너 리스트 : "+ mpList);
 		
 		if(mpList!=null) {
->>>>>>> refs/remotes/origin/master
+
 
 			mv.addObject("epList", epList)
 			.setViewName("findMember/clientInsertComment");

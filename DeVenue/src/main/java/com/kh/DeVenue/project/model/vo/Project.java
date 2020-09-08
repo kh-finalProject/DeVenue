@@ -45,16 +45,21 @@ public class Project implements Serializable {
 	private int proSignId; //클라이언트 날인id
 	private String proPayStatus;//결제상태
 	private int proParentId; //부모프로젝트 id
+	private String proDCType;// 세부카테고리 
+	private String proMCType;// 근무형태
+	private String proMTK;//멤버타입
+	
 	public Project() {
 		super();
 	}
+
 	public Project(int proId, int memId, String proName, String proMaintain, String proStaId, String proRecruit,
 			Date proCreateDate, int proPlan, int proPlanDetail, String proSummary, String proNeeds,
 			String proNeedsDetail, String proResource, int proPayment, Date proStartDate, int proDuration,
 			Date proREndDate, Date proEndDate, String proMCId, String proDCId, String proWTId, int proRecruitNum,
 			String proPlanPaper, String proPlanRePaper, String proLocation, int proHelp, int proManage,
 			int proFuturePlan, int proPriority, String proContract, String proTypeCode, String proWorkspace,
-			int proSignId, String proPayStatus, int proParentId) {
+			int proSignId, String proPayStatus, int proParentId, String proDCType, String proMCType, String proMTK) {
 		super();
 		this.proId = proId;
 		this.memId = memId;
@@ -91,220 +96,319 @@ public class Project implements Serializable {
 		this.proSignId = proSignId;
 		this.proPayStatus = proPayStatus;
 		this.proParentId = proParentId;
+		this.proDCType = proDCType;
+		this.proMCType = proMCType;
+		this.proMTK = proMTK;
 	}
+
 	public int getProId() {
 		return proId;
 	}
+
 	public void setProId(int proId) {
 		this.proId = proId;
 	}
+
 	public int getMemId() {
 		return memId;
 	}
+
 	public void setMemId(int memId) {
 		this.memId = memId;
 	}
+
 	public String getProName() {
 		return proName;
 	}
+
 	public void setProName(String proName) {
 		this.proName = proName;
 	}
+
 	public String getProMaintain() {
 		return proMaintain;
 	}
+
 	public void setProMaintain(String proMaintain) {
 		this.proMaintain = proMaintain;
 	}
+
 	public String getProStaId() {
 		return proStaId;
 	}
+
 	public void setProStaId(String proStaId) {
 		this.proStaId = proStaId;
 	}
+
 	public String getProRecruit() {
 		return proRecruit;
 	}
+
 	public void setProRecruit(String proRecruit) {
 		this.proRecruit = proRecruit;
 	}
+
 	public Date getProCreateDate() {
 		return proCreateDate;
 	}
+
 	public void setProCreateDate(Date proCreateDate) {
 		this.proCreateDate = proCreateDate;
 	}
+
 	public int getProPlan() {
 		return proPlan;
 	}
+
 	public void setProPlan(int proPlan) {
 		this.proPlan = proPlan;
 	}
+
 	public int getProPlanDetail() {
 		return proPlanDetail;
 	}
+
 	public void setProPlanDetail(int proPlanDetail) {
 		this.proPlanDetail = proPlanDetail;
 	}
+
 	public String getProSummary() {
 		return proSummary;
 	}
+
 	public void setProSummary(String proSummary) {
 		this.proSummary = proSummary;
 	}
+
 	public String getProNeeds() {
 		return proNeeds;
 	}
+
 	public void setProNeeds(String proNeeds) {
 		this.proNeeds = proNeeds;
 	}
+
 	public String getProNeedsDetail() {
 		return proNeedsDetail;
 	}
+
 	public void setProNeedsDetail(String proNeedsDetail) {
 		this.proNeedsDetail = proNeedsDetail;
 	}
+
 	public String getProResource() {
 		return proResource;
 	}
+
 	public void setProResource(String proResource) {
 		this.proResource = proResource;
 	}
+
 	public int getProPayment() {
 		return proPayment;
 	}
+
 	public void setProPayment(int proPayment) {
 		this.proPayment = proPayment;
 	}
+
 	public Date getProStartDate() {
 		return proStartDate;
 	}
+
 	public void setProStartDate(Date proStartDate) {
 		this.proStartDate = proStartDate;
 	}
+
 	public int getProDuration() {
 		return proDuration;
 	}
+
 	public void setProDuration(int proDuration) {
 		this.proDuration = proDuration;
 	}
+
 	public Date getProREndDate() {
 		return proREndDate;
 	}
+
 	public void setProREndDate(Date proREndDate) {
 		this.proREndDate = proREndDate;
 	}
+
 	public Date getProEndDate() {
 		return proEndDate;
 	}
+
 	public void setProEndDate(Date proEndDate) {
 		this.proEndDate = proEndDate;
 	}
+
 	public String getProMCId() {
 		return proMCId;
 	}
+
 	public void setProMCId(String proMCId) {
 		this.proMCId = proMCId;
 	}
+
 	public String getProDCId() {
 		return proDCId;
 	}
+
 	public void setProDCId(String proDCId) {
 		this.proDCId = proDCId;
 	}
+
 	public String getProWTId() {
 		return proWTId;
 	}
+
 	public void setProWTId(String proWTId) {
 		this.proWTId = proWTId;
 	}
+
 	public int getProRecruitNum() {
 		return proRecruitNum;
 	}
+
 	public void setProRecruitNum(int proRecruitNum) {
 		this.proRecruitNum = proRecruitNum;
 	}
+
 	public String getProPlanPaper() {
 		return proPlanPaper;
 	}
+
 	public void setProPlanPaper(String proPlanPaper) {
 		this.proPlanPaper = proPlanPaper;
 	}
+
 	public String getProPlanRePaper() {
 		return proPlanRePaper;
 	}
+
 	public void setProPlanRePaper(String proPlanRePaper) {
 		this.proPlanRePaper = proPlanRePaper;
 	}
+
 	public String getProLocation() {
 		return proLocation;
 	}
+
 	public void setProLocation(String proLocation) {
 		this.proLocation = proLocation;
 	}
+
 	public int getProHelp() {
 		return proHelp;
 	}
+
 	public void setProHelp(int proHelp) {
 		this.proHelp = proHelp;
 	}
+
 	public int getProManage() {
 		return proManage;
 	}
+
 	public void setProManage(int proManage) {
 		this.proManage = proManage;
 	}
+
 	public int getProFuturePlan() {
 		return proFuturePlan;
 	}
+
 	public void setProFuturePlan(int proFuturePlan) {
 		this.proFuturePlan = proFuturePlan;
 	}
+
 	public int getProPriority() {
 		return proPriority;
 	}
+
 	public void setProPriority(int proPriority) {
 		this.proPriority = proPriority;
 	}
+
 	public String getProContract() {
 		return proContract;
 	}
+
 	public void setProContract(String proContract) {
 		this.proContract = proContract;
 	}
+
 	public String getProTypeCode() {
 		return proTypeCode;
 	}
+
 	public void setProTypeCode(String proTypeCode) {
 		this.proTypeCode = proTypeCode;
 	}
+
 	public String getProWorkspace() {
 		return proWorkspace;
 	}
+
 	public void setProWorkspace(String proWorkspace) {
 		this.proWorkspace = proWorkspace;
 	}
+
 	public int getProSignId() {
 		return proSignId;
 	}
+
 	public void setProSignId(int proSignId) {
 		this.proSignId = proSignId;
 	}
+
 	public String getProPayStatus() {
 		return proPayStatus;
 	}
+
 	public void setProPayStatus(String proPayStatus) {
 		this.proPayStatus = proPayStatus;
 	}
+
 	public int getProParentId() {
 		return proParentId;
 	}
+
 	public void setProParentId(int proParentId) {
 		this.proParentId = proParentId;
 	}
+
+	public String getProDCType() {
+		return proDCType;
+	}
+
+	public void setProDCType(String proDCType) {
+		this.proDCType = proDCType;
+	}
+
+	public String getProMCType() {
+		return proMCType;
+	}
+
+	public void setProMCType(String proMCType) {
+		this.proMCType = proMCType;
+	}
+
+	public String getProMTK() {
+		return proMTK;
+	}
+
+	public void setProMTK(String proMTK) {
+		this.proMTK = proMTK;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
 	@Override
 	public String toString() {
 		return "Project [proId=" + proId + ", memId=" + memId + ", proName=" + proName + ", proMaintain=" + proMaintain
@@ -318,12 +422,9 @@ public class Project implements Serializable {
 				+ proHelp + ", proManage=" + proManage + ", proFuturePlan=" + proFuturePlan + ", proPriority="
 				+ proPriority + ", proContract=" + proContract + ", proTypeCode=" + proTypeCode + ", proWorkspace="
 				+ proWorkspace + ", proSignId=" + proSignId + ", proPayStatus=" + proPayStatus + ", proParentId="
-				+ proParentId + "]";
+				+ proParentId + ", proDCType=" + proDCType + ", proMCType=" + proMCType + ", proMTK=" + proMTK + "]";
 	}
 	
-
-	
-
 	
 
 }

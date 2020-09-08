@@ -407,17 +407,17 @@ button{
                 </tr>
                   <tr id ="sText" style ="">
                     <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                    <span class="badge badge-primary">${p.proMCId}</span>
-                        <span class="badge badge-success">${p.proDCId}</span></td>
+                    <span class="badge badge-primary">${p.proMCType}</span>
+                        <span class="badge badge-success">${p.proDCType}</span></td>
                     
                 </tr>
                  <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
                      
                       <td><img
 						src="${contextPath }/resources/images/money	.png" height="30px"
-						 width  ="20px" style ="margin-left: 25px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>
+						 width  ="20px" style ="margin-left: 25px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>${p.proPayment}
                     </td>
-                      <td >${p.proPayment}&nbsp;&nbsp;&nbsp;</td>
+                     
                       <td ><img
 						src="${contextPath }/resources/images/period.png" height="30px"
 						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">예상기간   </span></td>
@@ -434,7 +434,7 @@ button{
                                 <td colspan="6">
                                     <div style= "margin-left:100px;">
                                      <button type ='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
-                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proUpdateForm.do?proId='+${p.proId}"> 수정</button>
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='temUpdateForm.do?proId='+${p.proId}"> 수정</button>
                                   
                                             </div>
                                 </td>
