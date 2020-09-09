@@ -145,8 +145,16 @@
 					<input type="hidden" name="profileId" value="${profile.profileId }">
 					<button class="aTag" style="cursor: text;">${clOrPt } 정보</button>
 				</form>
-				<div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div>
+				<%-- <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div> --%>
+				<form method="GET" action="profile.do">
+					<input type="hidden" name="profileId" value="${profile.profileId }">
+					<button class="aTag" style="cursor: text;">프로필</button>
+				</form>
 				<!-- <div id="pPR">자기소개</div> -->
+				<form method="GET" action="PR.do">
+					<%-- <input type="hidden" name="profileId" value="${profile.profileId }"> --%>
+					<button class="aTag" style="cursor: text;">자기소개</button>
+				</form>
 				<!-- <div id="pPortfolio">포트폴리오</div> -->
 				<form method="GET" action="portfolioAll.do">
 					<input type="hidden" name="profileId" value="${profile.profileId }">

@@ -365,4 +365,25 @@
 		FROM CLIENTINFO_VIEW
 		WHERE MEM_ID=#{cId}
 	</select>
+	
+	<!-- profileId를 활용한 프로필 조회 -->
+	<select id="portList" parameterType="_int" resultMap="portFolioResultSet">
+		SELECT * FROM PORTFOLIO
+		WHERE PROFILE_ID = #{profileId}
+	</select>
+	
+	
+	<!-- 포트폴리이 기술 view -->
+	<resultMap type="PortTecView" id="portTecViewResultSet">
+		<id property="portId" column="PORT_ID"/>
+		<result property="tId" column="T_ID"/>
+		<result property="tName" column="T_NAME"/>
+
+	</resultMap>
+	
+	<select id="ptList" parameterType="_int" resultMap="portTecViewResultSet">
+		SELECT * FROM PORTTEC_VIEW
+		WHERE PORT_ID=#{portId}
+	</select>
+	
 </mapper>

@@ -138,7 +138,7 @@ public class MemberController {
 			
 			
 		}else { // 로그인 실패시
-
+			System.out.println("로그인 실패");
 			// 아이디랑 비밀번호 잘못 입력했다는 창
 //			if(memEmail.equals(loginUser.getMemEmail())) {
 //				
@@ -146,8 +146,10 @@ public class MemberController {
 //				
 //			}
 //			return mv;
+			/* throw new MemberException("로그인 실패!"); */
+			return "member/login";
 		}
-		return "common/mainPage";
+		
 		
 	}
 	
@@ -235,6 +237,7 @@ public class MemberController {
 			}else {
 				throw new MemberException("회원가입실패!");
 			}
+
 			
 		}
 	

@@ -756,7 +756,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			            }) */
 			            
 			            $("#pwd").focusout(function(){
-				              if($(this).val().length>8 && $(this).val().length<32){
+				              if($(this).val().length>=8 && $(this).val().length<32){
 				            	 alert("사용가능");
 				              }else{
 								 alert("사용불가능");

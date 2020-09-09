@@ -17,6 +17,7 @@ import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -195,6 +196,19 @@ public class MyPageServiceImpl implements MyPageService{
 	public CmypageClientInfo selectClientInfo(Integer cId) {
 		return myPageDao.selectClientInfo(cId);
 	}
+
+	@Override
+	public ArrayList<PortFolio> portList(int profileId) {
+		
+		return myPageDao.portList(profileId);
+	}
+
+	@Override
+	public ArrayList<PortTecView> ptList(int portId) {
+		 
+		return myPageDao.ptList(portId);
+	}
+
 
 
 

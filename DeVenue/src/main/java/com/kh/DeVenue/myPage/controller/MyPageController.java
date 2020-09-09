@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.DeVenue.findMember.model.service.FindMemberService;
+import com.kh.DeVenue.findMember.model.vo.FindPartners;
 import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.exception.MyPageException;
@@ -34,6 +36,7 @@ import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -42,11 +45,43 @@ public class MyPageController {
 
 	@Autowired
 	private MyPageService myPageService;
+	@Autowired
+	private FindMemberService fmService;
 
-	// 마이페이지로 이동
+	// 프로필로 이동
 	@RequestMapping(value = "profile.do")
-	public String profileView() {
-		return "myPage/myPageDetail";
+	public ModelAndView profileView(HttpServletRequest request, ModelAndView mv) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.valueOf(pfId);
+		System.out.println(profileId);
+		// memId를 비교해서 전체 값 가져오기
+		FindPartners fp = fmService.selectFm(profileId);
+		System.out.println(fp);
+		
+		// profileId를 넘겨서 포트폴리오값을 가져오자
+		ArrayList<PortFolio> portfolio = myPageService.portList(profileId);
+		System.out.println(portfolio);
+		
+		// profileId를 념겨서 portTec
+		for(int i=0;i<portfolio.size();i++) {
+			System.out.println(portfolio.get(i).getPortId());
+			
+			int portId = portfolio.get(i).getPortId();
+			
+//			ArrayList<PortTec> portTec = myPageService.ptList(portId);
+			ArrayList<PortTecView> portTec = myPageService.ptList(portId);
+			System.out.println(portTec);
+		
+			
+//			mv.addObject("portTec", portTec);
+		}
+		
+		mv.addObject("portfolio", portfolio);
+		mv.addObject("fp", fp);
+		mv.setViewName("myPage/myPageDetail");
+		
+		return mv;
 	}
 
 	// 파트너스 정보 이동(파트너스 정보 출력)

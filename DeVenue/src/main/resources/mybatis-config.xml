@@ -79,6 +79,11 @@
 		<typeAlias type="com.kh.DeVenue.member.model.vo.FindClientDetail" alias="FindClientDetail"/>
 		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectFilter" alias="Filter"/>
 		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectSearch" alias="Search"/>
+		
+		<!-- 파트너스 찾기 view -->
+		<typeAlias type="com.kh.DeVenue.findMember.model.vo.FindPartners" alias="FindPartners"/>
+		<!-- 포트폴리오 기술 view -->
+		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PortTecView" alias="PortTecView"/>
 	</typeAliases>
 
 	<mappers>
@@ -88,6 +93,7 @@
 		<mapper resource="/mappers/member2-mapper.xml"/>
 		<mapper resource="/mappers/memberAccountMapper.xml"/>
 		<mapper resource="/mappers/myPage-mapper.xml"/>
+		<mapper resource="/mappers/findPart-mapper.xml"/>
 	</mappers>
 	
 </configuration>
