@@ -12,7 +12,7 @@ public class FindClientDetail implements Serializable {
 	private int memId;
 	private String memNick;		// 닉네임
 	private String ideStatus;	// 신원확인
-	private int phone;			// 번호등록
+	private String phone;			// 번호등록
 	private double avgEagv;		// 
 	private int countEagv;
 	private int countProId;
@@ -31,7 +31,7 @@ public class FindClientDetail implements Serializable {
 		super();
 	}
 
-	public FindClientDetail(int memId, String memNick, String ideStatus, int phone, double avgEagv, int countEagv,
+	public FindClientDetail(int memId, String memNick, String ideStatus, String phone, double avgEagv, int countEagv,
 			int countProId, String maxDcType, String memTypeName, double star1, double star2, double star3,
 			double star4, double star5, String memTypeKind, String introduction, String profileImg) {
 		super();
@@ -78,11 +78,11 @@ public class FindClientDetail implements Serializable {
 		this.ideStatus = ideStatus;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -202,7 +202,7 @@ public class FindClientDetail implements Serializable {
 				+ ", star3=" + star3 + ", star4=" + star4 + ", star5=" + star5 + ", memTypeKind=" + memTypeKind
 				+ ", introduction=" + introduction + ", profileImg=" + profileImg + "]";
 	}
-	
-	
+
+		
 
 }

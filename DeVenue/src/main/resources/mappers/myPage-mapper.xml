@@ -366,4 +366,9 @@
 		FROM CLIENTINFO_VIEW
 		WHERE MEM_ID=#{cId}
 	</select>
+	
+	<!-- 파트너스 마이페이지 메인 유저정보 -->
+<!-- 	<select id="" parameterType="int" resulteMap="">
+	
+	</select> -->
 </mapper>
