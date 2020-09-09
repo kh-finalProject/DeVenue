@@ -10,6 +10,11 @@ import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.myPage.model.vo.PartnersApplyCount;
+import com.kh.DeVenue.myPage.model.vo.PartnersContractCount;
+import com.kh.DeVenue.myPage.model.vo.PmypagePartnersInfo;
+import com.kh.DeVenue.myPage.model.vo.PmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
@@ -76,6 +81,18 @@ public interface MyPageService {
 	ArrayList<CmypageProcess> selectProcess(Integer cId);
 
 	CmypageClientInfo selectClientInfo(Integer cId);
+
+	PmypagePartnersInfo selectPartnersInfo(Integer pId);
+
+	ArrayList<PartnersApplyCount> getApplyCount(Integer pId);
+
+	ArrayList<PartnersContractCount> getContractCount(Integer pId);
+
+	ArrayList<PmypageSuggest> selectPartnersSuggest(Integer pId);
+
+	ArrayList<PmypageProcess> selectPartnersProcess(Integer pId);
+
+	String getMyPageSidebarProImg(String mId);
 
 
 

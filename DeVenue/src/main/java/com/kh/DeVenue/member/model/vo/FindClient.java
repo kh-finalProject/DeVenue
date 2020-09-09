@@ -23,7 +23,7 @@ public class FindClient implements Serializable {
 	private int countProId;
 	private String maxDcType;
 	private String ideStatus;
-	private int phone;
+	private String phone;
 	
 	public FindClient() {
 		super();
@@ -31,7 +31,7 @@ public class FindClient implements Serializable {
 
 	public FindClient(int memId, String memNick, String memEmail, String memTypeName, String memTypeKind,
 			String profileImg, String introduction, double avgEagv, int countEagv, int countProId, String maxDcType,
-			String ideStatus, int phone) {
+			String ideStatus, String phone) {
 		super();
 		this.memId = memId;
 		this.memNick = memNick;
@@ -144,11 +144,11 @@ public class FindClient implements Serializable {
 		this.ideStatus = ideStatus;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -163,4 +163,5 @@ public class FindClient implements Serializable {
 				+ introduction + ", avgEagv=" + avgEagv + ", countEagv=" + countEagv + ", countProId=" + countProId
 				+ ", maxDcType=" + maxDcType + ", ideStatus=" + ideStatus + ", phone=" + phone + "]";
 	}
+	
 }

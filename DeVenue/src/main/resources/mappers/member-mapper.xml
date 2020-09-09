@@ -72,7 +72,7 @@
   	<result property="memNick" column="MEM_NICK"/>
   	<result property="memEmail" column="MEM_EMAIL"/>
   	<result property="memTypeName" column="MEM_TYPE_NAME"/>
-  	<result property="memType" column="MEM_TYPE"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
   	<result property="profileImg" column="PROFILE_IMG"/>
   	<result property="introduction" column="INTRODUCTION"/>
   	<result property="avgEagv" column="AVG_E_AGV"/>
