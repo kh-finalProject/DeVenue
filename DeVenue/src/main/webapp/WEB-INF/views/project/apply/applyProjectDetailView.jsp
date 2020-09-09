@@ -2007,7 +2007,7 @@
 								var answer=$(".apply_answer_textarea");
 								
 								
-								if(answer!=null){
+								if(answer.length!=0){
 								
 								for(var a=0;a<answer.length;a++){
 									aaContent.push(answer[a].value);
@@ -2018,7 +2018,7 @@
 								var port=$("input[name='portId']");
 								
 								
-								if(port!=null){
+								if(port.length!=0){
 								for(var i=0;i<port.length;i++){
 									portId.push(port[i].value);
 								}
@@ -2098,7 +2098,7 @@
 								})
 								
 							
-							}, 10000);
+							}, 30000);
 					})
                     </script>
                     <!--지원 양식 끝-->
