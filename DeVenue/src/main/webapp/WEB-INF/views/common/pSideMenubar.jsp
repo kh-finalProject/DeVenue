@@ -242,12 +242,13 @@ $(document).ready(function(){
                   class="fas fa-angle-right"></i></div>
             <div id="subInfoMenu" class="myPage_sideNav_serveC">
                <%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
-               <form method="GET" action="partInfo.do">
-                  <input type="hidden" name="profileId" value="${profile.profileId }">
+               <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/clientProfile.do?cId=${loginUser.memId}'">마이 페이지</div>
+               <form method="GET" action="clientInfo.do">
+                  <input type="hidden" name="cId" value="${loginUser.memId}">
                   <button class="aTag" style="cursor: text;">${clOrPt } 정보</button>
                </form>
-               <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div>
-               <!-- <div id="pPR">자기소개</div> -->
+               <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/cMyPageProjectHistory.do?cId=${loginUser.memId}'">프로젝트 히스토리</div>
+               <%-- <!-- <div id="pPR">자기소개</div> -->
                <!-- <div id="pPortfolio">포트폴리오</div> -->
                <form method="GET" action="portfolioAll.do">
                   <input type="hidden" name="profileId" value="${profile.profileId }">
@@ -273,7 +274,7 @@ $(document).ready(function(){
                   <button class="aTag" style="cursor: text;">자격증</button>
                </form>
                <!-- <div id="pProjectHistory">프로젝트 히스토리</div> -->
-               <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/PH.do'">프로젝트히스토리</div>
+               <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/PH.do'">프로젝트히스토리</div> --%>
             </div>
             <div id="accountMenu" class="myPage_sideNav_mainC">계정 관리<i style="float: right; margin-right: 5%;"
                   class="fas fa-angle-right"></i></div>
@@ -284,6 +285,7 @@ $(document).ready(function(){
                <div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountChangePwd.do'">비밀번호 변경</div>
                <div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/outOfMember.do'">회원 탈퇴</div>
             </div>
+            <div id="paymentMangement" class="myPage_sideNav_mainC" onclick="location.href='#'">결제 관리</div>
             <div id="pEvaluate" class="myPage_sideNav_mainC">내게 온 제안</div>
          </c:if>
       </div>

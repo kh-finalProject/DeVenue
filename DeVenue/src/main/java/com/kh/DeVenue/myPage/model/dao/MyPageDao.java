@@ -11,6 +11,7 @@ import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
@@ -198,6 +199,10 @@ public class MyPageDao {
 	
 	public String getMyPageSidebarProImg(String mId) {
 		return sqlSessionTemplate.selectOne("myPageMapper.getMyPageSidebarProImg",mId);
+	}
+
+	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getCountPartners", cId);
 	}
 	
 	
