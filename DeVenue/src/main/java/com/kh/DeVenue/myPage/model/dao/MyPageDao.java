@@ -170,6 +170,10 @@ public class MyPageDao {
 	public CmypageClientInfo selectClientInfo(Integer cId) {
 		return sqlSessionTemplate.selectOne("myPageMapper.selectClientInfo",cId);
 	}
+
+	public String getMyPageSidebarProImg(String mId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.getMyPageSidebarProImg",mId);
+	}
 	
 	
 

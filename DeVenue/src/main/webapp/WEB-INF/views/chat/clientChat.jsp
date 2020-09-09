@@ -1399,7 +1399,7 @@ body{
       display: inline-block;
 /*       width: 16px; */
       height: 16px;
-      padding: 0px 0px 2px 4.5px;
+      padding: 2px 2px 2px 2px;
       background-color: red;
       border-radius: 50%;
       color:white;
@@ -1929,7 +1929,7 @@ try {
 				            var $frame = $('.goog-te-menu-frame:first'); 
 				
 				            if (!$frame.size()) { 
-				                alert("Error: Could not find Google translate frame."); 
+				            	console.log("Error: Could not find Google translate frame."); 
 				                return false; 
 				            } 
 				
@@ -2762,7 +2762,7 @@ try {
 			type:"get",
 			data:{userId:userId},
 			success:function(data){
-				alert('delete의 결과 : '+data);
+				console.log('delete의 결과 : '+data);
 				// 채팅방 이름을 위해 상대관리자 닉네이, 상대관리자 회원 번호가 필요함..
 				// 처음엔 무조건 주관리자와 매칭되는 시스템으로 하자
 				insertNewChat();
@@ -2772,7 +2772,7 @@ try {
 			},
 			complete : function(data) {
 	        	// 실패했어도 완료가 되었을 때 처리
-	        	alert('채팅방 삭제하러가는 에이작스 끝남')
+	        	console.log('채팅방 삭제하러가는 에이작스 끝남')
 			}
 		});
   }
@@ -2800,14 +2800,14 @@ try {
 			type:"get",
 			data:insertInformForChatRoom,
 			success:function(data){
-				alert('생성된 방의 번호 : '+data)
+				console.log('생성된 방의 번호 : '+data)
 				// 기존에 새채팅방에 있던 내역 싹 비워버리기(채팅방 들어갈때마다 하는 작업이니 함수로 따로 빼놓자)
 				eraseMessages();
 				// 기존에 만들어놨던 채팅방 하나 남아있는것(newChatRoom이 아닌 기존의 주관리자 방)도 지워주기
 				$('.Messages_list').each(function(index, item){
 					if($(item).find('.chatRoom_userType').val() == 'UT1'){
 						$(item).remove();
-						alert('리무브 들어왔나')
+						console.log('리무브 들어왔나')
 					}
 				});
 				
@@ -2822,8 +2822,8 @@ try {
 				$('#newChatRoom').find('.chatRoom_mNick').val('${mainAdmin.mNick}');
 				$('#newChatRoom').find('.chatRoom_mName').val('${mainAdmin.mName}');
 				
-				alert('지웠는가 : ' + $('#newChatRoom').html());
-				alert('잘 들어갔는가 : ' + $('#newChatRoom').find('.chatRoom_room_id').val())
+				console.log('지웠는가 : ' + $('#newChatRoom').html());
+				console.log('잘 들어갔는가 : ' + $('#newChatRoom').find('.chatRoom_room_id').val())
 				// 싹 지우지 말고, 새채팅방용 창을 하나 만들자. 그리고 그것을 항상 리셋하고 구분선 넣고 해주는 것임!
 				
 				// 새채팅방을 채팅방 리스트 ui에 추가해주기
@@ -2857,7 +2857,7 @@ try {
 			},
 			complete : function(data) {
 	        	// 실패했어도 완료가 되었을 때 처리
-	        	alert('잘 들어갔는가 : ' + $('#newChatRoom').find('.chatRoom_room_id').val())
+	        	console.log('잘 들어갔는가 : ' + $('#newChatRoom').find('.chatRoom_room_id').val())
 			}
 		});
   }
@@ -2891,7 +2891,7 @@ try {
     var ch  = $('#google_translate_element span');
     ch.each(function(item){
       $(item).click(function(){
-        alert(item)
+    	  console.log(item)
         if($(item).text() == '중국어(간체)'){
           $('#google_translate_element div:first-of-type').css('width', '130px');
         }
@@ -3011,7 +3011,7 @@ try {
 			 if(!isTransFile){
 				 return;
 			 }
-			 alert('에이작스 실행하러 간다')
+			 console.log('에이작스 실행하러 간다')
 			 uploadFile();
 		 }
 	 });
@@ -3097,7 +3097,7 @@ try {
 			type:"get",
 			data:{isMT:isMT, userId:userId},
 			success:function(data){
-				alert('번역 표시 항목  변경 성공 : ' + data);
+				console.log('번역 표시 항목  변경 성공 : ' + data);
 			},
 			error:function(request,status,error){
 			    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3121,7 +3121,7 @@ try {
 			type:"get",
 			data:{isAd:isAd, userId:userId},
 			success:function(data){
-				alert('마케팅 정보 수신 동의 여부  변경 성공 : ' + data);
+				console.log('마케팅 정보 수신 동의 여부  변경 성공 : ' + data);
 			},
 			error:function(request,status,error){
 			    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3145,7 +3145,7 @@ try {
 			type:"get",
 			data:{isCS:isCS, userId:userId},
 			success:function(data){
-				alert('종료된 상담표시 항목  변경 성공 : ' + data);
+				console.log('종료된 상담표시 항목  변경 성공 : ' + data);
 				
 				// 종료된 상담 표시를 해제하면 기존의 채팅은 볼 수 없음 - 결국 새 채팅방르로 가지므로 지워지기도 함
 				 isShowCompleteSave();
@@ -3196,7 +3196,7 @@ try {
 			type:"get",
 			data:{roomId:roomId},
 			success:function(data){
-				alert('개별 채팅방 삭제 성공 : ' + data);
+				console.log('개별 채팅방 삭제 성공 : ' + data);
 				
 				// DB에서 삭제한 채팅방은 화면에서도 지워야함(인터벌로 알아서 업뎃되지만 그래도 빠른 순삭을 위해 지워줌)
 				deleteTarget.parents('.chatRoom').next('tr').remove();
@@ -3221,7 +3221,7 @@ try {
 	
 	 var roomId = $(eventTarget).parents('.chatRoom').find('.roomIdHidden').val();
      var userId = ${loginUser.memId};
-     alert('열어줄 방번호 : ' + roomId)
+     console.log('열어줄 방번호 : ' + roomId)
      // DB에 값 넣기
      $.ajax({
     	url:"getOtherUser.do",
@@ -3290,7 +3290,7 @@ try {
 		    changeToChatBot();
     	},
     	error:function(request, status, error){
-    		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+    		console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
     	}
      });
 
@@ -3303,7 +3303,7 @@ try {
     	type:"get",
 		data:{roomId:roomId, userId:userId},
     	success:function(data){
-    		alert('readMessages 결과 : '+data);
+    		console.log('readMessages 결과 : '+data);
     		
     	},
     	error:function(request, status, error){
@@ -3329,7 +3329,7 @@ try {
 				  roomIds += $(item).val();
 			  }
 		  });
-		  alert('채팅방 번호들 : '+roomIds);
+		  console.log('채팅방 번호들 : '+roomIds);
 		  $.ajax({
 			 url:"searchChatRoom.do",
 			 type:"get",
@@ -3342,7 +3342,7 @@ try {
 					alert('검색 결과가 없습니다')					 
 				 }else{
 					 var resultRoomIds = data.replace('[','').replace(']','').split(', ');
-					alert('채팅방 검색 성공 : ' + resultRoomIds[0]);
+					console.log('채팅방 검색 성공 : ' + resultRoomIds[0]);
 				 }
 				
 				// 검색 결과로 해탕 텍스트가 있는 채팅방 번호가 리셋될 것
@@ -3457,7 +3457,7 @@ $(function(){
 			}
 		});
 		
-	},60000);
+	},10000);
 });
 
 // 부분 새로고침과 동시에, 중복제거 => 중복제거 이후엔 그 영역의 함수를 다시 실행해 줘야 함
@@ -3692,12 +3692,12 @@ function getInputDayLabel() {
 		webSocket.onopen = function(message) {
 			// 콘솔에 메시지를 남긴다.
 // 			messageTextArea.value += "Server connect...\n";
-			alert('웹소켓 오픈')
+			console.log('웹소켓 오픈')
 		};
 		// 접속이 끝기는 경우는 브라우저를 닫는 경우이기 떄문에 이 이벤트는 의미가 없음.
 		webSocket.onclose = function(message) {
 			isReadT = '';
-			alert('웹소켓 종료되어서 리로드가 필요해')
+			console.log('웹소켓 종료되어서 리로드가 필요해')
 // 			location.reload();
 		};
 		// 에러가 발생하면
@@ -3709,13 +3709,13 @@ function getInputDayLabel() {
 		isReadT = '';
 		// 서버로부터 메시지가 도착하면 콘솔 화면에 메시지를 남긴다.(리턴한 것)
 		webSocket.onmessage = function(message) {
-			alert('메세지 왔다')
+			console.log('메세지 왔다')
 			// 내가 메시지 보낼때 상대가 비접속시 반환되는 메시지 형태에 따라 저장할 읽음 여부 상태값 바꿈 
 			var mContent = message.data.split(',');
 			// 부재중이면 안읽음 처리를 위해서
 			if(mContent.length >= 5){//원랜 4였는데 관리자 서버에서 룸넘버를 더해서 메시지를 보냄
 				window.isReadT = 'N';
-				alert('4보나 크다');
+				console.log('4보나 크다');
 				console.log('온메시지 함수안의 isReadT ' + isReadT);
 			// 접속이 연결된 상태인 경우 서버에서 Y만 반환하여 대입후 빠져나감
 			}else if(mContent.length == 1){
@@ -3729,7 +3729,7 @@ function getInputDayLabel() {
 			var msgSendAdminNick = mContent[2];
 			console.log('3번째 콘텐트'+mContent[2]);
 			var acceptRoomId = mContent[3];
-			alert('acceptRoomId : ' + acceptRoomId);
+			console.log('acceptRoomId : ' + acceptRoomId);
 			
 			console.log('전체 메시지' + message.data);
 			console.log('메시지 내용' + messageContent);
@@ -3763,9 +3763,9 @@ function getInputDayLabel() {
 			
 			if($(eachChatRoomArea).find('.msgDate').length > 0){
 				var msgDate = eachChatRoomArea.find('.msgDate:last').val().trim();
-				alert('날짜 : '+ msgDate);
+				console.log('날짜 : '+ msgDate);
 				var todayDate = submitDate.substring(0, 9).trim();
-				alert('오늘날짜 : ' + todayDate);
+				console.log('오늘날짜 : ' + todayDate);
 				var mDArr = msgDate.split('/');
 				var mY = mDArr[0];
 				var mM = mDArr[1];
@@ -3784,9 +3784,9 @@ function getInputDayLabel() {
 				// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
 				$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 				if(mY==tY&&mM==tM&&mD==tD){
-					alert('오늘 처음보낸 메시지가 아니다')
+					console.log('오늘 처음보낸 메시지가 아니다')
 				}else{
-					alert('오늘 처음보낸 메시지다')				
+					console.log('오늘 처음보낸 메시지다')				
 					$(eachChatRoomArea).append($seperLine);
 					$(eachChatRoomArea).find('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 				}
@@ -3795,21 +3795,21 @@ function getInputDayLabel() {
 			// 아래에 메시지를 추가한다.
 			var proImgName = 'user3.png';
 			<c:forEach var="i" begin="0" end="${admins.size()-1}" step="1">
-				alert('여긴 들어오냐')
+			console.log('여긴 들어오냐')
 				if(msgSendAdminNick == '디베뉴 매니저 ${admins.get(i).getmNick()}'){
 					if('${admins.get(i).getProImgName()}'!=''&&'${admins.get(i).getProImgName()}'!=null){
 						proImgName = '${admins.get(i).getProImgName()}'
-						alert("프로필 이미지 매칭 들왔나")
+							console.log("프로필 이미지 매칭 들왔나")
 					}
 				}
 			</c:forEach>
-			alert('넘어온 상대 닉네임 : ' + msgSendAdminNick)
-			alert('프로필 이미지 이름 : '  + proImgName);
+			console.log('넘어온 상대 닉네임 : ' + msgSendAdminNick)
+			console.log('프로필 이미지 이름 : '  + proImgName);
 			
 			var isFile = String(messageContent).indexOf("$$$$");
 			console.log(isFile)
 			if(isFile!=-1){
-				alert('파일이다'+isFile);
+				console.log('파일이다'+isFile);
 				
 				var fileInfoArray = messageContent.replace(/@@@@/gi, '/').split('$$$$');
 				var renameFileName = fileInfoArray[0];
@@ -3828,7 +3828,7 @@ function getInputDayLabel() {
 				// 스크롤 최하단으로
 				showRecentChatView();
 			}else{
-				alert('파일이 아니다'+isFile);
+				console.log('파일이 아니다'+isFile);
 
 				// 아래에 메시지를 추가한다.
 				$fromOtherMsgContent = $('<div class="message_from_other msg_unit"><div class="name_with_profile"><div class="img_cont_msg"><img src="${pageContext.servletContext.contextPath}/resources/proImg/'+ proImgName +'" width="30" height="30"></div><span class="user_other">'+msgSendAdminNick+'</span><span class="msg_time_send">'+viewDate+'</span></div><div class="msg_text_other">'+messageContent+'</div></div>');
@@ -3884,7 +3884,7 @@ function getInputDayLabel() {
 				}
 			});
 
-			alert('message' + message.val())
+			console.log('message' + message.val())
 			var msgValue = message.val();
 			// 채팅 메시지 입력하지 않거나 파일전송을 안하면 메시지 전송 안되게
 			if(message.val()=="" && filBtn.val()==""){
@@ -3900,7 +3900,7 @@ function getInputDayLabel() {
 			let viewDate = DateToString(currentDateTime);
 			// 보낼 전체 메시지
 			var loginMem = '${me.mNick} ${me.mName}';
-			alert('로그인 유저: ' + loginMem)
+			console.log('로그인 유저: ' + loginMem)
 			let allMessage = message.val() + "," + submitDate + "," + loginMem;
 			console.log('보내는 메시지' + allMessage)
 			
@@ -3908,9 +3908,9 @@ function getInputDayLabel() {
 			// 마지막 메시지의 날짜와 오늘 날짜 비교
 			if($(eachChatRoomArea).find('.msg_unit').length > 0||$('#newChatRoom').css('display')=='none'){
 				var msgDate = eachChatRoomArea.find('.msgDate:last').val().trim();
-				alert('날짜 : '+ msgDate);
+				console.log('날짜 : '+ msgDate);
 				var todayDate = submitDate.substring(0, 9).trim();
-				alert('오늘날짜 : ' + todayDate);
+				console.log('오늘날짜 : ' + todayDate);
 				var mDArr = msgDate.split('/');
 				var mY = mDArr[0];
 				var mM = mDArr[1];
@@ -3929,9 +3929,9 @@ function getInputDayLabel() {
 				// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
 				$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 				if(mY==tY&&mM==tM&&mD==tD){
-					alert('오늘 처음보낸 메시지가 아니다')
+					console.log('오늘 처음보낸 메시지가 아니다')
 				}else{
-					alert('오늘 처음보낸 메시지다')				
+					console.log('오늘 처음보낸 메시지다')				
 					$(eachChatRoomArea).append($seperLine);
 					$(eachChatRoomArea).append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 				}
@@ -3943,9 +3943,9 @@ function getInputDayLabel() {
 			var proImgName = 'user3.png';
 			if('${me.getProImgName()}'!=''&&'${me.getProImgName()}'!=null){
 				proImgName = '${me.getProImgName()}'
-				alert("프로필 이미지 매칭 들왔나");
+				console.log("프로필 이미지 매칭 들왔나");
 			}
-			alert('프로필 이미지 이름 : '  + proImgName);
+			console.log('프로필 이미지 이름 : '  + proImgName);
 			
 			// 아래에 메시지를 추가한다.
 			$fromMeMsgContent = $('<div class="message_from_me msg_unit"><div class="name_with_profile"><span class="msg_time">'+viewDate+'</span> <span class="user_me">${loginUser.getMemNick()} ${loginUser.getMemName()}</span><div class="img_cont_msg"><img src="resources/proImg/'+proImgName+'" width="30" height="30"></div></div><div class="msg_text_me">'+message.val()+'</div></div>');
@@ -3956,24 +3956,24 @@ function getInputDayLabel() {
 			// 스크롤 최하단으로
 			showRecentChatView();
 			
-			alert('여기는?')
+			console.log('여기는?')
 
 			// 소켓으로 보낸다.
 			webSocket.send(allMessage);
 			
 			// DB에 보낸 메시지 저장하러 감
 			if(isReadT == ''){
-				alert('왜 못들어오지')
+				console.log('왜 못들어오지')
 				var waitForServer = window.setInterval(function(){
-					alert('아..')
+					console.log('아..')
 					if(isReadT != ''){
-						alert('여까진 오냐?')
+						console.log('여까진 오냐?')
 						saveTextMessage(msgValue, submitDate, chatRoom);
 						clearInterval(waitForServer);
 					}					
 				},1000)
 			}else{
-				alert('여기는요!!')
+				console.log('여기는요!!')
 				saveTextMessage(msgValue, submitDate, chatRoom);
 			}
 			
@@ -3987,10 +3987,10 @@ function getInputDayLabel() {
 			$('.Messages_list').each(function(index, item){
 				if($(item).css('display') != 'none'){
 					room_id = $(item).find('.chatRoom_room_id').val();
-					alert($(item).find('.chatRoom_room_id').val())
+					console.log($(item).find('.chatRoom_room_id').val())
 				}
 			})
-			alert('룸아이디가 왜 NAN : '+room_id);
+			console.log('룸아이디가 왜 NAN : '+room_id);
 			var isRead = isReadT; 
 			var tMsgInform = {
 					msg:message,
@@ -4005,7 +4005,7 @@ function getInputDayLabel() {
 				type:"get",
 				data:tMsgInform,
 				success:function(data){
-					alert('DB에 보낸 일반 텍스트 메시지를 저장 성공 : '+data)
+					console.log('DB에 보낸 일반 텍스트 메시지를 저장 성공 : '+data)
 					
 					isReadT='';
 					
@@ -4027,14 +4027,14 @@ function getInputDayLabel() {
 				},
 				complete : function(data) {
 		        	// 실패했어도 완료가 되었을 때 처리
-		        	alert('DB에 보낸 일반 텍스트 메시지를 저장하러가는 에이작스 끝남')
+		        	console.log('DB에 보낸 일반 텍스트 메시지를 저장하러가는 에이작스 끝남')
 				}
 			});
 		};
 		
 		// 서버로 보낼 파일 메시지를 발송하는 함수(파일을 선택하면 자동 발송)
 		function uploadFile(){
-			alert("에이작스 실행하러 왔다")
+			console.log("에이작스 실행하러 왔다")
 			
 			var form = $('#fileForm')[0];
 			var formData = new FormData(form);
@@ -4056,23 +4056,23 @@ function getInputDayLabel() {
                  contentType: false,
                  timeout:600000,
                  success: function(renameFileName){
-                     alert(renameFileName);
+                	 console.log(renameFileName);
                      console.log('파일저장이 끝나고..')
                      //파일전송
                      var submitDate = sendFileInfoMessage(renameFileName);
                      console.log('파일전송이 끝나고..')
                   	// DB에 파일메시지 저장하러 감
          			if(isReadT == ''){
-         				alert('여기에 이게 있는게 맞나? 실제로 소켓에 보낼때 있어야하믄거아냐?')
+         				console.log('여기에 이게 있는게 맞나? 실제로 소켓에 보낼때 있어야하믄거아냐?')
          				var waitForServer = window.setInterval(function(){
-         					alert('여기 들어와?')
+         					console.log('여기 들어와?')
          					if(isReadT != ''){
          						saveFileInfoMessage(renameFileName, submitDate);
          						clearInterval(waitForServer);
          					}					
          				},1000)
          			}else{
-         				alert('아님여기?')
+         				console.log('아님여기?')
          				saveFileInfoMessage(renameFileName, submitDate);
          			}
         			isReadT='';
@@ -4108,7 +4108,7 @@ function getInputDayLabel() {
 					roomId = $(item).find('.chatRoom_room_id').val();
 				}
 			});
-			alert('룸아이디 뽑는 것 까지는 잘 왔니? : ' + roomId)
+			console.log('룸아이디 뽑는 것 까지는 잘 왔니? : ' + roomId)
 			// 먼저 방번호를 send함(메시지에 섞어보내는게 맞을지.. 어떨지 잘 모르겠음)
 			webSocket.send(roomId+"room$Id$");
 			
@@ -4116,9 +4116,9 @@ function getInputDayLabel() {
 			// 마지막 메시지의 날짜와 오늘 날짜 비교
 			if($(eachChatRoomArea).find('.msg_unit').length > 0||$('#newChatRoom').css('display')=='none'){
 				var msgDate = eachChatRoomArea.find('.msgDate:last').val().trim();
-				alert('날짜 : '+ msgDate);
+				console.log('날짜 : '+ msgDate);
 				var todayDate = submitDate.substring(0, 9).trim();
-				alert('오늘날짜 : ' + todayDate);
+				console.log('오늘날짜 : ' + todayDate);
 				var mDArr = msgDate.split('/');
 				var mY = mDArr[0];
 				var mM = mDArr[1];
@@ -4137,9 +4137,9 @@ function getInputDayLabel() {
 				// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
 				$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 				if(mY==tY&&mM==tM&&mD==tD){
-					alert('오늘 처음보낸 메시지가 아니다')
+					console.log('오늘 처음보낸 메시지가 아니다')
 				}else{
-					alert('오늘 처음보낸 메시지다')				
+					console.log('오늘 처음보낸 메시지다')				
 					$(eachChatRoomArea).append($seperLine);
 					$(eachChatRoomArea).append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 				}
@@ -4151,9 +4151,9 @@ function getInputDayLabel() {
 			var proImgName = 'user3.png';
 			if('${me.getProImgName()}'!=''&&'${me.getProImgName()}'!=null){
 				proImgName = '${me.getProImgName()}'
-				alert("프로필 이미지 매칭 들왔나");
+					console.log("프로필 이미지 매칭 들왔나");
 			}
-			alert('프로필 이미지 이름 : '  + proImgName);
+			console.log('프로필 이미지 이름 : '  + proImgName);
 			
 			$fromMeMsgContent = $('<div class="message_from_me msg_unit file_message"><div class="name_with_profile"><span class="msg_time">'+viewDate+'</span> <span class="user_me">${loginUser.getMemNick()} ${loginUser.getMemName()}</span><div class="img_cont_msg"><img src="resources/proImg/'+proImgName+'" width="30" height="30"></div></div><div class="msg_text_me fileDown_msg"></div></div>');
 			$fileDownATag = $('<div style="border-radius:3px;"><span style="left:5px;display:inline-block;position:relative;top:-7px;margin-right:8px">'+originFileName+'</span><a style="display:inline-block; width:30px; height:30px;position:relative;left:3px;" href="${pageContext.servletContext.contextPath}/resources/chatFile/'+renameFileName+'" download="'+originFileName+'">'+'<svg width="2em" height="2em" style="position:relative; top:2px;" viewBox="0 0 16 16" class="bi bi-arrow-down-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path fill-rule="evenodd" d="M4.646 7.646a.5.5 0 0 1 .708 0L8 10.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/><path fill-rule="evenodd" d="M8 4.5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5z"/></svg>'+'</a></div>');
@@ -4185,7 +4185,7 @@ function getInputDayLabel() {
 			$('.Messages_list').each(function(index, item){
 				if($(item).css('display') != 'none'){
 					room_id = $(item).find('.chatRoom_room_id').val();
-					alert($(item).find('.chatRoom_room_id').val())
+					console.log($(item).find('.chatRoom_room_id').val())
 				}
 			})
 			//원래 파일명 구하기			
@@ -4210,7 +4210,7 @@ function getInputDayLabel() {
 				type:"get",
 				data:fMsgInform,
 				success:function(data){
-					alert('DB에 보낸 파일 메시지를 저장 성공 : '+data)
+					console.log('DB에 보낸 파일 메시지를 저장 성공 : '+data)
 					
 					// 파일객체 초기화
 				 	$('#file').val(null);
@@ -4220,7 +4220,7 @@ function getInputDayLabel() {
 				},
 				complete : function(data) {
 		        	// 실패했어도 완료가 되었을 때 처리
-		        	alert('DB에 보낸 파일 메시지를 저장하러가는 에이작스 끝남')
+		        	console.log('DB에 보낸 파일 메시지를 저장하러가는 에이작스 끝남')
 				}
 			});
 		}

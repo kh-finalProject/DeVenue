@@ -77,6 +77,8 @@ public interface MyPageService {
 
 	CmypageClientInfo selectClientInfo(Integer cId);
 
+	String getMyPageSidebarProImg(String mId);
+
 
 
 

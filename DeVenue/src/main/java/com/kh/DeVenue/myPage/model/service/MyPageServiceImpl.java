@@ -196,6 +196,11 @@ public class MyPageServiceImpl implements MyPageService{
 		return myPageDao.selectClientInfo(cId);
 	}
 
+	@Override
+	public String getMyPageSidebarProImg(String mId) {
+		return myPageDao.getMyPageSidebarProImg(mId);
+	}
+
 
 
 
