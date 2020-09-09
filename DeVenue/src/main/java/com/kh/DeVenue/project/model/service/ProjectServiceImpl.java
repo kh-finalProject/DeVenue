@@ -201,9 +201,9 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ArrayList<ProjectLike> selectLikeProject(ProjectFilter filter, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(HashMap condition, PageInfo pi) {
 		
-		return proDao.selectLikeProject(filter,pi);
+		return proDao.selectLikeProject(condition,pi);
 	}
 
 	@Override
@@ -239,17 +239,17 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public int getapplyListCount(int memId) {
+	public int getapplyListCount(HashMap condition) {
 		
-		return proDao.getApplyListCount(memId);
+		return proDao.getApplyListCount(condition);
 	}
 
 
 
 	@Override
-	public ArrayList<Application> selectApplyProject(int memId, PageInfo pi) {
+	public ArrayList<Application> selectApplyProject(HashMap condition, PageInfo pi) {
 		
-		return proDao.selectApplyProject(memId,pi);
+		return proDao.selectApplyProject(condition,pi);
 	}
 
 
@@ -362,17 +362,17 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public int getTempApplyListCount(int memId) {
+	public int getTempApplyListCount(HashMap condition) {
 		
-		return proDao.getTempApplyListCount(memId);
+		return proDao.getTempApplyListCount(condition);
 	}
 
 
 
 	@Override
-	public ArrayList<ProjectList> selectTempApplyProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectList> selectTempApplyProject(HashMap condition, PageInfo pi) {
 		
-		return proDao.selectTempApplyProject(memId,pi);
+		return proDao.selectTempApplyProject(condition,pi);
 	}
 
 
@@ -482,30 +482,30 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public int getOngoingListCount(int memId) {
+	public int getOngoingListCount(HashMap condition) {
 		
-		return proDao.getOngoingListCount(memId);
+		return proDao.getOngoingListCount(condition);
 	}
 	
 	
 	@Override
-	public ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi) {
+	public ArrayList<ProjectList> selectOngoingList(HashMap condition, PageInfo pi) {
 		
-		return proDao.selectOngoingList(memId,pi);
+		return proDao.selectOngoingList(condition,pi);
 	}
 
 
 
 	@Override
-	public int getCompleteListCount(int memId) {
+	public int getCompleteListCount(HashMap condition) {
 		
-		return proDao.getCompleteListCount(memId);
+		return proDao.getCompleteListCount(condition);
 	}
 	
 	@Override
-	public ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi){
+	public ArrayList<ProjectList> selectCompleteList(HashMap condition, PageInfo pi){
 		
-		return proDao.selectCompleteList(memId,pi);
+		return proDao.selectCompleteList(condition,pi);
 	}
 	
 	@Override
