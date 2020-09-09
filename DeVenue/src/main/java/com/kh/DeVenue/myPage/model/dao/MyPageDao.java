@@ -196,6 +196,10 @@ public class MyPageDao {
 		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectPartnersProcess", pId);
 	}
 	
+	public String getMyPageSidebarProImg(String mId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.getMyPageSidebarProImg",mId);
+	}
+	
 	
 
 }

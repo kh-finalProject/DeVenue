@@ -1,6 +1,10 @@
 package com.kh.DeVenue.myPage.controller;
 
 import java.io.File;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -762,5 +766,25 @@ public class MyPageController {
 			}
 			
 			return mv;
+		}
+		
+		// 마이페이지 서브메뉴바 로딩시 에이작스로 프로필 이미지 네임 가져오기(원한다면 일반 로딩시 가져오는 걸로 바꿀 수도 있음 <c:import url="/mapping한 url"/> 코드로)
+		@RequestMapping("getMyPageSidebarProImg.do")
+		public void getMyPageSidebarProImg(String mId, HttpServletResponse response) throws IOException {
+			
+			String proImgName = myPageService.getMyPageSidebarProImg(mId);
+			
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			if(proImgName != null) {
+				out.print(proImgName);
+			}else {
+				// 프사가 없는경우엔 기본프사로(나중에 이미지 바꿀거임)
+				System.out.println("프사 못불러옴");
+				out.print("user3.png");
+			}
+			out.flush();
+			out.close();
+			
 		}
 }

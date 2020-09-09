@@ -1504,7 +1504,7 @@ try {
    			 if(!isTransFile){
    				 return;
    			 }
-   			 alert('에이작스 실행하러 간다')
+//    			 alert('에이작스 실행하러 간다')
    			 uploadFile();
    		 }
    	 });
@@ -1573,7 +1573,7 @@ try {
 		console.log(typeof(message.data))
 			if(message.data == 'Y'){
 				window.isReadT ='Y';
-				alert('난 접속을 했고! 상대방은 접속 되어있대!');
+// 				alert('난 접속을 했고! 상대방은 접속 되어있대!');
 			}else{
 				window.isReadT = 'N';
 				
@@ -1584,7 +1584,7 @@ try {
 				var mContent = node.message.split(',');
 				if(mContent.length >= 3){
 					window.isReadT = 'N';
-					alert('3보나 크다');
+// 					alert('3보나 크다');
 					console.log('온메시지 함수안의 isReadT ' + isReadT);
 				// 접속이 연결된 상태인 경우 서버에서 Y만 반환하여 대입후 빠져나감
 				}else if(mContent.length == 1){
@@ -1626,10 +1626,10 @@ try {
 					// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
 					$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 					if(mY==tY&&mM==tM&&mD==tD){
-						alert('오늘 처음보낸 메시지가 아니다')
+// 						alert('오늘 처음보낸 메시지가 아니다')
 					}else if($('.Messages_list').find('.msg_unit').length >= 1){
 						console.log("!!")
-						alert('오늘 처음보낸 메시지다')				
+// 						alert('오늘 처음보낸 메시지다')				
 						$('.Messages_list').append($seperLine);
 						$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 					}
@@ -1650,7 +1650,7 @@ try {
 				var isFile = String(messageContent).indexOf("$$$$");
 				console.log(isFile)
 				if(isFile!=-1){
-					alert('파일이다'+isFile);
+// 					alert('파일이다'+isFile);
 					
 					var fileInfoArray = messageContent.replace(/@@@@/gi, '/').split('$$$$');
 					var renameFileName = fileInfoArray[0];
@@ -1668,7 +1668,7 @@ try {
 					// 메시지 포지션 설정	// -> 상대방 것이므로 할 필요 없음
 // 					setChatMessagePosition('file');
 				}else{
-					alert('파일이 아니다'+isFile);
+// 					alert('파일이 아니다'+isFile);
 					// 아래에 메시지를 추가한다.
 					$fromOtherMsgContent = $('<div class="message_from_other msg_unit"><div class="name_with_profile"><div class="img_cont_msg"><img src="${pageContext.servletContext.contextPath}/resources/proImg/'+ proImgName +'" width="30" height="30"></div><span class="user_other">'+msgSendMemNick+'</span><span class="msg_time_send">'+viewDate+'</span></div><div class="msg_text_other">'+messageContent+'</div></div>');
 					$('.Messages_list').append($fromOtherMsgContent)
@@ -1713,14 +1713,14 @@ try {
 		var message = $('#textMessage').val();
 		var fileBtn = $("#file");
 
-		alert('message' + message)
+// 		alert('message' + message)
 		
 		// 채팅 메시지 입력하지 않거나 파일전송을 안하면 메시지 전송 안되게
 		if(message=="" && fileBtn.val()==""){
-			alert('메시지를 입력해주세요');
+// 			alert('메시지를 입력해주세요');
 			return;
 		}
-		alert('리턴 안되고 넘어오나');
+// 		alert('리턴 안되고 넘어오나');
 		// 현재 날짜
 		let currentDateTime = new Date();
 		// 뷰할 형태로 날짜 변환
@@ -1729,7 +1729,7 @@ try {
 		var submitDate = DateTransForm(currentDateTime);
 		// 보낼 전체 메시지
 		var loginAdmin = '${me.mNick}';
-		alert('로그인 유저: ' + loginAdmin)
+// 		alert('로그인 유저: ' + loginAdmin)
 		let allMessage = message + "," + submitDate + "," + '디베뉴 매니저 '+loginAdmin;
 		
 		// 유저 key를 취득한다. => 나는다른방식으로 처리해야겠지
@@ -1740,9 +1740,9 @@ try {
 		// 마지막 메시지의 날짜와 오늘 날짜 비교
 		if($('.msgDate').length > 0){
 			var msgDate = $('.msgDate:last').val().trim();
-			alert('날짜 : '+ msgDate);
+// 			alert('날짜 : '+ msgDate);
 			var todayDate = submitDate.substring(0, 9).trim();
-			alert('오늘날짜 : ' + todayDate);
+// 			alert('오늘날짜 : ' + todayDate);
 			var mDArr = msgDate.split('/');
 			var mY = mDArr[0];
 			var mM = mDArr[1];
@@ -1761,9 +1761,9 @@ try {
 			// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
 			$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 			if(mY==tY&&mM==tM&&mD==tD){
-				alert('오늘 처음보낸 메시지가 아니다')
+// 				alert('오늘 처음보낸 메시지가 아니다')
 			}else if($('.Messages_list').find('.msg_unit').length >= 1){
-				alert('오늘 처음보낸 메시지다')				
+// 				alert('오늘 처음보낸 메시지다')				
 				$('.Messages_list').append($seperLine);
 				$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 			}
@@ -1785,20 +1785,20 @@ try {
 		// 웹소켓으로 메시지를 보낸다.
 		webSocket.send(key + "#####" + allMessage);
 		
-		alert('DB가지 전까지 오나');
+// 		alert('DB가지 전까지 오나');
 		// DB에 보낸 메시지 저장하러 감
 		
 		if(isReadT == ''){
 			var waitForServer3 = window.setInterval(function(){
-				alert('isRead가 존재하지 않는 중..');
+// 				alert('isRead가 존재하지 않는 중..');
 				if(isReadT != ''){
-					alert('isReadT가 존재하게 되었나');
+// 					alert('isReadT가 존재하게 되었나');
 					saveTextMessage(message, submitDate);
 					clearInterval(waitForServer3);
 				}					
 			},1000)
 		}else{
-			alert('isReadT가 존재해서 간다 에이작스로');
+// 			alert('isReadT가 존재해서 간다 에이작스로');
 			saveTextMessage(message, submitDate);
 		}
 		
@@ -1811,7 +1811,7 @@ try {
 		var from_id = ${me.mId};
 		var roomId = '${eachChatRoomId}';
 		var isRead = isReadT; 
-		alert('룸아이디가 왜 NAN : '+roomId);
+// 		alert('룸아이디가 왜 NAN : '+roomId);
 
 		var tMsgInform = {
 				msg:message,
@@ -1827,7 +1827,7 @@ try {
 			type:"get",
 			data:tMsgInform,
 			success:function(data){
-				alert('DB에 보낸 일반 텍스트 메시지를 저장 성공 : '+data)
+// 				alert('DB에 보낸 일반 텍스트 메시지를 저장 성공 : '+data)
 
 				isReadT='';
 				
@@ -1844,14 +1844,14 @@ try {
 			},
 			complete : function(data) {
 	        	// 실패했어도 완료가 되었을 때 처리
-	        	alert('DB에 보낸 일반 텍스트 메시지를 저장하러가는 에이작스 끝남')
+// 	        	alert('DB에 보낸 일반 텍스트 메시지를 저장하러가는 에이작스 끝남')
 			}
 		});
 	}
 	
 	// 서버로 보낼 파일 메시지를 발송하는 함수(파일을 선택하면 자동 발송)
 	function uploadFile(){
-		alert("에이작스 실행하러 왔다")
+// 		alert("에이작스 실행하러 왔다")
 		
 		var form = $('#fileForm')[0];
 		var formData = new FormData(form);
@@ -1867,25 +1867,25 @@ try {
              contentType: false,
              timeout:600000,
              success: function(renameFileName){
-                 alert(renameFileName);
+//                  alert(renameFileName);
                  console.log('파일저장이 끝나고..')
                  //파일전송
                  var submitDate = sendFileInfoMessage(renameFileName);
                  console.log('파일전송이 끝나고..')
-                 alert('submitDate : '+submitDate)
+//                  alert('submitDate : '+submitDate)
                  if(submitDate != null){
 	              // DB에 파일메시지 저장하러 감
 	       			if(isReadT == ''){
-	       				alert('isReadT 없는 중..')
+// 	       				alert('isReadT 없는 중..')
 	       				var waitForServer2 = window.setInterval(function(){
 	       					if(isReadT != ''){
-	       						alert('isReadT 확인!')
+// 	       						alert('isReadT 확인!')
 	       						saveFileInfoMessage(renameFileName, submitDate);
 	       						clearInterval(waitForServer2);
 	       					}					
 	       				},1000)
 	       			}else{
-	       				alert('isReadT 요있네!..')
+// 	       				alert('isReadT 요있네!..')
 	       				saveFileInfoMessage(renameFileName, submitDate);
 	       			}
 	      			isReadT='';
@@ -1916,9 +1916,9 @@ try {
 		// 마지막 메시지의 날짜와 오늘 날짜 비교
 		if($('.msgDate').length > 0){
 			var msgDate = $('.msgDate:last').val().trim();
-			alert('날짜 : '+ msgDate);
+// 			alert('날짜 : '+ msgDate);
 			var todayDate = submitDate.substring(0, 9).trim();
-			alert('오늘날짜 : ' + todayDate);
+// 			alert('오늘날짜 : ' + todayDate);
 			var mDArr = msgDate.split('/');
 			var mY = mDArr[0];
 			var mM = mDArr[1];
@@ -1937,9 +1937,9 @@ try {
 			// 만약 오늘 처음 보낸 메시지라면 오늘구분선 하나 넣어주기, 날짜를 담은 인풋히든 태그도 넣어준다.
 			$seperLine = $('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 			if(mY==tY&&mM==tM&&mD==tD){
-				alert('오늘 처음보낸 메시지가 아니다')
+// 				alert('오늘 처음보낸 메시지가 아니다')
 			}else{
-				alert('오늘 처음보낸 메시지다')				
+// 				alert('오늘 처음보낸 메시지다')				
 				$('.Messages_list').append($seperLine);
 				$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 			}
@@ -2001,7 +2001,7 @@ try {
 			type:"get",
 			data:fMsgInform,
 			success:function(data){
-				alert('DB에 보낸 파일 메시지를 저장 성공 : '+data)
+// 				alert('DB에 보낸 파일 메시지를 저장 성공 : '+data)
 				
 				// 파일객체 초기화
 			 	$('#file').val(null);
@@ -2011,7 +2011,7 @@ try {
 			},
 			complete : function(data) {
 	        	// 실패했어도 완료가 되었을 때 처리
-	        	alert('DB에 보낸 파일 메시지를 저장하러가는 에이작스 끝남')
+// 	        	alert('DB에 보낸 파일 메시지를 저장하러가는 에이작스 끝남')
 			}
 		});
 	}

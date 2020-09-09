@@ -27,15 +27,24 @@
 <script src="https://kit.fontawesome.com/4b6b63d8f6.js"
 	crossorigin="anonymous"></script>
 
+	<!-- 폰트(배혜린 변경) -->
+	<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+		type="text/css">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
+	
 <style>
 body {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	font-family: 'Jua', sans-serif;
+/* 	font-family: 'Jua', sans-serif; */
+/* 	font-family: 'Do Hyeon', sans-serif; */
 	background-color: #212426;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+/* 	font-family: 'Do Hyeon', sans-serif !important; */
 	font-weight: 700;
 }
 
@@ -96,8 +105,8 @@ i {
 
 .back-to-top {
 	position: fixed;
-	bottom: 100px;
-	right: 20px;
+	bottom: 110px;
+	right: 48px;
 	display: none;
 	z-index: 100;
 }
@@ -120,7 +129,7 @@ i {
 	left: 51%;
 	right: 51%;
 	bottom: 0;
-	background: #2098D1;
+	background: #17a2b8;
 	height: 4px;
 	-webkit-transition-property: left, right;
 	transition-property: left, right;
@@ -139,7 +148,8 @@ i {
 
 /* 메뉴바 폰트 */
 #navbarSub ul li a, #navbarMain ul li a {
-	font-family: 'Jua', sans-serif;
+/* 	font-family: 'Jua', sans-serif; */
+	font-family: 'Do Hyeon', sans-serif !important;
 }
 /* 메뉴바 폰트 끝 */
 
@@ -179,10 +189,35 @@ i {
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
+
+/*  */
+.btn-info{
+/* 	background-color: rgb(11,15,66) !important; */
+/* 	outline:none !important; */
+}
 </style>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
+<script>
+$(document).ready(function(){
+	if('${loginUser.memId}'.length > 0){
+		var mId = '${loginUser.memId}';
+		
+		$.ajax({
+			url:"getMyPageSidebarProImg.do",
+			data:{mId:mId},
+			type:"get",
+			success:function(proImgName){
+				$('.dropdown-toggle').find('img').css('visibility','visible').prop('src', '${pageContext.servletContext.contextPath}/resources/proImg/'+proImgName);
+			},
+			error:function(error){
+				alert('error : ' + error);
+			}
+		});
+	}
+});
+</script>
 <body>
 	
 
@@ -223,20 +258,20 @@ i {
 
 		<div class="collapse navbar-collapse" id="navbarMain">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="#"><img
-						src="${contextPath }/resources/images/logo.png" height="80px"
+				<li class="nav-item active"><a class="nav-link" href="home.do"><img
+						src="${contextPath }/resources/images/logo.png" height="60px"
 						style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;"><span
 						class="sr-only">(current)</span></a></li>
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do">프로젝트찾기</a>
+					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do" style="font-size:18px;">프로젝트찾기</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do">프로젝트등록</a>
+					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do" style="font-size:18px;">프로젝트등록</a>
 				</li>
 				<li class="nav-item dropdown">
-					<a class="nav-link hvr-underline-from-center dropbtn" href="#">회원 찾기</a>
+					<a class="nav-link hvr-underline-from-center dropbtn" href="#" style="font-size:18px;">회원 찾기</a>
 					<div class="dropdown-content">
 						<a href="clientList.do ">클라이언트 찾기</a>
 						<a href="partnersList.do">파트너스 찾기</a>
@@ -256,12 +291,12 @@ i {
 				<!-- 관리자 로그인 -->
 					<c:if test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
 						<h3 align="right" style="color: white">
-							<c:out value="${loginUser.userType }관리자"/>
+							<span style="font-size:16px; font-weight:550;">관리자 ${loginUser.memName }</span>&nbsp;&nbsp;
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    <img src="${contextPath }/resources/images/admin.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">
+							    <img src="" height="30px" width="30px" style="border-radius: 50%" onerror="this.style.visibility='hidden';">		
 							  </button>
-							  <div class="dropdown-menu">
+							  <div class="dropdown-menu" style="position:absolute;left:-88px;">
 							    <a class="dropdown-item" href="#">profile</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>
@@ -273,12 +308,11 @@ i {
 					<!-- 사용자 로그인 -->
 					<c:if test="${loginUser.userType eq 'UT3'}">
 						<h3 align="right" style="color: white">
-							<c:out value="${loginUser.userType }사용자"/>
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    <img src="${contextPath }/resources/images/client.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
+							    <img src="" height="30px" width="30px" style="border-radius: 50%" onerror="this.style.visibility='hidden';">									  
 							  </button>
-							  <div class="dropdown-menu">
+							  <div class="dropdown-menu" style="position:absolute;left:-88px;">
 							  	<c:url var="clientProfile" value="clientProfile.do">
 			                    	<c:param name="cId" value="${loginUser.memId }"/>
 			                    </c:url>
@@ -294,15 +328,15 @@ i {
 					</c:if>
 					<c:if test="${loginUser.userType eq 'UT4'}">
 						<h3 align="right" style="color: white">
-							<c:out value="${loginUser.userType }사용자"/>
+							<span style="font-size:16px; font-weight:550;">${loginUser.memName }</span>&nbsp;&nbsp;
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							  <!-- 파트너스 기본 이미지 -->
 							  <c:if test="${loginUser.userType eq 'UT4' }">
-							    <img src="${contextPath }/resources/images/partners.png" height="50px" width="50px" style="border-radius: 50px 50px 50px 50px">							  
+							    <img src="" height="30px" width="30px" style="border-radius: 50%" onerror="this.style.visibility='hidden';">							  
 							  </c:if>
 							  </button>
-							  <div class="dropdown-menu">
+							  <div class="dropdown-menu" style="position:absolute;left:-88px;">
 							  <c:url var="partnersProfile" value="partnersProfile.do">
 						      	<c:param name="pId" value="${loginUser.memId }"/>
 						      </c:url>
@@ -316,23 +350,22 @@ i {
 						</h3>
 					</c:if>
 				</c:if>
-				</div>
-			</ul>
-		</div>
-			</ul>
-		</div>
+				</ul>
+			</div>
 	</nav>
 
 	<script>
 		$(function() {
 			$("#navbarMain .nav-link").mouseenter(function() {
-				$(this).css("font-size", "105%");
+// 				$(this).css("font-size", "120%");
 			})
 
 			$("#navbarMain .nav-link").mouseleave(function() {
-				$(this).css("font-size", "100%");
+// 				$(this).css("font-size", "115%");
 			})
 		})
+		
+		
 	</script>
 
 	<!-- Optional JavaScript -->

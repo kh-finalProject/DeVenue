@@ -225,6 +225,12 @@ public class MyPageServiceImpl implements MyPageService{
 	public ArrayList<PmypageProcess> selectPartnersProcess(Integer pId) {
 		return myPageDao.selectPartnersProcess(pId);
 	}
+	
+	@Override
+	public String getMyPageSidebarProImg(String mId) {
+		return myPageDao.getMyPageSidebarProImg(mId);
+
+	}
 
 
 

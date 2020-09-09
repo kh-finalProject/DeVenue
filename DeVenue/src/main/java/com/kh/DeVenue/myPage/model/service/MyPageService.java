@@ -92,6 +92,8 @@ public interface MyPageService {
 
 	ArrayList<PmypageProcess> selectPartnersProcess(Integer pId);
 
+	String getMyPageSidebarProImg(String mId);
+
 
 
 

@@ -417,6 +417,13 @@
 		WHERE MEM_ID=#{cId}
 	</select>
 	
+	<!-- 마이페이지 사이드메뉴바 프로필사진이름 가져오기 -->
+	<select id="getMyPageSidebarProImg" parameterType="string" resultType="string">
+		SELECT PROFILE_IMG
+		FROM PROFILE P, MEMBER M
+		WHERE P.MEM_ID = M.MEM_ID AND M.MEM_ID = #{mId}
+	</select>
+	
 	<!-- 파트너스 마이페이지 메인 유저정보 -->
 	<select id="selectPartnersInfo" parameterType="int" resultMap="partnersInfoResult">
 		SELECT *
