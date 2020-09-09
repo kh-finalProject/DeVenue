@@ -141,6 +141,10 @@
 					class="fas fa-angle-right"></i></div>
 			<div id="subInfoMenu" class="myPage_sideNav_serveC">
 				<%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
+				<form method="GET" action="profile.do">
+					<input type="hidden" name="pId" value="${loginUser.memId }">
+					<button class="aTag" style="cursor: text;">전체보기</button>
+				</form>
 				<form method="GET" action="partInfo.do">
 					<input type="hidden" name="profileId" value="${profile.profileId }">
 					<button class="aTag" style="cursor: text;">${clOrPt } 정보</button>

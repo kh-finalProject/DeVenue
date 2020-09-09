@@ -14,6 +14,11 @@ import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.myPage.model.vo.PartnersApplyCount;
+import com.kh.DeVenue.myPage.model.vo.PartnersContractCount;
+import com.kh.DeVenue.myPage.model.vo.PmypagePartnersInfo;
+import com.kh.DeVenue.myPage.model.vo.PmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
@@ -194,6 +199,31 @@ public class MyPageServiceImpl implements MyPageService{
 	@Override
 	public CmypageClientInfo selectClientInfo(Integer cId) {
 		return myPageDao.selectClientInfo(cId);
+	}
+
+	@Override
+	public PmypagePartnersInfo selectPartnersInfo(Integer pId) {
+		return myPageDao.selectPartnersInfo(pId);
+	}
+
+	@Override
+	public ArrayList<PartnersApplyCount> getApplyCount(Integer pId) {
+		return myPageDao.getApplyCount(pId);
+	}
+
+	@Override
+	public ArrayList<PartnersContractCount> getContractCount(Integer pId) {
+		return myPageDao.getContractCount(pId);
+	}
+
+	@Override
+	public ArrayList<PmypageSuggest> selectPartnersSuggest(Integer pId) {
+		return myPageDao.selectPartnersSuggest(pId);
+	}
+
+	@Override
+	public ArrayList<PmypageProcess> selectPartnersProcess(Integer pId) {
+		return myPageDao.selectPartnersProcess(pId);
 	}
 
 

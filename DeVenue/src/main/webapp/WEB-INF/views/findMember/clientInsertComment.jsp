@@ -596,7 +596,12 @@
                 <br>
                 <div style="padding-bottom: 5.5%;">
                     <div class="image-container">
-                        <img src="${contextPath }/resources/images/showcase.jpg" style="object-fit: cover;">
+                    	<c:if test="${!empty fc[0].profileImg }">
+                        <img src="${contextPath }/resources/proImg/${fc[0].profileImg}" style="object-fit: cover;">
+	                    </c:if>
+	                    <c:if test="${empty fc[0].profileImg }">
+	                        <img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover;">
+	                    </c:if>
                     </div>
                     <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
                     <div>

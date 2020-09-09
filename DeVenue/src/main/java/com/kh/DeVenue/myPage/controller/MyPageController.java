@@ -1,11 +1,8 @@
 package com.kh.DeVenue.myPage.controller;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +28,11 @@ import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.myPage.model.vo.PartnersApplyCount;
+import com.kh.DeVenue.myPage.model.vo.PartnersContractCount;
+import com.kh.DeVenue.myPage.model.vo.PmypagePartnersInfo;
+import com.kh.DeVenue.myPage.model.vo.PmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
@@ -698,19 +700,27 @@ public class MyPageController {
 			System.out.println("파트너스 아이디 : "+pId);
 			
 			// 기본정보 및 프로젝트 횟수
-			CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(pId);
-			System.out.println("projectHistory : " + projectHistory);
+			PmypagePartnersInfo partnersInfo = myPageService.selectPartnersInfo(pId);
+			System.out.println("partnersInfo : " + partnersInfo);
+
+			ArrayList<PartnersApplyCount> applyCount =  myPageService.getApplyCount(pId);
+			System.out.println("지원수 : " + applyCount);
+			
+			ArrayList<PartnersContractCount> contractCount =  myPageService.getContractCount(pId);
+			System.out.println("계약 수 : " + contractCount);
 			
 			// 내게온 제안 조회
-			ArrayList<CmypageSuggest> suggest = myPageService.selectSuggest(pId);
+			ArrayList<PmypageSuggest> suggest = myPageService.selectPartnersSuggest(pId);
 			System.out.println("내게 온 제안 : "+suggest);
 			
 			// 진행중인 프로젝트 조회
-			ArrayList<CmypageProcess> process = myPageService.selectProcess(pId);
+			ArrayList<PmypageProcess> process = myPageService.selectPartnersProcess(pId);
 			System.out.println("진행중인 프로젝트 : "+process);
 				
-			if(projectHistory!=null) {
-				mv.addObject("ph", projectHistory)
+			if(partnersInfo!=null) {
+				mv.addObject("info", partnersInfo)
+				.addObject("apply", applyCount)
+				.addObject("contract", contractCount)
 				.addObject("suggest", suggest)
 				.addObject("process", process)
 				.setViewName("member/partnersMyPage");

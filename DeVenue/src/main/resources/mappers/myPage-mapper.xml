@@ -190,6 +190,56 @@
   	<result property="introduction" column="INTRODUCTION"/>
   	<result property="url" column="URL"/>
   </resultMap>
+  
+  <resultMap type="PmypagePartnersInfo" id="partnersInfoResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+  	<result property="email" column="MEM_EMAIL"/>
+  	<result property="iStatus" column="IDE_STATUS"/>
+  	<result property="phone" column="PHONE"/>
+  	<result property="cellPhone" column="CELLPHONE"/>
+  	<result property="proImg" column="PROFILE_IMG"/>
+  </resultMap>
+  
+  <resultMap type="PartnersApplyCount" id="applyCountResult">
+  	<result property="proAid" column="PRO_AID"/>
+  	<result property="memPid" column="MEM_PID"/>
+  	<result property="proId" column="PRO_ID"/>
+  	<result property="proApayment" column="PRO_APAYMENT"/>
+  	<result property="proAduration" column="PRO_ADURATION"/>
+  	<result property="proAcontent" column="PRO_ACONTENT"/>
+  	<result property="proAresume" column="PRO_ARESUME"/>
+  	<result property="proRearesume" column="PRO_REARESUME"/>
+  	<result property="proApplyDate" column="PRO_APPLY_DATE"/>
+  	<result property="proAsaveStatus" column="PRO_ASAVE_STATUS"/>
+  	<result property="proAstatus" column="PRO_ASTATUS"/>
+  </resultMap>
+  
+  <resultMap type="PartnersContractCount" id="contractCountResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="countContract" column="PRO_PM_ID"/>
+  </resultMap>
+  
+  <resultMap type="PmypageSuggest" id="pSuggestResult">
+  	<id property="memId" column="MEM_ID"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+  	<result property="eAgv" column="E_AGV"/>
+  	<result property="proName" column="PRO_NAME"/>
+  </resultMap>
+  
+  <resultMap type="PmypageProcess" id="pProcessResult">
+  	<result property="proName" column="PRO_NAME"/>
+  	<result property="mcType" column="MC_TYPE"/>
+  	<result property="dcType" column="DC_TYPE"/>
+  	<result property="proPayment" column="PRO_PAYMENT"/>
+  	<result property="proStartDate" column="PRO_START_DATE"/>
+  	<result property="endDate" column="END_DATE"/>
+  	<result property="countPartners" column="COUNT_PARTNERS"/>
+  	<result property="memId" column="MEM_ID"/>
+  </resultMap>
+  
 	
 	<!-- 회원가입시  파트너스 정보 기본으로 생성 -->
 	<insert id="insertPartInfo" parameterType="PartInfo">
@@ -368,7 +418,33 @@
 	</select>
 	
 	<!-- 파트너스 마이페이지 메인 유저정보 -->
-<!-- 	<select id="" parameterType="int" resulteMap="">
+	<select id="selectPartnersInfo" parameterType="int" resultMap="partnersInfoResult">
+		SELECT *
+		FROM PARTNERSINFO_VIEW
+		WHERE MEM_ID=#{pId}
+	</select>
+	<select id="getApplyCount" parameterType="int" resultMap="applyCountResult">
+		SELECT PRO_ID
+		FROM P_APPLY PA
+		WHERE MEM_PID=#{pId}
+	</select>
+	<select id="getContractCount" parameterType="int" resultMap="contractCountResult">
+		SELECT PRO_PM_ID
+		FROM P_MATCH
+		WHERE MEM_ID=#{pId}
+	</select>
 	
-	</select> -->
+	<!-- 파트너스 마이페이지 내게 온 제안 -->
+	<select id="selectPartnersSuggest" parameterType="int" resultMap="pSuggestResult">
+		SELECT *
+		FROM PARTNERSMAIN_SUGGEST_VIEW
+		WHERE MEM_ID=#{pId}
+	</select>
+	
+	<!-- 파트너스 마이페이지 진행중 프로젝트 -->
+	<select id="selectPartnersProcess" parameterType="int" resultMap="pProcessResult">
+		SELECT *
+		FROM PARTNERSMAIN_INGPROJECT_VIEW
+		WHERE MEM_ID=#{pId}
+	</select>
 </mapper>
