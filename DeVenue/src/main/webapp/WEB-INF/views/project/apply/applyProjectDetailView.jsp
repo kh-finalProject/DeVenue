@@ -2004,7 +2004,7 @@
 								
 								
 								var aaContent=[];
-								var answer=$("input[name='aaContent']");
+								var answer=$(".apply_answer_textarea");
 								
 								
 								if(answer.length!=0){
@@ -2068,6 +2068,10 @@
 								if(resume!=null){
 								form.append("resume",resume);
 								}
+								
+								console.log("aaContent"+aaContent);
+								console.log("aqId"+aqId);
+								console.log("portId"+portId);
 								
 								$.ajax({
 									url:"saveTempApplication.do",

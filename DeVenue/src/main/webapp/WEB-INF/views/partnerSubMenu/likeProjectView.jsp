@@ -234,22 +234,91 @@
             <div class="col-md-12 mt-3">
             <h4>관심 프로젝트</h4>
             <div class="checkbox">
+            <c:if test="${not empty filter}">
+            <c:choose>
+            <c:when test="${filter.sorting eq 'CDATE'}">
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="CDATE" checked>
+                <label class="custom-control-label" for="sorting_recent">최신 순</label>
+            </div>
+            </c:when>
+            <c:otherwise>
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="CDATE">
+                <label class="custom-control-label" for="sorting_recent">최신 순</label>
+            </div>
+            </c:otherwise>
+            </c:choose>
+            
+            <c:choose>
+            <c:when test="${filter.sorting eq 'PAYMENT'}">
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_price" value="PAYMENT" checked>
+                <label class="custom-control-label" for="sorting_price">금액 내림차순</label>
+            </div>
+            </c:when>
+            <c:otherwise>
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_price" value="PAYMENT">
+                <label class="custom-control-label" for="sorting_price">금액 내림차순</label>
+            </div>
+            </c:otherwise>
+            </c:choose>
+            
+            <c:choose>
+            <c:when test="${filter.sorting eq 'RENDDATE'}">
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_endday" value="RENDDATE" checked>
+                <label class="custom-control-label" for="sorting_endday">마감일 임박 순</label>
+              </div>
+            </c:when>
+            <c:otherwise>
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_endday" value="RENDDATE">
+                <label class="custom-control-label" for="sorting_endday">마감일 임박 순</label>
+              </div>
+            </c:otherwise>
+            </c:choose>
+			</c:if>
+			
+			<c:if test="${empty filter}">
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="CDATE">
                 <label class="custom-control-label" for="sorting_recent">최신 순</label>
             </div>
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_price">
-                <label class="custom-control-label" for="sorting_price">금액 오름차순</label>
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_price" value="PAYMENT">
+                <label class="custom-control-label" for="sorting_price">금액 내림차순</label>
             </div>
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_endday">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_endday" value="RENDDATE">
                 <label class="custom-control-label" for="sorting_endday">마감일 임박 순</label>
               </div>
-
+			</c:if>
+			
             </div>
             </div>
           </div>
+          <script>
+          $(function(){
+        	
+        	  var sorting=$("input[name='sorting']");
+        	  var check;
+        	  
+        	  sorting.change(function(){
+        		
+        		  if($(this).prop("checked")){
+        			 
+        			  check=$(this).val();
+        			  location.href="likeProjectList.do?sorting"+check;
+        		  }
+        		  
+        	  })
+        	  
+          })
+          
+          
+          </script>
 
           <div id="subMenu_search" class="row">
 
@@ -304,6 +373,11 @@
             	<c:param name="dCategory" value="${like.pList.dCategory}"/>
             	</c:url>
             	
+            	<c:url var="papply" value="applyThisProject.do">
+            	<c:param name="pId" value="${like.pList.id}"/>
+            	</c:url>
+            	
+            	
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -357,7 +431,7 @@
                                   <input type="hidden" class="myLike" value="${like.proLId}">
                                   <div class="likeCancel mt-2 mb-4"><i class="fas fa-times float-right">삭제</i></div>
                                   <button type="button" onclick="location.href='${pdetail}'" class="btn btn-secondary btn-block">상세보기</button>
-                                  <button type="button" class="btn btn-info btn-block">지원하기</button>
+                                  <button type="button" class="btn btn-info btn-block" onclick="location.href='${papply}'">지원하기</button>
                                 </div>
                               </div>
                             </div>

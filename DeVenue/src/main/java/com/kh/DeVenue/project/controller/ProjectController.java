@@ -495,7 +495,7 @@ ProjectService pService;
 		
 		System.out.println("parameter 뭐 넘어왔나?"+project);
 		//프로젝트 디테일 가져오기
-		System.out.println(project);
+		
 		ProjectDetail detail=pService.selectProjectDetail(project.getId());
 		
 		// 클라이언트의 전체 프로젝트 수 
@@ -512,10 +512,10 @@ ProjectService pService;
 		ArrayList<ProjectList> candidate=pService.selectRecommend(project);
 		System.out.println("화면단 가기 전, 추천 프로젝트 리스트"+candidate);
 		
-		
+		mv.addObject("page",page);
 		mv.addObject("detail", detail);
 		mv.addObject("candidate", candidate);
-		mv.setViewName("project/findProjectDetailView");
+		mv.setViewName("project/find/findProjectDetailView");
 		return mv;
 		
 	}
@@ -901,7 +901,15 @@ ProjectService pService;
 	}
 	
 	@RequestMapping(value = "likeProjectList.do")
-	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page) {
+	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page,
+			@ModelAttribute ProjectFilter filter, @RequestParam (value="sorting", required=false) String sorting) {
+		
+		//정렬조건을 확인하자
+		System.out.println("정렬조건"+sorting);
+		
+		if(sorting!=null) {
+			filter.setSorting(sorting);
+		}
 		
 		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
 		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
@@ -913,17 +921,24 @@ ProjectService pService;
 			currentPage=page;
 		}
 		
+		//조회를 위해 hash map 준비
+		HashMap condition=new HashMap();
+		condition.put("memId", memId);
+		condition.put("filter",filter);
+		
 		//전체 관심프로젝트 수
-		int listCount=pService.getLikeListCount(memId);
+		int listCount=pService.getLikeListCount(condition);
 		PageInfo pi=getPageInfo(currentPage, listCount);
 		
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectLike> likeList=pService.selectLikeProject(memId,pi);
+		ArrayList<ProjectLike> likeList=pService.selectLikeProject(filter,pi);
 		
 		System.out.println("화면단 가기전 관심 등록 리스트:"+likeList);
 		
 		mv.addObject("like", likeList);
 		mv.addObject("pi", pi);
+		mv.addObject("filter", filter);
+		
 		mv.setViewName("partnerSubMenu/likeProjectView");
 		
 		return mv;
@@ -953,7 +968,7 @@ ProjectService pService;
 	
 	
 	@RequestMapping(value="applyThisProject.do")
-	public ModelAndView applyProjectDetail(HttpServletRequest request,ModelAndView mv, @RequestParam(value="pId") Integer pId, @RequestParam(value="page") Integer page) {
+	public ModelAndView applyProjectDetail(HttpServletRequest request,ModelAndView mv, @RequestParam(value="pId") Integer pId, @RequestParam(value="page", required=false) Integer page) {
 		
 		//프로젝트 디테일 정보 가져오기
 		ProjectDetail detail=pService.selectProjectDetail(pId);
@@ -1044,7 +1059,9 @@ ProjectService pService;
 		//답변을 set
 		ArrayList<ApplyAnswer> answer=new ArrayList<>();
 		
-		if(aqId!=null) {
+		
+		
+		if(aaContent.length!=0) {
 		
 		for(int i=0;i<aqId.length;i++) {
 			ApplyAnswer a=new ApplyAnswer();
@@ -1056,6 +1073,8 @@ ProjectService pService;
 		application.setAnswer(answer);
 		
 		}
+		
+		
 		
 		System.out.println("지원서 insert 전, 지원서:"+application);
 		
@@ -1069,7 +1088,7 @@ ProjectService pService;
 		if(result1>0) {
 			
 			//지원답변이 있을 경우,
-			if(aqId!=null) {
+			if(aaContent.length!=0) {
 			for(int i=0;i<aqId.length;i++) {
 			result2=pService.addApplyAnswer(application.getAnswer().get(i));
 			}
@@ -1082,7 +1101,7 @@ ProjectService pService;
 		ArrayList<ApplyPortfolio> pofo=new ArrayList<>();
 		//지원 포트폴리오도 insert한다
 		
-		if(portId!=null) {
+		if(portId.length!=0) {
 		
 		for(int i=0;i<portId.length;i++) {
 			
@@ -1101,7 +1120,7 @@ ProjectService pService;
 		if(result1>0) {
 			
 			//지원 포트폴리오가 있는 경우
-			if(portId!=null) {
+			if(portId.length!=0) {
 			for(int i=0;i<portId.length;i++) {
 			result3=pService.addApplyPofol(application.getPortfolio().get(i));
 			}
@@ -1180,13 +1199,18 @@ ProjectService pService;
 			@RequestParam(value="aPayment", required=false) Integer aPayment,
 			@RequestParam(value="aDuration", required=false) Integer aDuration,
 			@RequestParam(value="aContent", required=false) String aContent,
-			@RequestParam(value="aqId", required=false) Integer[] aqId,
-			@RequestParam(value="aaContent",required=false) String[] aaContent,
+			@RequestParam(value="aqId", required=false) ArrayList<Integer> aqId,
+			@RequestParam(value="aaContent",required=false) ArrayList<String> aaContent,
 			@RequestParam(value="resume",required=false) MultipartFile resume,
-			@RequestParam(value="portId",required=false) Integer[] portId,
+			@RequestParam(value="portId",required=false) ArrayList<Integer> portId,
 			@RequestParam(value="portContent",required=false) String portContent) throws IllegalStateException, IOException {
 		
 		System.out.println("임시저장 컨트롤러에 진입!");
+		
+		
+		System.out.println("aqId"+aqId);
+		System.out.println("aaContent"+aaContent);
+		System.out.println("portId"+portId);
 		
 		//최종 결과
 		int result=0;
@@ -1202,10 +1226,8 @@ ProjectService pService;
 		application.put("aContent", aContent);
 		
 		int count=pService.getTempSave(application);
+		System.out.println("저장된 지원서 숫자"+count);
 		
-		
-			
-			
 			String reNameResume="";
 			String originalResume="";
 			//이력서를 저장하자
@@ -1214,19 +1236,20 @@ ProjectService pService;
 				originalResume=resume.getOriginalFilename();
 			}
 			
-			application.put("reNameResume",reNameResume);
-			application.put("originalResume",originalResume);
+		application.put("reNameResume",reNameResume);
+		application.put("originalResume",originalResume);
 			
 			
 			//답변 리스트
 			ArrayList<ApplyAnswer> answer=new ArrayList<>();
 			
-			if(aqId!=null&&aaContent!=null) {
+			if(aaContent!=null) {
 			
-			for(int i=0;i<aaContent.length;i++) {
+			for(int i=0;i<aaContent.size();i++) {
+				System.out.println("답변 인덱스"+i);
 				ApplyAnswer a=new ApplyAnswer();
-				a.setAqId(aqId[i]);
-				a.setAaContent(aaContent[i]);
+				a.setAqId(aqId.get(i));
+				a.setAaContent(aaContent.get(i));
 				answer.add(a);
 			}
 			
@@ -1239,12 +1262,11 @@ ProjectService pService;
 			ArrayList<ApplyPortfolio> pofo=new ArrayList<>();
 			if(portId!=null) {
 			
-			for(int i=0;i<portId.length;i++) {
+			for(int i=0;i<portId.size();i++) {
 				
 				ApplyPortfolio ap=new ApplyPortfolio();
-				ap.setPortId(portId[i]);
+				ap.setPortId(portId.get(i));
 				ap.setApContent(portContent);
-				
 				pofo.add(ap);
 			}
 			
@@ -1258,6 +1280,8 @@ ProjectService pService;
 			//이미 저장된 지원서가 있는지 여부에 따라 2가지 선택
 			
 			if(count>0) {
+				System.out.println("이미 저장된 지원서가 있다.");
+				
 				//update 이미 저장된 지원서가 있다면, 기존의 임시 저장 파일에 업데이트
 				int result1=0;
 				int result2=0;
@@ -1285,13 +1309,14 @@ ProjectService pService;
 				//임시저장 파일 아이디를 참조하여 업데이트 한다.
 				result1=pService.updateTempApplication(application);
 				
+				System.out.println("기존 답변 확인하자.");
 				//답변을 업데이트 하기 전, 기존의 답변이 있는지 확인한다.
 				int answerCount=0;
-				if(!answer.isEmpty()) {
+				if(answer.size()!=0) {
 				for(int i=0;i<answer.size();i++) {
 					
 					answer.get(i).setaId(aId);
-					application.put("answer", answer.get(i));
+					application.put("each", answer.get(i));
 					answerCount=pService.isAnswerExist(application);
 					
 					if(answerCount>0) {
@@ -1309,7 +1334,7 @@ ProjectService pService;
 				
 				//포트폴리오 업데이트 하기 전, 기존에 등록한 포트폴리오가 있는지 확인한다.
 				int pofoCount=0;
-				if(!pofo.isEmpty()) {
+				if(pofo.size()!=0) {
 					
 						pofoCount=pService.isPofoExist(application);
 						
@@ -1333,6 +1358,7 @@ ProjectService pService;
 				
 			}else {
 				
+				System.out.println("기존의 지원서가 없다.");
 				//기존에 임시저장된 지원서가 없다면, insert
 				int result1=0;
 				int result2=0;
@@ -1345,8 +1371,8 @@ ProjectService pService;
 				if(result1>0) {
 					
 					//지원답변이 있을 경우,
-					if(aqId!=null) {
-					for(int i=0;i<aqId.length;i++) {
+					if(answer.size()!=0) {
+					for(int i=0;i<answer.size();i++) {
 					result2=pService.addApplyAnswer(answer.get(i));
 					}
 					}
@@ -1358,8 +1384,8 @@ ProjectService pService;
 				if(result1>0) {
 					
 					//지원 포트폴리오가 있는 경우
-					if(portId!=null) {
-					for(int i=0;i<portId.length;i++) {
+					if(pofo.size()!=0) {
+					for(int i=0;i<pofo.size();i++) {
 					result3=pService.addApplyPofol(pofo.get(i));
 					}
 					
@@ -1459,11 +1485,11 @@ ProjectService pService;
 		int memId=((Member)(request.getSession().getAttribute("loginUser"))).getMemId();
 		ArrayList<Portfolio> pf=pService.selectPortfolio(memId);
 		
-		
+		System.out.println("지원서 id"+aId);
 		//임시저장된 지원서(포트폴리오,답변 포함) 가져오기
 		Application application=pService.selectTempApplication(aId);
+		System.out.println("임시저장 지원서 가져오기"+application);
 		mv.addObject("app", application);
-				
 		mv.addObject("page", currentPage);
 		mv.addObject("pofol", pf);
 		

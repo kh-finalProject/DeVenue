@@ -171,6 +171,7 @@
   	<result property="proPayment" column="PRO_PAYMENT"/>
   	<result property="proStartDate" column="PRO_START_DATE"/>
   	<result property="proEndDate" column="PRO_END_DATE"/>
+  	<result property="countPartners" column="COUNT_PARTNERS"/>
   </resultMap>
   
   <resultMap type="CmypageClientInfo" id="clientInfoResult">

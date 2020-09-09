@@ -47,7 +47,7 @@ public interface MemberService {
 
 	ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id);
 
-	FindClientDetail selectClientDetail(Integer cId);
+	ArrayList<FindClientDetail> selectClientDetail(Integer cId);
 
 	int insertEval(HashMap id);
 	

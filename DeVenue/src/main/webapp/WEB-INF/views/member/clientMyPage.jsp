@@ -252,7 +252,7 @@
 										<td><fmt:formatNumber value="${p.proPayment }" type="number" groupingUsed="true"/>원</td>
 										<td>${p.proStartDate }</td>
 										<td>${p.proEndDate }</td>
-										<td>4명</td>
+										<td>${p.countPartners }명</td>
 									</tr>
 									</c:forEach>
 									<!-- <tr>

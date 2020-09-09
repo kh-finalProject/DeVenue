@@ -93,11 +93,11 @@
                         &emsp;<i class="fas fa-phone-alt"></i>&nbsp;연락처 등록
                     </div> -->
                     <div class="col-8" style="margin-left:5%;">
-                        &emsp;<b>${fc.memNick }</b>&emsp;<a class="badge badge-info">${fc.memTypeName }</a><br>
-                        <c:if test="${fc.ideStatus eq 'COMPLETE' }">
+                        &emsp;<b>${fc[0].memNick }</b>&emsp;<a class="badge badge-info">${fc[0].memTypeName }</a><br>
+                        <c:if test="${fc[0].ideStatus eq 'COMPLETE' }">
                         &emsp;<i class="far fa-address-card"></i>&nbsp;신원인증
                         </c:if>
-                        <c:if test="${!empty fc.phone }">
+                        <c:if test="${!empty fc[0].phone }">
                         &emsp;<i class="fas fa-phone-alt"></i>&nbsp;연락처 등록
                         </c:if>
                     </div>
@@ -115,7 +115,12 @@
                 <br>
                 <div style="padding-bottom: 5.5%;">
                     <div class="image-container">
-                        <img src="${contextPath }/resources/images/${fc.profileImg}" style="object-fit: cover;">
+                    <c:if test="${!empty fc[0].profileImg }">
+                        <img src="${contextPath }/resources/proImg/${fc[0].profileImg}" style="object-fit: cover;">
+                    </c:if>
+                    <c:if test="${empty fc[0].profileImg }">
+                        <img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover;">
+                    </c:if>
                     </div>
                     <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
                     <div>
@@ -129,18 +134,18 @@
                         </div>
                     </div>
                     <c:url var="cDetail" value="cDetail.do">
-                    	<c:param name="cId" value="${fc.memId }"/>
+                    	<c:param name="cId" value="${fc[0].memId }"/>
                     	<%-- <c:param name="page" value="${pi.currentPage }"/> --%>
                     </c:url>
                     <c:url var="cProjectHistory" value="cProjectHistory.do">
-                    	<c:param name="cId" value="${fc.memId }"/>
+                    	<c:param name="cId" value="${fc[0].memId }"/>
                     </c:url>
                     <c:url var="cEvalSelect" value="cEvalSelect.do">
-                    	<c:param name="cId" value="${fc.memId }"/>
+                    	<c:param name="cId" value="${fc[0].memId }"/>
                     	<c:param name="msg" value="1"/>
                     </c:url>
                     <c:url var="cEvalInsert" value="cEvalInsert.do">
-                    	<c:param name="cId" value="${fc.memId }"/>
+                    	<c:param name="cId" value="${fc[0].memId }"/>
                     	<c:choose>
                     		<c:when test="${!empty loginUser }">
 	                    		<c:param name="pId" value="${loginUser.memId }"/>
@@ -187,77 +192,77 @@
                             <div class="point"><b>활동 정보</b></div>
                             <div id="starPoint" class="point" style="text-align: center;">
                                 <c:choose>
-                                    	<c:when test="${fc.avgEagv == 0 }">
+                                    	<c:when test="${fc[0].avgEagv == 0 }">
 	                                        <i id="firstStar" class="far fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star-half-alt"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star-half-alt"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv > 0 && fc.avgEagv < 1 }">
+                                        <c:when test="${fc[0].avgEagv > 0 && fc[0].avgEagv < 1 }">
 	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv == 1 }">
+                                        <c:when test="${fc[0].avgEagv == 1 }">
 	                                        <i id="firstStar" class="fas fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv > 1 && fc.avgEagv < 2 }">
+                                        <c:when test="${fc[0].avgEagv > 1 && fc[0].avgEagv < 2 }">
 	                                        <i id="firstStar" class="fas fa-star"></i>
 	                                        <i class="fas fa-star-half-alt"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv == 2 }">
+                                        <c:when test="${fc[0].avgEagv == 2 }">
                                         	<i id="firstStar" class="fas fa-star"></i>
                                         	<i class="fas fa-star"></i>
                                         	<i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv > 2 && fc.avgEagv < 3 }">
+                                        <c:when test="${fc[0].avgEagv > 2 && fc[0].avgEagv < 3 }">
 	                                        <i id="firstStar" class="fas fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star-half-alt"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv == 3 }">
+                                        <c:when test="${fc[0].avgEagv == 3 }">
                                         	<i id="firstStar" class="fas fa-star"></i>
                                         	<i class="fas fa-star"></i>
                                         	<i class="fas fa-star"></i>
 	                                        <i class="far fa-star"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv > 3 && fc.avgEagv < 4 }">
+                                        <c:when test="${fc[0].avgEagv > 3 && fc[0].avgEagv < 4 }">
 	                                        <i id="firstStar" class="fas fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star-half-alt"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv == 4 }">
+                                        <c:when test="${fc[0].avgEagv == 4 }">
                                         	<i id="firstStar" class="fas fa-star"></i>
                                         	<i class="fas fa-star"></i>
                                         	<i class="fas fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="far fa-star"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv > 4 && fc.avgEagv < 5 }">
+                                        <c:when test="${fc[0].avgEagv > 4 && fc[0].avgEagv < 5 }">
 	                                        <i id="firstStar" class="fas fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star"></i>
 	                                        <i class="fas fa-star-half-alt"></i>
                                         </c:when>
-                                        <c:when test="${fc.avgEagv == 5 }">
+                                        <c:when test="${fc[0].avgEagv == 5 }">
                                         	<i id="firstStar" class="fas fa-star"></i>
                                         	<i class="fas fa-star"></i>
                                         	<i class="fas fa-star"></i>
@@ -268,17 +273,17 @@
                             </div>
                             <div style="text-align: center;">
                                 <!-- <p>4.5 / 평가 4개</p> -->
-                                ${fc.avgEagv } / 평가 ${fc.countEagv }개
+                                ${fc[0].avgEagv } / 평가 ${fc[0].countEagv }개
                             </div>
                             <div class="point">
                                 <b>진행한 프로젝트 수</b>
                                 <!-- <b style="float:right">22개</b> -->
-                                <b style="float:right">${fc.countProId }개</b>
+                                <b style="float:right">${fc[0].countProId }개</b>
                             </div>
                             <div class="point" style="margin-right:0;">
                                 <b>자주 진행한 프로젝트</b>
                                 <!-- <a class="badge badge-info">WEB</a> -->
-                                <a class="badge badge-info">${fc.maxDcType }</a>
+                                <a class="badge badge-info">${fc[0].maxDcType }</a>
                             </div>
                         </div>
                         <div class="col-3">
@@ -292,11 +297,11 @@
                                     <p>만족도</p>
                                 </div>
                                 <div class="point" style="flex:1; margin-right: 0;">
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star1 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star2 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star3 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star4 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc.star5 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star1 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star2 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star3 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star4 }"/>점</p>
+                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star5 }"/>점</p>
                                 </div>
                             </div>
                         </div>
@@ -304,11 +309,11 @@
                             <div id="graphs" class="point" style="flex:1;" style="width: 20%;">
                                 <canvas id="myChart"></canvas>
                                 <script>
-                                	var star1=${fc.star1 };
-                                	var star2=${fc.star2 };
-                                	var star3=${fc.star3 };
-                                	var star4=${fc.star4 };
-                                	var star5=${fc.star5 };
+                                	var star1=${fc[0].star1 };
+                                	var star2=${fc[0].star2 };
+                                	var star3=${fc[0].star3 };
+                                	var star4=${fc[0].star4 };
+                                	var star5=${fc[0].star5 };
                                 
                                     var ctx = document.getElementById('myChart').getContext('2d');
                                     var myRadarChart = new Chart(ctx, {
@@ -369,10 +374,13 @@
                         <div class="col-3">
                             <div class="point"><b>진행한 프로젝트 분류</b></div>
                             <div class="point">
-                                <p>WEB</p>
+                            	<c:forEach var="dc" items="${fc }">
+                            		<p>${dc.memTypeKind }</p>
+                            	</c:forEach>
+                                <!-- <p>WEB</p>
                                 <p>APPLICATION</p>
                                 <p>PUBLISHING</p>
-                                <p>ETC</p>
+                                <p>ETC</p> -->
                                 
                             </div>
                         </div>
@@ -390,7 +398,7 @@
 
 한편 이강인은 2022년 6월이면 발렌시아와의 계약이 만료된다. 발렌시아는 올해 혹은 내년 이강인이 떠나지 않도록 하기 위해 재계약 제안을 건넨 것으로 알려졌다. 하지만 다수 스페인 매체들은 “이강인이 출전 기회를 잡고자 이적을 원한다”고 보도 중이다.
                         </p> -->
-                        <p id="introduction">${fc.introduction }</p>
+                        <p id="introduction">${fc[0].introduction }</p>
                         <a href="#" style="float: right;">자기소개  더 보기 ></a>
                     </div>
                 </div>

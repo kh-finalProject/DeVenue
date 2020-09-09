@@ -284,7 +284,7 @@ public class MemberController {
 	
 	@RequestMapping(value="cDetail.do")
 	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {
-		FindClientDetail fc=mService.selectClientDetail(cId);
+		ArrayList<FindClientDetail> fc=mService.selectClientDetail(cId);
 		System.out.println("fc : " + fc);
 		
 		if(fc!=null) {
