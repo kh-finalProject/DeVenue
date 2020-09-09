@@ -73,9 +73,9 @@ public interface ProjectService {
 
 	int addLikeProject(HashMap ids);
 
-	ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi);
+	ArrayList<ProjectLike> selectLikeProject(ProjectFilter filter, PageInfo pi);
 
-	int getLikeListCount(int memId);
+	int getLikeListCount(HashMap condition);
 
 	int deleteLikeProject(Integer lId);
 

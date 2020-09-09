@@ -253,6 +253,7 @@
 				<result property="proLocation" column="LOCATION"/>
 				<result property="proRecruit" column="RECRUIT"/>
 				<result property="proCreateDate" column="CDATE"/>
+				<result property="proREndDate" column="RENDDATE"/>
 			</association>
 			
 		</association>
@@ -905,20 +906,45 @@
 		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
 	</insert>
 	
-	<select id="getLikeCount" parameterType="int" resultType="_int">
+	<select id="getLikeCount" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
 		WHERE L.MEM_ID=#{memId}
+		<if test="filter.sorting !=null">
+		<choose>
+		<when test="filter.sorting =='PAYMENT'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='CDATE'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='RENDDATE'">
+		ORDER BY #{filter.sorting} ASC
+		</when>
+		</choose>
+		</if>
 	</select>
 	
-	<select id="getLikeList" parameterType="int" resultMap="likeResultSet">
+	<select id="getLikeList" parameterType="hashmap" resultMap="likeResultSet">
 		SELECT L.*,P.*,M.MEM_NICK,M.MEM_EMAIL
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
 		LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
 		WHERE L.MEM_ID=#{memId}
-	
+		<if test="filter.sorting !=null">
+		<choose>
+		<when test="filter.sorting =='PAYMENT'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='CDATE'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='RENDDATE'">
+		ORDER BY #{filter.sorting} ASC
+		</when>
+		</choose>
+		</if>
 	</select>
 	
 	<delete id="deleteLikeProject" parameterType="int">
@@ -1056,14 +1082,14 @@
 	<select id="isAnswerExist" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM P_ANSWER
-		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{each.aqId}
 	</select>
 	
 	<update id="updateTempAnswer" parameterType="hashmap">
 		UPDATE P_ANSWER
-		SET PRO_AA_CONTENT=#{answer.aaContent},
+		SET PRO_AA_CONTENT=#{each.aaContent},
 		PRO_AAC_DATE=SYSDATE
-		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{each.aqId}
 	</update>
 	
 	<select id="isPofoExist" parameterType="hashmap" resultType="_int">
@@ -1088,7 +1114,6 @@
 	(#{aaId},#{aaContent},SYSDATE,#{aId},#{aqId})
 	
 	</insert>
-	
 	
 	<insert id="insertTempPofo" parameterType="ApplyPF">
 	
@@ -1131,7 +1156,7 @@
 		LEFT JOIN P_QUESTION Q ON (W.PRO_AQ_ID=Q.PRO_AQ_ID)
 		LEFT JOIN PORT_APPLY PA ON (PA.PRO_AID=A.PRO_AID)
 		LEFT JOIN PORTFOLIO F ON (PA.PORT_ID=F.PORT_ID)
-		WHERE PRO_AID=#{aId}
+		WHERE PRO_AID=#{aId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS='0'
 		ORDER BY PRO_AID DESC
 	</select>
 	
