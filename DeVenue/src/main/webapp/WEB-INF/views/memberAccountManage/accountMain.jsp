@@ -433,6 +433,8 @@
 <body>
 
   	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
   	<jsp:include page="../common/pSideMenubar.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 
@@ -790,9 +792,9 @@
             </div>
         </div>
     </div>
-
  	<!-- 풋터 가져오기  -->
     <jsp:include page="../common/footer.jsp"/>
+	
     
 
     <!-- 개인 스크립트 -->

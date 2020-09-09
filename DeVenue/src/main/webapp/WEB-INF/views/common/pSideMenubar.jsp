@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
-<html>
+<html style="z-index:0 !important;">
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
@@ -40,22 +40,23 @@
 		type="text/css">
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 
-	<script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
+   <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
 	<!-- chart -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 	<style>
 		body{
 			background-color: #212426;
+			z-index:0 !important;
 		}
 		/* 마이페이지 사이드 메뉴바 전용 css */
 		/* 사이드 메뉴바 전체 영역 */
 		.myPage_sideNav_area {
 			width: 17%;
-			height: 100%;
 			position: absolute;
 			box-shadow: 0px 1px 1px 1px rgb(20, 20, 20);
 			font-family: 'Do Hyeon', sans-serif !important;
+/* 			height: 100vh; */
 		}
 
 		/* 사이드바 타이틀(파트너스/클라이언트) */
@@ -77,6 +78,7 @@
 		.myPage_sideNav_content {
 			background-color: #262a2c;
 			height: 100%;
+			z-index:11 !important;
 		}
 
 		/* 사이드바 메인 항목 */
@@ -308,7 +310,7 @@ $(document).ready(function(){
 		
 		// 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
         $(function(){
-	        $('.myPage_sideNav_area').height($('.allWrap').height());
+// 	        $('.myPage_sideNav_area').height(window.innerHeight-$('#mainMenubar').height()-$('#subMenubar').height()-$('footer').height());
         })
 	</script>
 	<!-- 서브메뉴바 끝 -->

@@ -218,7 +218,7 @@ $(document).ready(function(){
 	}
 });
 </script>
-<body>
+<body id="mainMenubar">
 	
 
 	<c:set var="contextPath"
