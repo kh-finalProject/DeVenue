@@ -756,10 +756,13 @@
                             </div>
                             <div class="card-footer">
                             	<c:if test="${r.rAnswerStatus eq 'Y'}">
+                            	
                                 <a class="showAnswer">답글보기</a>
                                 </c:if>
                                 <c:if test="${r.rAnswerStatus eq 'N'}">
+                                <c:if test="${loginUser.memId eq detail.project.memId}">
                                 <a class="writeAnswer">답변하기</a>
+                                </c:if>
                                 </c:if>
                             </div>
                         </div>
@@ -983,7 +986,7 @@
         							
         							if(memId!=""){
         							
-        							if($parent[i].writer.memId==memId||${detail.project.memId}==memId){
+        							if($parent[i].writer.memId==memId||"${detail.project.memId}"==memId){
         								
         								$text.text($parent[i].rContent);
         							}else{
@@ -1021,7 +1024,16 @@
         							$isAnswer.addClass("writeAnswer").text("답글쓰기");
         						}
         						
-        						$foot.append($isAnswer);
+        						if($parent[i].rAnswerStatus=='Y'){
+        							$foot.append($isAnswer);
+        						}else{
+        							
+        							if("${detail.project.memId}"==memId){
+        							$foot.append($isAnswer);
+        							}
+        						}
+        						
+        						
         						$body.append($foot);
         						
         						$card.append($body);
