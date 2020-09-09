@@ -105,9 +105,14 @@
 					</script>
 				</div>
 			</div> -->
-			<jsp:include page="../common/pSideMenubar.jsp"/>
+			
 			<!-- <div class="col-10 text-white" -->
-			<div class="col-10 text-white"
+			<!-- <div class="col-10 text-white"
+				style="font-family: 'Jua', sans-serif; margin-left:30%;"> -->
+				
+					<jsp:include page="../common/pSideMenubar.jsp"/>
+				
+				<div class="col-10 text-white"
 				style="font-family: 'Jua', sans-serif; margin-left:20%;">
 				<br>
 				<div class="row">
@@ -303,6 +308,5 @@
 		</div>
 	</div>
 
-	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>
