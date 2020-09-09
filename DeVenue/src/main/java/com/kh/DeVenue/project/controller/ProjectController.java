@@ -901,7 +901,15 @@ ProjectService pService;
 	}
 	
 	@RequestMapping(value = "likeProjectList.do")
-	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page) {
+	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page,
+			@ModelAttribute ProjectFilter filter, @RequestParam (value="sorting", required=false) String sorting) {
+		
+		//정렬조건을 확인하자
+		System.out.println("정렬조건"+sorting);
+		
+		if(sorting!=null) {
+			filter.setSorting(sorting);
+		}
 		
 		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
 		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
@@ -913,17 +921,24 @@ ProjectService pService;
 			currentPage=page;
 		}
 		
+		//조회를 위해 hash map 준비
+		HashMap condition=new HashMap();
+		condition.put("memId", memId);
+		condition.put("filter",filter);
+		
 		//전체 관심프로젝트 수
-		int listCount=pService.getLikeListCount(memId);
+		int listCount=pService.getLikeListCount(condition);
 		PageInfo pi=getPageInfo(currentPage, listCount);
 		
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectLike> likeList=pService.selectLikeProject(memId,pi);
+		ArrayList<ProjectLike> likeList=pService.selectLikeProject(filter,pi);
 		
 		System.out.println("화면단 가기전 관심 등록 리스트:"+likeList);
 		
 		mv.addObject("like", likeList);
 		mv.addObject("pi", pi);
+		mv.addObject("filter", filter);
+		
 		mv.setViewName("partnerSubMenu/likeProjectView");
 		
 		return mv;
@@ -953,7 +968,7 @@ ProjectService pService;
 	
 	
 	@RequestMapping(value="applyThisProject.do")
-	public ModelAndView applyProjectDetail(HttpServletRequest request,ModelAndView mv, @RequestParam(value="pId") Integer pId, @RequestParam(value="page") Integer page) {
+	public ModelAndView applyProjectDetail(HttpServletRequest request,ModelAndView mv, @RequestParam(value="pId") Integer pId, @RequestParam(value="page", required=false) Integer page) {
 		
 		//프로젝트 디테일 정보 가져오기
 		ProjectDetail detail=pService.selectProjectDetail(pId);

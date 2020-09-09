@@ -253,6 +253,7 @@
 				<result property="proLocation" column="LOCATION"/>
 				<result property="proRecruit" column="RECRUIT"/>
 				<result property="proCreateDate" column="CDATE"/>
+				<result property="proREndDate" column="RENDDATE"/>
 			</association>
 			
 		</association>
@@ -905,20 +906,45 @@
 		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
 	</insert>
 	
-	<select id="getLikeCount" parameterType="int" resultType="_int">
+	<select id="getLikeCount" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
 		WHERE L.MEM_ID=#{memId}
+		<if test="filter.sorting !=null">
+		<choose>
+		<when test="filter.sorting =='PAYMENT'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='CDATE'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='RENDDATE'">
+		ORDER BY #{filter.sorting} ASC
+		</when>
+		</choose>
+		</if>
 	</select>
 	
-	<select id="getLikeList" parameterType="int" resultMap="likeResultSet">
+	<select id="getLikeList" parameterType="hashmap" resultMap="likeResultSet">
 		SELECT L.*,P.*,M.MEM_NICK,M.MEM_EMAIL
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
 		LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
 		WHERE L.MEM_ID=#{memId}
-	
+		<if test="filter.sorting !=null">
+		<choose>
+		<when test="filter.sorting =='PAYMENT'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='CDATE'">
+		ORDER BY #{filter.sorting} DESC
+		</when>
+		<when test="filter.sorting =='RENDDATE'">
+		ORDER BY #{filter.sorting} ASC
+		</when>
+		</choose>
+		</if>
 	</select>
 	
 	<delete id="deleteLikeProject" parameterType="int">

@@ -195,15 +195,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public int getLikeListCount(int memId) {
+	public int getLikeListCount(HashMap condition) {
 		
-		return proDao.getLikeListCount(memId);
+		return proDao.getLikeListCount(condition);
 	}
 
 	@Override
-	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(ProjectFilter filter, PageInfo pi) {
 		
-		return proDao.selectLikeProject(memId,pi);
+		return proDao.selectLikeProject(filter,pi);
 	}
 
 	@Override
