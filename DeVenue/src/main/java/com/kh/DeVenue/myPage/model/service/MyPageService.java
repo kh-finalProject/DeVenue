@@ -20,6 +20,7 @@ import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -100,10 +101,13 @@ public interface MyPageService {
 
 	int updateClientInfo(HashMap map);
 
+	ArrayList<PortFolio> portList(int profileId);
 
+	ArrayList<PortTecView> ptList(int portId);
 
+	int portNameCount(String title);
 
-	
+	ArrayList<PortTecView> tNameList(int ptId);
 
 	
 

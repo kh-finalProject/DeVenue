@@ -25,6 +25,7 @@ import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -178,6 +179,16 @@ public class MyPageDao {
 		return sqlSessionTemplate.selectOne("myPageMapper.selectClientInfo",cId);
 	}
 
+	public ArrayList<PortFolio> portList(int profileId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.portList", profileId);
+	}
+
+	public ArrayList<PortTecView> ptList(int portId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.ptList", portId);
+	}
+
 	public PmypagePartnersInfo selectPartnersInfo(Integer pId) {
 		return sqlSessionTemplate.selectOne("myPageMapper.selectPartnersInfo", pId);
 	}
@@ -200,6 +211,15 @@ public class MyPageDao {
 	
 	public String getMyPageSidebarProImg(String mId) {
 		return sqlSessionTemplate.selectOne("myPageMapper.getMyPageSidebarProImg",mId);
+	}
+
+	public int portNameCount(String title) {
+		
+		return sqlSessionTemplate.selectOne("myPageMapper.portNameCount",title);
+	}
+
+	public ArrayList<PortTecView> tNameList(int ptId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.tNameList", ptId);
 	}
 
 	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {

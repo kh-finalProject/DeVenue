@@ -147,6 +147,7 @@ $(document).ready(function(){
 
 </script>
 <body>
+
    <!-- 서브 메뉴바 영역-->
    <c:if test="${loginUser.userType == 'UT3'}">
       <c:set var="clOrPt" value="클라이언트"/>
@@ -189,15 +190,15 @@ $(document).ready(function(){
                   class="fas fa-angle-right"></i></div>
             <div id="subInfoMenu" class="myPage_sideNav_serveC">
                <%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
-               <form method="GET" action="profile.do">
-                  <input type="hidden" name="profileId" value="${profile.profileId }">
-                  <button class="aTag" style="cursor: text;">전체보기</button>
-               </form>
                <form method="GET" action="partInfo.do">
                   <input type="hidden" name="profileId" value="${profile.profileId }">
                   <button class="aTag" style="cursor: text;">${clOrPt } 정보</button>
                </form>
-               <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div>
+               <form method="GET" action="profile.do">
+                  <input type="hidden" name="profileId" value="${profile.profileId }">
+                  <button class="aTag" style="cursor: text;">프로필</button>
+               </form>             
+               <%-- <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div> --%>
                <!-- <div id="pPR">자기소개</div> -->
                <!-- <div id="pPortfolio">포트폴리오</div> -->
                <form method="GET" action="portfolioAll.do">
@@ -242,13 +243,33 @@ $(document).ready(function(){
                   class="fas fa-angle-right"></i></div>
             <div id="subInfoMenu" class="myPage_sideNav_serveC">
                <%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
+<<<<<<< HEAD
+               <%-- <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div> --%>
+               <form method="GET" action="profile.do">
+                  <input type="hidden" name="profileId" value="${profile.profileId }">
+                  <button class="aTag" style="cursor: text;">프로필 정보</button>
+               </form>
+               <form method="GET" action="partInfo.do">
+                  <input type="hidden" name="profileId" value="${profile.profileId }">
+                  <%-- <button class="aTag" style="cursor: text;">${clOrPt } 정보</button> --%>
+                  <button class="aTag" style="cursor: text;">파트너스 정보</button>
+=======
                <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/clientProfile.do?cId=${loginUser.memId}'">마이 페이지</div>
                <form method="GET" action="clientInfo.do">
                   <input type="hidden" name="cId" value="${loginUser.memId}">
                   <button class="aTag" style="cursor: text;">${clOrPt } 정보</button>
+>>>>>>> refs/remotes/origin/master
                </form>
+<<<<<<< HEAD
+               <!-- <div id="pPR">자기소개</div> -->
+               <form method="GET" action="PR.do">
+                  <input type="hidden" name="profileId" value="${profile.profileId }">
+                  <button class="aTag" style="cursor: text;">자기소개</button>
+               </form>
+=======
                <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/cMyPageProjectHistory.do?cId=${loginUser.memId}'">프로젝트 히스토리</div>
                <%-- <!-- <div id="pPR">자기소개</div> -->
+>>>>>>> refs/remotes/origin/master
                <!-- <div id="pPortfolio">포트폴리오</div> -->
                <form method="GET" action="portfolioAll.do">
                   <input type="hidden" name="profileId" value="${profile.profileId }">
@@ -295,6 +316,7 @@ $(document).ready(function(){
       _(document).ready(function () {
          var sideMainMenu1 = _("#subInfoMenu");
          var sideMainMenu2 = _("#subAccountMenu");
+
 
          _("#infoMenu").click(function () {
             if(sideMainMenu1.css('display') == 'none') {

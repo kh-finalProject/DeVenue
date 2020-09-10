@@ -424,6 +424,26 @@
 		WHERE MEM_ID=#{cId}
 	</select>
 	
+	<!-- profileId를 활용한 프로필 조회 -->
+	<select id="portList" parameterType="_int" resultMap="portFolioResultSet">
+		SELECT * FROM PORTFOLIO
+		WHERE PROFILE_ID = #{profileId}
+	</select>
+	
+	
+	<!-- 포트폴리이 기술 view -->
+	<resultMap type="PortTecView" id="portTecViewResultSet">
+		<id property="portId" column="PORT_ID"/>
+		<result property="tId" column="T_ID"/>
+		<result property="tName" column="T_NAME"/>
+
+	</resultMap>
+	
+	<select id="ptList" parameterType="_int" resultMap="portTecViewResultSet">
+		SELECT * FROM PORTTEC_VIEW
+		WHERE PORT_ID=#{portId}
+	</select>
+	
 	<!-- 마이페이지 사이드메뉴바 프로필사진이름 가져오기 -->
 	<select id="getMyPageSidebarProImg" parameterType="string" resultType="string">
 		SELECT PROFILE_IMG
@@ -469,4 +489,17 @@
 		    URL=#{url }
 		WHERE MEM_ID=#{cId}
 	</update>
+
+	<!-- 포트폴리오 이름 중복 제거 -->
+	<select id="portNameCount" resultType="int">
+		SELECT COUNT(*) FROM PORTFOLIO
+		WHERE PROT_NAME=#{portName}
+	</select>
+	
+	<!-- 포트폴리오관련기술 list -->
+	<select id="tNameList" parameterType="int" resultMap="portTecViewResultSet">
+		SELECT * FROM PORTTEC_VIEW
+		WHERE PORT_ID=#{portId}
+	</select>
+	
 </mapper>

@@ -9,36 +9,36 @@ public class FindPartners implements Serializable{
 	 */
 	private static final long serialVersionUID = 7876739221308635513L;
 
-	private String memType; 	// 회원 형태(개인,팀,법인....)
-	private String memNick; 	// 회원 닉네임 
-	private String cellPhone;	// 휴대폰 전화
-	private String ideStatus;	// 신원 인증
-	private int	profileId;		// 프로필 번호
-	private String introduction;// 자기소개
-	private String mcId;		// 메인 카테고리(개발,디자인...)
-	private int piType;			// 활동 가능성(활동가능,협의필요...)
-	private int memId;			// 회원 번호
+	private int memId;
+	private String memNick;
+	private String cellPhone;
+	private String ideStatus;
+	private String memTypeKind;
+	private int profileId;
+	private String introduction;
+	private int piType;
+	private String mcType;
 	public FindPartners() {
 		super();
 	}
-	public FindPartners(String memType, String memNick, String cellPhone, String ideStatus, int profileId,
-			String introduction, String mcId, int piType, int memId) {
+	public FindPartners(int memId, String memNick, String cellPhone, String ideStatus, String memTypeKind,
+			int profileId, String introduction, int piType, String mcType) {
 		super();
-		this.memType = memType;
+		this.memId = memId;
 		this.memNick = memNick;
 		this.cellPhone = cellPhone;
 		this.ideStatus = ideStatus;
+		this.memTypeKind = memTypeKind;
 		this.profileId = profileId;
 		this.introduction = introduction;
-		this.mcId = mcId;
 		this.piType = piType;
+		this.mcType = mcType;
+	}
+	public int getMemId() {
+		return memId;
+	}
+	public void setMemId(int memId) {
 		this.memId = memId;
-	}
-	public String getMemType() {
-		return memType;
-	}
-	public void setMemType(String memType) {
-		this.memType = memType;
 	}
 	public String getMemNick() {
 		return memNick;
@@ -58,6 +58,12 @@ public class FindPartners implements Serializable{
 	public void setIdeStatus(String ideStatus) {
 		this.ideStatus = ideStatus;
 	}
+	public String getMemTypeKind() {
+		return memTypeKind;
+	}
+	public void setMemTypeKind(String memTypeKind) {
+		this.memTypeKind = memTypeKind;
+	}
 	public int getProfileId() {
 		return profileId;
 	}
@@ -70,30 +76,27 @@ public class FindPartners implements Serializable{
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
 	}
-	public String getMcId() {
-		return mcId;
-	}
-	public void setMcId(String mcId) {
-		this.mcId = mcId;
-	}
 	public int getPiType() {
 		return piType;
 	}
 	public void setPiType(int piType) {
 		this.piType = piType;
 	}
-	public int getMemId() {
-		return memId;
+	public String getMcType() {
+		return mcType;
 	}
-	public void setMemId(int memId) {
-		this.memId = memId;
+	public void setMcType(String mcType) {
+		this.mcType = mcType;
 	}
 	@Override
 	public String toString() {
-		return "FindPartners [memType=" + memType + ", memNick=" + memNick + ", cellPhone=" + cellPhone + ", ideStatus="
-				+ ideStatus + ", profileId=" + profileId + ", introduction=" + introduction + ", mcId=" + mcId
-				+ ", piType=" + piType + ", memId=" + memId + "]";
+		return "FindPartners [memId=" + memId + ", memNick=" + memNick + ", cellPhone=" + cellPhone + ", ideStatus="
+				+ ideStatus + ", memTypeKind=" + memTypeKind + ", profileId=" + profileId + ", introduction="
+				+ introduction + ", piType=" + piType + ", mcType=" + mcType + "]";
 	}
+	
+	
+	
 	
 	
 	

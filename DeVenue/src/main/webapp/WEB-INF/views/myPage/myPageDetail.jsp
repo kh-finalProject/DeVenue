@@ -483,37 +483,6 @@ section {
 	font-size: 25px;
 }
 
-/* 자격증 div */
-.career-conatiner {
-	width: 100%;
-	height: auto;
-	border: 1px solid white;
-	padding-bottom: 10px;
-}
-
-/* 자격증 div 가로줄 */
-.career-inner {
-	height: 50px;
-	border-bottom: 2px dashed gray;
-	margin-top: 2%;
-	font-size: 18px;
-	position: relative;
-}
-
-/* 자격증 div 제목 */
-.career-title {
-	width: 80px;
-	display: inline-block;
-	padding-left: 5px;
-	margin-bottom: 5px;
-	margin-top: 1%;
-}
-
-/* 자격증 div content DB값이 나옴 */
-.career-content {
-	display: inline-block;
-}
-
 /* 각각의 클라이언트에 평가 div */
 .client-history {
 	width: 100%;
@@ -562,6 +531,83 @@ section {
 #subInfoMenu p a {
 	text-decoration-line: none;
 	color: white;
+}
+
+/* 포트폴리오 */
+
+/* 포트폴리오전부를 보여줄 div*/
+.portfolio-view {
+	width: 100%;
+	height: 350px;
+	margin-left: 5%;
+	margin-top: 2%;
+	position: relative;
+}
+
+/* 포트폴리오 전체 보여줄 테이블 */
+.pTable {
+	width: 100%;
+	/* border: 1px solid white; */
+	/* border-collapse: separate;
+            border-spacing: 20px 10px; */
+}
+
+/* 포트폴리오 td */
+.pTable tr td {
+	border: 1px solid white;
+	/* width: 25%; */
+	/* height: 300px; */
+	font-size: 20px;
+}
+
+/* 이미지 보여주기 */
+.img {
+	width: 30%;
+	height: 200px;
+}
+
+/* 포트폴리오 내용 */
+.category {
+	width: 20%;
+	text-align: center;
+	vertical-align: middle;
+	height: 30%;
+}
+
+/* 포트폴리오 제목 */
+.title {
+	width: 50%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 참여율 과 기술 */
+.join, .tec {
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 경력 테이블 */
+.Ctable {
+	border: 1px solid white;
+	width: 100%;
+	font-size: 20px;
+	border-collapse: separate;
+	border-spacing: 0 10px;
+}
+
+/* 경력 제목 */
+.career-title {
+	width: 20%;
+	padding-left: 15px;
+	margin-bottom: 5px;
+	margin-top: 1%;
+	border-bottom: 1px solid grey;
+}
+
+/* 경력 내용 */
+.career-text {
+	border-bottom: 1px solid grey;
 }
 
 /* 회원찾기 드롭다운 메뉴 */
@@ -618,151 +664,11 @@ section {
 <body>
 	<!-- menubar -->
 	<!-- 버튼클릭 script가 안먹는다. -->
-	<%-- <jsp:include page="../common/menubar.jsp"/> --%>
-
-	<c:set var="contextPath"
-		value="${pageContext.servletContext.contextPath }" scope="application" />
-
-	<!--Top Button-->
-	<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top"
-		role="button"><i class="fas fa-chevron-up" style="margin: 0"></i></a>
-	<script>
-		$(document).ready(function() {
-			$(window).scroll(function() {
-				if ($(this).scrollTop() > 10) {
-					$('#back-to-top').css("display", "block")
-
-				} else {
-					$('#back-to-top').css("display", "none")
-
-				}
-			});
-			// scroll body to 0px on click
-			$('#back-to-top').click(function() {
-				$('body,html').animate({
-					scrollTop : 0
-				}, 400);
-				return false;
-			});
-		});
-	</script>
-
-	<!--navigation bar 1-->
-	<nav class="navbar navbar-expand-lg" style="background-color: black;">
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarMain" aria-controls="navbarMain"
-			aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<div class="collapse navbar-collapse" id="navbarMain">
-			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="#"><img
-						src="${contextPath }/resources/images/logo.png" height="80px"
-						style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;"><span
-						class="sr-only">(current)</span></a></li>
-			</ul>
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a
-					class="nav-link hvr-underline-from-center mr-2"
-					href="searchProjectList.do">프로젝트찾기</a></li>
-				<li class="nav-item"><a
-					class="nav-link hvr-underline-from-center mr-2"
-					href="addProject.do">프로젝트등록</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
-						찾기</a>
-					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a>
-						<a href="partnersList.do">파트너스 찾기</a>
-					</div></li>
-			</ul>
-
-			<ul class="navbar-nav ml-auto">
-				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
-				<c:if test="${empty sessionScope.loginUser }">
-					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
-					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
-					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
-					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
-				</c:if>
-				<c:if test="${!empty sessionScope.loginUser }">
-					<!-- 관리자 로그인 -->
-					<c:if
-						test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
-						<h3 align="right" style="color: white">
-							<c:out value="${loginUser.userType }관리자" />
-							<div class="btn-group">
-								<button type="button" class="btn btn-info dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-									<img src="${contextPath }/resources/images/admin.png"
-										height="50px" width="50px"
-										style="border-radius: 50px 50px 50px 50px">
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">profile</a>
-									<div class="dropdown-divider"></div>
-									<c:url var="logout" value="logout.do" />
-									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
-								</div>
-							</div>
-						</h3>
-					</c:if>
-					<!-- 사용자 로그인 -->
-					<c:if
-						test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
-						<h3 align="right" style="color: white">
-							<c:out value="${loginUser.userType }사용자" />
-							<div class="btn-group">
-								<button type="button" class="btn btn-info dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-									<!-- 클라이언트시 기본 이미지 -->
-									<c:if test="${loginUser.userType eq 'UT3' }">
-										<img src="${contextPath }/resources/images/client.png"
-											height="50px" width="50px"
-											style="border-radius: 50px 50px 50px 50px">
-									</c:if>
-									<!-- 파트너스 기본 이미지 -->
-									<c:if test="${loginUser.userType eq 'UT4' }">
-										<img src="${contextPath }/resources/images/partners.png"
-											height="50px" width="50px"
-											style="border-radius: 50px 50px 50px 50px">
-									</c:if>
-								</button>
-								<div class="dropdown-menu">
-									<a href="profile.do" class="dropdown-item">profile</a>
-									<div class="dropdown-divider"></div>
-									<c:url var="logout" value="logout.do" />
-									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
-								</div>
-							</div>
-						</h3>
-					</c:if>
-				</c:if>
-		</div>
-		</ul>
-		</div>
-		</ul>
-		</div>
-	</nav>
-
-	<script>
-		$(function() {
-			$("#navbarMain .nav-link").mouseenter(function() {
-				$(this).css("font-size", "105%");
-			})
-
-			$("#navbarMain .nav-link").mouseleave(function() {
-				$(this).css("font-size", "100%");
-			})
-		})
-	</script>
+	<jsp:include page="../common/menubar.jsp" />
 
 	<!-- sideMenubar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
-	
+
 
 
 	<!-- Section -->
@@ -780,9 +686,10 @@ section {
 				<!-- 구 sideMenubar -->
 				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
 				<!-- 새 sidMenubar -->
-				<jsp:include page="../common/pSideMenubar.jsp"/>
+				<jsp:include page="../common/pSideMenubar.jsp" />
 			</div>
-			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif; margin-left: 210px;">
+			<div class="col-8 text-white"
+				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12 main-title">
@@ -791,20 +698,45 @@ section {
 					<div class="col-12 content">
 						<div class="col-12 content-memberinfo">
 							<h2>
-								<span>${loginUser.memNick }</span>
-								<c:if test="${loginUser.memAction eq 'Y'}">
+								<span>${fp.memNick }</span>
+								<%-- <c:if test="${loginUser.memAction eq 'Y'}">
 									<span class="btn btn-success">활동가능</span>
 								</c:if>
 								<c:if test="${loginUser.memAction eq 'N'}">
 									<span class="btn btn-success">활동불가능</span>
+								</c:if> --%>
+								<c:if test="${fp.piType eq 1}">
+									<span class="btn btn-success">활동 가능</span>
+								</c:if>
+								<c:if test="${fp.piType eq 2}">
+									<span class="btn btn-warning">협의 필요</span>
+								</c:if>
+								<c:if test="${fp.piType eq 3}">
+									<span class="btn btn-secondary">활동 불가능</span>
 								</c:if>
 								<a href="PartnesInfo.html" class="btn btn-info"
 									style="float: right; margin-top: 30px;">업데이트 하기</a>
 							</h2>
-							<h5 style="color: grey">
-								<span>개발자</span> <span class="bar">|</span> <span>개인</span> <span
-									class="bar">|</span> <span>신원 인증</span> <span class="bar">|</span>
-								<span>연락처 등록</span>
+							<h5>
+								<span>${fp.mcType }</span> <span class="bar">|</span> <span>${fp.memTypeKind }</span>
+								<span class="bar">|</span>
+								<c:choose>
+									<c:when test="${fp.ideStatus eq 'complete'}">
+										<span>신원인증</span>
+									</c:when>
+									<c:otherwise>
+										<span style="color: grey;">신원인증</span>
+									</c:otherwise>
+								</c:choose>
+								<span class="bar">|</span>
+								<c:choose>
+									<c:when test="${empty fp.cellPhone }">
+										<span style="border: none; color: gray;">연락처 없음</span>
+									</c:when>
+									<c:otherwise>
+										<span style="border: none;">연락처 등록</span>
+									</c:otherwise>
+								</c:choose>
 							</h5>
 						</div>
 						<div class="col-12 pofile-info"
@@ -859,72 +791,74 @@ section {
 								<canvas id="marksChart"></canvas>
 							</div>
 							<script>
-                                    var marksCanvas = document.getElementById("marksChart");
+								var marksCanvas = document
+										.getElementById("marksChart");
 
-                                    Chart.defaults.global.defaultFontFamily = "Lato";
-                                    Chart.defaults.global.defaultFontSize = 18;
+								Chart.defaults.global.defaultFontFamily = "Lato";
+								Chart.defaults.global.defaultFontSize = 18;
 
-                                    var marksData = {
-                                        labels: ["전문성", "만족도", "의사소통", "일정 준수", "적극성"],
-                                        datasets: [{
-                                            lable: "",
-                                            scaleOverride: true,
+								var marksData = {
+									labels : [ "전문성(2)", "만족도(3)", "의사소통(4)",
+											"일정 준수(0)", "적극성(5)" ],
+									datasets : [ {
+										lable : "",
+										scaleOverride : true,
 
-                                            backgroundColor: "#2693F2",
-                                            borderColor: "#2693F2",
-                                            fill: false,
-                                            radius: 6,
-                                            pointRadius: 3,
-                                            pointBorderWidth: 0,
-                                            pointBorderColor: "#2693F2",
-                                            data: [2, 3, 4, 0, 5]
-                                        }]
-                                    };
+										backgroundColor : "#2693F2",
+										borderColor : "#2693F2",
+										fill : false,
+										radius : 6,
+										pointRadius : 3,
+										pointBorderWidth : 0,
+										pointBorderColor : "#2693F2",
+										data : [ 2, 3, 4, 0, 5 ]
+									} ]
+								};
 
-                                    var chartOptions = {
-                                        scale: {
-                                            gridLines: {
-                                                color: "lightgrey",
-                                                lineWidth: 3,
-                                                backgroundColor: "#2693F2",
-                                            },
-                                            angleLines: {
-                                                display: false
-                                            },
-                                            ticks: {
-                                                /* 눈금선제거 */
-                                                display: false,
-                                                beginAtZero: true,
-                                                min: 0,
-                                                max: 5,
-                                                stepSize: 1
-                                            },
-                                            pointLabels: {
-                                                fontSize: 18,
-                                                fontColor: "lightgrey"
-                                            }
-                                        },
-                                        /* 왼쪽레이블 제거 */
-                                        legend: {
-                                            display: false
-                                        }
-                                    };
+								var chartOptions = {
+									scale : {
+										gridLines : {
+											color : "lightgrey",
+											lineWidth : 3,
+											backgroundColor : "#2693F2",
+										},
+										angleLines : {
+											display : false
+										},
+										ticks : {
+											/* 눈금선제거 */
+											display : false,
+											beginAtZero : true,
+											min : 0,
+											max : 5,
+											stepSize : 1
+										},
+										pointLabels : {
+											fontSize : 18,
+											fontColor : "lightgrey"
+										}
+									},
+									/* 왼쪽레이블 제거 */
+									legend : {
+										display : false
+									}
+								};
 
-                                    var radarChart = new Chart(marksCanvas, {
-                                        type: 'radar',
-                                        data: marksData,
-                                        options: chartOptions
-                                    });
-                                </script>
+								var radarChart = new Chart(marksCanvas, {
+									type : 'radar',
+									data : marksData,
+									options : chartOptions
+								});
+							</script>
 						</div>
 						<br> <br>
 						<div class="col-12 partition">
 							<div class="col-12 page-title">
 								<h4>
-									자기소개 <a href="Self-introduction.html" class="btn btn-info"
-										style="float: right;">업데이트 하기</a>
+									자기소개 <a href="PR.do" class="btn btn-info" style="float: right;">업데이트
+										하기</a>
 								</h4>
-								<p style="overflow: hidden; height: 200px;">값밧밧바삽낭만암ㄴ아</p>
+								<p style="overflow: hidden; height: 200px;">${fp.introduction }</p>
 							</div>
 							<!-- <dlv class="detail-view">
                                     <h6><a href="#">자기소개 더보기 ></a></h6>
@@ -933,373 +867,399 @@ section {
 						<div class="col-12 partition">
 							<div class="col-12 page-title">
 								<h4 style="height: 50px;">
-									포트폴리오 <a href="#" class="btn btn-info" style="float: right;">업데이트
-										하기</a>
+									포트폴리오 <a href="portfolioAll.do" class="btn btn-info"
+										style="float: right;">업데이트 하기</a>
 								</h4>
-								<!-- 하나의 포트폴리오 -->
-								<div class="portfolio">
-									<div class="port-img">
-										<img src="../image/pwdforget.png">
-									</div>
-									<div class="port-title">
-										<p>
-											<a href="#">1. 아아ㅏ아아아ㅏ아아아아아아아아아아아아ㅏ아아아아앙</a>
-										</p>
-										<span>개발 - 어플리케이션</span>
-									</div>
-								</div>
-								<!-- 하나의 포트폴리오 -->
-								<div class="portfolio">
-									<div class="port-img">
-										<p>아무도 없음~</p>
-									</div>
-									<div class="port-title">
-										<p>
-											<a href="#"></a>
-										</p>
-										<span></span>
-									</div>
-								</div>
-								<!-- 하나의 포트폴리오 -->
-								<div class="portfolio">
-									<div class="port-img">
-										<p>이미지가 없어유</p>
-									</div>
-									<div class="port-title">
-										<p>
-											<a href="#">2. 아아ㅏ아아아ㅏ아아아아아아아아아아아아ㅏ아아아아앙</a>
-										</p>
-										<span>디자인 - 기타</span>
-									</div>
-								</div>
-							</div>
-							<script>
-                                        // p태그의 글자가 hidden이되면 ...으로 표시
-                                </script>
-							<!-- <dlv class="detail-view">
-                                    <h6><a href="#">포트폴리오 더보기 ></a></h6>
-                                </dlv> -->
-						</div>
-						<div class="col-12 partition">
-							<div class="col-12 page-title">
-								<h4 style="height: 50px;">
-									경력 <a href="#" class="btn btn-info" style="float: right;">업데이트
-										하기</a>
-								</h4>
-								<div class="col-12 career-conatiner">
-									<div class="col-12 career-inner">
-										<div class="col-4 career-title">
-											<b>회사명</b>
-										</div>
-										<div class="col-10 career-content">어느 회사명?</div>
-									</div>
-									<div class="col-12 career-inner">
-										<div class="col-4 career-title">
-											<b>근무부서</b>
-										</div>
-										<div class="col-10 career-content">어느 근무 부서?</div>
-									</div>
-									<div class="col-12 career-inner">
-										<div class="col-4 career-title">
-											<b>직위</b>
-										</div>
-										<div class="col-10 career-content">어느 직위임?</div>
-									</div>
-									<div class="col-12 career-inner">
-										<div class="col-4 career-title">
-											<b>근무시간</b>
-										</div>
-										<div class="col-10 career-content">2020년 02월 ~ 현재(6개월)</div>
-									</div>
-									<div class="col-12 career-inner">
-										<div class="col-4 career-title">
-											<b>설명</b>
-										</div>
-										<div class="col-10 career-content">
-											<p>설명란</p>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- <dlv class="detail-view">
-                                    <h6><a href="#">경력 더 보기 ></a></h6>
-                                </dlv> -->
-						</div>
-						<div class="col-12 partition">
-							<div class="col-12 page-title">
-								<h4 style="height: 50px;">
-									보유 기술 <a href="#" class="btn btn-info" style="float: right;">업데이트
-										하기</a>
-								</h4>
-								<div class="skill">
-									<table class="table">
-										<tr class="table-secondary"
-											style="font-size: 20px; text-align: center;">
-											<td>종류</td>
-											<td>숙련도</td>
-											<td>경험</td>
+								<!-- 포트폴리오 -->
+								<c:forEach var="port" items="${portfolio }">
+									<table class="pTable">
+										<tr>
+											<td class="img" rowspan="2"><img src="../image/test.png"
+												style="max-width: 100%; height: auto;">
+											<td class="category">
+												<!-- port.mcId에 따른 출력 --> <c:choose>
+													<c:when test="${port.mcId eq 'MC1'}">
+														<span>개발자</span>
+														<br>
+													</c:when>
+													<c:when test="${port.mcId eq 'MC2'}">
+														<span>디자인</span>
+														<br>
+													</c:when>
+													<c:otherwise>
+														<span>개발/디자인</span>
+														<br>
+													</c:otherwise>
+												</c:choose> <!-- port.dcId에 따른 출력 --> <c:choose>
+													<c:when test="${port.dcId eq 'DC1'}">
+														<span>웹</span>
+													</c:when>
+													<c:when test="${port.dcId eq 'DC2'}">
+														<span>어플리케이션</span>
+													</c:when>
+													<c:when test="${port.dcId eq 'DC3'}">
+														<span>퍼블리싱</span>
+													</c:when>
+													<c:otherwise>
+														<span>기타</span>
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td class="title">${port.portName }</td>
 										</tr>
 										<tr>
-											<td><input class="text" type="text" readonly
-												style="width: 190px; height: 40px;" value="jsp/Servlet"></td>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="1등급"></td>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="3년이상"></td>
-										</tr>
-										<tr>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="java"></td>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="중급"></td>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="1년이하"></td>
-										</tr>
-										<tr>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="jsp/Servlet"></td>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="5등급"></td>
-											<td><input type="text" readonly
-												style="width: 190px; height: 40px;" value="1년이상"></td>
-										</tr>
-									</table>
-								</div>
-							</div>
-							<!-- <dlv class="detail-view">
-                                    <h6><a href="#">보유기술 더보기 ></a></h6>
-                                </dlv> -->
-						</div>
-
-						<div class="col-12 partition">
-							<div class="col-12 page-title">
-								<h4 style="height: 50px;">
-									학력 <a href="#" class="btn btn-info" style="float: right;">업데이트
-										하기</a>
-								</h4>
-								<div class="academic">
-									<table class="table">
-										<tr class="table-secondary" style="text-align: center;">
-											<td>학교명</td>
-											<td>전공</td>
-											<td>분류</td>
-											<td>상태</td>
-											<td>입학일</td>
-											<td>졸업일</td>
-										</tr>
-										<tr class="table-light"
-											style="text-align: center; vertical-align: middle;">
-											<td>한국복지대학교</td>
-											<td>컴퓨터정보보안과</td>
-											<td>전문대</td>
-											<td>퇴학</td>
-											<td>2020년 1월</td>
-											<td>2020년 9월</td>
-										</tr>
-									</table>
-								</div>
-							</div>
-							<!-- <dlv class="detail-view">
-                                    <h6><a href="#">학력 더보기 ></a></h6>
-                                </dlv> -->
-						</div>
-						<div class="col-12 partition">
-							<div class="col-12 page-title">
-								<h4 style="height: 50px;">
-									자격증 <a href="#" class="btn btn-info" style="float: right;">업데이트
-										하기</a>
-								</h4>
-								<div class="certificate">
-									<table class="table">
-										<tr class="table-secondary" style="text-align: center;">
-											<td>자격증명</td>
-											<td>발급기관</td>
-											<td>발행일자</td>
-											<td>일련번호</td>
-											<td>도구</td>
-										</tr>
-										<tr class="table-light"
-											style="text-align: center; vertical-align: middle;">
-											<td>정보처리산업기능사</td>
-											<td>Q-net</td>
-											<td>2020년 09월 03일</td>
-											<td>당신의 일련번호</td>
-											<td><a href="certificateUpdate.html"
-												class="btn btn-info">수정</a> <a href="#" class="btn btn-info">삭제</a>
+											<td colspan="2" rowspan="2" class="text">
+												<p style="margin-left: 3%;">${port.content }</p>
 											</td>
 										</tr>
+										<tr></tr>
+										<tr>
+											<td><button type="submit" id="${port.portId }"
+													class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
+											<td class="join">참여율 : ${port.portJoin }%</td>
+											<td class="tec"><c:forEach var="pt" items="${portTec }">
+													<span>${pt.tName }</span>
+												</c:forEach></td>
+										</tr>
 									</table>
+								</c:forEach>
+								<br>
+								<!-- <dlv class="detail-view">
+                                    <h6><a href="#">포트폴리오 더보기 ></a></h6>
+                                </dlv> -->
+							</div>
+							<!-- 보유 기술 -->
+							<div class="col-12 partition">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">
+										보유 기술 <a href="skill.do" class="btn btn-info"
+											style="float: right;">업데이트 하기</a>
+									</h4>
+									<div class="skill">
+										<table class="table">
+											<tr class="table-secondary"
+												style="font-size: 20px; text-align: center;">
+												<td>종류</td>
+												<td>숙련도</td>
+												<td>경험</td>
+											</tr>
+											<c:forEach var="skill" items="${skillList }">
+												<tr>
+													<td><input class="text" type="text" readonly
+														style="width: 190px; height: 40px; text-align: center;"
+														value="${skill.skillKind }"></td>
+													<td><input type="text" readonly
+														style="width: 190px; height: 40px; text-align: center;"
+														value="${skill.skillKind }등급"></td>
+													<td><input type="text" readonly
+														style="width: 190px; height: 40px; text-align: center;"
+														value="${skill.skillYear }"></td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+								<!-- <dlv class="detail-view">
+                                    <h6><a href="#">보유기술 더보기 ></a></h6>
+                                </dlv> -->
+							</div>
+							<!-- 경력 -->
+							<div class="col-12" style="margin-top: 2%;">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">
+										경력 <a href="career.do" class="btn btn-info"
+											style="float: right;">업데이트 하기</a>
+									</h4>
+
+									<c:forEach var="career" items="${careerList }">
+										<table class="Ctable">
+											<tr>
+												<td class="career-title">회사명</td>
+												<td class="career-text">: ${career.cName }</td>
+											</tr>
+											<tr>
+												<td class="career-title">근무 부서</td>
+												<td class="career-text">: ${career.cDept }</td>
+											</tr>
+											<tr>
+												<td class="career-title">직위</td>
+												<td class="career-text">: ${career.cPosition }</td>
+											</tr>
+											<tr>
+												<td class="career-title" style="border: none">근무시간</td>
+												<td>: ${career.cStartDate }</td>
+											</tr>
+											<tr>
+												<td><input type="hidden" name="cId"
+													value="${career.cId }"> <input type="hidden"
+													name="profileId" value="${career.profileId }"></td>
+											</tr>
+										</table>
+										<br>
+									</c:forEach>
 								</div>
 							</div>
-							<!-- <dlv class="detail-view">
+							<div class="col-12 partition">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">
+										학력 <a href="academic.do" class="btn btn-info"
+											style="float: right;">업데이트 하기</a>
+									</h4>
+									<div class="academic">
+										<table class="table">
+											<tr class="table-secondary" style="text-align: center;">
+												<td>학교명</td>
+												<td>전공</td>
+												<td>분류</td>
+												<td>상태</td>
+												<td>입학일</td>
+												<td>졸업일</td>
+											</tr>
+											<c:forEach var="sc" items="${sccareerList }">
+												<tr class="table-light"
+													style="text-align: center; vertical-align: middle;">
+													<td>${sc.scName }</td>
+													<td>${sc.scMajor }</td>
+													<c:choose>
+														<c:when test="${sc.sgId eq 'SG1'}">
+															<td>중학교</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG2'}">
+															<td>고등학교</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG3'}">
+															<td>전문대(2~3)</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG4'}">
+															<td>대학교(4)</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG5'}">
+															<td>대학원</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG6'}">
+															<td>박사과정</td>
+														</c:when>
+													</c:choose>
+													<c:choose>
+														<c:when test="${sc.ssId eq 'SS1'}">
+															<td>재학</td>
+														</c:when>
+														<c:when test="${sc.ssId eq 'SS2'}">
+															<td>휴학</td>
+														</c:when>
+														<c:when test="${sc.ssId eq 'SS3'}">
+															<td>졸업</td>
+														</c:when>
+														<c:when test="${sc.ssId eq 'SS4'}">
+															<td>자퇴</td>
+														</c:when>
+													</c:choose>
+													<td>2020년 1월</td>
+													<td>2020년 3월</td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+								<!-- <dlv class="detail-view">
+                                    <h6><a href="#">학력 더보기 ></a></h6>
+                                </dlv> -->
+							</div>
+							<div class="col-12 partition">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">
+										자격증 <a href="certificate.do" class="btn btn-info" style="float: right;">업데이트
+											하기</a>
+									</h4>
+									<div class="certificate">
+										<table class="table">
+											<tr class="table-secondary" style="text-align: center;">
+												<td>자격증명</td>
+												<td>발급기관</td>
+												<td>발행일자</td>
+												<td>일련번호</td>
+											</tr>
+											<c:forEach var="certi" items="${certiList }">
+												<tr class="table-light"
+													style="text-align: center; vertical-align: middle;">
+													<td>${certi.ccName }</td>
+													<td>${certi.ccPlace }</td>
+													<td>2020년 09월 03일</td>
+													<td>${certi.ccNumber }</td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+								<!-- <dlv class="detail-view">
                                     <h6><a href="#">자격증 더보기 ></a></h6>
                                 </dlv> -->
-						</div>
-						<div class="col-12 partition">
-							<div class="col-12 page-title">
-								<h4 style="height: 50px;">
-									평가 <a href="#" class="btn btn-info" style="float: right;">업데이트
-										하기</a>
-								</h4>
-								<div class="history">
-									<!-- 평가 시작 -->
-									<div class="col-12 client-history">
-										<div class="col-12" style="margin-top: 3%;">
-											<h4>데이터 시각화 솔루션 프로토타입 개발</h4>
-										</div>
-										<div class="col-6" style="margin-top: 1%;">
-											<div class="col-3" style="display: inline-block;">디자인</div>
-											<div class="col-5"
-												style="display: inline-block; border-left: 1px solid white;">
-												퍼블리싱</div>
-										</div>
-										<div class="col-6" style="margin-top: 1%;">
-											<div class="col-4" style="display: inline-block;">
-												클라이언트</div>
-											<div class="col-6" style="display: inline-block;">
-												클라이언트명</div>
-										</div>
-										<div class="col-12" style="margin-top: 1%;">
-											<table class="table">
-												<tr>
-													<th class="table-secondary">계약금액</th>
-													<td class="table-light"><span>4,040,404원</span></td>
-													<th class="table-secondary">프로젝트 기간</th>
-													<td class="table-light"><span>60일</span></td>
-													<th class="table-secondary">계약일자</th>
-													<td class="table-light"><span>2020년 07월 07일</span></td>
-												</tr>
-											</table>
-										</div>
-										<div class="col-12"
-											style="margin-top: 1%; text-align: center;">
-											<span style="display: inline-block;">★★★★★</span> <span
-												style="display: inline-block;">0.0</span>
-										</div>
-										<div class="col-12 star-history">
-											<div class="col-2 star">
-												<span>전문성</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star">
-												<span>결과물만족도</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star">
-												<span>의사소통</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star">
-												<span>일정준수</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star" style="border: none;">
-												<span>적극성</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-										</div>
-										<div class="col-12" style="margin-top: 2%;">
-											<div class="col-2"
-												style="display: inline-block; vertical-align: top;">
-												<div class="client-img"></div>
-											</div>
-											<div class="col-9" style="display: inline-block;">
-												<div class="col-5">
-													<span>클라이언트</span> <span>클라이언트명</span>
-												</div>
-												<div class="col-12 history-content">
-													<p>아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
-														아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
-														아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- 평가 div끝-->
-									<!-- 평가 시작 -->
-									<div class="col-12 client-history">
-										<div class="col-12" style="margin-top: 3%;">
-											<h4>데이터 시각화 솔루션 프로토타입 개발</h4>
-										</div>
-										<div class="col-6" style="margin-top: 1%;">
-											<div class="col-3" style="display: inline-block;">디자인</div>
-											<div class="col-5"
-												style="display: inline-block; border-left: 1px solid white;">
-												퍼블리싱</div>
-										</div>
-										<div class="col-6" style="margin-top: 1%;">
-											<div class="col-4" style="display: inline-block;">
-												클라이언트</div>
-											<div class="col-6" style="display: inline-block;">
-												클라이언트명</div>
-										</div>
-										<div class="col-12" style="margin-top: 1%;">
-											<table class="table">
-												<tr>
-													<th class="table-secondary">계약금액</th>
-													<td class="table-light"><span>4,040,404원</span></td>
-													<th class="table-secondary">프로젝트 기간</th>
-													<td class="table-light"><span>60일</span></td>
-													<th class="table-secondary">계약일자</th>
-													<td class="table-light"><span>2020년 07월 07일</span></td>
-												</tr>
-											</table>
-										</div>
-										<div class="col-12"
-											style="margin-top: 1%; text-align: center;">
-											<span style="display: inline-block;">★★★★★</span> <span
-												style="display: inline-block;">0.0</span>
-										</div>
-										<div class="col-12 star-history">
-											<div class="col-2 star">
-												<span>전문성</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star">
-												<span>결과물만족도</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star">
-												<span>의사소통</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star">
-												<span>일정준수</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-											<div class="col-2 star" style="border: none;">
-												<span>적극성</span> <span style="display: inline-block;">★★★★★</span>
-												<span style="display: inline-block;">0.0</span>
-											</div>
-										</div>
-										<div class="col-12" style="margin-top: 2%;">
-											<div class="col-2"
-												style="display: inline-block; vertical-align: top;">
-												<div class="client-img"></div>
-											</div>
-											<div class="col-9" style="display: inline-block;">
-												<div class="col-5">
-													<span>클라이언트</span> <span>클라이언트명</span>
-												</div>
-												<div class="col-12 history-content">
-													<p>아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
-														아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
-														아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- 평가 div끝-->
-								</div>
 							</div>
-							<!-- <dlv class="detail-view">
+							<div class="col-12 partition">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">
+										평가 <a href="#" class="btn btn-info" style="float: right;">업데이트
+											하기</a>
+									</h4>
+									<div class="history">
+										<!-- 평가 시작 -->
+										<div class="col-12 client-history">
+											<div class="col-12" style="margin-top: 3%;">
+												<h4>데이터 시각화 솔루션 프로토타입 개발</h4>
+											</div>
+											<div class="col-6" style="margin-top: 1%;">
+												<div class="col-3" style="display: inline-block;">디자인</div>
+												<div class="col-5"
+													style="display: inline-block; border-left: 1px solid white;">
+													퍼블리싱</div>
+											</div>
+											<div class="col-6" style="margin-top: 1%;">
+												<div class="col-4" style="display: inline-block;">
+													클라이언트</div>
+												<div class="col-6" style="display: inline-block;">
+													클라이언트명</div>
+											</div>
+											<div class="col-12" style="margin-top: 1%;">
+												<table class="table">
+													<tr>
+														<th class="table-secondary">계약금액</th>
+														<td class="table-light"><span>4,040,404원</span></td>
+														<th class="table-secondary">프로젝트 기간</th>
+														<td class="table-light"><span>60일</span></td>
+														<th class="table-secondary">계약일자</th>
+														<td class="table-light"><span>2020년 07월 07일</span></td>
+													</tr>
+												</table>
+											</div>
+											<div class="col-12"
+												style="margin-top: 1%; text-align: center;">
+												<span style="display: inline-block;">★★★★★</span> <span
+													style="display: inline-block;">0.0</span>
+											</div>
+											<div class="col-12 star-history">
+												<div class="col-2 star">
+													<span>전문성</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star">
+													<span>결과물만족도</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star">
+													<span>의사소통</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star">
+													<span>일정준수</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star" style="border: none;">
+													<span>적극성</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+											</div>
+											<div class="col-12" style="margin-top: 2%;">
+												<div class="col-2"
+													style="display: inline-block; vertical-align: top;">
+													<div class="client-img"></div>
+												</div>
+												<div class="col-9" style="display: inline-block;">
+													<div class="col-5">
+														<span>클라이언트</span> <span>클라이언트명</span>
+													</div>
+													<div class="col-12 history-content">
+														<p>아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
+															아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
+															아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아</p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 평가 div끝-->
+										<!-- 평가 시작 -->
+										<div class="col-12 client-history">
+											<div class="col-12" style="margin-top: 3%;">
+												<h4>데이터 시각화 솔루션 프로토타입 개발</h4>
+											</div>
+											<div class="col-6" style="margin-top: 1%;">
+												<div class="col-3" style="display: inline-block;">디자인</div>
+												<div class="col-5"
+													style="display: inline-block; border-left: 1px solid white;">
+													퍼블리싱</div>
+											</div>
+											<div class="col-6" style="margin-top: 1%;">
+												<div class="col-4" style="display: inline-block;">
+													클라이언트</div>
+												<div class="col-6" style="display: inline-block;">
+													클라이언트명</div>
+											</div>
+											<div class="col-12" style="margin-top: 1%;">
+												<table class="table">
+													<tr>
+														<th class="table-secondary">계약금액</th>
+														<td class="table-light"><span>4,040,404원</span></td>
+														<th class="table-secondary">프로젝트 기간</th>
+														<td class="table-light"><span>60일</span></td>
+														<th class="table-secondary">계약일자</th>
+														<td class="table-light"><span>2020년 07월 07일</span></td>
+													</tr>
+												</table>
+											</div>
+											<div class="col-12"
+												style="margin-top: 1%; text-align: center;">
+												<span style="display: inline-block;">★★★★★</span> <span
+													style="display: inline-block;">0.0</span>
+											</div>
+											<div class="col-12 star-history">
+												<div class="col-2 star">
+													<span>전문성</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star">
+													<span>결과물만족도</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star">
+													<span>의사소통</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star">
+													<span>일정준수</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+												<div class="col-2 star" style="border: none;">
+													<span>적극성</span> <span style="display: inline-block;">★★★★★</span>
+													<span style="display: inline-block;">0.0</span>
+												</div>
+											</div>
+											<div class="col-12" style="margin-top: 2%;">
+												<div class="col-2"
+													style="display: inline-block; vertical-align: top;">
+													<div class="client-img"></div>
+												</div>
+												<div class="col-9" style="display: inline-block;">
+													<div class="col-5">
+														<span>클라이언트</span> <span>클라이언트명</span>
+													</div>
+													<div class="col-12 history-content">
+														<p>아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
+															아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아
+															아아아아아ㅏ아아아아아아아아아아아아아아아아아아아아아아아아아ㅏ아아아</p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 평가 div끝-->
+									</div>
+								</div>
+								<!-- <dlv class="detail-view">
                                     <h6><a href="#">평가 더보기 ></a></h6>
                                 </dlv> -->
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 
 		</div>
@@ -1309,11 +1269,11 @@ section {
 	<br>
 
 	<!-- Footer -->
-    <jsp:include page="../common/footer.jsp"/>
+	<jsp:include page="../common/footer.jsp" />
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+	<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
 		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
 		crossorigin="anonymous"></script>
 	<script
@@ -1323,7 +1283,7 @@ section {
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-		crossorigin="anonymous"></script>
+		crossorigin="anonymous"></script> -->
 </body>
 
 </html>

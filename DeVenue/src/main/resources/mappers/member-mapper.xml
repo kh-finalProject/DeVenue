@@ -11,7 +11,6 @@
   	<result property="memEmail" column="MEM_EMAIL"/>
   	<result property="memNick" column="MEM_NICK"/>
   	<result property="memName" column="MEM_NAME"/>
-  	<result property="memPwd" column="MEM_PWD"/>
   	<result property="address1" column="ADDRESS1"/>
   	<result property="address2" column="ADDRESS2"/>
   	<result property="address3" column="ADDRESS3"/>

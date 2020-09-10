@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.DeVenue.findMember.model.service.FindMemberService;
+import com.kh.DeVenue.findMember.model.vo.FindPartners;
 import com.kh.DeVenue.member.model.vo.Member;
 
 @Controller
@@ -23,14 +24,17 @@ public class FindMemberController {
 	public ModelAndView FindPartners(ModelAndView mv) {
 		
 		// 전체 member를 조회
-		ArrayList<Member> mList = fmService.memberAll();
-		System.out.println(mList);
-		for(int i=0; i < mList.size();i++) {
-			System.out.println(mList.get(i).getMemId());
-		}
+//		ArrayList<Member> mList = fmService.memberAll();
+//		System.out.println(mList);
+//		for(int i=0; i < mList.size();i++) {
+//			System.out.println(mList.get(i).getMemId());
+//		}
 		
-		
-		mv.addObject("mList", mList);
+		// 파트너스 찾기 view
+		ArrayList<FindPartners> fpList = fmService.findPartList();
+		System.out.println(fpList);
+//		mv.addObject("mList", mList);
+		mv.addObject("fpList", fpList);
 		mv.setViewName("findMember/findPartnersDetail");
 		
 		return mv;
@@ -58,5 +62,8 @@ public class FindMemberController {
 		
 		return null;
 	}
+	
+	
+	
 	
 }

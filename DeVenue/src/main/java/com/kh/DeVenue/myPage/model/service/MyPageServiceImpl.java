@@ -24,6 +24,7 @@ import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -204,6 +205,18 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 
 	@Override
+	public ArrayList<PortFolio> portList(int profileId) {
+		
+		return myPageDao.portList(profileId);
+	}
+
+	@Override
+	public ArrayList<PortTecView> ptList(int portId) {
+		 
+		return myPageDao.ptList(portId);
+	}
+
+	@Override
 	public PmypagePartnersInfo selectPartnersInfo(Integer pId) {
 		return myPageDao.selectPartnersInfo(pId);
 	}
@@ -235,9 +248,21 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 
 	@Override
+	public int portNameCount(String title) {
+		
+		return myPageDao.portNameCount(title);
+	}
+
+	@Override
+	public ArrayList<PortTecView> tNameList(int ptId) {
+
+		return myPageDao.tNameList(ptId);
+	}
+
 	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {
 		return myPageDao.getCountPartners(cId);
 	}
+
 
 	@Override
 	public int updateClientInfo(HashMap map) {
