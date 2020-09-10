@@ -19,8 +19,7 @@ public class CmypageClientInfo implements Serializable {
 	private String cellPhone;
 	private String proImg;
 	private int addProject;
-	private int stopProject;
-	private int ingProject;
+	private int contractProject;
 	private String introduction;
 	private String url;
 	
@@ -29,8 +28,8 @@ public class CmypageClientInfo implements Serializable {
 	}
 
 	public CmypageClientInfo(int memId, String userType, String memNick, String memTypeKind, String memEmail,
-			String ideStatus, String phone, String cellPhone, String proImg, int addProject, int stopProject,
-			int ingProject, String introduction, String url) {
+			String ideStatus, String phone, String cellPhone, String proImg, int addProject, int contractProject,
+			String introduction, String url) {
 		super();
 		this.memId = memId;
 		this.userType = userType;
@@ -42,8 +41,7 @@ public class CmypageClientInfo implements Serializable {
 		this.cellPhone = cellPhone;
 		this.proImg = proImg;
 		this.addProject = addProject;
-		this.stopProject = stopProject;
-		this.ingProject = ingProject;
+		this.contractProject = contractProject;
 		this.introduction = introduction;
 		this.url = url;
 	}
@@ -128,20 +126,12 @@ public class CmypageClientInfo implements Serializable {
 		this.addProject = addProject;
 	}
 
-	public int getStopProject() {
-		return stopProject;
+	public int getContractProject() {
+		return contractProject;
 	}
 
-	public void setStopProject(int stopProject) {
-		this.stopProject = stopProject;
-	}
-
-	public int getIngProject() {
-		return ingProject;
-	}
-
-	public void setIngProject(int ingProject) {
-		this.ingProject = ingProject;
+	public void setContractProject(int contractProject) {
+		this.contractProject = contractProject;
 	}
 
 	public String getIntroduction() {
@@ -169,8 +159,7 @@ public class CmypageClientInfo implements Serializable {
 		return "CmypageClientInfo [memId=" + memId + ", userType=" + userType + ", memNick=" + memNick
 				+ ", memTypeKind=" + memTypeKind + ", memEmail=" + memEmail + ", ideStatus=" + ideStatus + ", phone="
 				+ phone + ", cellPhone=" + cellPhone + ", proImg=" + proImg + ", addProject=" + addProject
-				+ ", stopProject=" + stopProject + ", ingProject=" + ingProject + ", introduction=" + introduction
-				+ ", url=" + url + "]";
+				+ ", contractProject=" + contractProject + ", introduction=" + introduction + ", url=" + url + "]";
 	}
 	
 }

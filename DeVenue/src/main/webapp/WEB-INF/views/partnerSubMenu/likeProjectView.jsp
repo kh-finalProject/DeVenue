@@ -229,14 +229,15 @@
 
           <!-- 프로젝트 header 타이틀&검색 Section: Block Content -->
           <section>
+          <form action="likeProjectList.do">
           <div id="subMenu_header" class="row">
             
             <div class="col-md-12 mt-3">
             <h4>관심 프로젝트</h4>
             <div class="checkbox">
-            <c:if test="${not empty filter}">
+            <c:if test="${not empty sorting}">
             <c:choose>
-            <c:when test="${filter.sorting eq 'CDATE'}">
+            <c:when test="${sorting eq 'CDATE'}">
              <div class="custom-control custom-radio">
                 <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="CDATE" checked>
                 <label class="custom-control-label" for="sorting_recent">최신 순</label>
@@ -251,7 +252,7 @@
             </c:choose>
             
             <c:choose>
-            <c:when test="${filter.sorting eq 'PAYMENT'}">
+            <c:when test="${sorting eq 'PAYMENT'}">
              <div class="custom-control custom-radio">
                 <input type="radio" name="sorting" class="custom-control-input" id="sorting_price" value="PAYMENT" checked>
                 <label class="custom-control-label" for="sorting_price">금액 내림차순</label>
@@ -266,7 +267,7 @@
             </c:choose>
             
             <c:choose>
-            <c:when test="${filter.sorting eq 'RENDDATE'}">
+            <c:when test="${sorting eq 'RENDDATE'}">
              <div class="custom-control custom-radio">
                 <input type="radio" name="sorting" class="custom-control-input" id="sorting_endday" value="RENDDATE" checked>
                 <label class="custom-control-label" for="sorting_endday">마감일 임박 순</label>
@@ -281,7 +282,7 @@
             </c:choose>
 			</c:if>
 			
-			<c:if test="${empty filter}">
+			<c:if test="${empty sorting}">
             <div class="custom-control custom-radio">
                 <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="CDATE">
                 <label class="custom-control-label" for="sorting_recent">최신 순</label>
@@ -299,43 +300,37 @@
             </div>
             </div>
           </div>
-          <script>
-          $(function(){
-        	
-        	  var sorting=$("input[name='sorting']");
-        	  var check;
-        	  
-        	  sorting.change(function(){
-        		
-        		  if($(this).prop("checked")){
-        			 
-        			  check=$(this).val();
-        			  location.href="likeProjectList.do?sorting"+check;
-        		  }
-        		  
-        	  })
-        	  
-          })
-          
-          
-          </script>
 
           <div id="subMenu_search" class="row">
 
             <div class="col-md-9 mt-3">
                 <div class="input-group mb-3 pl-3" id="subMenu_search_div">
+                    
                     <div class="input-group-prepend" id="subMenu_search_category">
-                      <button class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전체</button>
+                      <c:if test="${not empty search.category}">
+                      <button id="searchCate" class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${search.category}</button>
+                      </c:if>
+                      <c:if test="${empty search.category}">
+                      <button id="searchCate" class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전체</button>
+                      </c:if>
+                      
                       <div class="dropdown-menu">
                         <a class="dropdown-item">전체</a>
                         <a class="dropdown-item">제목</a>
-                        <a class="dropdown-item">관련기술</a>
                         <a class="dropdown-item">프로젝트내용</a>
+                        <input type="hidden" id="hiddenCate" name="category">
                       </div>
+                      
                     </div>
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                    <c:if test="${empty search.keyword}">
+                     <input type="text" name="keyword" class="form-control" aria-label="Text input with dropdown button">
+                     </c:if>
+                    <c:if test="${not empty search.keyword}">
+                    <input type="text" name="keyword" class="form-control" aria-label="Text input with dropdown button" value="${search.keyword}">
+                   </c:if>
+                   
                     <div class="input-group-append">
-                        <button class="btn btn-info" type="button" id="button-addon2">검색</button>
+                        <button class="btn btn-info" type="submit" id="searchBtn">검색</button>
                     </div>
                   </div>
 
@@ -346,6 +341,7 @@
 
           </div>
 
+          </form>
           </section>
           <script>
 
@@ -353,6 +349,24 @@
 
                   var selected=$(this).text();
                   $(this).parent().parent().children("button").text(selected);
+                  $("#hiddenCate").val(selected);
+              })
+              
+              $(function(){
+            	
+            	  var sorting=$("input[name='sorting']");
+            	  
+            	  sorting.change(function(){
+            		  //라디오 버튼이 클릭 되면 submit을 trigger한다.
+            		  
+            		  //검색값이 존재한다면,히든태그에 담아둔다.
+            		  var keyword=$("#searchCate").val();
+            		  $("#hiddenCate").val(keyword);
+            		  
+            		  
+            		  $("#searchBtn").trigger("click");
+            	  })
+            	  
               })
 
           </script>
@@ -375,6 +389,7 @@
             	
             	<c:url var="papply" value="applyThisProject.do">
             	<c:param name="pId" value="${like.pList.id}"/>
+            	<c:param name="page" value="1"/>
             	</c:url>
             	
             	

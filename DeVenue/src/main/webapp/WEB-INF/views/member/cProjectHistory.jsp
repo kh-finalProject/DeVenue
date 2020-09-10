@@ -54,84 +54,13 @@
 		</div>
 
 		<div class="row">
-			<div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-				<br>
-				<div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
-					클라이언트
-				</div>
+			<jsp:include page="../common/pSideMenubar.jsp"/>
 			</div>
-			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
+			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:20%">
 				<br>
 				<h4 style="margin-left: 3%; padding-bottom: 1%; width: 85%; border-bottom: 1px solid lightgray;">
 					프로젝트 히스토리
 				</h4>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-2" style="border-right: 1px solid lightgray;"></div>
-		</div>
-		
-		<div class="row">
-			<div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-				<br>
-				<div style="padding-bottom: 5.5%;">
-					<div>
-						<p id="infoMenu">
-							정보 관리
-							<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i>
-						</p>
-						<div id="subInfoMenu" style="display: none; margin-left: 5%;">
-							<p id="clientInfo">클라이언트 정보</p>
-							<p id="projectHistory">프로젝트 히스토리</p>
-						</div>
-						<p id="accountMenu">
-							계정 관리
-							<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i>
-						</p>
-						<div id="subAccountMenu" style="display: none; margin-left: 5%;">
-							<p id="clientComment">기본 정보 수정</p>
-							<p id="insertCComment">신원 인증</p>
-							<p id="insertCComment">날인 방법 관리</p>
-							<p id="insertCComment">비밀번호 변경</p>
-							<p id="insertCComment">회원 탈퇴</p>
-						</div>
-						<p>결제 관리</p>
-						<p id="clientEvaluate">내게 온 제안</p>
-					</div>
-					<script>
-				            $("#infoMenu").click(function () {
-				
-				              $("#subInfoMenu").toggle();
-				            });
-				
-				            $("#accountMenu").click(function () {
-				
-				              $("#subAccountMenu").toggle();
-				            });
-				
-				            $("#clientInfo").on("click", function () {
-				              location.href = "../findUser/findClientDetail.html";
-				            }).on("mouseenter", function () {
-				
-				            });
-				
-				            $("#projectHistory").on("click", function () {
-					              location.href = "cMyPageProjectHistory.do?cId=${loginUser.memId}";
-					            });
-				
-				
-				            $("#clientComment").on("click", function () {
-				              location.href = "clientComment.html";
-				            });
-				
-				            $("#insertCComment").on("click", function () {
-				              location.href = "insertCComment.html";
-				            });
-			          </script>
-
-				</div>
-			</div>
-			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
 				<div class="userBoard">
 					&emsp;
 					<input type="hidden" value="선택한 회원 ID">
@@ -173,10 +102,10 @@
 											</div>
 										</td>
 										<td>
-											<div style="float: right;">
-												&nbsp;${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}%<br>
-												&emsp;${ph.ingProject }개<br>
-												&emsp;${ph.completeProject }개
+											<div style="text-align: right;">
+												${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}%<br>
+												${ph.ingProject }개<br>
+												${ph.completeProject }개
 											</div>
 										</td>
 									</tr>
@@ -282,7 +211,7 @@
                                     	</c:choose>
 										</td>
 										<!-- <td style="text-align: center;"><b>4.5 / 평가 4개</b></td> -->
-										<td style="text-align: center;"><b><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.avgEagv }"/> / 평가 ${ph.countEagv }개</b></td>
+										<td style="text-align: right;"><b><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.avgEagv }"/> / 평가 ${ph.countEagv }개</b></td>
 									</tr>
 									<tr><td>&nbsp;</td></tr>
 									<tr>
@@ -368,7 +297,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star1 }"/></td>
+										<td style="text-align: right;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star1 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">적극성</td>
@@ -453,7 +382,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star2 }"/></td>
+										<td style="text-align: right;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star2 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">일정 준수</td>
@@ -538,7 +467,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star3 }"/></td>
+										<td style="text-align: right;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star3 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">의사 소통</td>
@@ -623,7 +552,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0"  maxFractionDigits="1" value="${ph.star4 }"/></td>
+										<td style="text-align: right;"><fmt:formatNumber type="number" pattern=".0"  maxFractionDigits="1" value="${ph.star4 }"/></td>
 									</tr>
 									<tr>
 										<td colspan="2">만족도</td>
@@ -707,71 +636,8 @@
                                         	<i class="fas fa-star"></i>
 										</c:when>
                                     </c:choose>
-										
-										<!-- 
-											<i id="firstStar" class="far fa-star"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
 										</td>
-										<td style="text-align: center;"><b>4.5 / 평가 4개</b></td>
-									</tr>
-									<tr><td>&nbsp;</td></tr>
-									<tr>
-										<td colspan="2">전문성</td>
-										<td style="text-align: center;">
-											<i id="firstStar" class="far fa-star"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-										</td>
-										<td style="text-align: center;">4.5</td>
-									</tr>
-									<tr>
-										<td colspan="2">적극성</td>
-										<td style="text-align: center;">
-											<i id="firstStar" class="far fa-star"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-										</td>
-										<td style="text-align: center;">4.5</td>
-									</tr>
-									<tr>
-										<td colspan="2">일정 준수</td>
-										<td style="text-align: center;">
-											<i id="firstStar" class="far fa-star"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-										</td>
-										<td style="text-align: center;">4.5</td>
-									</tr>
-									<tr>
-										<td colspan="2">의사 소통</td>
-										<td style="text-align: center;">
-											<i id="firstStar" class="far fa-star"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-										</td>
-										<td style="text-align: center;">4.5</td>
-									</tr>
-									<tr>
-										<td colspan="2">만족도</td>
-										<td style="text-align: center;">
-											<i id="firstStar" class="far fa-star"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i>
-											<i class="fas fa-star"></i>
-											<i class="fas fa-star-half-alt"></i> -->
-										</td>
-										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star5 }"/></td>
+										<td style="text-align: right;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star5 }"/></td>
 									</tr>
 								</table>
 							</div>
@@ -780,6 +646,7 @@
 				</div>
 			</div>
 		</div>
+		
 	</div>
 
 

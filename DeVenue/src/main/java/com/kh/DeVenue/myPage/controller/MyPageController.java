@@ -1,10 +1,8 @@
 package com.kh.DeVenue.myPage.controller;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -31,6 +29,7 @@ import com.kh.DeVenue.myPage.model.service.MyPageService;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
@@ -772,14 +771,19 @@ public class MyPageController {
 			// 진행중인 프로젝트 조회
 			ArrayList<CmypageProcess> process = myPageService.selectProcess(cId);
 			System.out.println("진행중인 프로젝트 : "+process);
+			
+			// 참여 파트너스 카운트
+			ArrayList<CmypageCountPartners> countPartners = myPageService.getCountPartners(cId);
+			System.out.println("참여 파트너스 수 : " + countPartners);
 				
 			if(projectHistory!=null) {
 				mv.addObject("ph", projectHistory)
 				.addObject("suggest", suggest)
 				.addObject("process", process)
+				.addObject("cp", countPartners)
 				.setViewName("member/clientMyPage");
 			}else {
-				throw new MemberException("프로젝트 히스토리 조회 실패!");
+				throw new MemberException("마이페이지 접근 실패!");
 			}
 			
 			return mv;

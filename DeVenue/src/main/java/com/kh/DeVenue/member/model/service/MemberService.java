@@ -69,5 +69,7 @@ public interface MemberService {
 	
 	int insertIden(int memId);
 
+	ArrayList<FindClient> selectList(PageInfo pi, int status);
+
 	
 }

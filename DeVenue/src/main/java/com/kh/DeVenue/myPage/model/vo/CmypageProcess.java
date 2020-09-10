@@ -17,14 +17,13 @@ public class CmypageProcess implements Serializable {
 	private int proPayment;
 	private Date proStartDate;
 	private Date proEndDate;
-	private int countPartners;
 	
 	public CmypageProcess() {
 		super();
 	}
 
 	public CmypageProcess(int memId, String proName, String mcType, String dcType, int proPayment, Date proStartDate,
-			Date proEndDate, int countPartners) {
+			Date proEndDate) {
 		super();
 		this.memId = memId;
 		this.proName = proName;
@@ -33,7 +32,6 @@ public class CmypageProcess implements Serializable {
 		this.proPayment = proPayment;
 		this.proStartDate = proStartDate;
 		this.proEndDate = proEndDate;
-		this.countPartners = countPartners;
 	}
 
 	public int getMemId() {
@@ -92,14 +90,6 @@ public class CmypageProcess implements Serializable {
 		this.proEndDate = proEndDate;
 	}
 
-	public int getCountPartners() {
-		return countPartners;
-	}
-
-	public void setCountPartners(int countPartners) {
-		this.countPartners = countPartners;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -107,9 +97,7 @@ public class CmypageProcess implements Serializable {
 	@Override
 	public String toString() {
 		return "CmypageProcess [memId=" + memId + ", proName=" + proName + ", mcType=" + mcType + ", dcType=" + dcType
-				+ ", proPayment=" + proPayment + ", proStartDate=" + proStartDate + ", proEndDate=" + proEndDate
-				+ ", countPartners=" + countPartners + "]";
+				+ ", proPayment=" + proPayment + ", proStartDate=" + proStartDate + ", proEndDate=" + proEndDate + "]";
 	}
-	
 	
 }

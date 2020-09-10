@@ -10,6 +10,7 @@ import com.kh.DeVenue.myPage.model.dao.MyPageDao;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
@@ -257,8 +258,9 @@ public class MyPageServiceImpl implements MyPageService{
 		return myPageDao.tNameList(ptId);
 	}
 
-
-
+	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {
+		return myPageDao.getCountPartners(cId);
+	}
 
 
 

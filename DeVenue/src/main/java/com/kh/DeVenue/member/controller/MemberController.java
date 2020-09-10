@@ -1,5 +1,7 @@
 package com.kh.DeVenue.member.controller;
 
+import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.service.MemberService;
 import com.kh.DeVenue.member.model.vo.CPeval;
@@ -26,13 +32,9 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
-
 import com.kh.DeVenue.member.model.vo.Member;
-
-import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
-import com.kh.DeVenue.memberAccount.model.vo.Identify;
 import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.util.model.service.ChatService;
@@ -271,7 +273,7 @@ public class MemberController {
 		System.out.println("list : " + list);
 		System.out.println("pi" + pi);
 		
-		String msg=null;
+		String msg="msg";
 		
 		if(list != null) {
 			mv.addObject("list", list);
@@ -284,6 +286,90 @@ public class MemberController {
 		
 		return mv;
 	}
+	
+	@RequestMapping("recentList.do")
+	public void getRecentList(HttpServletResponse response, int status
+			, @RequestParam(value="page",required=false) Integer page) throws JsonIOException, IOException {
+		response.setContentType("application/json;charset=utf-8");
+		
+		int currentPage=1;
+		if(page!=null) {
+			currentPage=page;
+		}
+		
+		System.out.println(status);
+		
+//		if(status == 1) {
+//			int listCount=mService.getRecentListCount();
+//		}else if(status == 2) {
+//			int listCount=mService.getHighPointListCount();
+//		}else if(status == 3) {
+//			int listCount=mService.getManyPointListCount();
+//		}else if(status == 4) {
+//			int listCount=mService.getManyProjectListCount();
+//		}
+		
+		int listCount=mService.getListCount();
+		System.out.println("listCount : " + listCount);
+		
+		PageInfo pi= getPageInfo(currentPage, listCount);
+		
+		ArrayList<FindClient> list=mService.selectList(pi, status);
+		System.out.println("list : " + list);
+		System.out.println("pi : " + pi);
+		
+		String msg=null;
+		
+		HashMap map=new HashMap();
+		map.put("msg",msg);
+		map.put("list", list);
+		map.put("pi",pi);
+		
+		Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(map, response.getWriter());
+		System.out.println("gson : " + gson);
+		
+//		gson.toJson(msg, response.getWriter());
+		
+//		
+//		for(FindClient fc:list) {
+//			JSONObject client=new JSONObject();
+//			
+//			client.put("memId", fc.getMemId());
+//			client.put("memNick", fc.getMemNick());
+//			client.put("memEmail", fc.getMemEmail());
+//			client.put("memTypeName", fc.getMemTypeName());
+//			client.put("memTypeKind", fc.getMemTypeKind());
+//			client.put("profileImg", fc.getProfileImg());
+//			client.put("introduction", fc.getIntroduction());
+//			client.put("avgEagv", fc.getAvgEagv());
+//			client.put("countEagv", fc.getCountEagv());
+//			client.put("countProId", fc.getCountProId());
+//			client.put("maxDcType", fc.getMaxDcType());
+//			client.put("ideStatus", fc.getIdeStatus());
+//			client.put("phone", fc.getPhone());
+//			client.put("createDate", fc.getCreateDate());
+//			
+//			jArr.add(client);
+//		}
+//		
+//		
+//		JSONObject sendJson=new JSONObject();
+//		
+//		sendJson.put("list", jArr);
+//		sendJson.put("pi", pi);
+//		sendJson.put("msg", msg);
+//		System.out.println("sendJson : " + sendJson);
+//		
+//		PrintWriter out=response.getWriter();
+//		out.print(sendJson);
+//		out.flush();
+//		out.close();
+		
+//		Map map=new HashMap();
+		
+	}
+	
 	
 	@RequestMapping(value="cDetail.do")
 	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {

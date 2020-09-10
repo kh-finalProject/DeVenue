@@ -231,25 +231,75 @@
         <div class="col-md-6 mb-4 mt-5">
 
           <!-- 프로젝트 header 타이틀&검색 Section: Block Content -->
-          <section>
+         <section>
+          <form action="completeProjectList.do">
           <div id="subMenu_header" class="row">
             
             <div class="col-md-12 mt-3">
             <h4>완료 프로젝트</h4>
             <div class="checkbox">
+            <c:if test="${not empty sorting}">
+            <c:choose>
+            <c:when test="${sorting eq 'ENDDATE'}">
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="ENDDATE" checked>
+                <label class="custom-control-label" for="sorting_recent">최신 순</label>
+            </div>
+            </c:when>
+            <c:otherwise>
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="ENDDATE">
+                <label class="custom-control-label" for="sorting_recent">최신 순</label>
+            </div>
+            </c:otherwise>
+            </c:choose>
+            
+            <c:choose>
+            <c:when test="${sorting eq 'PST5'}">
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_complete"  value="PST5" checked>
+                <label class="custom-control-label" for="sorting_complete">완료</label>
+            </div>
+            </c:when>
+            <c:otherwise>
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_complete"  value="PST5">
+                <label class="custom-control-label" for="sorting_complete">완료</label>
+            </div>
+            </c:otherwise>
+            </c:choose>
+            
+            <c:choose>
+            <c:when test="${sorting eq 'PST6'}">
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_suspend" value="PST6" checked>
+                <label class="custom-control-label" for="sorting_suspend">중단</label>
+              </div>
+            </c:when>
+            <c:otherwise>
+             <div class="custom-control custom-radio">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_suspend" value="PST6">
+                <label class="custom-control-label" for="sorting_suspend">중단</label>
+              </div>
+            </c:otherwise>
+            </c:choose>
+			</c:if>
+			
+			<c:if test="${empty sorting}">
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent">
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_recent" value="ENDDATE">
                 <label class="custom-control-label" for="sorting_recent">최신 순</label>
             </div>
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_finished">
-                <label class="custom-control-label" for="sorting_finished">완료</label>
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_complete" value="PST5">
+                <label class="custom-control-label" for="sorting_complete">완료</label>
             </div>
             <div class="custom-control custom-radio">
-                <input type="radio" name="sorting" class="custom-control-input" id="sorting_suspended">
-                <label class="custom-control-label" for="sorting_suspended">중단</label>
-            </div>
-
+                <input type="radio" name="sorting" class="custom-control-input" id="sorting_suspend" value="PST6">
+                <label class="custom-control-label" for="sorting_suspend">중단</label>
+              </div>
+			</c:if>
+			
             </div>
             </div>
           </div>
@@ -258,18 +308,32 @@
 
             <div class="col-md-9 mt-3">
                 <div class="input-group mb-3 pl-3" id="subMenu_search_div">
+                    
                     <div class="input-group-prepend" id="subMenu_search_category">
-                      <button class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전체</button>
+                      <c:if test="${not empty search.category}">
+                      <button id="searchCate" class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${search.category}</button>
+                      </c:if>
+                      <c:if test="${empty search.category}">
+                      <button id="searchCate" class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전체</button>
+                      </c:if>
+                      
                       <div class="dropdown-menu">
                         <a class="dropdown-item">전체</a>
                         <a class="dropdown-item">제목</a>
-                        <a class="dropdown-item">관련기술</a>
                         <a class="dropdown-item">프로젝트내용</a>
+                        <input type="hidden" id="hiddenCate" name="category">
                       </div>
+                      
                     </div>
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                    <c:if test="${empty search.keyword}">
+                     <input type="text" name="keyword" class="form-control" aria-label="Text input with dropdown button">
+                     </c:if>
+                    <c:if test="${not empty search.keyword}">
+                    <input type="text" name="keyword" class="form-control" aria-label="Text input with dropdown button" value="${search.keyword}">
+                   </c:if>
+                   
                     <div class="input-group-append">
-                        <button class="btn btn-info" type="button" id="button-addon2">검색</button>
+                        <button class="btn btn-info" type="submit" id="searchBtn">검색</button>
                     </div>
                   </div>
 
@@ -280,13 +344,33 @@
 
           </div>
 
+          </form>
           </section>
           <script>
 
               $("#subMenu_search_category").children().children("a").click(function(){
 
-                  var selected=$(this).text();
+            	  var selected=$(this).text();
                   $(this).parent().parent().children("button").text(selected);
+                  $("#hiddenCate").val(selected);
+              })
+              
+              
+               $(function(){
+            	
+            	  var sorting=$("input[name='sorting']");
+            	  
+            	  sorting.change(function(){
+            		  //라디오 버튼이 클릭 되면 submit을 trigger한다.
+            		  
+            		  //검색값이 존재한다면,히든태그에 담아둔다.
+            		  var keyword=$("#searchCate").val();
+            		  $("#hiddenCate").val(keyword);
+            		  
+            		  
+            		  $("#searchBtn").trigger("click");
+            	  })
+            	  
               })
 
           </script>
@@ -319,10 +403,10 @@
                                   <h5 class="card-title">${co.project.proName}</h5>
                                   <table>
                                     <tr>
-                                      <td><i class="fas fa-won-sign"></i>예상금액<strong>
+                                      <td><i class="fas fa-won-sign"></i>금액<strong>
                                       <fmt:setLocale value="ko"/><fmt:formatNumber value="${co.project.proPayment}" type="currency"/>
                                       </strong>원</td>
-                                      <td><i class="far fa-circle"></i>예상기간<strong>
+                                      <td><i class="far fa-circle"></i>기간<strong>
                                       ${co.project.proDuration}
                                       </strong>일</td>
                                     </tr>

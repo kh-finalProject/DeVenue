@@ -2719,9 +2719,7 @@ if(session!=null){
             			success:function(data){
             				if(data=="success"){
         						alert("관심 프로젝트 목록에서 삭제 되었습니다.")
-        						
-        						usingFilter();
-        						
+        					
             				}
             			},
             			error:function(request, status, errorData){
@@ -2745,10 +2743,8 @@ if(session!=null){
           			data:{pId:pId,memId:memId},
           			success:function(data){
           				if(data=="success"){
-      						alert("관심 프로젝트로 등록 되었습니다.")
+      						alert("관심 프로젝트로 등록 되었습니다.");
       						
-      						usingFilter();
-    						
           				}
           			},
           			error:function(request, status, errorData){

@@ -37,85 +37,29 @@
       
         <p href="${clientProfile }">마이페이지</p>
       </div>
-
     </div>
 
 
     <div class="row">
-      <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-        <br>
-        <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
-          클라이언트
-        </div>
-        <br>
-        <div style="padding-bottom: 5.5%;">
-          <div>
-            <p id="infoMenu">정보 관리<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
-            <div id="subInfoMenu" style="display:none; margin-left: 5%;">
-              <p id="clientInfo">클라이언트 정보</p>
-              <p id="projectHistory">프로젝트 히스토리</p>
-            </div>
-            <p id="accountMenu">계정 관리<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
-            <div id="subAccountMenu" style="display:none; margin-left: 5%;">
-              <p id="clientComment">기본 정보 수정</p>
-              <p id="insertCComment">신원 인증</p>
-              <p id="insertCComment">날인 방법 관리</p>
-              <p id="insertCComment">비밀번호 변경</p>
-              <p id="insertCComment">회원 탈퇴</p>
-            </div>
-            <p>결제 관리</p>
-            <p id="clientEvaluate">내게 온 제안</p>
-          </div>
-          <script>
-            $("#infoMenu").click(function () {
-
-              $("#subInfoMenu").toggle();
-            });
-
-            $("#accountMenu").click(function () {
-
-              $("#subAccountMenu").toggle();
-            });
-
-            $("#clientInfo").on("click", function () {
-              location.href = "../findUser/findClientDetail.html";
-            }).on("mouseenter", function () {
-
-            });
-
-            $("#projectHistory").on("click", function () {
-	              location.href = "cMyPageProjectHistory.do?cId=${loginUser.memId}";
-	            });
-
-
-            $("#clientComment").on("click", function () {
-              location.href = "clientComment.html";
-            });
-
-            $("#insertCComment").on("click", function () {
-              location.href = "insertCComment.html";
-            });
-          </script>
-
-        </div>
-      </div>
-      <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
+    	<jsp:include page="../common/pSideMenubar.jsp"/>
+      <div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:25%;">
         <br>
         <div class="row">
-          <div class="col-4" style="margin-left:5%; padding-right: 0;">
+          <div class="col-5" style="margin-left:5%; padding-right: 0;">
             <table>
               <tr>
                 <td>
                   <div class="image-profile">
-                    <img src="${contextPath }/resources/proImg/${info.proImg}" style="object-fit: cover; width:100px;">
+                    <c:if test="${!empty info.proImg }">
+						<img src="${contextPath }/resources/proImg/${info.proImg}" style="object-fit: cover; width: 100px;">
+					</c:if>
+					<c:if test="${empty info.proImg }">
+						<img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover; width: 100px;">
+					</c:if>
                   </div>
                 </td>
                 <td>&emsp;&emsp;</td>
                 <td>
-                  <!-- user01(닉네임)&emsp;<a class="badge badge-info">개인</a><br>
-                  <p>user01@google.com</p>
-                  <i class="far fa-address-card"></i>&nbsp;신원인증
-                  &emsp;<i class="fas fa-phone-alt"></i>연락처등록<br> -->
                   ${info.memNick }&emsp;<a class="badge badge-info">${info.memTypeKind }</a><br>
                   <p>${info.memEmail }</p>
                   <c:if test="${info.ideStatus eq 'COMPLETE' }">
@@ -142,7 +86,7 @@
                 </td>
                 <td></td>
                 <td style="padding-left:25%">
-                  <br>${info.stopProject + info.ingProject }
+                  <br>${info.contractProject }
                 </td>
               </tr>
             </table>
@@ -151,7 +95,7 @@
         <div class="row">
 
 
-          <div class="userBoard">
+          <div class="col-10 userBoard">
             &emsp;
             <input type="hidden" value="선택한 회원 ID">
 
@@ -162,7 +106,7 @@
                   <b>자기 소개</b>
                 </div>
                 <div style="margin-left: 3%;">
-                  <div style=" width:80%;">
+                  <div style=" width:100%;">
                     <p style="line-height:2.0rem;">
                       ${info.introduction }
                     </p>
@@ -175,11 +119,11 @@
             <div class="row"
               style="margin-left:3%; margin-right:3%; padding-bottom: 3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
               <div class="col-12">
-                <div style="margin-left: 1%; margin-bottom: 2%; margin-top: 2%; width: 80%;">
+                <div style="margin-left: 1%; margin-bottom: 2%; margin-top: 2%; width: 100%;">
                   <b>홈페이지</b>
                 </div>
                 <div style="margin-left: 3%;">
-                  <div style=" width:80%;">
+                  <div style=" width:100%;">
                     <a href="http://www.naver.com" style="color:white;">http://${info.url }</a>
 		              <button class="btn-info" type="button" style="float: right; border-radius: 0.3rem; padding: 1%;">수정하기</button>
                   </div>

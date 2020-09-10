@@ -41,70 +41,8 @@
 		</div>
 
 		<div class="row">
-			<div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-				<br>
-				<div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
-					클라이언트
-				</div>
-				<br>
-				<div style="padding-bottom: 5.5%;">
-					<div>
-						<p id="infoMenu">
-							정보 관리
-							<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i>
-						</p>
-						<div id="subInfoMenu" style="display: none; margin-left: 5%;">
-							<p id="clientInfo">클라이언트 정보</p>
-							<p id="projectHistory">프로젝트 히스토리</p>
-						</div>
-						<p id="accountMenu">
-							계정 관리
-							<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i>
-						</p>
-						<div id="subAccountMenu" style="display: none; margin-left: 5%;">
-							<p id="clientComment">기본 정보 수정</p>
-							<p id="insertCComment">신원 인증</p>
-							<p id="insertCComment">날인 방법 관리</p>
-							<p id="insertCComment">비밀번호 변경</p>
-							<p id="insertCComment">회원 탈퇴</p>
-						</div>
-						<p>결제 관리</p>
-						<p id="clientEvaluate">내게 온 제안</p>
-					</div>
-					<script>
-			            $("#infoMenu").click(function () {
-			
-			              $("#subInfoMenu").toggle();
-			            });
-			
-			            $("#accountMenu").click(function () {
-			
-			              $("#subAccountMenu").toggle();
-			            });
-			
-			            $("#clientInfo").on("click", function () {
-			              location.href = "clientInfo.do?cId=${loginUser.memId}";
-			            }).on("mouseenter", function () {
-			
-			            });
-			
-			            $("#projectHistory").on("click", function () {
-			              location.href = "cMyPageProjectHistory.do?cId=${loginUser.memId}";
-			            });
-			
-			
-			            $("#clientComment").on("click", function () {
-			              location.href = "clientComment.jsp";
-			            });
-			
-			            $("#insertCComment").on("click", function () {
-			              location.href = "insertCComment.jsp";
-			            });
-			          </script>
-
-				</div>
-			</div>
-			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
+			<jsp:include page="../common/pSideMenubar.jsp"/>
+			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:20%;">
 				<br>
 				<div class="row">
 					<div class="col-5" style="margin-left: 5%; padding-right: 0;">
@@ -112,7 +50,12 @@
 							<tr>
 								<td>
 									<div class="image-profile">
+									<c:if test="${!empty ph.proImg }">
 										<img src="${contextPath }/resources/proImg/${ph.proImg}" style="object-fit: cover; width: 100px;">
+									</c:if>
+									<c:if test="${empty ph.proImg }">
+										<img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover; width: 100px;">
+									</c:if>
 									</div>
 								</td>
 								<td>&emsp;&emsp;</td>
@@ -137,12 +80,12 @@
 							<tr>
 								<td><br>등록한 프로젝트</td>
 								<td></td>
-								<td style="padding-left: 25%"><br>${ph.addProject }</td>
+								<td style="text-align:right;"><br>${ph.addProject }</td>
 							</tr>
 							<tr>
 								<td><br>계약한 프로젝트</td>
 								<td></td>
-								<td style="padding-left: 25%"><br>${ph.stopProject+ph.ingProject }</td>
+								<td style="text-align:right;"><br>${ph.stopProject+ph.ingProject }</td>
 							</tr>
 						</table>
 
@@ -155,6 +98,7 @@
 						</p>
 						<table border="1px solid lightgray;" style="width: 100%; text-align: center;">
 							<thead>
+							<c:if test="${!suggest.isEmpty() }">
 								<tr>
 									<th>닉네임</th>
 									<th>파트너스 직종</th>
@@ -162,6 +106,12 @@
 									<th>경력</th>
 									<th>대상 프로젝트</th>
 								</tr>
+							</c:if>
+							<c:if test="${suggest.isEmpty() }">
+								<tr>
+									<td>내게 온 제안이 없습니다.</td>
+								</tr>
+							</c:if>
 							</thead>
 							<tbody>
 							<c:forEach var="s" items="${suggest }" begin="0" end="4" varStatus="status">
@@ -234,12 +184,17 @@
 							<div style="margin-left: 3%;">
 								<table border="1px solid white" style="text-align: center; width: 100%;">
 									<tr>
+									<c:if test="${!process.isEmpty() }">
 										<th>프로젝트 명</th>
 										<th>카테고리/분류</th>
 										<th>예상 예산</th>
 										<th>시작일</th>
 										<th>예상 마감일</th>
 										<th>참여 파트너스 수</th>
+									</c:if>
+									<c:if test="${process.isEmpty() }">
+										<td>진헹 중인 프로젝트가 없습니다.</td>
+									</c:if>
 									</tr>
 									<c:forEach var="p" items="${process }" begin="0" end="4" varStatus="status"> 
 										<tr>
@@ -252,7 +207,9 @@
 										<td><fmt:formatNumber value="${p.proPayment }" type="number" groupingUsed="true"/>원</td>
 										<td>${p.proStartDate }</td>
 										<td>${p.proEndDate }</td>
-										<td>${p.countPartners }명</td>
+										<c:forEach var="cp" items="${cp }" begin="${status.index }" end="${status.index }">
+										<td>${cp.countPartners }명</td>
+										</c:forEach>
 									</tr>
 									</c:forEach>
 									<!-- <tr>
