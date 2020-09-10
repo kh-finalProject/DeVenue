@@ -1554,9 +1554,10 @@ if(session!=null){
                  
                 }
                 
+                
                 //모달을 통해 지역이 추가되면 필터 메소드를 trigger하여 필터 전송한다.
-                $("#searchFilter").find("input").eq(0).trigger("change");
-
+                usingFilter();
+                
               });
 
 
