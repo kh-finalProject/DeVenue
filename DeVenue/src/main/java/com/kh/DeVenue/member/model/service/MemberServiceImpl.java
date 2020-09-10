@@ -167,4 +167,9 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.selectList2(pi, introduction);
 	}
 
+	@Override
+	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
+		return mDao.selectList(pi, status);
+	}
+
 }

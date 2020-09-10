@@ -159,4 +159,11 @@ public class MemberDao {
 		return sqlSessionTemplate.insert("memberAccountMapper.signInsert", memId);
 
 	}
+
+	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList2", status, rowBounds);
+	}
 }

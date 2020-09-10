@@ -24,6 +24,7 @@ public class FindClient implements Serializable {
 	private String maxDcType;
 	private String ideStatus;
 	private String phone;
+	private String createDate;
 	
 	public FindClient() {
 		super();
@@ -31,7 +32,7 @@ public class FindClient implements Serializable {
 
 	public FindClient(int memId, String memNick, String memEmail, String memTypeName, String memTypeKind,
 			String profileImg, String introduction, double avgEagv, int countEagv, int countProId, String maxDcType,
-			String ideStatus, String phone) {
+			String ideStatus, String phone, String createDate) {
 		super();
 		this.memId = memId;
 		this.memNick = memNick;
@@ -46,6 +47,7 @@ public class FindClient implements Serializable {
 		this.maxDcType = maxDcType;
 		this.ideStatus = ideStatus;
 		this.phone = phone;
+		this.createDate = createDate;
 	}
 
 	public int getMemId() {
@@ -152,6 +154,14 @@ public class FindClient implements Serializable {
 		this.phone = phone;
 	}
 
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -161,7 +171,8 @@ public class FindClient implements Serializable {
 		return "FindClient [memId=" + memId + ", memNick=" + memNick + ", memEmail=" + memEmail + ", memTypeName="
 				+ memTypeName + ", memTypeKind=" + memTypeKind + ", profileImg=" + profileImg + ", introduction="
 				+ introduction + ", avgEagv=" + avgEagv + ", countEagv=" + countEagv + ", countProId=" + countProId
-				+ ", maxDcType=" + maxDcType + ", ideStatus=" + ideStatus + ", phone=" + phone + "]";
+				+ ", maxDcType=" + maxDcType + ", ideStatus=" + ideStatus + ", phone=" + phone + ", createDate="
+				+ createDate + "]";
 	}
 	
 }

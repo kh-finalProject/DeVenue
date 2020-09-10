@@ -38,6 +38,12 @@ hr {
 		/*페이지네이션*/
       #pagination>div{
         margin-top: 1rem;
+        align:center;
+      }
+      
+      #profileImg{
+      	width:4em;
+      	height:4em;
       }
 </style>
 
@@ -105,15 +111,13 @@ hr {
                 <div style="border-bottom: 1px solid lightgray; padding-bottom: 1%;">
                     &emsp;
                     	정렬 기준 :  &emsp;
-                    	<a href="#">최신 등록 순</a>&emsp;
+                    	<a id="recentDate" href="#">최신 등록 순</a>&emsp;
                     	<a href="#">평점 높은 순</a>&emsp;
                     	<a href="#">평가 많은 순</a>&emsp;
                     	<a href="#">프로젝트 많은 순</a>
                 </div>
                 
-                <script>
-                	// 정렬 ajax 시작
-                </script>
+                
             </div>
 
         </div>
@@ -232,9 +236,206 @@ hr {
                     </div>
                 </div>
             </div>
-            <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
+            
+            <script>
+	            $("#recentDate").on("click",function(){
+					recentClient();	
+				})
+            
+				// 정렬 ajax 시작
+            	function recentClient(){
+            		$.ajax({
+            			url:"recentList.do",
+            			data:{status:1},
+            			contentType : 'application/json; charset=utf-8',
+            			dataType:"json",
+            			success:function(data){
+            				console.log(data.list.length);
+            				
+            				$clientBoard=$("#clientBoard");
+    						$clientBoard.empty();
+    						
+    						var $ul = $("<ul style='list-style: none;'>");
+        					var $li = $("<li>");
+        					var $ul2 = $("<ul style='list-style: none; margin-top: 2%;'>");
+        					var $li2 = $("<li>");
+        					var $li3 = $("<li>");
+        					var $userBoard = $("<div class='userBoard' style='cursor:pointer;'>");
+        					var $hidden = $("<input type='hidden'>");
+        					var $row = $("<div class='row' style='margin-left:3%; margin-right:3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;'>");
+        					var $col8 = $("<div class='col-8'>");
+        					var $col4 = $("<div class='col-4'>");
+        					var $profile = $("<div style='float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;'>");
+        					var $div = $("<div>");
+        					var $div2 = $("<div>");
+        					var $noneImg = $("<img id='profileImg' src='${contextPath }/resources/proImg/user1.png'>");
+        					var $a = $("<a class='btn btn-info' style='padding:1%;'>");
+        					var $memTypeName = $("<a class='badge badge-info'>");
+        					var $introduction = $("<li id='introduction' style='line-height:2.4rem; -webkit-box-orient: vertical; word-wrap:break-word;'>");
+        					var $br = $("<br>");
+        					var $br2 = $("<br>");
+        					var $starDiv = $("<div id='starPoint' class='point'>");
+        					var $firstFas = $("<i id='firstStar' class='fas fa-star'>");
+        					var $firstFar = $("<i id='firstStar' class='far fa-star'>");
+        					var $firstFasHarf = $("<i id='firstStar' class='fas fa-star-half-alt'>");
+        					var $fas1 = $("<i class='fas fa-star'>");
+        					var $fas2 = $("<i class='fas fa-star'>");
+        					var $fas3 = $("<i class='fas fa-star'>");
+        					var $fas4 = $("<i class='fas fa-star'>");
+        					var $far2 = $("<i class='far fa-star'>");
+        					var $far3 = $("<i class='far fa-star'>");
+        					var $far4 = $("<i class='far fa-star'>");
+        					var $far1 = $("<i class='far fa-star'>");
+        					var $harf = $("<i class='fas fa-star-half-alt'>");
+        					var $hr = $("<hr style='width:90%; margin:0px auto;'>");
+        					var $hr2 = $("<hr style='width:90%; margin:0px auto;'>");
+        					var $pointDiv = $("<div class='point'>");
+        					var $pointDiv2 = $("<div class='point'>");
+        					var $b = $("<b>");
+        					var $badge = $("<a class='badge badge-info' style='float:right;'>");
+        					var $centerPoint = $("<div class='point' align='center'>");
+        					var $a2 = $("<a class='btn btn-info' style='padding:1%;'>");
+        					var $a3 = $("<a class='btn btn-info' style='padding:1%;'>");
+        					
+            					for(var i in data.list){
+            						
+            						
+                					if(data.list[i].profileImg != null){
+                						$div2.text(data.list[i].profileImg);
+                					}else{
+                						$div2.append($noneImg);	
+                					}
+                					$profile.append($div2);
+                					$li2.text(data.list[i].memNick);
+                					$li3.text(data.list[i].memTypeName);
+                					$memTypeName.text(data.list[i].memTypeKind);
+                					$li3.append($memTypeName);
+                					$introduction.text(data.list[i].introduction);
+                					$introduction.append($br);
+                					$introduction.append($br2);
+                					$ul2.append($li2);
+                					$ul2.append($li3);
+                					$ul2.append($introduction);
+                					$div.append($ul2);
+                					$col8.append($profile);
+                					$col8.append($div);
+                					$row.append($col8);
+                					
+                					if(data.list[i].avgEagv == 0){
+                						$starDiv.append($firstFar);
+                						$starDiv.append($far1);
+                						$starDiv.append($far2);
+                						$starDiv.append($far3);
+                						$starDiv.append($far4);
+                					}else if(data.list[i].avgEagv > 0 && data.list[i].avgEagv < 1){
+                						$starDiv.append($firstFasHarf);
+                						$starDiv.append($far1);
+                						$starDiv.append($far2);
+                						$starDiv.append($far3);
+                						$starDiv.append($far4);
+                					}else if(data.list[i].avgEagv == 1){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($far1);
+                						$starDiv.append($far2);
+                						$starDiv.append($far3);
+                						$starDiv.append($far4);
+                					}else if(data.list[i].avgEagv > 1 && data.list[i].avgEagv < 2){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($harf);
+                						$starDiv.append($far1);
+                						$starDiv.append($far2);
+                						$starDiv.append($far3);
+                					}else if(data.list[i].avgEagv == 2){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($fas1);
+                						$starDiv.append($far1);
+                						$starDiv.append($far2);
+                						$starDiv.append($far3);
+                					}else if(data.list[i].avgEagv > 2 && data.list[i].avgEagv < 3){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($fas1);
+                						$starDiv.append($harf);
+                						$starDiv.append($far1);
+                						$starDiv.append($far2);
+                					}else if(data.list[i].avgEagv == 3){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($fas1);
+                						$starDiv.append($fas2);
+                						$starDiv.append($far1);
+                						$starDiv.append($far2);
+                					}else if(data.list[i].avgEagv > 3 && data.list[i].avgEagv < 4){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($fas1);
+                						$starDiv.append($fas2);
+                						$starDiv.append($harf);
+                						$starDiv.append($far);
+                					}else if(data.list[i].avgEagv == 4){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($fas1);
+                						$starDiv.append($fas2);
+                						$starDiv.append($fas3);
+                						$starDiv.append($far1);
+                					}else if(data.list[i].avgEagv > 4 && data.list[i].avgEagv < 5){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($fas1);
+                						$starDiv.append($fas2);
+                						$starDiv.append($fas3);
+                						$starDiv.append($harf);
+                					}else if(data.list[i].avgEagv == 5){
+                						$starDiv.append($firstFas);
+                						$starDiv.append($fas1);
+                						$starDiv.append($fas2);
+                						$starDiv.append($fas3);
+                						$starDiv.append($fas4);
+                					}
+                					$starDiv.text(data.list[i].avgEagv+" / 평가 "+data.list[i].countEagv);
+                					$col4.append($starDiv);
+                					$col4.append($hr);
+                					$b.text("자주 진행한 프로젝트");
+                					if(data.list[i].maxDcType == "웹"){
+                						$badge.text("WEB");
+                						$b.append($badge);
+                					}else{
+                						$badge.text(data.list[i].maxDcType);
+                						$b.append($badge);
+                					}
+                					
+                					$pointDiv.append($b);
+                					
+                					
+                					if(data.list[i].ideStatus == "COMPLETE"){
+                						$a2.text("신원 인증된 회원");
+                						$centerPoint.append($a2);
+                					}
+                					if(data.list[i].phone != null){
+                						$a3.text("연락처 등록");
+                						$centerPoint.append($a3);
+                					}
+                					$col4.append($pointDiv);
+                					$col4.append($hr2);
+                					$col4.append($centerPoint);
+                					$row.append($col4);
+                					$li.append($row);
+                					$ul.append($li);
+                					$userBoard.append($ul);
+                					$userBoard.append($hidden);
+                					$clientBoard.append($userBoard);
+                					
+            					}
+            			},
+            			error:function(request, status, errorData){
+		                    alert("error code: " + request.status + "\n"
+			                          +"message: " + request.responseText
+			                          +"error: " + errorData);
+			            }
+            		})
+            	}
+				
+                </script>
+            
+            <div id="clientBoard" class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
            
-           <c:if test="${empty msg }"> 
+           <c:if test="${msg == 'msg' }"> 
            <c:forEach var="b" items="${list }"> 
                     <!-- 클릭이벤트 넣어야함 -->
                     <c:url var="cDetail" value="cDetail.do">
@@ -253,11 +454,12 @@ hr {
                                     <div style="float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;" >
                                         <div>
                                         <c:if test="${empty b.profileImg }">
-                                            <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <!-- <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
                                             <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                                             <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                                            </svg>
+                                            </svg> -->
+                                            <img id="profileImg" src="${contextPath }/resources/proImg/user1.png">
                                         </c:if>
                                         <c:if test="${!empty b.profileImg }">
                                         	${b.profileImg }
@@ -402,9 +604,16 @@ hr {
                     </ul>
                 </div>
 			</c:forEach>
-			
-                
-                <section class="mt-5 mb-5" id="pagination">
+          </c:if>
+          
+			<c:if test="${!empty msg }">
+				<p style="margin-top:5%; margin-left:40%;">${msg }</p>
+			</c:if>
+            </div>
+        </div>
+        
+        <c:if test="${empty msg }">
+		<section class="mt-5 mb-5" id="pagination">
 
             <div class="row d-flex justify-content-around align-items-center">
 
@@ -450,13 +659,6 @@ hr {
 
           </section>
           </c:if>
-			<c:if test="${!empty msg }">
-				<p style="margin-top:5%; margin-left:40%;">${msg }</p>
-			</c:if>
-            </div>
-
-        </div>
-
     </div>
 			
 	<jsp:include page="../common/footer.jsp"></jsp:include>

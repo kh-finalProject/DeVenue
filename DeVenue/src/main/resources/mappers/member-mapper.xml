@@ -81,6 +81,7 @@
   	<result property="maxDcType" column="MAX_DC_TYPE"/>
   	<result property="ideStatus" column="IDE_STATUS"/>
   	<result property="phone" column="PHONE"/>
+  	<result property="createDate" column="MEM_CREATE_DATE"/>
   </resultMap>
   
   <resultMap type="FindClientDetail" id="selectDetailResult">
@@ -227,8 +228,8 @@
   <!-- 클라이언트 찾기(클라이언트 수) -->
   <select id="getListCount" resultType="_int">
   	SELECT COUNT(*)
-	FROM MEMBER
-	WHERE USER_TYPE = 'UT3' AND MEM_STATUS = 'Y'
+	FROM CLIENTLIST_VIEW
+	
   </select>
   
   <!-- 클라이언트 리스트 조회 -->
@@ -363,6 +364,20 @@
 		AND MEM_STATUS = 'Y'
 	</select>
 	
+	<!-- 클라이언트 찾기 정렬 ajax -->
+	<!-- <select id="getListCount2" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE USER_TYPE = 'UT3' AND MEM_STATUS = 'Y'
+		<if test="#{status} == 1">
+			ORDER BY MEM_CREATE_DATE DESC;		
+		</if>
+	</select> -->
+	<select id="selectList2" parameterType="_int" resultMap="selectListResult">
+		SELECT *
+		FROM CLIENTLIST_VIEW
+		ORDER BY MEM_CREATE_DATE ASC	
+	</select>
 	
 	
 	
