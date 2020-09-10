@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +25,7 @@ import com.google.gson.JsonIOException;
 import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.service.MemberService;
 import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EPid;
 import com.kh.DeVenue.member.model.vo.EvalProjectList;
 import com.kh.DeVenue.member.model.vo.FCeval;
 import com.kh.DeVenue.member.model.vo.FCprojectHistory;
@@ -270,7 +270,7 @@ public class MemberController {
 		System.out.println("list : " + list);
 		System.out.println("pi" + pi);
 		
-		String msg="msg";
+		String msg=null;
 		
 		if(list != null) {
 			mv.addObject("list", list);
@@ -326,55 +326,19 @@ public class MemberController {
 		gson.toJson(map, response.getWriter());
 		System.out.println("gson : " + gson);
 		
-//		gson.toJson(msg, response.getWriter());
-		
-//		
-//		for(FindClient fc:list) {
-//			JSONObject client=new JSONObject();
-//			
-//			client.put("memId", fc.getMemId());
-//			client.put("memNick", fc.getMemNick());
-//			client.put("memEmail", fc.getMemEmail());
-//			client.put("memTypeName", fc.getMemTypeName());
-//			client.put("memTypeKind", fc.getMemTypeKind());
-//			client.put("profileImg", fc.getProfileImg());
-//			client.put("introduction", fc.getIntroduction());
-//			client.put("avgEagv", fc.getAvgEagv());
-//			client.put("countEagv", fc.getCountEagv());
-//			client.put("countProId", fc.getCountProId());
-//			client.put("maxDcType", fc.getMaxDcType());
-//			client.put("ideStatus", fc.getIdeStatus());
-//			client.put("phone", fc.getPhone());
-//			client.put("createDate", fc.getCreateDate());
-//			
-//			jArr.add(client);
-//		}
-//		
-//		
-//		JSONObject sendJson=new JSONObject();
-//		
-//		sendJson.put("list", jArr);
-//		sendJson.put("pi", pi);
-//		sendJson.put("msg", msg);
-//		System.out.println("sendJson : " + sendJson);
-//		
-//		PrintWriter out=response.getWriter();
-//		out.print(sendJson);
-//		out.flush();
-//		out.close();
-		
-//		Map map=new HashMap();
 		
 	}
 	
 	
 	@RequestMapping(value="cDetail.do")
-	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {
+	public ModelAndView clientDetail(ModelAndView mv, Integer cId, String check) {
+		System.out.println("cId : " + cId);
 		ArrayList<FindClientDetail> fc=mService.selectClientDetail(cId);
 		System.out.println("fc : " + fc);
 		
 		if(fc!=null) {
 			mv.addObject("fc", fc)
+			.addObject("check", check)
 			.setViewName("findMember/findClientDetail");
 		}else {
 			throw new MemberException("게시글 조회 실패!");
@@ -441,6 +405,8 @@ public class MemberController {
 		id.put("pId", pId);
 		id.put("cId", cId);
 		
+		
+		
 		ArrayList<MatchingPartnersList> mpList = mService.getMatchingPartners(id);
 		System.out.println("매칭파트너 리스트 : "+ mpList);
 		
@@ -462,14 +428,59 @@ public class MemberController {
 	public ModelAndView evalInsert(ModelAndView mv, HttpServletRequest request) {
 		
 		// cId, pId 추가해야함
-		String proId= request.getParameter("proId");
-		String content=request.getParameter("eContent");
-		int eAgv=Integer.valueOf(request.getParameter("eAgv"));
-		int star1=Integer.valueOf(request.getParameter("star1"));	// 전문성
-		int star2=Integer.valueOf(request.getParameter("star2"));	// 적극성
-		int star3=Integer.valueOf(request.getParameter("star3"));	// 의사소통
-		int star4=Integer.valueOf(request.getParameter("star4"));	// 일정준수
-		int star5=Integer.valueOf(request.getParameter("star5"));	// 만족도
+		int cId=Integer.valueOf(request.getParameter("cId"));
+		int pId=Integer.valueOf(request.getParameter("pId"));
+		
+		int proId=Integer.valueOf(request.getParameter("proId"));
+		String eContent=request.getParameter("eContent");
+		
+		int total=Integer.valueOf(request.getParameter("total"));
+		int star1=Integer.valueOf(request.getParameter("professional"));	// 전문성
+		int star2=Integer.valueOf(request.getParameter("active"));	// 적극성
+		int star3=Integer.valueOf(request.getParameter("schedule"));	// 의사소통
+		int star4=Integer.valueOf(request.getParameter("communication"));	// 일정준수
+		int star5=Integer.valueOf(request.getParameter("satisfaction"));	// 만족도
+		
+		System.out.println("cId : "+cId);
+		System.out.println("pId : "+pId);
+		System.out.println("proId : "+proId);
+		System.out.println("eContent : "+eContent);
+		System.out.println("total : "+total);
+		System.out.println("star1 : "+star1);
+		System.out.println("star2 : "+star2);
+		System.out.println("star3 : "+star3);
+		System.out.println("star4 : "+star4);
+		System.out.println("star5 : "+star5);
+		
+		HashMap id = new HashMap();
+		id.put("cId", cId);
+		id.put("pId", pId);
+		id.put("proId", proId);
+		
+		EPid epId=mService.getEPid(id);
+		System.out.println("EPid : " + epId);
+		
+		HashMap map=new HashMap();
+		map.put("cId", cId);
+		map.put("pId", pId);
+		map.put("proId", epId.getProId());
+		map.put("eContent", eContent);
+		map.put("total", total);
+		map.put("star1", star1);
+		map.put("star2", star2);
+		map.put("star3", star3);
+		map.put("star4", star4);
+		map.put("star5", star5);
+		
+		int result = mService.insertEval(map);
+		
+		if(result > 0) {
+			System.out.println("평가 등록됨");
+			mv.addObject("msg",1).addObject("cId",cId)
+			.setViewName("redirect:cEvalSelect.do");
+		}else {
+			System.out.println("평가 등록 실패");
+		}
 		
 		return mv;
 	}
@@ -573,5 +584,54 @@ public class MemberController {
 		
 		return mv;
 	}
+	
+	
+	// 클라이언트 신고
+	@RequestMapping(value="clientReport.do")
+	public ModelAndView clientReport(ModelAndView mv, HttpServletRequest request) {
+		int reportCid = Integer.valueOf(request.getParameter("reportCid"));
+		int pId = Integer.valueOf(request.getParameter("pId"));
+		String reportContent = request.getParameter("reportContent");
+
+		System.out.println("reportCid : " + reportCid);
+		System.out.println("pId : " + pId);
+		System.out.println("reportContent : " + reportContent);
+		
+		HashMap report = new HashMap();
+		report.put("reportCid", reportCid);
+		report.put("pId", pId);
+		report.put("reportContent", reportContent);
+		
+		int reportCheck = mService.reportCheck(report);
+		System.out.println("reportCheck : " + reportCheck);
+		
+		String check="";
+		
+		if(reportCheck > 0) {
+			check="Y";
+			mv.addObject("cId", reportCid)
+			.addObject("check", check)
+			.setViewName("redirect:cDetail.do");
+		}else {
+			int result = mService.insertClientReport(report);
+			
+			if(result > 0) {
+				System.out.println("신고 성공!!");
+				int countUpReport = mService.countUpReport(reportCid);
+				check="N";
+				
+				mv.addObject("cId", reportCid)
+				.addObject("check", check)
+				.setViewName("redirect:cDetail.do");
+			}else {
+				throw new MemberException("신고 실패!");
+			}
+		}
+		
+		return mv;
+		
+	}
+	
+	
 	
 }

@@ -87,6 +87,7 @@
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PmypageSuggest" alias="PmypageSuggest"/>
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PmypageProcess" alias="PmypageProcess"/>
 		
+		<typeAlias type="com.kh.DeVenue.member.model.vo.EPid" alias="EPid"/>
 	</typeAliases>
 
 	<mappers>

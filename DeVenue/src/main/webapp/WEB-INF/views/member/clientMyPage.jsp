@@ -94,7 +94,7 @@
 					<div class="col-6">
 						<p>
 							내게 온 제안
-							<button class="btn-info" type="button" style="float: right; border-radius: 0.3rem; margin-bottom: 1%;">+ 더보기</button>
+							<button id="suggestProject" class="btn-info" type="button" style="float: right; border-radius: 0.3rem; margin-bottom: 1%;">+ 더보기</button>
 						</p>
 						<table border="1px solid lightgray;" style="width: 100%; text-align: center;">
 							<thead>
@@ -179,7 +179,21 @@
 						<div class="col-12">
 							<div style="margin-left: 1%; margin-bottom: 2%; margin-top: 2%; width: 100%;">
 								<b>진행중인 프로젝트</b>
-								<button class="btn-info" type="button" style="float: right; border-radius: 0.3rem;">+ 더보기</button>
+								<button id="ingProject" class="btn-info" type="button" style="float: right; border-radius: 0.3rem;">+ 더보기</button>
+								<c:url var="recruit" value="recruitProjectList.do">
+									<c:param name="memId" value="${loginUser.memId}"></c:param>
+								</c:url>
+								<c:url var="underway" value="underwayProjectList.do">
+									<c:param name="memId" value="${loginUser.memId}"></c:param>
+								</c:url>
+								<script>
+									$("#ingProject").on("click",function(){
+										location.href="${underway}";
+									})
+									$("#suggestProject").on("click",function(){
+										location.href="${recruit}";
+									})
+								</script>
 							</div>
 							<div style="margin-left: 3%;">
 								<table border="1px solid white" style="text-align: center; width: 100%;">

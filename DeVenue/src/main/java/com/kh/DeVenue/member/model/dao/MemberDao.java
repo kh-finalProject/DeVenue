@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EPid;
 import com.kh.DeVenue.member.model.vo.EvalProjectList;
 import com.kh.DeVenue.member.model.vo.FCeval;
 import com.kh.DeVenue.member.model.vo.FCprojectHistory;
@@ -166,4 +167,22 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList2", status, rowBounds);
 	}
+
+	public EPid getEPid(HashMap id) {
+		return sqlSessionTemplate.selectOne("memberMapper.getEPid", id);
+	}
+
+	public int insertClientReport(HashMap report) {
+		return sqlSessionTemplate.insert("memberMapper.insertClientReport", report);
+	}
+
+	public int countUpReport(int reportCid) {
+		return sqlSessionTemplate.update("memberMapper.countUpReport", reportCid);
+	}
+
+	public int reportCheck(HashMap report) {
+		return sqlSessionTemplate.selectOne("memberMapper.reportCheck", report);
+	}
+
+	
 }

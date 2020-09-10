@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -790,5 +791,31 @@ public class MyPageController {
 			out.flush();
 			out.close();
 			
+		}
+		
+		@RequestMapping(value="cMypageInfoUpdate.do")
+		public ModelAndView cMypageInfoUpdate(ModelAndView mv, HttpServletRequest request, Integer cId) {
+			String introduce=request.getParameter("introduce");
+			String url=request.getParameter("url");
+			
+			System.out.println("introduce : " + introduce);
+			System.out.println("url : " + url);
+			
+			HashMap map = new HashMap();
+			map.put("introduce", introduce);
+			map.put("url", url);
+			map.put("cId", cId);
+			
+			int result=myPageService.updateClientInfo(map);
+			
+			if(result>0) {
+				System.out.println("수정 성공!!");
+				mv.addObject("cId", cId).setViewName("redirect:clientInfo.do");
+			}else {
+				throw new MyPageException("클라이언트 정보 수정 실패");
+			}
+			
+			
+			return mv;
 		}
 }

@@ -1,6 +1,7 @@
 package com.kh.DeVenue.myPage.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -238,7 +239,10 @@ public class MyPageServiceImpl implements MyPageService{
 		return myPageDao.getCountPartners(cId);
 	}
 
-
+	@Override
+	public int updateClientInfo(HashMap map) {
+		return myPageDao.updateClientInfo(map);
+	}
 
 
 

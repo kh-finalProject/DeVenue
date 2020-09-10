@@ -22,6 +22,14 @@
     .image-profile img {
       object-fit: fill;
     }
+    
+    /* textarea 디자인 */
+        .shadow-textarea textarea.form-control::placeholder {
+            font-weight: 300;
+        }
+        .shadow-textarea textarea.form-control {
+            padding-left: 0.8rem;
+        }
 </style>
 </head>
 <body>
@@ -98,7 +106,9 @@
           <div class="col-10 userBoard">
             &emsp;
             <input type="hidden" value="선택한 회원 ID">
-
+            
+            <form action="cMypageInfoUpdate.do">
+            <input type="hidden" name="cId" value="${loginUser.memId }">
             <div class="row"
               style="margin-left:3%; margin-right:3%; padding-bottom: 3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
               <div class="col-12">
@@ -106,11 +116,9 @@
                   <b>자기 소개</b>
                 </div>
                 <div style="margin-left: 3%;">
-                  <div style=" width:100%;">
-                    <p style="line-height:2.0rem;">
-                      ${info.introduction }
-                    </p>
-                    <a href="#" style="float: right;">자기소개 더 보기 ></a>
+                  <div id="introduceDiv" style=" width:100%;">
+                    <p id="introduce" style="line-height:2.0rem;">${info.introduction }</p>
+                    <!-- <a href="#" style="float: right;">자기소개 더 보기 ></a> -->
                   </div>
                 </div>
               </div>
@@ -123,13 +131,58 @@
                   <b>홈페이지</b>
                 </div>
                 <div style="margin-left: 3%;">
-                  <div style=" width:100%;">
-                    <a href="http://www.naver.com" style="color:white;">http://${info.url }</a>
-		              <button class="btn-info" type="button" style="float: right; border-radius: 0.3rem; padding: 1%;">수정하기</button>
+                  <div id="urlDiv" style=" width:100%;">
+                    <a id="url" href="http://www.naver.com" style="color:white;">http://${info.url }</a>
+		              <button id="clientInfoUpdate" class="btn-info" type="button" style="float: right; border-radius: 0.3rem; padding: 1%;">수정하기</button>
+		              
+		              <script>
+		              	$("#clientInfoUpdate").on("click",function(){
+		              		var introduce=$("#introduce").text();
+		              		var url=$("#url").text();
+		              		console.log(introduce);
+		              		console.log(url);
+		              		
+		              		$("#introduce").css("display","none");
+		              		$("#url").css("display","none");
+		              		
+		              		$urlDiv=$("#urlDiv");
+		              		$introduceDiv = $("#introduceDiv");
+		              		
+		              		var $introduceInput =$("<textarea class='form-control z-depth-1' id='introduceInput' name='introduce' rows='3'>");
+		              		$introduceInput.text(introduce);
+		              		$introduceDiv.append($introduceInput);
+		              		
+		              		var $urlInput=$("<textarea class='form-control z-depth-1' id='urlInput' name='url' rows='1' style='width:50%;'>");
+		              		$urlInput.text(url);
+		              		$urlDiv.append($urlInput);
+		              		
+		              		$("#clientInfoUpdate").css("display","none");
+		              		
+		              		var $submitBtn = $("<button id='updateBtn' class='btn-info type='submit' style='float: right; border-radius: 0.3rem; padding: 1%;'>");
+		              		var $cancelBtn = $("<button id='cancelBtn' class='btn-secondary type='button' style='float: right; border-radius: 0.3rem; padding: 1%;'>");
+		              		$cancelBtn.text("취소하기");
+		              		$submitBtn.text("수정하기");
+		              		$urlDiv.append($submitBtn);
+		              		$urlDiv.append($cancelBtn);
+		              		
+		              		$("#cancelBtn").on("click",function(){
+		              			$introduceInput.css("display","none");
+		              			$urlInput.css("display","none");
+		              			$("#introduce").css("display","");
+			              		$("#url").css("display","");
+			              		
+			              		$("#cancelBtn").css("display","none");
+			              		$("#updateBtn").css("display","none");
+			              		$("#clientInfoUpdate").css("display","");
+		              		})
+		              	})
+		              </script>
+		              
                   </div>
                 </div>
               </div>
             </div>
+            </form>
           </div>
         </div>
       </div>

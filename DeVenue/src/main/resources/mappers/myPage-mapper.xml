@@ -461,4 +461,12 @@
 		FROM PARTNERSMAIN_INGPROJECT_VIEW
 		WHERE MEM_ID=#{pId}
 	</select>
+	
+	<!-- 클라이언트 인포 수정 -->
+	<update id="updateClientInfo" parameterType="hashmap">
+		UPDATE PROFILE
+		SET INTRODUCTION=#{introduce},
+		    URL=#{url }
+		WHERE MEM_ID=#{cId}
+	</update>
 </mapper>

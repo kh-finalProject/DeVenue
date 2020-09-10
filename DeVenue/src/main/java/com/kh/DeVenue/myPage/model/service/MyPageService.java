@@ -1,6 +1,7 @@
 package com.kh.DeVenue.myPage.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.Career;
@@ -97,7 +98,7 @@ public interface MyPageService {
 
 	ArrayList<CmypageCountPartners> getCountPartners(Integer cId);
 
-
+	int updateClientInfo(HashMap map);
 
 
 
