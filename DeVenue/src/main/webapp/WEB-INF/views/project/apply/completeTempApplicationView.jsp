@@ -1221,11 +1221,17 @@
 				                </div>
 				                	
 				                <div class="applyAnswer">
+				                
+				                <c:if test="${not empty app.answer}">
 				                	<c:forEach items="${app.answer}" var="a">
 				                		<c:if test="${a.aqId eq q.proAQId}">
                                     <textarea id="${q.proAQId}" maxlength="500" rows="3" class="form-control apply_answer_textarea" style="width: 100%;" required name="aaContent">${a.aaContent}</textarea>
                                     	</c:if>
                                     </c:forEach>
+                                </c:if>
+                                <c:if test="${empty app.answer}">
+                                	<textarea id="${q.proAQId}" maxlength="500" rows="3" class="form-control apply_answer_textarea" style="width: 100%;" required name="aaContent"></textarea>
+                                </c:if>
                                     <p class="float-left apply_answer_warning">500자 이내로 작성해주세요.</p>
                                     <c:set var="answerText" value="${a.aaContent}"/>
                                     <label class="float-right apply_answer_count"><span>${fn:length(answerText)}</span>/500</label>
@@ -2087,7 +2093,7 @@
 								
 								
 								var aaContent=[];
-								var answer=$("input[name='aaContent']");
+								var answer=$(".apply_answer_textarea");
 								
 								
 								if(answer.length!=0){
@@ -2151,6 +2157,10 @@
 								if(resume!=null){
 								form.append("resume",resume);
 								}
+								
+								console.log("aaContent"+aaContent);
+								console.log("aqId"+aqId);
+								console.log("portId"+portId);
 								
 								$.ajax({
 									url:"saveTempApplication.do",

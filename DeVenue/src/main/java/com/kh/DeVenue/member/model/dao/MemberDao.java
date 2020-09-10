@@ -77,8 +77,8 @@ public class MemberDao {
 		return sqlSessionTemplate.insert("myPageMapper.insertPartInfo",partInfo);
 	}
 
-	public FindClientDetail selectClientDetail(Integer cId) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectClientDetail", cId);
+	public ArrayList<FindClientDetail> selectClientDetail(Integer cId) {
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectClientDetail", cId);
 	}
 
 	public FCprojectHistory selectProjectHistory(Integer cId) {

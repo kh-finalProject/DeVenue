@@ -11,7 +11,6 @@
   	<result property="memEmail" column="MEM_EMAIL"/>
   	<result property="memNick" column="MEM_NICK"/>
   	<result property="memName" column="MEM_NAME"/>
-  	<result property="memPwd" column="MEM_PWD"/>
   	<result property="address1" column="ADDRESS1"/>
   	<result property="address2" column="ADDRESS2"/>
   	<result property="address3" column="ADDRESS3"/>
@@ -72,7 +71,7 @@
   	<result property="memNick" column="MEM_NICK"/>
   	<result property="memEmail" column="MEM_EMAIL"/>
   	<result property="memTypeName" column="MEM_TYPE_NAME"/>
-  	<result property="memType" column="MEM_TYPE"/>
+  	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
   	<result property="profileImg" column="PROFILE_IMG"/>
   	<result property="introduction" column="INTRODUCTION"/>
   	<result property="avgEagv" column="AVG_E_AGV"/>

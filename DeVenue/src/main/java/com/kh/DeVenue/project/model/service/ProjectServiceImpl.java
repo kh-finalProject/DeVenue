@@ -195,15 +195,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public int getLikeListCount(int memId) {
+	public int getLikeListCount(HashMap condition) {
 		
-		return proDao.getLikeListCount(memId);
+		return proDao.getLikeListCount(condition);
 	}
 
 	@Override
-	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(ProjectFilter filter, PageInfo pi) {
 		
-		return proDao.selectLikeProject(memId,pi);
+		return proDao.selectLikeProject(filter,pi);
 	}
 
 	@Override
@@ -523,6 +523,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
+	@Override
+	public int deleteThisSuggest(Integer sgId) {
+		
+		return proDao.deleteThisSuggest(sgId);
+	}
 
 
 	@Override
@@ -540,31 +545,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
-
-
-
-
-	
-
-
-
-//	@Override
-//	public ProjectQuestion getQuestion(int proId) {
-//		
-//		return proDao.getQuestion(proId);
-//	}
-
-
-
 	@Override
 	public int getUpdateForm(Integer proId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-
-
-
 
 
 	@Override
@@ -574,13 +559,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
-
 	@Override
 	public Project selectOne(int proId) {
 		
 		return proDao.selectOne(proId);
 	}
-
 
 
 	@Override
@@ -590,13 +573,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
-
 	@Override
 	public int updateQuestion(ProjectQuestion q) {
 
 		return proDao.updateQuestion(q);
 	}
-
 
 
 	@Override
@@ -644,6 +625,7 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return proDao.selectModal(proId);
 	}
+
 
 
 

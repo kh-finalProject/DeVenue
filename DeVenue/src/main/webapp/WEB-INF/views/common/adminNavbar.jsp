@@ -75,15 +75,16 @@
                     <ul class="metismenu" id="menu1">
                         <li class="active">
                             <a class="has-arrow" href="#">
-                                <span class="mini-click-non">항목1</span>
+                                <span class="mini-click-non">채팅</span>
                             </a>
                             <ul class="submenu-angle" aria-expanded="true">
                                 <li><a title="Dashboard v.1" href="gotoChatOption.do"><span class="mini-sub-pro">채팅 설정</span></a></li>
                                 <li><a title="Dashboard v.2" href="gotoChatBotManage.do"><span class="mini-sub-pro">챗봇 데이터 설정</span></a></li>
-                                <li><a title="Dashboard v.3" href="#"><span class="mini-sub-pro">sadf</span></a></li>
-                                <li><a title="Analytics" href="#"><span class="mini-sub-pro">asdf</span></a></li>
-                                <li><a title="Widgets" href="#"><span class="mini-sub-pro">asdf</span></a>
-                                </li>
+                                <li><a title="Dashboard v.3" href="goChatListManage.do"><span class="mini-sub-pro">채팅목록 관리</span></a></li>
+                                <li><a title="Dashboard v.3" href="tutorial2"><span class="mini-sub-pro">1</span></a></li>
+                                <li><a title="Dashboard v.3" href="tutorial3"><span class="mini-sub-pro">2</span></a></li>
+                                <li><a title="Dashboard v.3" href="tutorial4"><span class="mini-sub-pro">3</span></a></li>
+                                <li><a title="Dashboard v.3" href="tutorial5"><span class="mini-sub-pro">4</span></a></li>
                             </ul>
                         </li>
                         <li>

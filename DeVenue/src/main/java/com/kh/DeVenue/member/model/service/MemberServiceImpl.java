@@ -72,7 +72,7 @@ public class MemberServiceImpl implements MemberService{
 //	}
 
 	@Override
-	public FindClientDetail selectClientDetail(Integer cId) {
+	public ArrayList<FindClientDetail> selectClientDetail(Integer cId) {
 		return mDao.selectClientDetail(cId);
 	}
 

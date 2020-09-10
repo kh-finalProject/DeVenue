@@ -15,6 +15,11 @@ import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.myPage.model.vo.PartnersApplyCount;
+import com.kh.DeVenue.myPage.model.vo.PartnersContractCount;
+import com.kh.DeVenue.myPage.model.vo.PmypagePartnersInfo;
+import com.kh.DeVenue.myPage.model.vo.PmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
@@ -182,8 +187,42 @@ public class MyPageDao {
 		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.ptList", portId);
 	}
 
+	public PmypagePartnersInfo selectPartnersInfo(Integer pId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.selectPartnersInfo", pId);
+	}
 
+	public ArrayList<PartnersApplyCount> getApplyCount(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getApplyCount", pId);
+	}
+
+	public ArrayList<PartnersContractCount> getContractCount(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getContractCount", pId);
+	}
+
+	public ArrayList<PmypageSuggest> selectPartnersSuggest(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectPartnersSuggest", pId);
+	}
+
+	public ArrayList<PmypageProcess> selectPartnersProcess(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectPartnersProcess", pId);
+	}
 	
+	public String getMyPageSidebarProImg(String mId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.getMyPageSidebarProImg",mId);
+	}
+
+	public int portNameCount(String title) {
+		
+		return sqlSessionTemplate.selectOne("myPageMapper.portNameCount",title);
+	}
+
+	public ArrayList<PortTecView> tNameList(int ptId) {
+	
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.tNameList", ptId);
+	}
+
+
+
 	
 
 }

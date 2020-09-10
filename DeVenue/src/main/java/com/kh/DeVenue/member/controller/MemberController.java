@@ -96,7 +96,6 @@ public class MemberController {
 			// 로그인 한 후에 화면에 profile을 뿌려줌
 			Profile memId = new Profile(loginUser.getMemId());
 			Profile profile = mService.profile(memId);
-			
 //			if(logincheck != null) { // true이냐(로그인 유지 선택시)
 //			}else { // 로그인 유지 체크 안할시
 			
@@ -146,8 +145,9 @@ public class MemberController {
 //				
 //			}
 //			return mv;
-			/* throw new MemberException("로그인 실패!"); */
-			return "member/login";
+			throw new MemberException("로그인 실패!");
+
+			/* return "member/login"; */
 		}
 		
 		
@@ -287,7 +287,7 @@ public class MemberController {
 	
 	@RequestMapping(value="cDetail.do")
 	public ModelAndView clientDetail(ModelAndView mv, Integer cId) {
-		FindClientDetail fc=mService.selectClientDetail(cId);
+		ArrayList<FindClientDetail> fc=mService.selectClientDetail(cId);
 		System.out.println("fc : " + fc);
 		
 		if(fc!=null) {

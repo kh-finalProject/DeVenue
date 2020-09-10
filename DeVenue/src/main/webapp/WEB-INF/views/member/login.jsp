@@ -493,11 +493,7 @@
                 			url:"login.do",
                 			data:{email:email,pwd:pwd},
                 			success : function(data){
-                				if(data=='ok'){
-                					alert("로그인 성공");
-                				}else{
-                					alert("로그인 실패");
-                				}
+                				
                 			},error:function(request, status, errorData){
                 				alert("error code: " + request.status + "\n"
     									+"message: " + request.responseText

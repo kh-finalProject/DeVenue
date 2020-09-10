@@ -99,10 +99,6 @@ public class ProjectDao {
 	}
 
 	
-	
-	
-	
-
 
 public ArrayList<Tech> selectTechList() {
 		
@@ -176,17 +172,17 @@ public ArrayList<Tech> selectTechList() {
 		return sqlSessionTemplate.insert("projectMapper.addLikeProject",ids );
 	}
 
-	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(ProjectFilter filter, PageInfo pi) {
 		
 		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getLikeList", memId, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getLikeList", filter, rowBounds);
 	}
 
-	public int getLikeListCount(int memId) {
+	public int getLikeListCount(HashMap condition) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getLikeCount", memId);
+		return sqlSessionTemplate.selectOne("projectMapper.getLikeCount", condition);
 	}
 
 	public int deleteLikeProject(Integer lId) {
@@ -456,6 +452,11 @@ public ArrayList<Tech> selectTechList() {
 
 
 
+	public int deleteThisSuggest(Integer sgId) {
+		
+		return sqlSessionTemplate.delete("projectMapper.deleteThisSuggest", sgId);
+	}
+
 
 
 	public int temStoreQuestion(ProjectQuestion q) {
@@ -552,22 +553,6 @@ public ArrayList<Tech> selectTechList() {
 		return list;
 		
 	}
-
-
-
-
-
-
-
-
-//	public ProjectQuestion getQuestion(int proId) {
-//		
-//		return sqlSessionTemplate.selectOne("projectMapper.getQuestion",proId);
-//	
-//	}
-
-
-
 
 
 

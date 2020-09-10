@@ -16,7 +16,7 @@ public class FCeval implements Serializable {
 	private String memNick;		// 닉네임
 	private String memTypeKind;
 	private String ideStatus;	// 신원확인
-	private int phone;			// 번호등록
+	private String phone;			// 번호등록
 	private String profileImg;
 	private int avgEagv;		// 
 	private int stopProject;
@@ -28,7 +28,7 @@ public class FCeval implements Serializable {
 		super();
 	}
 
-	public FCeval(int memId, String memNick, String memTypeKind, String ideStatus, int phone, String profileImg,
+	public FCeval(int memId, String memNick, String memTypeKind, String ideStatus, String phone, String profileImg,
 			int avgEagv, int stopProject, int ingProject, int completeProject) {
 		super();
 		this.memId = memId;
@@ -75,11 +75,11 @@ public class FCeval implements Serializable {
 		this.ideStatus = ideStatus;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -134,10 +134,5 @@ public class FCeval implements Serializable {
 				+ ", stopProject=" + stopProject + ", ingProject=" + ingProject + ", completeProject=" + completeProject
 				+ "]";
 	}
-	
-	
-	
-
-	
 	
 }

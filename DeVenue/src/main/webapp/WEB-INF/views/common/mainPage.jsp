@@ -77,7 +77,7 @@ header.masthead h1 {
 	margin: 0 auto;
 	left: 0;
 	right: 0;
-	top: 10px;
+	top: 0px;
 	z-index: 1;
 }
 
@@ -90,18 +90,19 @@ header.masthead h1 {
 }
 
 span.round-tab {
-	width: 80px;
-	height: 80px;
-	line-height: 70px;
+	width: 60px;
+	height: 60px;
+	line-height: 53px;
 	display: inline-block;
 	border-radius: 50%;
 	background: #fff;
+/* 	background: #117a8b; */
 	z-index: 2;
 	position: absolute;
 	left: -30px;
 	top: -30px;
 	text-align: center;
-	font-size: 30px !important;
+	font-size: 28px !important;
 	color: #0e214b;
 	font-weight: 700;
 	border: 1px solid #ddd;
@@ -109,12 +110,14 @@ span.round-tab {
 
 span.round-tab i {
 	color: #fff;
+	font-size: 30px !important;
+	text-indent:-5px;
 }
 
 .wizard li.active span.round-tab {
-	background: #2793F2;
+	background: #117a8b;
 	color: #fff;
-	border-color: #2793F2;
+	border-color: #117a8b;
 }
 
 .wizard li.active span.round-tab i {
@@ -122,7 +125,7 @@ span.round-tab i {
 }
 
 .wizard .nav-tabs>li.active>a i {
-	color: #2793F2;
+	color: #117a8b;
 }
 
 .wizard .nav-tabs>li {
@@ -159,7 +162,6 @@ span.round-tab i {
 	font-weight: 400;
 	white-space: nowrap;
 	left: 51%;
-	padding-left: 15px;
 	transform: translate(-50%, -50%);
 	font-size: 18px;
 	font-weight: 700;
@@ -244,7 +246,7 @@ span.round-tab i {
 						<div class="form-row">
 							<div class="col-12 col-md-9 mb-2 mb-md-0">
 								<input type="email" class="form-control form-control-lg"
-									placeholder="당신의 파트너스를 찾아보세요.">
+									placeholder="당신의 파트너스를 찾아보세요." style="font-family: 'Do Hyeon', sans-serif;">
 							</div>
 							<div class="col-12 col-md-3">
 								<button type="submit" class="btn btn-block btn-lg btn-info">SEARCH</button>
@@ -278,8 +280,8 @@ span.round-tab i {
 	</script>
 
 	<!-- 추천 프로젝트(Tab Menu) -->
-	<section style="background-color: #212426;">
-		<div class="row" style="padding-top: 150px; padding-bottom: 150px;">
+	<section style="background-color: #25292c;">
+		<div class="row" style="padding-top: 120px; padding-bottom: 120px;">
 			<div class="col-md-2"></div>
 
 			<div class="col-md-8 text-white">
@@ -289,9 +291,9 @@ span.round-tab i {
 					IT 프로젝트를 만나보세요<i class="fas fa-quote-right text-white"
 						style="font-size: 20px; position: relative; top: -10px;"></i>
 				</h3>
-				<hr style="background-color: white;">
+				<hr style="background-color: rgb(71, 78, 92);height:2px;">
 				<br>
-				<ul class="nav nav-pills">
+				<ul class="nav nav-pills" style="margin-bottom:8px;">
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
 						href="#qwe" onclick="giveInfo(1);" id="p1">애플리케이션</a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
@@ -302,7 +304,7 @@ span.round-tab i {
 
 				<script>
 					$(function() {
-						$("#p1").addClass("btn-info").css("color", "white");
+						$("#p1").addClass("btn-secondary").css("color", "white");
 						$("#p2").css("color", "white");
 						$("#p3").css("color", "white");
 					})
@@ -311,20 +313,20 @@ span.round-tab i {
 						console.log(value);
 
 						if (value == 1) {
-							$("#p1").addClass("btn-info").css("box-shadow",
+							$("#p1").addClass("btn-secondary").css("box-shadow",
 									"none");
-							$("#p2").removeClass("btn-info");
-							$("#p3").removeClass("btn-info");
+							$("#p2").removeClass("btn-secondary");
+							$("#p3").removeClass("btn-secondary");
 						} else if (value == 2) {
 
-							$("#p1").removeClass("btn-info");
-							$("#p2").addClass("btn-info").css("box-shadow",
+							$("#p1").removeClass("btn-secondary");
+							$("#p2").addClass("btn-secondary").css("box-shadow",
 									"none");
-							$("#p3").removeClass("btn-info");
+							$("#p3").removeClass("btn-secondary");
 						} else {
-							$("#p1").removeClass("btn-info");
-							$("#p2").removeClass("btn-info");
-							$("#p3").addClass("btn-info").css("box-shadow",
+							$("#p1").removeClass("btn-secondary");
+							$("#p2").removeClass("btn-secondary");
+							$("#p3").addClass("btn-secondary").css("box-shadow",
 									"none");
 						}
 					}
@@ -335,28 +337,28 @@ span.round-tab i {
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-primary">애플리케이션</strong>
+										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
 										<h3 class="mb-0">프로젝트명</h3>
 										<p class="card-text mb-auto" style="font-size: 14px;">이
 											프로젝트는 영국으로부터 시작되어서.....</p>
 										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-success">애플리케이션</strong>
+										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
 										<h3 class="mb-0">프로젝트명</h3>
 										<p class="card-text mb-auto" style="font-size: 14px;">이
 											프로젝트는 영국으로부터 시작되어서.....</p>
 										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
@@ -365,28 +367,28 @@ span.round-tab i {
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-primary">애플리케이션</strong>
+										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
 										<h3 class="mb-0">프로젝트명</h3>
 										<p class="card-text mb-auto" style="font-size: 14px;">이
 											프로젝트는 영국으로부터 시작되어서.....</p>
 										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-success">애플리케이션</strong>
+										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
 										<h3 class="mb-0">프로젝트명</h3>
 										<p class="card-text mb-auto" style="font-size: 14px;">이
 											프로젝트는 영국으로부터 시작되어서.....</p>
 										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
@@ -404,7 +406,7 @@ span.round-tab i {
 										<p class="card-text mb-auto" style="font-size: 14px;">이
 											프로젝트는 영국으로부터 시작되어서.....</p>
 										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
@@ -418,7 +420,7 @@ span.round-tab i {
 										<p class="card-text mb-auto" style="font-size: 14px;">이
 											프로젝트는 영국으로부터 시작되어서.....</p>
 										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
@@ -528,9 +530,9 @@ span.round-tab i {
 
 	<script>
 		$(document).ready(function() {
-			$('nav a').click(function() {
-				$('nav a').removeClass("active");
-				$(this).addClass("active");
+			$('.round-tab').click(function() {
+				$('.round-tab').parents('li').removeClass("active");
+				$(this).parents('li').addClass("active");
 			});
 		});
 	</script>
@@ -538,7 +540,7 @@ span.round-tab i {
 	<!-- Image Showcases -->
 	<section class="showcase">
 		<div class="container-fluid p-0">
-			<div class="row no-gutters" style="background-color: #212426;">
+			<div class="row no-gutters" style="background-color: #212426;padding-top: 70px;padding-bottom: 70px;">
 				<div class="col-lg-6 order-lg-2 text-white showcase-img"
 					style="background-image: url('${contextPath}/resources/images/showcase.jpg');"></div>
 				<div class="col-lg-6 order-lg-1 my-auto showcase-text text-white" style="text-align:center;">
@@ -551,7 +553,7 @@ span.round-tab i {
 
 	<!-- 프로세스 시작 -->
 	<section class="signup-step-container text-white"
-		style="background-color: #212426;">
+		style="background-color: #25292c;padding-top: 150px;padding-bottom: 70px;">
 		<div class="container">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-10">
@@ -576,20 +578,18 @@ span.round-tab i {
 							</ul>
 						</div>
 
-
-						<div class="tab-content" id="main_form" style="margin-top: 150px;">
-
+						<div class="tab-content" id="main_form" style="margin-top: 100px;">
 
 							<div class="tab-pane active jumbotron text-white rounded"
 								role="tabpane1" id="step1"
 								style="background-image: url(${contextPath}/resources/images/process1.jpg); background-position: center center;">
 								<h1 class="display-4 text-info"
-									style="font-family: 'Jua', sans-serif;">STEP 1</h1>
+									style="font-family: 'Do Hyeon', sans-serif;">STEP 1</h1>
 								<p class="lead"
-									style="font-family: 'Jua', sans-serif; font-size: 40px;">프로젝트
+									style="font-family: 'Do Hyeon', sans-serif; font-size: 40px;">프로젝트
 									등록 및 상담</p>
 								<hr class="my-4">
-								<p>
+								<p style="font-family: 'Do Hyeon', sans-serif;">
 									프로젝트에 딱 맞는 맞춤 상담을 받아보세요. <br> 프로젝트를 등록해 주시면 내용 작성을 도와드립니다.
 								</p>
 								<a class="btn btn-info btn-lg" href="#" role="button"
@@ -600,12 +600,12 @@ span.round-tab i {
 								id="step2"
 								style="background-image: url(${contextPath}/resources/images/process2.jpg); background-position: center center;">
 								<h1 class="display-4 text-info"
-									style="font-family: 'Jua', sans-serif;">STEP 2</h1>
+									style="font-family: 'Do Hyeon', sans-serif;">STEP 2</h1>
 								<p class="lead"
-									style="font-family: 'Jua', sans-serif; font-size: 40px;">지원자
+									style="font-family: 'Do Hyeon', sans-serif; font-size: 40px;">지원자
 									모집 및 선택</p>
 								<hr class="my-4">
-								<p>
+								<p style="font-family: 'Do Hyeon', sans-serif;">
 									마음에 드는 믿을만한 파트너를 만나보세요. <br> 유사프로젝트를 진행한 경험이 있는 파트너에게 프로젝트
 									분석 및 제안을 받아볼 수 있습니다.
 								</p>
@@ -617,12 +617,12 @@ span.round-tab i {
 								id="step3"
 								style="background-image: url(${contextPath}/resources/images/process3.jpg); background-position: center center;">
 								<h1 class="display-4 text-info"
-									style="font-family: 'Jua', sans-serif;">STEP 3</h1>
+									style="font-family: 'Do Hyeon', sans-serif;">STEP 3</h1>
 								<p class="lead"
-									style="font-family: 'Jua', sans-serif; font-size: 40px;">프로젝트
+									style="font-family: 'Do Hyeon', sans-serif; font-size: 40px;">프로젝트
 									계약</p>
 								<hr class="my-4">
-								<p>
+								<p style="font-family: 'Do Hyeon', sans-serif;">
 									계약과정이 복잡하고 번거로우셨나요? <br> 아웃소싱에 특화된 계약 시스템을 이용해 보세요.
 								</p>
 								<a class="btn btn-info btn-lg" href="#" role="button"
@@ -633,17 +633,17 @@ span.round-tab i {
 								id="step4"
 								style="background-image: url(${contextPath}/resources/images/process4.jpg); background-position: center center;">
 								<h1 class="display-4 text-info"
-									style="font-family: 'Jua', sans-serif;">STEP 4</h1>
+									style="font-family: 'Do Hyeon', sans-serif;">STEP 4</h1>
 								<p class="lead"
-									style="font-family: 'Jua', sans-serif; font-size: 40px;">프로젝트
+									style="font-family: 'Do Hyeon', sans-serif; font-size: 40px;">프로젝트
 									진행 및 완료</p>
 								<hr class="my-4">
-								<p>
+								<p style="font-family: 'Do Hyeon', sans-serif;">
 									Devenue의 안전한 대금보호시스템을 사용해보세요.<br> 혹시 모를 분쟁도 안심중재 솔루션을 통해
 									원만하게 해결할 수 있습니다.
 								</p>
 								<a class="btn btn-info btn-lg" href="#" role="button"
-									style="float: right;">Learn more</a>
+									style="float: right;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;">Learn more</a>
 							</div>
 
 
