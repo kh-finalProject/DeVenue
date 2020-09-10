@@ -186,9 +186,19 @@ if(session!=null){
             <div class="float-right">
             <form action="searchProjectList.do" method="post">
               <div id="searchDiv_category" class="dropdown" style="display: inline-block;">
+              
+              <c:if test="${filter.category != ''}">
+                <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="searchDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  	${filter.category}
+                </button>
+               </c:if> 
+               
+               <c:if test="${filter.category == ''}">
                 <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="searchDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   	전체
                 </button>
+               </c:if> 
+                
                 <input type="hidden" name="category" id="search_category"/>
                 <div class="dropdown-menu text-right" aria-labelledby="searchDrop">
                   <a class="dropdown-item" href="#">전체</a>
@@ -198,9 +208,17 @@ if(session!=null){
                 </div>
               </div>
               <div class="autocomplete" style="width:18.75rem;">
+              
+              <c:if test="${filter.keyword !=''}">
+                <input id="search_text" type="text" name="keyword" placeholder="검색어를 입력하세요." value="${filter.keyword}">
+              </c:if>
+              
+              <c:if test="${filter.keyword ==''}">
                 <input id="search_text" type="text" name="keyword" placeholder="검색어를 입력하세요.">
+              </c:if>
+              
               </div>
-              <button id="search_btn" type="submit" class="btn btn-outline-info mb-1" style="width:6.25rem;height: 2.75rem;">검색</button>
+              <button id="search_btn" type="button" class="btn btn-outline-info mb-1" style="width:6.25rem;height: 2.75rem;">검색</button>
             </form>
             </div>
           </div>
@@ -228,6 +246,10 @@ if(session!=null){
             		}
             	}
             	
+            })
+            
+            $(document).on("click","#search_btn",function(){
+            	usingFilter();
             })
             
             
