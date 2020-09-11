@@ -555,5 +555,11 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
+	public int selectLikeId(HashMap ids) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.selectLikeId", ids);
+	}
+
+
 
 }

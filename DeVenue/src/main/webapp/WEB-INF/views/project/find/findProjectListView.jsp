@@ -186,9 +186,29 @@ if(session!=null){
             <div class="float-right">
             <form action="searchProjectList.do" method="post">
               <div id="searchDiv_category" class="dropdown" style="display: inline-block;">
+              
+              <c:if test="${not empty filter }">
+              <c:if test="${filter.category != ''}">
+                <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="searchDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  	${filter.category}
+                </button>
+                
+               </c:if> 
+               
+               <c:if test="${filter.category == ''}">
                 <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="searchDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   	전체
                 </button>
+               </c:if> 
+               </c:if>
+               
+               <c:if test="${empty filter}">
+                <button class="btn btn-light dropdown-toggle mb-1 text-right" style="box-shadow: none;width: 10rem;height: 2.75rem;" type="button" id="searchDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  	전체
+                </button>
+               </c:if> 
+               
+               
                 <input type="hidden" name="category" id="search_category"/>
                 <div class="dropdown-menu text-right" aria-labelledby="searchDrop">
                   <a class="dropdown-item" href="#">전체</a>
@@ -198,9 +218,11 @@ if(session!=null){
                 </div>
               </div>
               <div class="autocomplete" style="width:18.75rem;">
-                <input id="search_text" type="text" name="keyword" placeholder="검색어를 입력하세요.">
+              
+                <input id="search_text" type="text" name="keyword" placeholder="검색어를 입력하세요." value="${filter.keyword}">
+              
               </div>
-              <button id="search_btn" type="submit" class="btn btn-outline-info mb-1" style="width:6.25rem;height: 2.75rem;">검색</button>
+              <button id="search_btn" type="button" class="btn btn-outline-info mb-1" style="width:6.25rem;height: 2.75rem;">검색</button>
             </form>
             </div>
           </div>
@@ -228,6 +250,10 @@ if(session!=null){
             		}
             	}
             	
+            })
+            
+            $(document).on("click","#search_btn",function(){
+            	usingFilter();
             })
             
             
@@ -1554,9 +1580,10 @@ if(session!=null){
                  
                 }
                 
+                
                 //모달을 통해 지역이 추가되면 필터 메소드를 trigger하여 필터 전송한다.
-                $("#searchFilter").find("input").eq(0).trigger("change");
-
+                usingFilter();
+                
               });
 
 
@@ -2694,10 +2721,15 @@ if(session!=null){
                
               
               $(document).on("click",".heart",function(){
-            	  
+            	
+            	console.log("하트가 클릭되었다.")
               	var pId=$(this).parent().find("input[name='pId']").val();
               	var lId=$(this).parent().find("input[name='likeId']").val();
+              	var newLId;
             	var memId="${loginUser.memId}";
+            	
+            	var $div=$(this).parent("div");
+            	var $input=$("<input type='hidden'>").attr("name","likeId");
             	
             	if(memId==""){
             		//로그인 안 된 상태
@@ -2707,6 +2739,9 @@ if(session!=null){
             		//로그인이 되었다.
             	
                 if($(this).hasClass("liked")){
+                	
+                	console.log("like 클래스가 있다!")
+                	
                 	//관심등록 취소
                   $(this).html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
                   $(this).removeClass("liked");
@@ -2733,6 +2768,8 @@ if(session!=null){
                   
                 }else{
                 	
+                	console.log("like 클래스가 없다!");
+                	
                 	//관심 등록
                   $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
                   $(this).addClass("liked");
@@ -2741,11 +2778,16 @@ if(session!=null){
           			
           			url:"addLikeProject.do",
           			data:{pId:pId,memId:memId},
+          			dataType:"json",
           			success:function(data){
-          				if(data=="success"){
+          				
       						alert("관심 프로젝트로 등록 되었습니다.");
+      						newLId=data.likeId;
+      						//input hidden 태그 붙여주어야 한다.
+      						$input.val(newLId);
+      						$div.append($input);
       						
-          				}
+          				
           			},
           			error:function(request, status, errorData){
                           alert("error code: " + request.status + "\n"
@@ -2756,6 +2798,8 @@ if(session!=null){
           		})
                   
                 }
+            		
+                console.log("제3의 길을 간다..");
                 
             	}
             	  

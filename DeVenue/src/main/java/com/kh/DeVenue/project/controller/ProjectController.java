@@ -562,6 +562,7 @@ ProjectService pService;
 		ProjectFilter filter=(ProjectFilter)session.getAttribute("filter");
 		
 		System.out.println("페이지네이션 필터"+filter);
+		System.out.println("페이지네이션 필터"+search);
 		
 		int listCount=0;
 		PageInfo pi=new PageInfo();
@@ -650,6 +651,7 @@ ProjectService pService;
 				mv.addObject("pi", pi);
 				mv.addObject("tech", tech);
 				mv.addObject("search", search);
+				System.out.println("검색 조건 확인:"+search);
 				
 				mv.setViewName("project/find/findProjectListView");
 				
@@ -666,9 +668,7 @@ ProjectService pService;
 		//필터가 존재할 때,
 		if(filter!=null) {
 			
-			if(search!=null) {
-				filter.setSearch(search);
-			}
+			System.out.println("필터가 존재하는데, filter는요?"+filter);
 			
 			
 			//페이징 처리를 위해 게시물 수 알아오기
@@ -695,8 +695,12 @@ ProjectService pService;
 				mv.addObject("tech", tech);
 				mv.addObject("filter", filter);
 				
+				System.out.println("화면에 보내지는 filter"+filter);
+				
+				
 				if(search!=null) {
 					mv.addObject("search", search);
+					System.out.println("화면에 보내지는 search"+search);
 				}
 				
 				mv.setViewName("project/find/findProjectListView");
@@ -886,14 +890,18 @@ ProjectService pService;
 		
 		result=pService.addLikeProject(ids);
 		
+		//추가한 관심 리스트의 id를 가져온다.(Max)
+		int lId=pService.getLikeId(ids);
+		System.out.println("추가한 관심 리스트의 id:"+lId);
+		
+		JSONObject likeId=new JSONObject();
+		likeId.put("likeId", lId);
+		System.out.println("관심 아이디 jsonobject:"+likeId);
+		
 		PrintWriter out=response.getWriter();
 		
 		if(result>0) {
-			out.append("success");
-			out.flush();
-			out.close();
-		}else {
-			out.append("fail");
+			out.print(likeId);
 			out.flush();
 			out.close();
 		}

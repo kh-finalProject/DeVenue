@@ -628,6 +628,14 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+	@Override
+	public int getLikeId(HashMap ids) {
+		
+		return proDao.selectLikeId(ids);
+	}
+
+
+
 
 	
 
