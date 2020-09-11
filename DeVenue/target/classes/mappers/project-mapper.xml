@@ -792,7 +792,7 @@
 		LEFT JOIN P_TEC PT ON (P.ID=PT.PRO_ID)
 		LEFT JOIN TECH T ON (PT.T_ID=T.T_ID)
 		WHERE P.ID=#{id}
-		ORDER BY PRO_AQ_ID
+		ORDER BY PRO_AQ_ID ASC, RP_CDATE DESC
 	</select>
 	
 	<select id="getProjectNumber" parameterType="int" resultMap="pNumberResultSet">
@@ -1431,7 +1431,7 @@
     P.PRO_STA_ID AS "STATUS",
 	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",P.PRO_CONTRACT AS "CONTRACT",
 	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY",
-	P.PRO_END_DATE
+	P.PRO_END_DATE, P.MEM_ID AS "CLIENTID"
 	FROM P_PROCESS C
 	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
 	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
@@ -1492,5 +1492,10 @@
 	WHERE PS_ID=#{sgId}
 	</delete>
 
+
+	<select id="selectLikeId" parameterType="hashmap" resultType="_int">
+	SELECT MAX(PRO_LID)
+	FROM P_LIKE
+	</select>
 
 </mapper>

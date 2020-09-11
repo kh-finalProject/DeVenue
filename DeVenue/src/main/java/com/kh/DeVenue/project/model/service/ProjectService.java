@@ -241,6 +241,9 @@ public interface ProjectService {
 	ArrayList<Member> selectModal(String proId);
 
 
+	int getLikeId(HashMap ids);
+
+
 	
 
 

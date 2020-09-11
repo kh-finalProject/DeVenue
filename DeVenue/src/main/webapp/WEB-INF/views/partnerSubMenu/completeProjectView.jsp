@@ -423,7 +423,13 @@
                                   <div class="likeCancel"><i class="fas fa-times float-right">삭제</i></div>
                                   <button type="button" class="btn btn-outline-info btn-block">계약서 보기</button>
                                   <button type="button" class="btn btn-outline-danger btn-block" disabled>정산중</button>
-                                  <button type="button" class="btn btn-info btn-block">후기작성</button>
+                                  
+                                   <c:url var="cEvalInsert" value="cEvalInsert.do">
+				                    	<c:param name="cId" value="${co.project.memId }"/>
+					                    <c:param name="pId" value="${loginUser.memId }"/>
+				                    </c:url>
+                                  <button type="button" class="btn btn-info btn-block" onclick="location.href='${cEvalInsert}'">후기작성</button>
+                                  
                                 </div>
                               </div>
                             </div>

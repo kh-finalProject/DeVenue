@@ -95,6 +95,7 @@
 		<mapper resource="/mappers/member2-mapper.xml"/>
 		<mapper resource="/mappers/memberAccountMapper.xml"/>
 		<mapper resource="/mappers/myPage-mapper.xml"/>
+		<mapper resource="/mappers/calculation-mapper.xml"/>
 	</mappers>
 	
 </configuration>
