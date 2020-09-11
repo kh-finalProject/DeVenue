@@ -405,6 +405,7 @@
             text-align: center;
             margin-top: 20px;
             margin: auto;
+            margin-left: 340px;
         }
         /* pwd찾기 div 이동 */
         .pwd-forget label{
@@ -476,10 +477,32 @@
                         <input type="checkbox" name="logincheck" id="checkbox" value="true">&nbsp;&nbsp;&nbsp;<label for="checkbox">로그인 유지</label>
                     </div>
                     <div class="form-btn">
-                        <button type="submit" class="btn btn-info btn-lg"
-                            style="font-size: 25px; width: 400px;">로그인하기</button>
+                        <button type="submit" id="login" class="btn btn-info btn-lg"
+                            style="font-size: 25px; width: 400px; margin-left: -60px;">로그인하기</button>
                     </div>
                 </form>
+                
+                <!-- <script type="text/javascript">
+                	$("#login").on("click",function(){
+                		var email = $("#email").val();
+                		var pwd = $("#pwd").val();
+                		console.log(email);
+                		console.log(pwd);
+                		
+                		$.ajax({
+                			url:"login.do",
+                			data:{email:email,pwd:pwd},
+                			success : function(data){
+                				
+                			},error:function(request, status, errorData){
+                				alert("error code: " + request.status + "\n"
+    									+"message: " + request.responseText
+    									+"error: " + errorData);
+    						}
+                		})
+                		
+                	})
+                </script> -->
                     <div class="pwd-forget">
                         <label>비밀번호를 잊으셨나요?&nbsp;&nbsp;<a href="forgetPwd.do">비밀번호 찾기</a></label>
                     </div>
@@ -506,9 +529,9 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    <<!-- script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>

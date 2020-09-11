@@ -1,12 +1,11 @@
 package com.kh.DeVenue.myPage.controller;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.DeVenue.findMember.model.service.FindMemberService;
+import com.kh.DeVenue.findMember.model.vo.FindPartners;
 import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.exception.MyPageException;
@@ -28,6 +30,7 @@ import com.kh.DeVenue.myPage.model.service.MyPageService;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
@@ -40,6 +43,7 @@ import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -48,11 +52,64 @@ public class MyPageController {
 
 	@Autowired
 	private MyPageService myPageService;
+	@Autowired
+	private FindMemberService fmService;
 
-	// 마이페이지로 이동
+	// 프로필로 이동
 	@RequestMapping(value = "profile.do")
-	public String profileView() {
-		return "myPage/myPageDetail";
+	public ModelAndView profileView(HttpServletRequest request, ModelAndView mv) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.valueOf(pfId);
+		System.out.println(profileId);
+		// memId를 비교해서 전체 값 가져오기
+		FindPartners fp = fmService.selectFm(profileId);
+		System.out.println(fp);
+		
+		// profileId를 넘겨서 포트폴리오값을 가져오자
+		ArrayList<PortFolio> portfolio = myPageService.portList(profileId);
+		System.out.println(portfolio);
+		
+		// profileId를 념겨서 portTec
+		for(int i=0;i<portfolio.size();i++) {
+			System.out.println(portfolio.get(i).getPortId());
+			
+			int portId = portfolio.get(i).getPortId();
+			
+			ArrayList<PortTecView> portTec = myPageService.ptList(portId);
+			System.out.println(portTec);
+			
+			mv.addObject("portTec", portTec);
+		}
+		
+		// profileId를 넘겨서 보유 기술 list 가져오기
+		ArrayList<Skill> skillList = myPageService.selectSkillInfo(profileId);
+		System.out.println(skillList);
+		
+		// profileId를 넘겨서 경력list 가져오기
+		ArrayList<Career> careerList = myPageService.selectCareerInfo(profileId);
+		System.out.println(careerList);
+		
+		// profileId를 넘겨 학력list 가져오기
+		ArrayList<SCCareer> sccareerList = myPageService.selectSCCareerInfo(profileId);
+		System.out.println(sccareerList);
+		
+		// profileId를 넘겨 자격증list 가져오기
+		ArrayList<Certificate> certiList = myPageService.selectCertificateInfo(profileId);
+		System.out.println(certiList);
+
+		
+		
+		mv.addObject("fp", fp);
+		mv.addObject("portfolio", portfolio);
+		mv.addObject("skillList", skillList);
+		mv.addObject("careerList", careerList);
+		mv.addObject("sccareerList", sccareerList);
+		mv.addObject("certiList", certiList);
+		
+		mv.setViewName("myPage/myPageDetail");
+		
+		return mv;
 	}
 
 	// 파트너스 정보 이동(파트너스 정보 출력)
@@ -83,15 +140,45 @@ public class MyPageController {
 		
 		ArrayList<PortFolio> portList = myPageService.selectPortInfo(profileId);
 		System.out.println("포트폴리오에 뿌려줄 "+portList);
-
+		
+		for(int i=0;i<portList.size();i++) {
+			System.out.println(portList.get(i).getPortId());
+			
+			int portId = portList.get(i).getPortId();
+			
+			ArrayList<PortTecView> portTec = myPageService.ptList(portId);
+			System.out.println(portTec);
+			
+			mv.addObject("portTec", portTec);
+		}
 		mv.addObject("portList", portList);
 		mv.addObject("profileId", profileId);
 		mv.setViewName("myPage/portfolioAll");
 
-		return mv;
+			return mv;
 
 	}
-
+	
+	// 포트폴리오에 보여줄 PortTecView
+	@RequestMapping(value="tName.do")
+	public ModelAndView tNameView(@RequestParam("portId") String portId, ModelAndView mv, HttpServletResponse response) throws IOException {
+		
+		int ptId = Integer.valueOf(portId);
+		
+		ArrayList<PortTecView> tName = myPageService.tNameList(ptId);
+		System.out.println(tName);
+		
+		PrintWriter out = response.getWriter();
+		
+		for(int i = 0; i<tName.size();i++) {
+			if(ptId == tName.get(i).getPortId()) {
+				System.out.println("현재 들어온 번호와 같은지"+tName);
+			}
+			
+		}
+		return mv;
+	}
+	
 	// 보유 기술 이동(보유 기술 전체 출력)
 	@RequestMapping(value = "skill.do")
 	public ModelAndView skillView(@RequestParam("profileId") int profileId ,HttpServletRequest request, ModelAndView mv){
@@ -685,14 +772,19 @@ public class MyPageController {
 			// 진행중인 프로젝트 조회
 			ArrayList<CmypageProcess> process = myPageService.selectProcess(cId);
 			System.out.println("진행중인 프로젝트 : "+process);
+			
+			// 참여 파트너스 카운트
+			ArrayList<CmypageCountPartners> countPartners = myPageService.getCountPartners(cId);
+			System.out.println("참여 파트너스 수 : " + countPartners);
 				
 			if(projectHistory!=null) {
 				mv.addObject("ph", projectHistory)
 				.addObject("suggest", suggest)
 				.addObject("process", process)
+				.addObject("cp", countPartners)
 				.setViewName("member/clientMyPage");
 			}else {
-				throw new MemberException("프로젝트 히스토리 조회 실패!");
+				throw new MemberException("마이페이지 접근 실패!");
 			}
 			
 			return mv;
@@ -786,5 +878,53 @@ public class MyPageController {
 			out.flush();
 			out.close();
 			
+		}
+		
+		@RequestMapping(value="cMypageInfoUpdate.do")
+		public ModelAndView cMypageInfoUpdate(ModelAndView mv, HttpServletRequest request, Integer cId) {
+			String introduce=request.getParameter("introduce");
+			String url=request.getParameter("url");
+			
+			System.out.println("introduce : " + introduce);
+			System.out.println("url : " + url);
+			
+			HashMap map = new HashMap();
+			map.put("introduce", introduce);
+			map.put("url", url);
+			map.put("cId", cId);
+			
+			int result=myPageService.updateClientInfo(map);
+			
+			if(result>0) {
+				System.out.println("수정 성공!!");
+				mv.addObject("cId", cId).setViewName("redirect:clientInfo.do");
+			}else {
+				throw new MyPageException("클라이언트 정보 수정 실패");
+			}
+			
+			
+			return mv;
+		}
+		
+			// 포트폴리오 닉네임으로 중복값 제거
+		@RequestMapping(value="portNameChk.do")
+		public void portNameChk(@RequestParam("title") String title, HttpServletResponse response) throws IOException {
+			
+			// 포트폴리의 전체 값을 가져옴
+			
+			int portNameCount = myPageService.portNameCount(title);
+		/* System.out.println(portNameCount); */
+			PrintWriter out = response.getWriter();
+			// 중복됬으면
+			if(portNameCount > 0) {
+				out.append("1");
+				out.flush();
+			// 중복이 안됬으면
+			}else {
+				out.append("0");
+				out.flush();
+			}
+		
+			out.close();
 		}
 }

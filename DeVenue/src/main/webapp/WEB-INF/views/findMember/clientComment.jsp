@@ -123,8 +123,40 @@
                         </c:if>
                     </div>
                     <div class="col-2" style="margin:0 auto; margin-right: 5%;">
-                        <button class="btn-lg btn-info" style="float:right;" type="button">신고</button>
+                        <button class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
                     </div>
+					  <!-- 신고 모달 -->
+					  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content modal-xl text-dark">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">신고</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <form action="clientReport.do" method="post">
+					          <div class="form-group">
+					            <label for="recipient-name" class="col-form-label">클라이언트</label>
+					            <input type="text" class="form-control" id="recipient-name" value="${fc.memNick }" readonly>
+					            <input type="hidden" name="reportCid" value="${fc.memId }">
+					            <input type="hidden" name="pId" value="${loginUser.memId }">
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">신고 내용</label>
+					            <textarea class="form-control" name="reportContent" id="message-text" placeholder="신고 내용을 입력하세요. 허위 사실을 입력할 시 제재를 받으실 수 있습니다."></textarea>
+					          </div>
+					          <div class="modal-footer">
+					        <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">취소</button>
+					        <button type="submit" class="btn btn-lg btn-primary">신고</button>
+					      </div>
+					        </form>
+					      </div>
+					      
+					    </div>
+					  </div>
+					</div>
                 </div>
             </div>
 

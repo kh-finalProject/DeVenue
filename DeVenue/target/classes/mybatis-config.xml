@@ -72,6 +72,7 @@
 	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory" alias="CmypageProjectHistory"/>
 	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageSuggest" alias="CmypageSuggest"/>
 	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageProcess" alias="CmypageProcess"/>
+	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageCountPartners" alias="CmypageCountPartners"/>
 
 	    <typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypageClientInfo" alias="CmypageClientInfo"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyPortfolio" alias="ApplyPF"/>
@@ -80,11 +81,18 @@
 		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectFilter" alias="Filter"/>
 		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectSearch" alias="Search"/>
 		
+		<!-- 파트너스 찾기 view -->
+		<typeAlias type="com.kh.DeVenue.findMember.model.vo.FindPartners" alias="FindPartners"/>
+		<!-- 포트폴리오 기술 view -->
+		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PortTecView" alias="PortTecView"/>
+
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PmypagePartnersInfo" alias="PmypagePartnersInfo"/>
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PartnersApplyCount" alias="PartnersApplyCount"/>
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PartnersContractCount" alias="PartnersContractCount"/>
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PmypageSuggest" alias="PmypageSuggest"/>
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PmypageProcess" alias="PmypageProcess"/>
+		
+		<typeAlias type="com.kh.DeVenue.member.model.vo.EPid" alias="EPid"/>
 		
 	</typeAliases>
 
