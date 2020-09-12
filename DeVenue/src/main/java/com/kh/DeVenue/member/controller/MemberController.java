@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -80,13 +79,17 @@ public class MemberController {
 	// 할일 로그인 유지/ 브라우저 종료시 reload
 	// 로그인 유지할때 request와 session으로 넘겨버리면???
 	// 로그인 값 받아오기
-	@RequestMapping(value="login.do")
-	public String memberLogin(@RequestParam("memEmail") String memEmail, @RequestParam("memPwd") String memPwd, @RequestParam("check") String check,
-			HttpSession session, HttpServletRequest request, HttpServletResponse response , Model model, ModelAndView mv) throws IOException{
+	@RequestMapping(value="login.do", method=RequestMethod.POST)
+	public String memberLogin(HttpSession session, HttpServletRequest request, Model model, ModelAndView mv){
+
+//		// 자동로그인 checkbox 선택했는지
+//		String logincheck = request.getParameter("logincheck");
+//		System.out.println(logincheck); // true or null(value를 true로 설정했기때문에)
 		
-		System.out.println("컨트롤러 실행");
-		
-		// 자동로그인
+		String memEmail = request.getParameter("email");
+		String memPwd = request.getParameter("pwd");
+
+
 		Member m = new Member(memEmail,memPwd);
 //		System.out.println(m);
 		
@@ -164,43 +167,22 @@ public class MemberController {
 		
 		Member loginUser = mService.loginUserMember(m);
 		System.out.println(loginUser);
-		PrintWriter out = response.getWriter();
-		System.out.println(check);
-//		return null;
+//		System.out.println(loginUser.getMemId());
+		
 		
 		if(loginUser != null) { // 로그인 할 멤버 객체가 조회 되었을 시
-			// 일반 로그인
-			if(check.equals("true")) {
-				System.out.println("쿠키 yes");
-				//쿠키를 생상하고 로그인시 입력한 회원아이디를 저장
-				Cookie cookie = new Cookie("loginCookie", memEmail);
-				//쿠키를 찾을 경로를 컨텍스트 경로로 변경
-				cookie.setPath("/");
-				//단위는 (초)이고 7일 정도로 유효시간을 설정
-				cookie.setMaxAge(60*60*24*7);
-				response.addCookie(cookie);
-				
-				out.print("cookie");
-				out.flush();
-				out.close();
-			// 자동 로그인
-			}else {
-				System.out.println("쿠키 no");
-				
-				session.setAttribute("loginUser", loginUser);
-				
-				out.print("session");
-				out.flush();
-				out.close();
-			}
-			
 			
 			// 로그인 한 후에 화면에 profile을 뿌려줌
 			Profile memId = new Profile(loginUser.getMemId());
 			Profile profile = mService.profile(memId);
+//			if(logincheck != null) { // true이냐(로그인 유지 선택시)
+//			}else { // 로그인 유지 체크 안할시
+			
+//				
+//			}
 			
 			session.setAttribute("profile", profile);
-			
+			session.setAttribute("loginUser", loginUser);
 //			mv.setViewName("common/mainPage");
 //			mv.addObject("loginUser", loginUser);
 			
@@ -219,7 +201,7 @@ public class MemberController {
 				// 채팅을 위해 관리자 정보를 죄다 불러옴(주관리자 여부는 웹단에서 구분하여 쓰자)
 				ArrayList<ChatUserInfo> admins = mmService.allAdmin();
 				session.setAttribute("admins", admins);
-				// 로그인유저 추가(재환) 
+				// 로그인유저 추가(재환)
 				session.setAttribute("loginUser", loginUser);
 				
 				// 채팅평시상태를 위해 안읽은 메시지를 모두 카운트해서 불러옴
@@ -236,27 +218,16 @@ public class MemberController {
 		}else { // 로그인 실패시
 			System.out.println("로그인 실패");
 			// 아이디랑 비밀번호 잘못 입력했다는 창
-			ArrayList<Member> member = mService.memberList();
-			//아이디 비교
-			for(int a=0;a<member.size();a++) {
-				if(memEmail.equals(member.get(a).getMemEmail())) {
-					out.append("emailFail");
-					out.flush();
-					out.close();
-				}else {
-					
-					out.append("pwdFail");
-					out.flush();
-					out.close();
-				}
-			}
+//			if(memEmail.equals(loginUser.getMemEmail())) {
+//				
+//			}else if(memPwd.equals(loginUser.getMemPwd())){
+//				
+//			}
 //			return mv;
-//			throw new MemberException("로그인 실패!");
+			throw new MemberException("로그인 실패!");
 
+			/* return "member/login"; */
 		}
-		return "common/mainPage";
-		
-		
 		
 		
 	}

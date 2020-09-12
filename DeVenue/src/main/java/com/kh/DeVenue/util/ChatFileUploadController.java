@@ -55,7 +55,7 @@ public class ChatFileUploadController {
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String originFileName = file.getOriginalFilename();
+		String originFileName = file.getOriginalFilename().toString().replace("%", "_");
 		originFileName = new String(originFileName.getBytes("8859_1"),"utf-8");
 	    System.out.println(originFileName);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis()))
