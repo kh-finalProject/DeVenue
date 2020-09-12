@@ -90,10 +90,10 @@ public ModelAndView profileView(HttpServletRequest request, ModelAndView mv, @Re
 		@RequestParam(value ="proId",required=false) int proId) {
 	
 	int profileId = memId;
-	System.out.println(profileId);
+	System.out.println("proFileId"+profileId);
 	// memId를 비교해서 전체 값 가져오기
 	FindPartners fp = fmService.selectFm(profileId);
-	System.out.println(fp);
+	System.out.println("fp"+fp);
 	
 	// profileId를 넘겨서 포트폴리오값을 가져오자
 	ArrayList<PortFolio> portfolio = myPageService.portList(profileId);
@@ -185,20 +185,21 @@ public ModelAndView proGoRecruit(ModelAndView mv,  Project p,
 @RequestMapping("applyUpdate.do")
 public ModelAndView applyUpdate(ModelAndView mv, 
 								HttpServletRequest request, RedirectAttributes redirectAttributes,
-							
+								@RequestParam(value ="list1",required=false) String[] list,
 								@RequestParam(value ="proId",required=false) int proId,
 								@RequestParam(value ="memPId",required=false) int memPId) throws ParseException {
 	
 	
 	System.out.println("mv"+mv);
 	 redirectAttributes.addAttribute("proId", proId);
+	 redirectAttributes.addAttribute("memPId", memPId);
 	 System.out.println("프로아이디"+proId);
 	System.out.println("멤피아이디"+ memPId);
 	int result = pService.applyUpdate(memPId);
 	System.out.println(result);
 	
 	if(result > 0) {
-		
+		mv.addObject(list);
 		mv.setViewName("redirect:applycomfirmList.do");
 	
 	
@@ -692,7 +693,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	@RequestMapping("applycomfirmList.do")
 	public ModelAndView applyComfirmList(ModelAndView mv, @RequestParam(value ="memId" ,required= false) String memId,
 			@RequestParam(value ="proId" ,required= false) int proId,
-			@RequestParam(value="page", required=false) Integer page
+			@RequestParam(value="page", required=false) Integer page,
+			RedirectAttributes redirect
 			
 			) {
 		int currentPage = 1;
@@ -709,7 +711,9 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		System.out.println("진입");
 		System.out.println("프로프로"+proId);
 		ArrayList<Project> list = pService.selectApplyList(proId);
-		
+		redirect.addAttribute("memId", memId);
+		redirect.addAttribute("proId", proId);
+
 		System.out.println("승인 리스트"+list);
 		if(!list.isEmpty()) {
 			mv.addObject("RecruitNum",RecruitNum);
@@ -719,7 +723,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 			
 		}else {
 			mv.addObject("RecruitNum",RecruitNum);
-		
+			mv.addObject("pi",pi);
 			mv.setViewName("project/applycomfirmList");
 		}
 		 
