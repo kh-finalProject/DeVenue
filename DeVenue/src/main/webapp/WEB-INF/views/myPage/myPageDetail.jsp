@@ -809,7 +809,7 @@ section {
 										scaleOverride : true,
 
 										backgroundColor : "#2693F2",
-										borderColor : "#2693F2",
+										borderColor : "#17a2b8",
 										fill : false,
 										radius : 6,
 										pointRadius : 3,

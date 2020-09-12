@@ -436,5 +436,9 @@
 		WHERE FROM_ID=#{pId} AND TO_ID=#{reportCid}
 	</select>
 	
+	<!-- 로그인 할시 멤버 리시트를 비교 -->
+	<select id="memberList" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+	</select>
 	
 </mapper>

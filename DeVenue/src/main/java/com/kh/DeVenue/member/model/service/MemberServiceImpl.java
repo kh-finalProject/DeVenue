@@ -208,4 +208,10 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.reportCheck(report);
 	}
 
+	@Override
+	public ArrayList<Member> memberList() {
+		
+		return mDao.memberList();
+	}
+
 }

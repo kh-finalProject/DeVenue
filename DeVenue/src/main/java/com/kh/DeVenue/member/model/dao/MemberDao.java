@@ -197,5 +197,10 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.reportCheck", report);
 	}
 
+	public ArrayList<Member> memberList() {
+
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.memberList");
+	}
+
 	
 }
