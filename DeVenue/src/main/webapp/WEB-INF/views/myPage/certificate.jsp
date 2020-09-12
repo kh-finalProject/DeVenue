@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -411,7 +413,7 @@ section {
 
 <body>
 	<!-- munubar -->
-	<jsp:include page="../common/menubar.jsp"/>
+	<jsp:include page="../common/menubar.jsp" />
 
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
@@ -448,7 +450,7 @@ section {
 						</h3>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<c:forEach var="certi" items="${certilist }">
+						<c:forEach var="certi" items="${certiList }">
 							<form method="get" action="delCerti.do">
 								<table class="table">
 									<tr class="table-secondary" style="text-align: center;">
@@ -462,7 +464,9 @@ section {
 										style="text-align: center; vertical-align: middle;">
 										<td>${certi.ccName }</td>
 										<td>${certi.ccPlace }</td>
-										<td>2020년 09월 03일</td>
+										<td><fmt:parseDate pattern="yyyy-MM-dd"
+												value="${certi.ccCreateDate }" var="ccStartDate" /> <fmt:formatDate
+												value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
 										<td>${certi.ccNumber }</td>
 										<td><input type="hidden" name="ccId"
 											value="${certi.ccId }"> <input type="hidden"

@@ -83,6 +83,7 @@
 		<result property="workType" column="WORKTYPE"/>
 		<result property="identify" column="IDENTIFY"/>
 		<result property="evaluation" column="EVALUATION"/>
+		<result property="calculateStatus" column="CAL_STATUS"/>
 
 	<association property="project" javaType="Project">
 		<result property="proId" column="PROID"/>
@@ -355,8 +356,26 @@
 		<collection property="answer" javaType="java.util.ArrayList" resultMap="AnswerResultSet" />
 	
 	</resultMap>
-
 	
+	<resultMap type="CPeval" id="cpEvalListResult">
+  	<id property="eId" column="E_ID"/>
+  	<result property="proName" column="PRO_NAME"/>
+  	<result property="mcId" column="MC_ID"/>
+  	<result property="dcType" column="DC_TYPE"/>
+  	<result property="eWriter" column="E_WRITER"/>
+  	<result property="eTarget" column="E_TARGET"/>
+  	<result property="epId" column="EP_ID"/>
+  	<result property="eAgv" column="E_AGV"/>
+  	<result property="eContent" column="E_CONTENT"/>
+  	<result property="star1" column="E_STAR1"/>
+  	<result property="star2" column="E_STAR2"/>
+  	<result property="star3" column="E_STAR3"/>
+  	<result property="star4" column="E_STAR4"/>
+  	<result property="star5" column="E_STAR5"/>
+  	<result property="eCreateDate" column="E_CREATE_DATE"/>
+  	<result property="eStatus" column="E_STATUS"/>
+  </resultMap>
+
 
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO PROJECT VALUES(
@@ -532,11 +551,13 @@
 	FROM PROJECT
     where PRO_ID =#{proId}
 </select>
-	<select id="getCommitListCount" resultType="_int">
+
+<select id="getCommitListCount" resultType="_int">
 	SELECT COUNT(*) 
 	FROM P_APPLY
     where PRO_ID =#{proId} AND PRO_ASTATUS ='1'
 </select>
+
 	<select id ="temUpdateForm" parameterType ="int" resultMap ="projectResultSet">
 			SELECT * 
 		FROM PROJECT
@@ -601,14 +622,13 @@
 	WHERE PRO_ID = #{proId}
 	
 	</delete>
-	
-	
-	
+
 	<select id ="getQuestion" parameterType ="int" resultMap ="projectQuestionResultSet"> 
 		SELECT * 
 		FROM P_QUESTION
 		WHERE PRO_ID = #{proId}
 	</select>
+	
 <select id = "selectCheckList" resultMap="projectResultSet">
 	SELECT * 
 	FROM CHK_PRO
@@ -1003,9 +1023,7 @@
 		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
 	</insert>
 	
-
-<select id="getLikeCount" parameterType="hashmap" resultType="_int">
-
+	<select id="getLikeCount" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
@@ -1530,12 +1548,13 @@
     P.PRO_STA_ID AS "STATUS",
 	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",P.PRO_CONTRACT AS "CONTRACT",
 	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY",
-	P.PRO_END_DATE, P.MEM_ID AS "CLIENTID"
+	P.PRO_END_DATE, P.MEM_ID AS "CLIENTID", CAL.CAL_STATUS AS "CAL_STATUS"
 	FROM P_PROCESS C
 	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
 	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
+    LEFT JOIN CALCULATE CAL ON (CAL.PRO_ID=P.PRO_ID)
 	WHERE P.PRO_STA_ID IN ('PST5','PST6') AND CH.MEM_ID=#{memId}
 	
 	<if test="keyword!=null and category!=null">
@@ -1591,12 +1610,91 @@
 	WHERE PS_ID=#{sgId}
 	</delete>
 
+	<!-- 호준추가 -->
+	
+	<!-- 파트너스 찾기에서 클라이언트에 대한 프로젝트를 조회한다. -->
+	<select id="projectList" parameterType="_int" resultMap="projectResultSet">
+		SELECT * FROM PROJECT
+		WHERE MEM_ID = #{memId}
+	</select>
+	
+	<!-- 종료된 프로젝트 -->
+	<resultMap type="ProjectEnd" id="projedctEnd">
+		<id property="epId" column="EP_ID"/>
+		
+		<result property="proId" column="PRO_ID"/>
+		<result property="proPmId" column="PRO_PM_ID"/>
+	</resultMap>
+	
+	<!-- 매칭 파트너스 -->
+	<resultMap type="ProjectMatch" id="projectMatchResult">
+		<id property="proPmId" column="PRO_PM_ID"/>
+		
+		<result property="proPid" column="PRO_PID"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="sigId" column="SIG_ID"/>
+	</resultMap>
+	
+	<!-- 진행중인 프로젝트 -->
+	<resultMap type="ProjectProcess" id="projectProcessResultSet">
+		<id property="proPid" column="PRO_PID"/>
+		<result property="proId" column="PRO_ID"/>
+	</resultMap>
+	
+	<!-- 진행중인 프로젝트 조회 -->
+	<select id="ppList" parameterType="_int" resultMap="projectProcessResultSet">
+		SELECT * FROM P_PROCESS
+		WHERE PRO_ID = #{proId}
+	</select>
 
 	<select id="selectLikeId" parameterType="hashmap" resultType="_int">
 	SELECT MAX(PRO_LID)
 	FROM P_LIKE
+	</select>
+	
+	<select id="selectEvaluation" parameterType="hashmap" resultMap="cpEvalListResult">
+	SELECT *
+	FROM EVAL
+	WHERE E_WRITER=#{memId}
 
 	</select>
 	
+	<select id="selectFourWeb" resultMap="projectListResultSet">
+	<![CDATA[
+	 SELECT *   
+	 FROM(SELECT *
+	 FROM PROJECTLIST_VIEW V
+	 LEFT JOIN PROJECT P ON (V.ID=P.PRO_ID)
+	 WHERE P.DC_ID='DC1' AND P.PRO_STA_ID='PST3'
+	 ORDER BY 1 DESC)
+	 WHERE ROWNUM<=4
+	 ]]>
+	</select>
+	
+	<select id="selectFourApp" resultMap="projectListResultSet">
+	<![CDATA[
+	 SELECT *   
+	 FROM(SELECT *
+	 FROM PROJECTLIST_VIEW V
+	 LEFT JOIN PROJECT P ON (V.ID=P.PRO_ID)
+	 WHERE P.DC_ID='DC2' AND P.PRO_STA_ID='PST3'
+	 ORDER BY 1 DESC)
+	 WHERE ROWNUM<=4
+	 ]]>
+	
+	</select>
+	
+	<select id="selectFourPub" resultMap="projectListResultSet">
+	<![CDATA[
+	 SELECT *   
+	 FROM(SELECT *
+	 FROM PROJECTLIST_VIEW V
+	 LEFT JOIN PROJECT P ON (V.ID=P.PRO_ID)
+	 WHERE P.DC_ID='DC3' AND P.PRO_STA_ID='PST3'
+	 ORDER BY 1 DESC)
+	 WHERE ROWNUM<=4
+	 ]]>
+	
+	</select>
 
 </mapper>

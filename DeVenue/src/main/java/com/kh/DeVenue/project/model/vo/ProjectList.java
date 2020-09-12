@@ -23,13 +23,15 @@ public class ProjectList implements Serializable {
 	private String identify;//프로젝트 클라이언트 인증 여부
 	private int evaluation;//프로젝트 클라이언트 평균 점수
 	private ArrayList<Tech> techName;//프로젝트 기술명
+	private String calculateStatus;//정산상태
 	
 	public ProjectList() {
 		super();
 	}
 
 	public ProjectList(int id, Project project, int applyNum, int likeNum, int replyNum, String mCategory,
-			String dCategory, String workType, String identify, int evaluation, ArrayList<Tech> techName) {
+			String dCategory, String workType, String identify, int evaluation, ArrayList<Tech> techName,
+			String calculateStatus) {
 		super();
 		this.id = id;
 		this.project = project;
@@ -42,6 +44,7 @@ public class ProjectList implements Serializable {
 		this.identify = identify;
 		this.evaluation = evaluation;
 		this.techName = techName;
+		this.calculateStatus = calculateStatus;
 	}
 
 	public int getId() {
@@ -132,6 +135,14 @@ public class ProjectList implements Serializable {
 		this.techName = techName;
 	}
 
+	public String getCalculateStatus() {
+		return calculateStatus;
+	}
+
+	public void setCalculateStatus(String calculateStatus) {
+		this.calculateStatus = calculateStatus;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -140,9 +151,9 @@ public class ProjectList implements Serializable {
 	public String toString() {
 		return "ProjectList [id=" + id + ", project=" + project + ", applyNum=" + applyNum + ", likeNum=" + likeNum
 				+ ", replyNum=" + replyNum + ", mCategory=" + mCategory + ", dCategory=" + dCategory + ", workType="
-				+ workType + ", identify=" + identify + ", evaluation=" + evaluation + ", techName=" + techName + "]";
+				+ workType + ", identify=" + identify + ", evaluation=" + evaluation + ", techName=" + techName
+				+ ", calculateStatus=" + calculateStatus + "]";
 	}
-	
 	
 	
 	

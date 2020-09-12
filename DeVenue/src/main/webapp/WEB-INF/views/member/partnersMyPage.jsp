@@ -30,8 +30,11 @@
 </style>
 </head>
 <body>
+	<!-- munubar -->
 	<jsp:include page="../common/menubar.jsp" />
-	<jsp:include page="../common/pSideMenubar.jsp" />
+
+	<!-- sidebar -->
+	<jsp:include page="../common/sideMenubarAll.jsp" />
 
 	<div class="container">
 		<div class="row text-white"	style="border-bottom: 1px solid lightgray;">

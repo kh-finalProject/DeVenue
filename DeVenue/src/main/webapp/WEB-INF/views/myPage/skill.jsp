@@ -454,7 +454,7 @@ section {
 								<td>경험</td>
 								<td>도구</td>
 							</tr>
-							<c:forEach var="skill" items="${skilllist }">
+							<c:forEach var="skill" items="${skillList }">
 								<form method="get" action="delSkill.do">
 									<input type="hidden" name="profileId"
 										value="${profile.profileId }"> <input type="hidden"

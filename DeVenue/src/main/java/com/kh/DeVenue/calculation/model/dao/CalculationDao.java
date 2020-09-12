@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.DeVenue.calculation.model.vo.Calculation;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Signature;
 import com.kh.DeVenue.memberAccount.model.vo.Signature2;
@@ -46,6 +47,26 @@ public class CalculationDao {
 	public int uploadContractDoc(HashMap upload) {
 		
 		return sqlSessionTemplate.update("calculationMapper.uploadContractDoc",upload);
+	}
+
+	public ArrayList<Calculation> selectPaidProject() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("calculationMapper.selectPaidProject");
+	}
+
+	public ArrayList<Calculation> selectCalculation() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("calculationMapper.selectCalculation");
+	}
+
+	public ArrayList<Member> selectMatched(Integer proId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("calculationMapper.selectMatched", proId);
+	}
+
+	public int uploadCalculation(Calculation calculation) {
+		
+		return sqlSessionTemplate.insert("calculationMapper.uploadCalculation", calculation);
 	}
 
 }

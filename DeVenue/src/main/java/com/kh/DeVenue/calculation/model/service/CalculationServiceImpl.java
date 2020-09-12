@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.DeVenue.calculation.model.dao.CalculationDao;
+import com.kh.DeVenue.calculation.model.vo.Calculation;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.memberAccount.model.vo.Signature2;
 import com.kh.DeVenue.project.model.vo.Project;
@@ -53,6 +54,30 @@ public class CalculationServiceImpl implements CalculationService {
 	public int uploadContractDoc(HashMap upload) {
 		
 		return calDao.uploadContractDoc(upload);
+	}
+
+	@Override
+	public ArrayList<Calculation> selectPaidProject() {
+		
+		return calDao.selectPaidProject();
+	}
+
+	@Override
+	public ArrayList<Calculation> selectCalculation() {
+		
+		return calDao.selectCalculation();
+	}
+
+	@Override
+	public ArrayList<Member> selectMatched(Integer proId) {
+		
+		return calDao.selectMatched(proId);
+	}
+
+	@Override
+	public int uploadCalculation(Calculation calculation) {
+		
+		return calDao.uploadCalculation(calculation);
 	}
 
 }

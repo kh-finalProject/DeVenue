@@ -19,7 +19,7 @@
 	<!-- 파트너스찾기 view list 출력 -->
 	<select id="findPartList" parameterType="FindPartners" resultMap="findPartnersResultSet">
 		SELECT * FROM FINDPARTLIST_VIEW
-		WHERE PI_TYPE=1
+		<!-- WHERE PI_TYPE=1 -->
 	</select>
 	
 	<!-- 마이페이지 프로필 정보  -->
@@ -27,7 +27,35 @@
 		SELECT * FROM FINDPARTLIST_VIEW
 		WHERE PROFILE_ID = #{profileId}
 	</select>
+	
+	<resultMap type="PEvalView" id="pEvalViewResultSet">
+		<id property="eId" column="E_ID"/>
+		
+		<result property="eWriter" column="E_WRITER"/>
+		<result property="eTarget" column="E_TARGET"/>
+		<result property="eAgv" column="E_AGV"/>
+		<result property="eContent" column="E_CONTENT"/>
+		<result property="eStar1" column="E_STAR1"/>
+		<result property="eStar2" column="E_STAR2"/>
+		<result property="eStar3" column="E_STAR3"/>
+		<result property="eStar4" column="E_STAR4"/>
+		<result property="eStar5" column="E_STAR5"/>
+		<result property="proName" column="PRO_NAME"/>
+		<result property="proPayment" column="PRO_PAYMENT"/>
+		<result property="proStartDate" column="PRO_START_DATE"/>
+		<result property="proDuration" column="PRO_DURATION"/>
+		<result property="mcType" column="MC_TYPE"/>
+		<result property="dcType" column="DC_TYPE"/>
+		<result property="memNick" column="MEM_NICK"/> 
+		<result property="memEmail" column="MEM_EMAILs"/>
 
+	</resultMap>
+	
+	<!-- 클라이언트가 파트너스에 대한 평가  -->
+	<select id="partEvalList" parameterType="int" resultMap="pEvalViewResultSet">
+		SELECT * FROM FINDPART_PARTEVAL_VIEW
+		WHERE E_TARGET=#{eTarget}
+	</select>
 
 
 

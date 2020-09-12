@@ -8,9 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
+import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.myPage.model.vo.Eval;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
@@ -514,7 +515,7 @@ public ArrayList<Tech> selectTechList() {
 
 	public int deleteProject(int proId) {
 		
-		return sqlSessionTemplate.update("projectMapper.deleteProject", proId);
+		return sqlSessionTemplate.delete("projectMapper.deleteProject", proId);
 	}
 
 
@@ -607,8 +608,28 @@ ArrayList list =new ArrayList();
 	}
 
 
+	public ArrayList<CPeval> selectEvaluation(HashMap condition) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectEvaluation", condition);
+	}
 
 
+	public ArrayList<ProjectList> selectFourWeb() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectFourWeb");
+	}
+
+
+	public ArrayList<ProjectList> selectFourApp() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectFourApp");
+	}
+
+
+	public ArrayList<ProjectList> selectFourPub() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectFourPub");
+	}
 
 
 

@@ -15,16 +15,16 @@ public class Calculation implements Serializable {
 	private static final long serialVersionUID = 2580555140172765576L;
 
 	private int calId;//정산 아이디
-	private int proId;//프로젝트 아이디 
+	private String proId;//프로젝트 아이디 
 	private Project project;//정산 대상 프로젝트
 	private ArrayList<Member> partners;//매칭 파트너스
 	private Member partner;//정산 대상 파트너
 	private Member client;//클라이언트
-	private int expectPayment;//예상 지불 금액
-	private int realPay;//실제 지불 금액
-	private int deposit;//예치금(클라이언트 결제 금액)
-	private int incentive;//인센티브(디베뉴가 받는 5%)
-	private int tax;//세금(파트너스 사업자 형태에 따라)
+	private String expectPay;//예상 지불 금액
+	private String realPay;//실제 지불 금액
+	private String deposit;//예치금(클라이언트 결제 금액)
+	private String incentive;//인센티브(디베뉴가 받는 5%)
+	private String tax;//세금(파트너스 사업자 형태에 따라)
 	private String status;//정산상태
 	private Date payDate;//정산날
 	
@@ -32,8 +32,9 @@ public class Calculation implements Serializable {
 		super();
 	}
 
-	public Calculation(int calId, int proId, Project project, ArrayList<Member> partners, Member partner, Member client,
-			int expectPayment, int realPay, int deposit, int incentive, int tax, String status, Date payDate) {
+	public Calculation(int calId, String proId, Project project, ArrayList<Member> partners, Member partner,
+			Member client, String expectPay, String realPay, String deposit, String incentive, String tax,
+			String status, Date payDate) {
 		super();
 		this.calId = calId;
 		this.proId = proId;
@@ -41,7 +42,7 @@ public class Calculation implements Serializable {
 		this.partners = partners;
 		this.partner = partner;
 		this.client = client;
-		this.expectPayment = expectPayment;
+		this.expectPay = expectPay;
 		this.realPay = realPay;
 		this.deposit = deposit;
 		this.incentive = incentive;
@@ -58,11 +59,11 @@ public class Calculation implements Serializable {
 		this.calId = calId;
 	}
 
-	public int getProId() {
+	public String getProId() {
 		return proId;
 	}
 
-	public void setProId(int proId) {
+	public void setProId(String proId) {
 		this.proId = proId;
 	}
 
@@ -98,43 +99,43 @@ public class Calculation implements Serializable {
 		this.client = client;
 	}
 
-	public int getExpectPayment() {
-		return expectPayment;
+	public String getExpectPay() {
+		return expectPay;
 	}
 
-	public void setExpectPayment(int expectPayment) {
-		this.expectPayment = expectPayment;
+	public void setExpectPay(String expectPay) {
+		this.expectPay = expectPay;
 	}
 
-	public int getRealPay() {
+	public String getRealPay() {
 		return realPay;
 	}
 
-	public void setRealPay(int realPay) {
+	public void setRealPay(String realPay) {
 		this.realPay = realPay;
 	}
 
-	public int getDeposit() {
+	public String getDeposit() {
 		return deposit;
 	}
 
-	public void setDeposit(int deposit) {
+	public void setDeposit(String deposit) {
 		this.deposit = deposit;
 	}
 
-	public int getIncentive() {
+	public String getIncentive() {
 		return incentive;
 	}
 
-	public void setIncentive(int incentive) {
+	public void setIncentive(String incentive) {
 		this.incentive = incentive;
 	}
 
-	public int getTax() {
+	public String getTax() {
 		return tax;
 	}
 
-	public void setTax(int tax) {
+	public void setTax(String tax) {
 		this.tax = tax;
 	}
 
@@ -161,11 +162,10 @@ public class Calculation implements Serializable {
 	@Override
 	public String toString() {
 		return "Calculation [calId=" + calId + ", proId=" + proId + ", project=" + project + ", partners=" + partners
-				+ ", partner=" + partner + ", client=" + client + ", expectPayment=" + expectPayment + ", realPay="
-				+ realPay + ", deposit=" + deposit + ", incentive=" + incentive + ", tax=" + tax + ", status=" + status
+				+ ", partner=" + partner + ", client=" + client + ", expectPay=" + expectPay + ", realPay=" + realPay
+				+ ", deposit=" + deposit + ", incentive=" + incentive + ", tax=" + tax + ", status=" + status
 				+ ", payDate=" + payDate + "]";
 	}
-	
 	
 	
 	
