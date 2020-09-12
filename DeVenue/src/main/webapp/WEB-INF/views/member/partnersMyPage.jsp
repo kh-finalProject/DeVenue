@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,75 +39,10 @@
 		</div>
 
 		<div class="row">
-			<div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-				<br>
-				<div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
-					파트너스
-				</div>
-				<br>
-				<div style="padding-bottom: 5.5%;">
-					<div>
-						<p id="infoMenu">
-							정보 관리
-							<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i>
-						</p>
-						<div id="subInfoMenu" style="display: none; margin-left: 5%;">
-							<p id="clientInfo">파트너스 정보</p>
-							<p id="pPrfile">프로필</p>
-							<p id="pPR">자기소개</p>
-							<p id="pPortfolio">포트폴리오</p>
-							<p id="pSkill">보유기술</p>
-							<p id="pCareer">경력</p>
-							<p id="pLicense">학력ㆍ자격증</p>
-							<p id="pProjectHistory">프로젝트 히스토리</p>
-						</div>
-						<p id="accountMenu">
-							계정 관리
-							<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i>
-						</p>
-						<div id="subAccountMenu" style="display: none; margin-left: 5%;">
-							<p id="clientComment">기본 정보 수정</p>
-							<p id="insertCComment">신원 인증</p>
-							<p id="insertCComment">날인 방법 관리</p>
-							<p id="insertCComment">비밀번호 변경</p>
-							<p id="insertCComment">회원 탈퇴</p>
-						</div>
-						<p id="pEvaluate">내게 온 제안</p>
-					</div>
-					<script>
-						$("#infoMenu").click(function() {
-
-							$("#subInfoMenu").toggle();
-						});
-
-						$("#accountMenu").click(function() {
-
-							$("#subAccountMenu").toggle();
-						});
-
-						$("#clientInfo")
-								.on("click", function() {
-									location.href = "../findUser/findClientDetail.html";
-								}).on("mouseenter", function() {
-
-								});
-
-						$("#projectHistory").on("click", function() {
-							location.href = "projectHistory.html";
-						});
-
-						$("#clientComment").on("click", function() {
-							location.href = "clientComment.html";
-						});
-
-						$("#insertCComment").on("click", function() {
-							location.href = "insertCComment.html";
-						});
-					</script>
-				</div>
-			</div>
-			<div class="col-10 text-white"
-				style="font-family: 'Jua', sans-serif;">
+					<jsp:include page="../common/pSideMenubar.jsp"/>
+				
+				<div class="col-10 text-white"
+				style="font-family: 'Jua', sans-serif; margin-left:20%;">
 				<br>
 				<div class="row">
 					<div class="col-5" style="margin-left: 5%; padding-right: 0;">
@@ -114,29 +50,46 @@
 							<tr>
 								<td>
 									<div class="image-profile">
+									<c:if test="${empty info.proImg }">
 										<img src="${contextPath }/resources/images/showcase.jpg" style="object-fit: cover; width: 100px;">
+									</c:if>
+									<c:if test="${!empty info.proImg }">
+										<img src="${contextPath }/resources/proImg/${info.proImg }" style="object-fit: cover; width: 100px;">
+									</c:if>
 									</div>
 								</td>
 								<td>&emsp;&emsp;</td>
 								<td>
-									partner01(닉네임)&emsp;
+									<!-- partner01(닉네임)&emsp;
 									<a class="badge badge-info">개인</a>
 									<br>
 									<p>partner01@google.com</p>
 									<i class="far fa-address-card"></i>
 									&nbsp;신원인증&emsp;
+									<i class="fas fa-phone-alt"></i>연락처등록<br> -->
+									${info.memNick }&emsp;
+									<a class="badge badge-info">${info.memTypeKind }</a>
+									<br>
+									<p>${info.email }</p>
+									<c:if test="${info.iStatus == 'COMPLETE' }">
+									<i class="far fa-address-card"></i>
+									&nbsp;신원인증&emsp;
+									</c:if>
+									<c:if test="${!empty info.phone || !empty info.cellPhone }">
 									<i class="fas fa-phone-alt"></i>연락처등록<br>
+									</c:if>
 								</td>
 							</tr>
 							<tr>
 								<td><br>지원한 프로젝트</td>
 								<td></td>
-								<td style="padding-left: 25%"><br>22</td>
+								<!-- <td style="padding-left: 25%"><br>22</td> -->
+								<td style="padding-left: 25%"><br>${apply.size() }</td>
 							</tr>
 							<tr>
 								<td><br>계약한 프로젝트</td>
 								<td></td>
-								<td style="padding-left: 25%"><br>10</td>
+								<td style="padding-left: 25%"><br>${contract.size() }</td>
 							</tr>
 						</table>
 					</div>
@@ -147,21 +100,31 @@
 						</p>
 						<table border="1px solid lightgray;" style="width: 80%; text-align: center;">
 							<thead>
+								<c:if test="${!suggest.isEmpty() }">
 								<tr>
 									<th>닉네임</th>
 									<th>클라이언트 형태</th>
 									<th>평가 점수</th>
 									<th>대상 프로젝트</th>
 								</tr>
+								</c:if>
+								<c:if test="${suggest.isEmpty() }">
+								<tr>
+									<th>내게 온 제안이 없습니다.</th>
+									
+								</tr>
+								</c:if>
 							</thead>
 							<tbody>
+							<c:forEach var="s" items="${suggest }" end="4">
 								<tr>
-									<td>user01</td>
-									<td>개인</td>
-									<td>4.5</td>
-									<td>위시켓</td>
+									<td>${s.memNick }</td>
+									<td>${s.memTypeKind }</td>
+									<td>${s.eAgv }</td>
+									<td>${s.proName }</td>
 								</tr>
-								<tr>
+							</c:forEach>
+								<!-- <tr>
 									<td>p02</td>
 									<td>기업</td>
 									<td>4.5</td>
@@ -184,7 +147,7 @@
 									<td>개인</td>
 									<td>4.5</td>
 									<td>위시켓</td>
-								</tr>
+								</tr> -->
 							</tbody>
 						</table>
 					</div>
@@ -199,6 +162,7 @@
 							</div>
 							<div style="margin-left: 3%;">
 								<table border="1px solid white"	style="text-align: center; width: 80%;">
+								<c:if test="${!process.isEmpty() }">
 									<tr>
 										<th>프로젝트 명</th>
 										<th>카테고리/분류</th>
@@ -207,19 +171,29 @@
 										<th>예상 마감일</th>
 										<th>참여 파트너스 수</th>
 									</tr>
+								</c:if>
+									<c:if test="${process.isEmpty() }">
 									<tr>
-										<td>miniProject 유지보수</td>
-										<td>
-											<a class="badge badge-info">개인</a>
-											&nbsp;/
-											<a class="badge badge-info">WEB</a>
-										</td>
-										<td>1,000,000원</td>
-										<td>2020-02-02</td>
-										<td>2020-04-02</td>
-										<td>4명</td>
+										<td>진행 중인 프로젝트가 없습니다</td>
 									</tr>
+									</c:if>
+									<c:if test="${!process.isEmpty() }">
+									<c:forEach var="p" items="${process }" end="4">
 									<tr>
+										<td>${p.proName }</td>
+										<td>
+											<a class="badge badge-info">${p.mcType }</a>
+											&nbsp;/
+											<a class="badge badge-info">${p.dcType }</a>
+										</td>
+										<td><fmt:formatNumber value="${p.proPayment }" type="number" groupingUsed="true"/>원</td>
+										<td>${p.proStartDate }</td>
+										<td>${p.endDate }</td>
+										<td>${p.countPartners }명</td>
+									</tr>
+									</c:forEach>
+									</c:if>
+									<!-- <tr>
 										<td>semiProject</td>
 										<td>
 											<a class="badge badge-info">기업</a>
@@ -253,7 +227,7 @@
 										<td>2020-07-07</td>
 										<td>2020-09-14</td>
 										<td>2명</td>
-									</tr>
+									</tr> -->
 								</table>
 							</div>
 						</div>
@@ -263,6 +237,5 @@
 		</div>
 	</div>
 
-	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

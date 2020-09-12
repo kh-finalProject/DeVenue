@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.DeVenue.member.model.dao.MemberDao;
 import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EPid;
 import com.kh.DeVenue.member.model.vo.EvalProjectList;
 import com.kh.DeVenue.member.model.vo.FCeval;
 import com.kh.DeVenue.member.model.vo.FCprojectHistory;
@@ -182,5 +183,30 @@ public class MemberServiceImpl implements MemberService{
 	public int toDeath(String memEmail) {
 		return mDao.toDeath(memEmail);
 	}
+
+	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
+		return mDao.selectList(pi, status);
+	}
+
+	@Override
+	public EPid getEPid(HashMap id) {
+		return mDao.getEPid(id);
+	}
+
+	@Override
+	public int insertClientReport(HashMap report) {
+		return mDao.insertClientReport(report);
+	}
+
+	@Override
+	public int countUpReport(int reportCid) {
+		return mDao.countUpReport(reportCid);
+	}
+
+	@Override
+	public int reportCheck(HashMap report) {
+		return mDao.reportCheck(report);
+	}
+
 
 }

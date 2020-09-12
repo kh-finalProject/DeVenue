@@ -284,6 +284,7 @@
   <main>
     <div class="container-fluid">
 	 <!-- 로그인 확인 row 시작 -->
+	 <c:if test="${not empty loginUser}">
       <div class="row mt-5">
 
         <div class="col-md-2"></div>
@@ -292,6 +293,7 @@
         </div>
         <div class="col-md-4"></div>
       </div>
+      </c:if>
       <!-- 로그인 확인 row 끝 -->
       
 
@@ -1160,6 +1162,11 @@
         				return;
         			}
         			
+        			if(${loginUser.decCount}>=3){
+        				alert("누적 신고 횟수가 3회를 초과하여 지원할 수 없습니다.");
+        				return;
+        			}
+        			
         			var rSecret="";
         			if($("#reply_private").prop("checked")){
         				rSecret='Y';
@@ -1597,7 +1604,9 @@
             <div class="ml-3" id="applyBtnArea">
                 
          		<c:if test="${loginUser.userType eq 'UT4'}">
+         		<c:if test="${detail.project.proRecruit eq 'Y'}">
                 <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="applyProjectBtn">프로젝트 지원하기</button>
+                </c:if>
                 <button type="button" id="likeThisProject" class="btn btn-outline-light btn-lg btn-block mt-3 mb-3">관심 프로젝트 등록</button>
                 </c:if>
                 <c:if test="${loginUser.userType eq 'UT3'}">
@@ -1814,7 +1823,7 @@
         						agree=confirm("임시저장된 지원서가 있습니다. 계속 작성하시겠습니까?");
         						
         						if(agree){
-        							location.href="loadTempApplication.do?pId="+pId+"&aId"+tempId;
+        							location.href="loadTempApplication.do?pId="+pId+"&aId="+tempId;
         							return;
         							
         						}else{

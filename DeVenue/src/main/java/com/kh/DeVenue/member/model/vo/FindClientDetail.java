@@ -11,6 +11,7 @@ public class FindClientDetail implements Serializable {
 	
 	private int memId;
 	private String memNick;		// 닉네임
+	private String memTypeKind;
 	private String ideStatus;	// 신원확인
 	private String phone;			// 번호등록
 	private double avgEagv;		// 
@@ -23,7 +24,7 @@ public class FindClientDetail implements Serializable {
 	private double star3;
 	private double star4;
 	private double star5;
-	private String memTypeKind;
+	private String dcType;
 	private String introduction;
 	private String profileImg;
 	
@@ -31,12 +32,14 @@ public class FindClientDetail implements Serializable {
 		super();
 	}
 
-	public FindClientDetail(int memId, String memNick, String ideStatus, String phone, double avgEagv, int countEagv,
-			int countProId, String maxDcType, String memTypeName, double star1, double star2, double star3,
-			double star4, double star5, String memTypeKind, String introduction, String profileImg) {
+	public FindClientDetail(int memId, String memNick, String memTypeKind, String ideStatus, String phone,
+			double avgEagv, int countEagv, int countProId, String maxDcType, String memTypeName, double star1,
+			double star2, double star3, double star4, double star5, String dcType, String introduction,
+			String profileImg) {
 		super();
 		this.memId = memId;
 		this.memNick = memNick;
+		this.memTypeKind = memTypeKind;
 		this.ideStatus = ideStatus;
 		this.phone = phone;
 		this.avgEagv = avgEagv;
@@ -49,7 +52,7 @@ public class FindClientDetail implements Serializable {
 		this.star3 = star3;
 		this.star4 = star4;
 		this.star5 = star5;
-		this.memTypeKind = memTypeKind;
+		this.dcType = dcType;
 		this.introduction = introduction;
 		this.profileImg = profileImg;
 	}
@@ -68,6 +71,14 @@ public class FindClientDetail implements Serializable {
 
 	public void setMemNick(String memNick) {
 		this.memNick = memNick;
+	}
+
+	public String getMemTypeKind() {
+		return memTypeKind;
+	}
+
+	public void setMemTypeKind(String memTypeKind) {
+		this.memTypeKind = memTypeKind;
 	}
 
 	public String getIdeStatus() {
@@ -166,12 +177,12 @@ public class FindClientDetail implements Serializable {
 		this.star5 = star5;
 	}
 
-	public String getMemTypeKind() {
-		return memTypeKind;
+	public String getDcType() {
+		return dcType;
 	}
 
-	public void setMemTypeKind(String memTypeKind) {
-		this.memTypeKind = memTypeKind;
+	public void setDcType(String dcType) {
+		this.dcType = dcType;
 	}
 
 	public String getIntroduction() {
@@ -196,13 +207,11 @@ public class FindClientDetail implements Serializable {
 
 	@Override
 	public String toString() {
-		return "FindClientDetail [memId=" + memId + ", memNick=" + memNick + ", ideStatus=" + ideStatus + ", phone="
-				+ phone + ", avgEagv=" + avgEagv + ", countEagv=" + countEagv + ", countProId=" + countProId
-				+ ", maxDcType=" + maxDcType + ", memTypeName=" + memTypeName + ", star1=" + star1 + ", star2=" + star2
-				+ ", star3=" + star3 + ", star4=" + star4 + ", star5=" + star5 + ", memTypeKind=" + memTypeKind
-				+ ", introduction=" + introduction + ", profileImg=" + profileImg + "]";
+		return "FindClientDetail [memId=" + memId + ", memNick=" + memNick + ", memTypeKind=" + memTypeKind
+				+ ", ideStatus=" + ideStatus + ", phone=" + phone + ", avgEagv=" + avgEagv + ", countEagv=" + countEagv
+				+ ", countProId=" + countProId + ", maxDcType=" + maxDcType + ", memTypeName=" + memTypeName
+				+ ", star1=" + star1 + ", star2=" + star2 + ", star3=" + star3 + ", star4=" + star4 + ", star5=" + star5
+				+ ", dcType=" + dcType + ", introduction=" + introduction + ", profileImg=" + profileImg + "]";
 	}
-
-		
-
+	
 }

@@ -68,6 +68,21 @@
 <body>
 	<jsp:include page="../common/menubar.jsp"/>
 	
+	<c:if test="${check eq 'Y' }">
+		<script>
+			$(document).ready(function(){
+				alert("이미 신고한 회원입니다.");
+			});
+		</script>
+	</c:if>
+	<c:if test="${check eq 'N' }">
+		<script>
+			$(document).ready(function(){
+				alert("신고가 정상적으로 처리되었습니다.");
+			});
+		</script>
+	</c:if>
+	
 	<div class="container">
         <div class="row text-white" style="border-bottom: 1px solid lightgray;">
             <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
@@ -102,9 +117,40 @@
                         </c:if>
                     </div>
                     <div class="col-2" style="margin:0 auto; margin-right: 5%;">
-                        <button class="btn-lg btn-info" style="float:right;" type="button">신고</button>
-                        <!-- 신고 만들어야함 -->
+                        <button class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
                     </div>
+					  <!-- 신고 모달 -->
+					  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content modal-xl text-dark">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">신고</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <form action="clientReport.do" method="post">
+					          <div class="form-group">
+					            <label for="recipient-name" class="col-form-label">클라이언트</label>
+					            <input type="text" class="form-control" id="recipient-name" value="${fc[0].memNick }" readonly>
+					            <input type="hidden" name="reportCid" value="${fc[0].memId }">
+					            <input type="hidden" name="pId" value="${loginUser.memId }">
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">신고 내용</label>
+					            <textarea class="form-control" name="reportContent" id="message-text" placeholder="신고 내용을 입력하세요. 허위 사실을 입력할 시 제재를 받으실 수 있습니다."></textarea>
+					          </div>
+					          <div class="modal-footer">
+					        <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">취소</button>
+					        <button type="submit" class="btn btn-lg btn-primary">신고</button>
+					      </div>
+					        </form>
+					      </div>
+					      
+					    </div>
+					  </div>
+					</div>
                 </div>
             </div>
 
@@ -177,6 +223,7 @@
                         $("#insertCComment").on("click", function(){
                             location.href="${cEvalInsert }";
                         });
+                        
                     </script>
 
                 </div>
@@ -375,7 +422,7 @@
                             <div class="point"><b>진행한 프로젝트 분류</b></div>
                             <div class="point">
                             	<c:forEach var="dc" items="${fc }">
-                            		<p>${dc.memTypeKind }</p>
+                            		<p>${dc.dcType }</p>
                             	</c:forEach>
                                 <!-- <p>WEB</p>
                                 <p>APPLICATION</p>
@@ -399,7 +446,7 @@
 한편 이강인은 2022년 6월이면 발렌시아와의 계약이 만료된다. 발렌시아는 올해 혹은 내년 이강인이 떠나지 않도록 하기 위해 재계약 제안을 건넨 것으로 알려졌다. 하지만 다수 스페인 매체들은 “이강인이 출전 기회를 잡고자 이적을 원한다”고 보도 중이다.
                         </p> -->
                         <p id="introduction">${fc[0].introduction }</p>
-                        <a href="#" style="float: right;">자기소개  더 보기 ></a>
+                        <!-- <a href="#" style="float: right;">자기소개  더 보기 ></a> -->
                     </div>
                 </div>
             </div>

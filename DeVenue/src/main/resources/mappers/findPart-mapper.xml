@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="findPartMapper">
+
+	<resultMap type="FindPartners" id="findPartnersResultSet">
+		<id property="memId" column="MEM_ID"/>
+		
+		<result property="memNick" column="MEM_NICK"/>
+		<result property="cellPhone" column="CELLPHONE"/>
+		<result property="ideStatus" column="IDE_STATUS"/>
+		<result property="memTypeKind" column="MEM_TYPE_KIND"/>
+		<result property="profileId" column="PROFILE_ID"/>
+		<result property="introduction" column="INTRODUCTION"/>
+		<result property="piType" column="PI_TYPE"/>
+		<result property="mcType" column="MC_TYPE"/>
+
+	</resultMap>
+
+	<!-- 파트너스찾기 view list 출력 -->
+	<select id="findPartList" parameterType="FindPartners" resultMap="findPartnersResultSet">
+		SELECT * FROM FINDPARTLIST_VIEW
+		WHERE PI_TYPE=1
+	</select>
+	
+	<!-- 마이페이지 프로필 정보  -->
+	<select id="selectFm" parameterType="FindPartners" resultMap="findPartnersResultSet">
+		SELECT * FROM FINDPARTLIST_VIEW
+		WHERE PROFILE_ID = #{profileId}
+	</select>
+
+
+
+
+
+</mapper>

@@ -1,23 +1,33 @@
 package com.kh.DeVenue.myPage.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
+import com.kh.DeVenue.myPage.model.vo.CmypagePayment;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.myPage.model.vo.PartnersApplyCount;
+import com.kh.DeVenue.myPage.model.vo.PartnersContractCount;
+import com.kh.DeVenue.myPage.model.vo.PmypagePartnersInfo;
+import com.kh.DeVenue.myPage.model.vo.PmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -171,10 +181,82 @@ public class MyPageDao {
 		return sqlSessionTemplate.selectOne("myPageMapper.selectClientInfo",cId);
 	}
 
+	public ArrayList<PortFolio> portList(int profileId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.portList", profileId);
+	}
+
+	public ArrayList<PortTecView> ptList(int portId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.ptList", portId);
+	}
+
+	public PmypagePartnersInfo selectPartnersInfo(Integer pId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.selectPartnersInfo", pId);
+	}
+
+	public ArrayList<PartnersApplyCount> getApplyCount(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getApplyCount", pId);
+	}
+
+	public ArrayList<PartnersContractCount> getContractCount(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getContractCount", pId);
+	}
+
+	public ArrayList<PmypageSuggest> selectPartnersSuggest(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectPartnersSuggest", pId);
+	}
+
+	public ArrayList<PmypageProcess> selectPartnersProcess(Integer pId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.selectPartnersProcess", pId);
+	}
+	
 	public String getMyPageSidebarProImg(String mId) {
 		return sqlSessionTemplate.selectOne("myPageMapper.getMyPageSidebarProImg",mId);
 	}
+
+	public int portNameCount(String title) {
+		
+		return sqlSessionTemplate.selectOne("myPageMapper.portNameCount",title);
+	}
+
+	public ArrayList<PortTecView> tNameList(int ptId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.tNameList", ptId);
+	}
+
+	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getCountPartners", cId);
+	}
 	
-	
+	public int updateClientInfo(HashMap map) {
+		return sqlSessionTemplate.update("myPageMapper.updateClientInfo", map);
+	}
+
+	public int getPaymentListCount(Integer cId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.getPaymentListCount", cId);
+	}
+
+	public ArrayList<CmypagePayment> getPaymentList(Integer cId, PageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getPaymentList", cId, rowBounds);
+	}
+
+	public int updatePst(int id) {
+		return sqlSessionTemplate.update("myPageMapper.updatePst", id);
+	}
+
+	public int updateApply(int id) {
+		return sqlSessionTemplate.update("myPageMapper.updateApply", id);
+	}
+
+	public int insertApplyMatch(int id) {
+		return sqlSessionTemplate.insert("myPageMapper.insertApplyMatch", id);
+	}
+
+	public int insertProcess(int id) {
+		return sqlSessionTemplate.insert("myPageMapper.insertProcess", id);
+	}
 
 }

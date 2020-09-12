@@ -95,8 +95,8 @@
                                 <span class="mini-click-non">항목3</span>
                             </a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="#"><span class="mini-sub-pro">asdf</span></a></li>
-                                <li><a title="Add Professor" href="#"><span class="mini-sub-pro">sadf</span></a></li>
+                                <li><a title="All Professors" href="gotoCalculation.do"><span class="mini-sub-pro">프로젝트 정산</span></a></li>
+                                <li><a title="Add Professor" href="gotoContract.do"><span class="mini-sub-pro">프로젝트 계약관리</span></a></li>
                                 <li><a title="Edit Professor" href="#"><span class="mini-sub-pro">asdf</span></a></li>
                                 <li><a title="Professor Profile" href="#"><span class="mini-sub-pro">asdf</span></a>
                                 </li>
