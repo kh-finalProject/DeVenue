@@ -34,9 +34,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+
+import com.kh.DeVenue.findMember.model.service.FindMemberService;
+import com.kh.DeVenue.findMember.model.vo.FindPartners;
+
 import com.kh.DeVenue.member.model.vo.CPeval;
+
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.myPage.model.service.MyPageService;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
@@ -64,7 +70,13 @@ import com.kh.DeVenue.project.model.vo.Tech;
 public class ProjectController {
 @Autowired
 ProjectService pService;
-	
+@Autowired
+MyPageService myService;	
+@Autowired
+private MyPageService myPageService;
+@Autowired
+private FindMemberService fmService;
+
 @RequestMapping("addProject.do")
 	public String projectAddView() {
 		
@@ -72,6 +84,62 @@ ProjectService pService;
 	
 	}
 	
+
+@RequestMapping(value = "goProfile.do")
+public ModelAndView profileView(HttpServletRequest request, ModelAndView mv, @RequestParam(value ="memId",required=false) int memId,
+		@RequestParam(value ="proId",required=false) int proId) {
+	
+	int profileId = memId;
+	System.out.println(profileId);
+	// memId를 비교해서 전체 값 가져오기
+	FindPartners fp = fmService.selectFm(profileId);
+	System.out.println(fp);
+	
+	// profileId를 넘겨서 포트폴리오값을 가져오자
+	ArrayList<PortFolio> portfolio = myPageService.portList(profileId);
+	System.out.println(portfolio);
+	
+	// profileId를 념겨서 portTec
+	for(int i=0;i<portfolio.size();i++) {
+		System.out.println(portfolio.get(i).getPortId());
+		
+		int portId = portfolio.get(i).getPortId();
+		
+		ArrayList<PortTecView> portTec = myPageService.ptList(portId);
+		System.out.println(portTec);
+		
+		mv.addObject("portTec", portTec);
+	}
+	
+	// profileId를 넘겨서 보유 기술 list 가져오기
+	ArrayList<Skill> skillList = myPageService.selectSkillInfo(profileId);
+	System.out.println(skillList);
+	
+	// profileId를 넘겨서 경력list 가져오기
+	ArrayList<Career> careerList = myPageService.selectCareerInfo(profileId);
+	System.out.println(careerList);
+	
+	// profileId를 넘겨 학력list 가져오기
+	ArrayList<SCCareer> sccareerList = myPageService.selectSCCareerInfo(profileId);
+	System.out.println(sccareerList);
+	
+	// profileId를 넘겨 자격증list 가져오기
+	ArrayList<Certificate> certiList = myPageService.selectCertificateInfo(profileId);
+	System.out.println(certiList);
+
+	
+	
+	mv.addObject("fp", fp);
+	mv.addObject("portfolio", portfolio);
+	mv.addObject("skillList", skillList);
+	mv.addObject("careerList", careerList);
+	mv.addObject("sccareerList", sccareerList);
+	mv.addObject("certiList", certiList);
+	
+	mv.setViewName("myPage/myPageDetail");
+	
+	return mv;
+}
 
 @RequestMapping("proAdmin.do")
 		public ModelAndView projectAdminView(ModelAndView mv) {
@@ -135,7 +203,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	
 	
 	}else {
-		throw new ProjectException("게시글 수정 실패!!");
+		mv.setViewName("redirect:applycomfirmList.do");
 	}
 	
 	return mv;
@@ -355,11 +423,11 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		if(page != null) {
 			currentPage = page;
 		}
-		
+		String mId =memId; 
 		int listCount = pService.getCheckListCount(memId);
-		
+		String mImg = myService.getMyPageSidebarProImg(mId);
 		System.out.println("진입");
-		
+		System.out.println("mImg"+mImg);
 		System.out.println("memId?" +memId);
 		PageInfo pi = getPageInfo(currentPage, listCount);
 		ArrayList<Project> list = pService.selectCheckList(memId,pi);
@@ -368,10 +436,13 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		System.out.println("페이지네이션:" + pi);
 		if(!list.isEmpty()) {
 			mv.addObject("list1",list);
+			mv.addObject("memId",memId);
+			mv.addObject("mImg",mImg);
 			mv.addObject("pi",pi);
 			mv.setViewName("project/checkingProjectList");
 			
 		}else {
+			mv.addObject("mImg",mImg);
 			mv.setViewName("project/checkingProjectList");
 		}
 		 
@@ -528,7 +599,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 			) {
 	
 		System.out.println("memid:" +memId);
-		
+		String mId = Integer.toString(memId);
+		String mImg = myService.getMyPageSidebarProImg(mId);
 //		HashMap prof=new HashMap();
 //		prof.put("proId",proId);
 //		prof.put("memId",memId);
@@ -541,10 +613,11 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		
 		if(!list.isEmpty() ) {
 			mv.addObject("list1",list);
-		
+			mv.addObject("mImg",mImg);
 			mv.setViewName("project/recruitProjectList");
 			
 		}else {
+			mv.addObject("mImg",mImg);
 			mv.setViewName("project/recruitProjectList");
 		}
 		
@@ -630,7 +703,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		if(page != null) {
 			currentPage = page;
 		}
-		int RecruitNum = pService.getRecuritNum(proId);
+		
+		int RecruitNum = pService.getRecuritNum(proId);	
 		int listCount = pService.getCommitListCount(proId);
 		PageInfo pi = getPageInfo(currentPage, listCount);
 		System.out.println(listCount);
@@ -649,7 +723,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 			
 		}else {
 			mv.addObject("RecruitNum",RecruitNum);
-			mv.addObject("pi",pi);
+		
 			mv.setViewName("project/applycomfirmList");
 		}
 		 
