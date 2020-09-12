@@ -209,9 +209,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public ArrayList<Member> memberList() {
+	public Member selectMmber(String email, String pwd) {
 		
-		return mDao.memberList();
+		return mDao.selectMember(email,pwd);
 	}
+
 
 }

@@ -202,5 +202,14 @@ public class MemberDao {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.memberList");
 	}
 
+	public Member selectMember(String email, String pwd) {
+		
+		Map map = new HashMap();
+		map.put("email", email);
+		map.put("pwd", pwd);
+		
+		return sqlSessionTemplate.selectOne("memberMapper.memberChk",map);
+	}
+
 	
 }
