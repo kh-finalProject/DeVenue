@@ -62,6 +62,38 @@ public class NewChatClient {
 	public String handleMessage(String message, Session userSession) {
 		System.out.println("1대1채팅- 고객->주관리자 메시지");
 		
+		if(message.equals("keyDownIng")) {
+			System.out.println("여기서?");
+			try {
+				Session mAdminSession = MainAdminWebSocket.returnMAdminSession();
+				System.out.println("아님여기서?");
+				String accessAdminRoomId = "";
+				try {
+					String returnRoomId = MainAdminWebSocket.returnMAdinAcessChatRoomId();
+					accessAdminRoomId = returnRoomId;
+					System.out.println("혹은여기서?");
+				}catch(Exception e) {
+					System.out.println("예외발생");
+				}
+				// 주관리자가 접속하지 않았을 경우(운영시간이어도 접속 안된 수 있음)
+				if(mAdminSession != null && this.roomId.equals(accessAdminRoomId)) {
+					System.out.println("또는여기서?");
+					MainAdminWebSocket.returnMAdminSession().getBasicRemote().sendText(message);
+					return "Y";
+				}else {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH/mm/ss/SSS");
+					sdf.format(new Date());
+					String currentDate = sdf.format(new Date());
+					String missedMessage = "안녕하세요 "+chatUser.getMemName()+"님!<br>잠시만 기다리시면 곧 상담원이 연결됩니다.,"+currentDate + ",디베뉴 고객센터" + ",roomId" + ",N"; 
+					return missedMessage;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("고객측 웹소켓 메시지 핸들러 예외발생");
+			}
+		}
+		
+		
 		if(message.contains("room$Id$")) {
 			String roomId = message.replace("room$Id$", "");
 			this.roomId = roomId;

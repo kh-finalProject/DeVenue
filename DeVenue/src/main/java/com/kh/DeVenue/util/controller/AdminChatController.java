@@ -41,9 +41,10 @@ public class AdminChatController {
 		// 뷰로부터 회원번호, 룸번호에 더해 본인번호까지 3가지 데이터가 필요함
 		System.out.println("불러올 채팅상대 아이디 : " + chatRoomMId);
 		System.out.println("불러올 채팅방 아이디 : "+chatRoomRoomId);
-		System.out.println("관리자 번호 : " + meId);
-		int userId = Integer.valueOf(meId);
+//		System.out.println("관리자 번호 : " + meId);
+//		int userId = Integer.valueOf(meId);
 		// 같은 서버 같은 pc라 그런지 세션이 후에 로그인 하는 계정 기준이 되어서 me라는 계정정보를 따로 불러옴
+		int userId = ((Member)session.getAttribute("loginUser")).getMemId();
 		ChatUser me = cService.selectMe(userId);
 		System.out.println("지금 내 채팅용 계정 정보 : "+me);
 		

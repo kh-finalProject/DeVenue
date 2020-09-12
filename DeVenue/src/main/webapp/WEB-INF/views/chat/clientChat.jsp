@@ -1411,6 +1411,9 @@ body{
       top:6px;
       font-size: 11px;
       font-weight:600;
+      padding-left:5px;
+      padding-bottom:5px;
+      padding-top:1.5px;
   }
   /* 마지막 채팅내역 영역*/
   .lastChatContent{
@@ -2242,9 +2245,9 @@ try {
 			          </c:forEach>
 		          	</c:if>
 		          </c:forEach>
+		         <%boolean startedUnRead = false; %>
 				 <%for(int j = 0; j < messages.size(); j++){ %>
-				 	<%if(messages.get(j).getRoomId() == chatRooms.get(i).getRoomId()){ %>
-		                    <%
+				 	<%if(messages.get(j).getRoomId() == chatRooms.get(i).getRoomId()){ System.out.println("룸아이디 : " + chatRooms.get(i).getRoomId());
 		                    	// 날짜 변할 때 마다 구분선(오늘이 시작되면 오늘, 오늘 하루전이면 어제, 나머지는 2020-01-10 식으로)
 		                    	String seperDate = "";
 		                    	String msgDate = "";
@@ -2273,6 +2276,34 @@ try {
 			                    		seperDate = msgDate.replace("/", ".");
 			                    	}
 		                    	}else {
+		                    		msgDate = "";
+		                    		msgDate = messages.get(0).getMsgCreaetDate().substring(0,10).replace("-", "/");
+		                    		System.out.println(msgDate);
+			                    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			                    	String todayDate = sdf.format(new Date());
+	
+			                    	String[] msgDateArr = msgDate.split("\\/");
+			                    	int mYear = Integer.valueOf(msgDateArr[0]);
+			                    	int mMonth = Integer.valueOf(msgDateArr[1]);
+			                    	int mDate = Integer.valueOf(msgDateArr[2]);
+			                    	
+			                    	String[] tDateArr = msgDate.split("\\/");
+			                    	int tYear = Integer.valueOf(tDateArr[0]);
+			                    	int tMonth = Integer.valueOf(tDateArr[1]);
+			                    	int tDate = Integer.valueOf(tDateArr[2]);
+		                    		System.out.println("메시지 날짜 : " + msgDate);
+		                    		System.out.println("오늘 날짜 : " + todayDate);
+			                    	if(msgDate.equals(todayDate)){
+			                    		seperDate = "오늘";
+			                    	}else if(mYear==tYear && mMonth==tMonth && tDate-mDate==1){
+			                    		seperDate = "어제";
+			                    	}else{
+			                    		seperDate = msgDate.replace("/", ".");
+			                    	}
+		                    	}
+		                    	
+		                    	if(j != 0 && messages.get(j).getRoomId() != messages.get(j-1).getRoomId()){
+		                    		msgDate = "";
 		                    		msgDate = messages.get(j).getMsgCreaetDate().substring(0,10).replace("-", "/");
 		                    		System.out.println(msgDate);
 			                    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -2287,7 +2318,8 @@ try {
 			                    	int tYear = Integer.valueOf(tDateArr[0]);
 			                    	int tMonth = Integer.valueOf(tDateArr[1]);
 			                    	int tDate = Integer.valueOf(tDateArr[2]);
-		                    	
+		                    		System.out.println("메시지 날짜 : " + msgDate);
+		                    		System.out.println("오늘 날짜 : " + todayDate);
 			                    	if(msgDate.equals(todayDate)){
 			                    		seperDate = "오늘";
 			                    	}else if(mYear==tYear && mMonth==tMonth && tDate-mDate==1){
@@ -2296,9 +2328,28 @@ try {
 			                    		seperDate = msgDate.replace("/", ".");
 			                    	}
 		                    	}
+		                    	
+								// 안읽은 메시지 시작 처리
+		                    	String unReadMsg = "";
+		                    	if(messages.get(j).getRead().equals("N") && startedUnRead == false && messages.get(j).getFromId() != loginUser.getMemId()){
+		                    		startedUnRead = true;
+		                    		
+		                    		unReadMsg = "안읽은 메시지 시작";
+		                    		
+		                    	}
+		                    	
+		                    	if(j != 0 && messages.get(j).getRoomId() != messages.get(j-1).getRoomId()){
+		                    		startedUnRead = false;
+		                    		if(messages.get(j).getRead().equals("N") && startedUnRead == false && messages.get(j).getFromId() != loginUser.getMemId()){
+			                    		
+			                    		unReadMsg = "안읽은 메시지 시작";
+			                    		
+			                    		startedUnRead = true;
+			                    	}
+		                    	}
 		                    %>
 				 		  <%if(j!=0){ %>
-				 		  	<%if(!msgDate.equals(beforeDate)){%>
+				 		  	<%if(!msgDate.equals(beforeDate)||(j != 0 && messages.get(j).getRoomId() != messages.get(j-1).getRoomId())){%>
 			                  <!-- 날짜 구분선 -->
 			                  <div class="seperate_content">
 			                    <div class="seperate_line"></div>
@@ -2314,6 +2365,12 @@ try {
 		                    <p class="seperate_date"><%=seperDate %></p>
 		                    <div class="seperate_line"></div>
 		                  </div>
+						  <%} %>
+						  <!-- 안읽은 메시지 표시 -->
+						  <%if(!unReadMsg.equals("")) {%>
+						  <div style="opacity:0.3;background-color:black;color:white;font-size:10px;text-align:center;border-radius:3px;width:90%;padding:2px;margin-left:5%;margin-bottom:13px;margin-top:5px;">
+							<%=unReadMsg %>						  	
+						  </div>
 						  <%} %>
 						  	<input type="hidden" class="msgDate" value="<%=msgDate %>"/>
 		                  <!-- 내가 보낸 메시지 + 프로필 -->
@@ -2558,7 +2615,18 @@ try {
       </div>
     </div>
   </div>
-  
+    
+
+
+  <!-- 상대 타자인식 -->
+  <div id="sendingShow" style="display: none;">
+  	<div style="text-align: center;font-size: 10px;background-color: black;opacity: 0.4;padding: 3px;border-radius: 3px;width:90%;margin-left:5%;color:white;margin-bottom:5px;">상대가 입력 중 입니다.</div>
+  	<div style="width:90%; margin-left: 5%; margin-bottom: 15px;">
+      <span style="background-color:lightgray;border-radius: 50%; width:10px;height: 10px;display: inline-block;transition-duration: 0.2s;opacity: 0;"></span>
+      <span style="background-color:lightgray;border-radius: 50%; width:10px;height: 10px;display: inline-block;"></span>
+      <span style="background-color:lightgray;border-radius: 50%; width:10px;height: 10px;display: inline-block;"></span>
+    </div>
+  </div>
 </body>
 <script>
 	// 거의 ui관련 스크립트(백단 가는 것도 있음)-------------------------------------------------------------
@@ -2681,6 +2749,12 @@ try {
 	setChatMessagePosition('file');
 	setChatFileMessagePosition();
   })
+  
+  // alert 사이즈 동적으로 지정
+  $('.alertRead').each(function(index, item){
+	  var aText = textWidth($(item).text(),'sans-serif')
+	  $(item).width(aText+2);
+  });
   
   //텍스트 길이 구해주는 함수
   function textWidth(text, fontProp) {
@@ -3438,6 +3512,8 @@ $(function(){
 				
 				// 운영시간 관련 채팅 문구들 동적으로 바꿔주기
 				changeChatAllowOper(chatSet);
+				
+				
 			},
 			error:function(request,status,error){
 			    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3482,12 +3558,47 @@ function partialReloadUpdate(){
 	    });
 		// 채팅방 호버이벤트
 		hoverChatRooms();
+		
+		// 채팅방 목록 시간설정에 관한 함수
+		$('.oriLastTimeHidden').each(function(index, item){
+			
+    		// 채팅방 목록 마지막 메시지 보낸 날짜 띄우는 함수
+    		// 오늘이면 시간, 오늘이 아니면 하루전은 어제, 이틀전부턴 날짜 ex)2020-08-22
+    		// '2020-08-24 08:35:10.021417'의 형태로 날짜가 넘어옴(메시지는 타임스탬프형)
+    		var oriLastDate = $(this).val();
+			var todayYMD = getYYYYMMDD();
+			var originLastYMD = oriLastDate.substring(0,10);
+			var oriDate = Number(originLastYMD.split('-')[2]);
+			var toDate = Number(todayYMD.split('-')[2]);
+			var mDateGap = Math.abs(toDate-oriDate);
+			console.log(originLastYMD)
+			// 오늘과 동일한 날짜라면
+    		if(originLastYMD == todayYMD){
+    			// 시간만 뜨게 그대로 놔두자
+    		// 오늘 이전이라면
+    		}else{
+    			// 어제라면
+    			if(mDateGap == 1){
+    				$(this).next('.chatTime').html('어제');
+    			// 어제가 아니면 그냥 YMD 반환
+    			}else{
+    				$(this).next('.chatTime').html(originLastYMD.replace(/-/gi,'.'));
+    			}
+    			
+    		};
+		});
+	 	
 	});
 	
 	// 안읽은 메시지 부분 새로고침
 	$('.allAlertRead').load(document.URL +  ' .allAlertRead', function(){
 		$('.allAlertRead').html('');
 		$('.allAlertRead').html('${alertReadResult}');
+		  // alert 사이즈 동적으로 지정
+		  $('.alertRead').each(function(index, item){
+			  var aText = textWidth($(item).text(),'sans-serif');
+			  $(item).width(aText+2);
+		  });
 	});
 }
 
@@ -3709,9 +3820,69 @@ function getInputDayLabel() {
 			messageTextArea.value += "error...\n";
 		};
 		
+		
 		isReadT = '';
 		// 서버로부터 메시지가 도착하면 콘솔 화면에 메시지를 남긴다.(리턴한 것)
 		webSocket.onmessage = function(message) {
+			// 상대가 그냥 키다운을 하고 있을 때
+			if(message.data.split(',')[0] == "keyDownIng"){
+				var acceptRoomId = message.data.split(',')[1]
+				var chatRoom = null;
+				var eachChatRoomArea = null;
+				$('.Messages_list').each(function(index, item){//기존채팅방들은 하나의 텍스트창을 공유하고 새채팅방만 다르므로 그와만 구분하면 된다.
+					if(acceptRoomId == 'roomId'){
+						if($(item).css('display') != 'none'){
+							chatRoom = $(item).parents('.Layout-chatRoom');
+							message = $(chatRoom).find("#textMessage");
+							filBtn = $(chatRoom).find("#file");
+							eachChatRoomArea = $(item);
+						}
+					}else{
+						if($(item).find('.chatRoom_room_id').val() == acceptRoomId){
+							chatRoom = $(item).parents('.Layout-chatRoom');
+							message = $(chatRoom).find("#textMessage");
+							filBtn = $(chatRoom).find("#file");
+							eachChatRoomArea = $(item);
+						}
+					}
+				});
+				
+				var sendingShow = null;
+				if($(eachChatRoomArea).find('#sendingShow').length < 1){
+					sendingShow = $('#sendingShow').last().clone();
+					$(eachChatRoomArea).append(sendingShow);
+				}else{
+					$(eachChatRoomArea).find('#sendingShow').css('display', 'block');
+					showRecentChatView();
+				}
+				
+				sendingInterval = setInterval(function(){
+		             var sendingTimeout = setTimeout(function(){
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'hidden').css('opacity', 0);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'hidden').css('opacity', 0);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'hidden').css('opacity', 0);
+		             },100);
+		             var sendingTimeout2 = setTimeout(function(){
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'visible').css('opacity', 1);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'hidden').css('opacity', 0);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'hidden').css('opacity', 0);
+		             },200);
+		             var sendingTimeout3 = setTimeout(function(){
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'hidden').css('opacity', 0);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'visible').css('opacity', 1);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'hidden').css('opacity', 0);
+		             },300);
+		             var sendingTimeout4 = setTimeout(function(){
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'hidden').css('opacity', 0);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'hidden').css('opacity', 0);
+		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'visible').css('opacity', 1);
+		             },400);
+		         },500);
+				endSendingTimeout = setTimeout(function(){
+					clearInterval(sendingInterval);
+					$(eachChatRoomArea).find('#sendingShow').remove();
+				},600);
+			}else{
 			console.log('메세지 왔다')
 			// 내가 메시지 보낼때 상대가 비접속시 반환되는 메시지 형태에 따라 저장할 읽음 여부 상태값 바꿈 
 			var mContent = message.data.split(',');
@@ -3845,6 +4016,7 @@ function getInputDayLabel() {
 // 			messageTextArea.value += "(관리자) => " + messageContent + " " + viewDate + "\n";
 
 			// 새로 생성된 채팅방을 append해주기 => 글쎄.. 어렵네
+			}
 		};
 		
 		// 받은 날짜를 채팅에 어울리는 형식으로 변환( ex) AM 08:05 )
@@ -4283,6 +4455,8 @@ function getInputDayLabel() {
 				// form에 의해 자동 submit을 막는다.
 				return false;
 				
+			}else{// 그냥 텍스트 입력하느라 키다운인 경우
+// 				webSocket.send('keyDownIng');
 			}
 			return true;
 		}

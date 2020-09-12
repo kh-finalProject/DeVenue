@@ -1,27 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="com.kh.DeVenue.member.model.vo.Member, javax.servlet.http.Cookie"%>
-<%
-// 	Member loginUser = new Member();
-// 	if((Member)request.getSession().getAttribute("loginUser")!=null){
-	 Member	loginUser = (Member)request.getSession().getAttribute("loginUser");
-// 	}
-	
-	Cookie[] cookies = request.getCookies();
-	if(cookies!=null&&cookies.length>0){
-		for(int i = 0; i < cookies.length; i++){
-			if(cookies[i].getName().equals("loginCookie")){
-				if(loginUser==null){
-					//자동로그인시 loginUser나 세션에 id만 들어있도록 해놨으므로
-					//추후 모든건 회원 아이디(userId라는 이름의 세션값)로만 데이터를 불러오게 해야한다
-					request.getSession().setAttribute("memEmail", cookies[i].getValue());
-					loginUser = new Member();
-					loginUser.setMemEmail(cookies[i].getValue());
-					System.out.println(loginUser);
-				}
-			}
-		}
-	}
-%>
+    pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -447,8 +425,6 @@
             height: 100px;
             margin: auto;
             margin-top: 20px;
-            padding: 5px 5px 5px 5px;
-            border-bottom: 2px dashed white;
         }
 
     </style>
@@ -480,13 +456,13 @@
             </div>
             <div class="area" style="position: relative;">
                 <div class="area-left" style="width: 100%; position: absolute;">
-                <!-- <form method="POST" action="login.do"> -->
+                <form method="POST" action="login.do">
                     <div class="form-title">
                         <div class="form-label">
                             <label for="email">* 이메일</label>
                         </div>
                         <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email" required="required">
+                            <input type="text" class="input-size" id="email" name="email">
                         </div>
                     </div>
                     <div class="form-title">
@@ -494,57 +470,48 @@
                             <label for="pwd">* 비밀번호</label>
                         </div>
                         <div class="form-input">
-                            <input type="password" class="input-size" id="pwd" name="pwd" required="required">
+                            <input type="password" class="input-size" id="pwd" name="pwd">
                         </div>
                     </div>
                     <div class="login-keeping">
                         <input type="checkbox" name="logincheck" id="checkbox" value="true">&nbsp;&nbsp;&nbsp;<label for="checkbox">로그인 유지</label>
                     </div>
                     <div class="form-btn">
-                        <button type="button" id="login" class="btn btn-info btn-lg"
+                        <button type="submit" id="login" class="btn btn-info btn-lg"
                             style="font-size: 25px; width: 400px; margin-left: -60px;">로그인하기</button>
                     </div>
-                <!-- </form> -->
+                </form>
                 
-                <script type="text/javascript">
+                <!-- <script type="text/javascript">
                 	$("#login").on("click",function(){
-                		var memEmail = $("#email").val();
-                		var memPwd = $("#pwd").val();
-                		var check = $("#checkbox").val();
+                		var email = $("#email").val();
+                		var pwd = $("#pwd").val();
+                		console.log(email);
+                		console.log(pwd);
+                		
                 		$.ajax({
                 			url:"login.do",
-                			data:{memEmail:memEmail,memPwd:memPwd,check:check}
-                			,success:function(data){
-            					if(data == 'session'){
-            						/* location.reload(true); */
-            						window.location.href = "home.do";
-            					}else if(data == 'cookie'){
-            						/* location.reload(true); */
-            						window.location.href = "home.do";
-            					}else if(data == 'emailFail'){
-            						alert("없는 이메일 이거나 이메일을 잘못입력하셨습니다.");
-            						$("#email").val("");            						
-            					}else if(data == 'pwdFail'){
-            						alert("비밀번호를 잘못 입력하셨습니다.");
-            						$("#pwd").val("");
-            					}
-            				}
-            				, error:function(request, status, error){
-            					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            				}
+                			data:{email:email,pwd:pwd},
+                			success : function(data){
+                				
+                			},error:function(request, status, errorData){
+                				alert("error code: " + request.status + "\n"
+    									+"message: " + request.responseText
+    									+"error: " + errorData);
+    						}
                 		})
                 		
                 	})
-                </script>
+                </script> -->
                     <div class="pwd-forget">
                         <label>비밀번호를 잊으셨나요?&nbsp;&nbsp;<a href="forgetPwd.do">비밀번호 찾기</a></label>
                     </div>
             </div>
                 <div class="area-right" style="margin-left: 900px; position: absolute;">
-                    <!-- <div class="kakao-login">
+                    <div class="kakao-login">
                         <p><b>이미 카카오톡계정으로 가입하셨나요?</b></p>
                         <button type="button" class="btn btn-warning btn-lg" style="font-size: 15px; width: 200px;">카카오톡으로 로그인</button>
-                    </div> -->
+                    </div>
                     <div class="sign">
                         <p>아직 회원이 아니신가요?<br><a href="signpage.do">회원가입 하기</a></p>
                     </div>
@@ -565,12 +532,12 @@
     <<!-- script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script> -->
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
