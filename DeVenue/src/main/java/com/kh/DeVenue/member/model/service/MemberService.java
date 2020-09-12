@@ -87,5 +87,7 @@ public interface MemberService {
 
 	int reportCheck(HashMap report);
 
+	ArrayList<Member> memberList();
+
 	
 }

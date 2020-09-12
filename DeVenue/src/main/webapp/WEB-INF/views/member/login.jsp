@@ -425,8 +425,6 @@
             height: 100px;
             margin: auto;
             margin-top: 20px;
-            padding: 5px 5px 5px 5px;
-            border-bottom: 2px dashed white;
         }
 
     </style>
@@ -464,7 +462,7 @@
                             <label for="email">* 이메일</label>
                         </div>
                         <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email" required="required">
+                            <input type="text" class="input-size" id="email" name="email">
                         </div>
                     </div>
                     <div class="form-title">
@@ -472,7 +470,7 @@
                             <label for="pwd">* 비밀번호</label>
                         </div>
                         <div class="form-input">
-                            <input type="password" class="input-size" id="pwd" name="pwd" required="required">
+                            <input type="password" class="input-size" id="pwd" name="pwd">
                         </div>
                     </div>
                     <div class="login-keeping">
@@ -510,10 +508,10 @@
                     </div>
             </div>
                 <div class="area-right" style="margin-left: 900px; position: absolute;">
-                    <!-- <div class="kakao-login">
+                    <div class="kakao-login">
                         <p><b>이미 카카오톡계정으로 가입하셨나요?</b></p>
                         <button type="button" class="btn btn-warning btn-lg" style="font-size: 15px; width: 200px;">카카오톡으로 로그인</button>
-                    </div> -->
+                    </div>
                     <div class="sign">
                         <p>아직 회원이 아니신가요?<br><a href="signpage.do">회원가입 하기</a></p>
                     </div>

@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -80,14 +79,17 @@ public class MemberController {
 	// 할일 로그인 유지/ 브라우저 종료시 reload
 	// 로그인 유지할때 request와 session으로 넘겨버리면???
 	// 로그인 값 받아오기
-	@RequestMapping(value="login.do")
-	public String memberLogin(HttpSession session, HttpServletRequest request, HttpServletResponse response , Model model, ModelAndView mv){
+	@RequestMapping(value="login.do", method=RequestMethod.POST)
+	public String memberLogin(HttpSession session, HttpServletRequest request, Model model, ModelAndView mv){
+
+//		// 자동로그인 checkbox 선택했는지
+//		String logincheck = request.getParameter("logincheck");
+//		System.out.println(logincheck); // true or null(value를 true로 설정했기때문에)
 		
-		String check = request.getParameter("logincheck");
-		System.out.println(check);
-		// 자동로그인
 		String memEmail = request.getParameter("email");
 		String memPwd = request.getParameter("pwd");
+
+
 		Member m = new Member(memEmail,memPwd);
 //		System.out.println(m);
 		
@@ -165,29 +167,9 @@ public class MemberController {
 		
 		Member loginUser = mService.loginUserMember(m);
 		System.out.println(loginUser);
-		
-//		if(check == null) {
-//			System.out.println("거부");
-//		// 일반 로그인
-//		}else {
-//			System.out.println("실행");
-//			Cookie setCookie = new Cookie("member", loginUser); // 쿠키 이름을 name으로 생성
-//
-//			setCookie.setMaxAge(60*60*24); // 기간을 하루로 지정(60초 * 60분 * 24시간)
-//
-//			response.addCookie(setCookie); // response에 Cookie 추가
-//		}
-//		return null;
-		
-//		// 자동로그인 checkbox 선택했는지
-//		String logincheck = request.getParameter("logincheck");
-//		System.out.println(logincheck); // true or null(value를 true로 설정했기때문에)
-		
 //		System.out.println(loginUser.getMemId());
-//
-//
-//		
-//		
+		
+		
 		if(loginUser != null) { // 로그인 할 멤버 객체가 조회 되었을 시
 			
 			// 로그인 한 후에 화면에 profile을 뿌려줌
@@ -219,7 +201,7 @@ public class MemberController {
 				// 채팅을 위해 관리자 정보를 죄다 불러옴(주관리자 여부는 웹단에서 구분하여 쓰자)
 				ArrayList<ChatUserInfo> admins = mmService.allAdmin();
 				session.setAttribute("admins", admins);
-				// 로그인유저 추가(재환) 
+				// 로그인유저 추가(재환)
 				session.setAttribute("loginUser", loginUser);
 				
 				// 채팅평시상태를 위해 안읽은 메시지를 모두 카운트해서 불러옴
@@ -246,8 +228,6 @@ public class MemberController {
 
 			/* return "member/login"; */
 		}
-		
-		
 		
 		
 	}

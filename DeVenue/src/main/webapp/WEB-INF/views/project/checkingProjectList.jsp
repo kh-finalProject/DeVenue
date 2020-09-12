@@ -343,7 +343,7 @@ button{
             <table border="0" style="margin-left:5px;">
                <tr>
                   <td>
-                     <img src="${contextPath}/resources/images/money.png" onerror="this.style.visibility='hidden';" width="100px" height="100px" style="border-radius:50%;border:2px solid rgb(81, 88, 102);margin-bottom:3px;">
+                     <img id="changeImg" style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/${mImg}" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="200px" height="200px" style="max-width: 100%;">
                   </td>
                </tr>
                <tr style="text-align:left;">
@@ -378,7 +378,10 @@ button{
                         <div id="subClientEva" style="display:none; margin-left: 5%;">
                            <li id="btext" style ="color:blue;">검수중</li>
                   <br>
-                  <li><a href ="temStoreList.do" style ="color :white;">임시 저장 </a></li>
+                  <c:url var="temStoreList" value="temStoreList.do">
+						<c:param name="memId" value= "${loginUser.memId}" ></c:param>
+						</c:url>
+                  <li><a href ="${temStoreList}" style ="color :white;">임시 저장 </a></li>
                   <br>
                   <li ><a href ="addFailProjectList.do"  style ="color :white;">등록 실패</a></li>
                   <br>
@@ -534,6 +537,7 @@ button{
                     <c:if test="${pi.currentPage gt 1}">
                     <c:url var="clistBack" value="checkList.do">
                     	<c:param name="page" value="${pi.currentPage-1}"/>
+                    	<c:param name="memId" value="${memId}"/>
                     </c:url>
                     <li class="page-item"><a class="page-link" href="${clistBack}"><i class="fas fa-chevron-left"></i></a></li>
                     </c:if>
@@ -545,6 +549,7 @@ button{
                     <c:if test="${pi.currentPage ne pn}">
                     <c:url var="clistCheck" value="checkList.do">
                     <c:param name="page" value="${pn}"/>
+                    <c:param name="memId" value="${memId}"/>
                     </c:url>
                     <li class="page-item"><a class="page-link" href="${clistCheck}">${pn}</a></li>
                     </c:if>
@@ -556,6 +561,7 @@ button{
                   	<c:if test="${pi.currentPage lt pi.maxPage}">
                   	<c:url var="clistFront" value="checkList.do">
                     	<c:param name="page" value="${pi.currentPage+1}"/>
+                    	<c:param name="memId" value="${memId}"/>
                     </c:url>
                     <li class="page-item"><a class="page-link" href="${clistFront}"><i class="fas fa-chevron-right"></i></a></li>
                   	</c:if>
@@ -576,7 +582,11 @@ button{
               	검수중인 프로젝트를 찾을 수 없습니다!
                 
               </li>
+              
+              
           </div>
+    <br>
+    <br>
     
     </c:when>
     </c:choose>

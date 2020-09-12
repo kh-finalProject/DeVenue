@@ -55,68 +55,9 @@
       font-weight: 700;
     }
 
-    header.masthead {
-      position: relative;
-      background-color: #343a40;
-      background: url("mainImg.jpg") no-repeat center center;
-      background-size: cover;
-      padding-top: 8rem;
-      padding-bottom: 8rem;
-      height: 50rem;
-    }
+ 
 
-    header.masthead .overlay {
-      position: absolute;
-      background-color: #212529;
-      height: 100%;
-      width: 100%;
-      top: 0;
-      left: 0;
-      opacity: 0.3;
-    }
-
-    header.masthead h1 {
-      font-size: 2rem;
-    }
-
-    @media (min-width: 768px) {
-      header.masthead {
-        padding-top: 12rem;
-        padding-bottom: 12rem;
-      }
-
-      header.masthead h1 {
-        font-size: 3rem;
-      }
-    }
-
-    .showcase .showcase-text {
-      padding: 3rem;
-    }
-
-    .showcase .showcase-img {
-      min-height: 30rem;
-      background-size: cover;
-    }
-
-    @media (min-width: 768px) {
-      .showcase .showcase-text {
-        padding: 7rem;
-      }
-    }
-
-    footer.footer {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-
-    #navbarMain>ul>li>a {
-      color: white;
-    }
-
-    #navbarMain>ul>li>a:hover {
-      color: lightblue;
-    }
+   
 
 
     @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -295,6 +236,10 @@
 button{
   width:90px;
 }
+.boxbox{
+width:536px;
+background-color :#192424;
+}
 </style>
 
 </head>
@@ -305,53 +250,102 @@ button{
 	<!-- 클라이언트 계정 로그인 -->
 	<jsp:include page="../common/cSubMenubar.jsp" />
 	
-<div class ="middle" style ="background-color:black;  font-family: 'Jua', sans-serif; " >
+
+   <div class= "container">
+<div class ="middle" style ="background-color:#212426;  font-family: 'Jua', sans-serif; " >
   <form id="regForm" action="">
-
-  <div class ="container">
-    <br>
-
-    <div class="row" style ="margin-top: 60px; margin-bottom:60px;" >
-      <div class="col-2 text-white" style="border-right: 2px solid #2098d1; margin-right:40px; margin-left:70px; font-family: 'Jua', sans-serif;">
-         
-          <div style="padding-bottom: 5.5%;  " >
-            <div>
-              <table  width="100px" height="100px" >
-                  <td  id="bText" style ="color:white; border-bottom: 3px solid #2098D1; margin-bottom: 100px;">클라이언트</td>
-                  <tr>
-                    
-                    <td>
-                        <br>
-                        <div id="profilebox">
-                          <img id="profile" src="profileEx.png">
-                        
-                      </div>
-                      
-                      
-                    </tr>
-                    <td  id="sText" style ="color:gray">클라이언트</td>
-                    
-                    
-                    <tr>
-                      <td style= "color:#2098D1">닉네임</td>
-                    </tr>
-                    
-                    <td>sailer5247@gmail.com</td>
-                 
-                  </tr>
-              </table>
-
-              
+      <div class="row text-white" style="border-bottom: 1px solid lightgray;">
+      
+            <div class="col-3" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+               모집중인 프로젝트
             </div>
-            <br>
 
-              <div>
-                <li  id ="bText" style ="color:#2098d1  "> 지원자 모집중</li>
-              </div>
-             
+        </div>
 
-          </div>
-      </div>
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray;font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%; ">
+         
+                </div>
+            </div>
+           
+
+        </div>
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="padding-bottom: 5.5%;">
+                  
+                      <div class="proImg_area" style="text-align: center;margin-top:5px; margin-bottom:10px;display:flex;margin-left:15px;">
+            <table border="0" style="margin-left:5px;">
+               <tr>
+                  <td>
+                     <img id="changeImg" style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/${mImg}" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="200px" height="200px" style="max-width: 100%;">
+                  </td>
+               </tr>
+               <tr style="text-align:left;">
+               
+                  
+                  <td style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;">이름 </td>
+                  <td style="padding:5px;max-width:80px;max-height:80px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">${loginUser.memName }</td>
+               </tr>
+               <tr style="text-align:left;">
+                  <td style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;">닉네임</td>
+                  <td style="padding:5px;max-width:80px;max-height:80px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">${loginUser.memNick }</td>
+               </tr>
+               <tr>
+                  <td colspan="2" style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;text-align: left;">
+                     <c:if test="${loginUser.memAction =='Y'}">
+                        <h6><span class="badge badge-primary" style="text-indent:0px;">활동 중</span></h6>
+                     </c:if>
+                     <c:if test="${loginUser.memAction =='N'}">
+                        <h6><span class="badge badge-secondary" style="text-indent:0px;">활동 비활성화</span></h6>
+                     </c:if>
+                  </td>
+               </tr>
+            </table>
+         </div>
+                 
+                    
+                    <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
+                    <div>
+              
+                        
+                        <p id="clientEvaluate" style="cursor:pointer;">카테고리<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
+                        <div id="subClientEva" style="display:none; margin-left: 5%;">
+                           <li id="btext" style ="color:blue;">검수중</li>
+                  <br>
+                  <c:url var="temStoreList" value="temStoreList.do">
+						<c:param name="memId" value= "${loginUser.memId}" ></c:param>
+						</c:url>
+                  <li><a href ="${temStoreList}" style ="color :white;">임시 저장 </a></li>
+                  <br>
+                  <li ><a href ="addFailProjectList.do"  style ="color :white;">등록 실패</a></li>
+                  <br>
+                  
+                            
+                        </div>
+                    </div>
+                   
+                    
+                    <script>
+                 
+
+                        $("#clientEvaluate").click(function() {
+                            $("#subClientEva").toggle();
+                        });
+
+                       
+                    </script>
+
+                </div>
+            </div>
+
+  
+    
 
 
 
@@ -361,7 +355,7 @@ button{
 
 
         <!--정보입력-->
-        <div class= "col-6" style ="background-color: black; height:auto;  color:white">
+        <div class= "col-6" style ="background-color: #212426;  margin-left:120px; height:auto;  color:white">
         
           <table width="540px">
             <tr style ="border-bottom: solid 3px #2098d1;" >
@@ -372,7 +366,7 @@ button{
             
             <br> 
   
-          <div id= "explainbox" style ="padding:30px;">
+          <div id= "explainbox" class="boxbox" style ="padding:30px;">
               
               <li id ="sText">1. 프로젝트 내용 작성 중 임시 저장한 프로젝트 목록입니다.<br>
                 2. [수정] 버튼을 클릭하여 프로젝트의 내용을 수정할 수 있습니다.
@@ -388,15 +382,15 @@ button{
 <c:choose>
 <c:when test="${!empty list1}">
        <c:forEach var ="p" items="${list1}">
-        <div id ="projectbox" style ="margin-top:50px;" >
+        <div id ="projectbox" class="boxbox" style ="margin-top:50px;" >
           <table width="533px"   >
               <thead>
 <input type ="hidden" value = ${p.proId} >
-                  <tr >
-                      <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
+               
+                      <li style= "color: white; width:400px; padding-left:10px; padding-top:10px;" >${p.proName}</li>
                       
                       
-                  </tr>
+                 
                <tr id ="sText" >
                       <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
                         <span class="badge badge-primary">${p.proMCType}</span>
@@ -423,7 +417,7 @@ button{
                   </tr>
                   <tr >
                       <table  id ="sText" width="534px">
-                          <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
+                          <tr  align ="center" style ="border-bottom:2px solid #2098d1 ; padding:1px; height:50px;" id ="sText">
                             
                               <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트번호    </span></td>
                               <td  >${p.proId}</td>
@@ -442,9 +436,9 @@ button{
                               <td width="120px; " >${p.proRecruitNum}</td>
                             
                           </tr>
-                            <tr  align ="center" style= "border:1px solid black;" height="30" id ="sText">
+                            <tr  align ="center" height="30" id ="sText">
                              
-                                <td colspan="6">
+                                <td colspan="6" style= "border:1px solid #2098d1;">
                                     <div style= "float:right; margin-right:30px; padding:10px;">
                                     <button class="btn/middle btn-info" style= "color:black; width:90px;">취소</button>
 <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='applycomfirmList.do?proId='+${p.proId}"> 지원자 목록</button>
@@ -478,13 +472,7 @@ button{
     </c:when>
     </c:choose>
     </div>
-    
-    <div class= "col-lg-1" style ="background-color: black;">.col-lg-3</div>
-</div>
-
-</div>
-
-
+ 
 	
 	
 	

@@ -730,7 +730,7 @@ section {
             <%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
             <!-- 새버전을 쓸꺼면 로그인 했을시 그거 빼야함 -->
             <!-- 새 sidMenubar -->
-            <jsp:include page="../common/findPartSideMenubar.jsp" />
+            
          </div>
          <div class="col-8 text-white"
             style="font-family: 'Jua', sans-serif; margin-left: 210px;">
@@ -913,7 +913,7 @@ section {
                         style="border-bottom: 2px dashed white;">
                         <h4 style="height: 50px;">포트폴리오</h4>
                         <!-- 포트폴리오 -->
-                        <c:forEach var="port" items="${portfolio }">
+                  
                            <table class="pTable">
                               <tr>
                                  <td class="img" rowspan="2"><img src="../image/test.png"
@@ -959,12 +959,111 @@ section {
                                  <td><button type="submit" id="${port.portId }"
                                        class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
                                  <td class="join">참여율 : ${port.portJoin }%</td>
-                                 <td class="tec"><c:forEach var="pt" items="${portTec }">
+                                 <td class="tec">
                                        <span>${pt.tName }</span>
-                                    </c:forEach></td>
+                                    </td>
                               </tr>
                            </table>
-                        </c:forEach>
+                                        <table class="pTable">
+                              <tr>
+                                 <td class="img" rowspan="2"><img src="../image/test.png"
+                                    style="max-width: 100%; height: auto;">
+                                 <td class="category">
+                                    <!-- port.mcId에 따른 출력 --> <c:choose>
+                                       <c:when test="${port.mcId eq 'MC1'}">
+                                          <span>개발자</span>
+                                          <br>
+                                       </c:when>
+                                       <c:when test="${port.mcId eq 'MC2'}">
+                                          <span>디자인</span>
+                                          <br>
+                                       </c:when>
+                                       <c:otherwise>
+                                          <span>개발/디자인</span>
+                                          <br>
+                                       </c:otherwise>
+                                    </c:choose> <!-- port.dcId에 따른 출력 --> <c:choose>
+                                       <c:when test="${port.dcId eq 'DC1'}">
+                                          <span>웹</span>
+                                       </c:when>
+                                       <c:when test="${port.dcId eq 'DC2'}">
+                                          <span>어플리케이션</span>
+                                       </c:when>
+                                       <c:when test="${port.dcId eq 'DC3'}">
+                                          <span>퍼블리싱</span>
+                                       </c:when>
+                                       <c:otherwise>
+                                          <span>기타</span>
+                                       </c:otherwise>
+                                    </c:choose>
+                                 </td>
+                                 <td class="title">${port.portName }</td>
+                              </tr>
+                              <tr>
+                                 <td colspan="2" rowspan="2" class="text">
+                                    <p style="margin-left: 3%;">${port.content }</p>
+                                 </td>
+                              </tr>
+                              <tr></tr>
+                              <tr>
+                                 <td><button type="submit" id="${port.portId }"
+                                       class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
+                                 <td class="join">참여율 : ${port.portJoin }%</td>
+                                 <td class="tec">
+                                       <span>${pt.tName }</span>
+                                    </td>
+                              </tr>
+                           </table>
+                                            <table class="pTable">
+                              <tr>
+                                 <td class="img" rowspan="2"><img src="../image/test.png"
+                                    style="max-width: 100%; height: auto;">
+                                 <td class="category">
+                                    <!-- port.mcId에 따른 출력 --> <c:choose>
+                                       <c:when test="${port.mcId eq 'MC1'}">
+                                          <span>개발자</span>
+                                          <br>
+                                       </c:when>
+                                       <c:when test="${port.mcId eq 'MC2'}">
+                                          <span>디자인</span>
+                                          <br>
+                                       </c:when>
+                                       <c:otherwise>
+                                          <span>개발/디자인</span>
+                                          <br>
+                                       </c:otherwise>
+                                    </c:choose> <!-- port.dcId에 따른 출력 --> <c:choose>
+                                       <c:when test="${port.dcId eq 'DC1'}">
+                                          <span>웹</span>
+                                       </c:when>
+                                       <c:when test="${port.dcId eq 'DC2'}">
+                                          <span>어플리케이션</span>
+                                       </c:when>
+                                       <c:when test="${port.dcId eq 'DC3'}">
+                                          <span>퍼블리싱</span>
+                                       </c:when>
+                                       <c:otherwise>
+                                          <span>기타</span>
+                                       </c:otherwise>
+                                    </c:choose>
+                                 </td>
+                                 <td class="title">${port.portName }</td>
+                              </tr>
+                              <tr>
+                                 <td colspan="2" rowspan="2" class="text">
+                                    <p style="margin-left: 3%;">${port.content }</p>
+                                 </td>
+                              </tr>
+                              <tr></tr>
+                              <tr>
+                                 <td><button type="submit" id="${port.portId }"
+                                       class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
+                                 <td class="join">참여율 : ${port.portJoin }%</td>
+                                 <td class="tec">
+                                       <span>${pt.tName }</span>
+                                    </td>
+                              </tr>
+                           </table>
                         <br>
                         <!-- <div class="detail-view">
                            <h6>

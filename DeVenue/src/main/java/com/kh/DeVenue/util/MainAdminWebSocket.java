@@ -52,7 +52,40 @@ public class MainAdminWebSocket {
 	@OnMessage
 	public String handleMessage(String message, Session userSession) {
 		System.out.println("1대1채팅- 주관리자->고객 메시지");
-
+		
+		if(message.equals("keyDownIng")) {
+			try {
+				Session clientSession = NewChatClient.returnUserSession();
+				System.out.println("고객의 세션을 가져왔다");
+				int clientId = 0;
+				
+				try {
+					Integer returnUserId = NewChatClient.returnUserId();
+					clientId = returnUserId;
+				}catch(Exception e) {
+					System.out.println("예외발생");
+				}
+				// 상대 고객이 접속하지 않았을 경우(접속 안되거나 나갈  수 있음)
+				if(clientSession != null && clientId == this.otherId) {
+					System.out.println("클라이언트가 접속해있다.");
+					NewChatClient.returnUserSession().getBasicRemote().sendText(message + ',' + adminRoomId);
+					return "Y";
+				}else {
+					System.out.println("클라이언트가 접속하지 않아있다.");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH/mm/ss/SSS");
+					sdf.format(new Date());
+					String currentDate = sdf.format(new Date());
+					String outMsg = "고객님이 접속을 해제한 상태입니다.,"+currentDate + ",채팅알림 서비스" +",N";
+					// 관리자는 제이슨 형태로 받아주기 때문에 리턴도 제이슨 형태로
+					String jsonMessage = ("{\"status\":\"message\", \"key\":\"" + this.chatUser.getMemEmail() + "\", \"message\":\"" + outMsg + "\"}");
+					return jsonMessage;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("예외발생2");
+			}
+		}
+		
 		if(message.contains("other$Id$")) {
 			String otherId = message.replace("other$Id$", "");
 			this.otherId = Integer.valueOf(otherId);
@@ -100,8 +133,9 @@ public class MainAdminWebSocket {
 				String jsonMessage = ("{\"status\":\"message\", \"key\":\"" + this.chatUser.getMemEmail() + "\", \"message\":\"" + outMsg + "\"}");
 				return jsonMessage;
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("예외발생2");
 		}
 		return null;
 	}
