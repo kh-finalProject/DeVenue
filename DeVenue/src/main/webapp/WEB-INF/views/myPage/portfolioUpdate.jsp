@@ -677,44 +677,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									<td></td>
 									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
 								</tr>
-								<!-- <tr>
-									<td class="port-title">* 두 번째 이미지</td>
-									<td><input type="file" id="img2" name="img2"
-										class="btn btn-info"> <span
-										class="btn btn-info select2">선택</span> <span
-										class="btn btn-info img-delete2">삭제</span>
-										<p id="view"></p></td>
-								</tr>
-								<tr>
-									<td>* 한 줄 설명</td>
-									<td><input type="text" id="img-content2"
-										name="img-content2" readonly placeholder="이미지를 선택해주세요"
-										style="width: 500px; height: 40px; background-color: gray;">
-									</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
-								</tr>
-								<tr>
-									<td class="port-title">* 세 번째 이미지</td>
-									<td><input type="file" id="img3" name="img3"
-										class="btn btn-info"> <span
-										class="btn btn-info select3">선택</span> <span
-										class="btn btn-info img-delete3">삭제</span>
-										<p id="view"></p></td>
-								</tr>
-								<tr>
-									<td>* 한 줄 설명</td>
-									<td><input type="text" id="img-content3"
-										name="img-content3" readonly placeholder="이미지를 선택해주세요"
-										style="width: 500px; height: 40px; background-color: gray;">
-									</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td style="color: gray; margin-left: 20%;">한글 기준 120자 미만</td>
-								</tr> -->
 								<script>
                   // 1번째 이미지 관련 기능
                   // 이미지를 저장하게 되면 글자를 쓸수있게한다.

@@ -948,6 +948,7 @@ section {
 												</c:forEach></td>
 										</tr>
 									</table>
+									<br>
 								</c:forEach>
 								<br>
 								<!-- <dlv class="detail-view">

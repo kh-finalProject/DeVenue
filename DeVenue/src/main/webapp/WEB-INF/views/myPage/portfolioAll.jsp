@@ -517,8 +517,8 @@ section {
 								<tr>
 									<td class="img" rowspan="2"><img src="../image/test.png"
 										style="max-width: 100%; height: auto;">
-										<input type="text" id="profileId" name="profileId" value="${profile.profileId }">
-										<input type="text" id="portId" name="portId" value="${port.portId }">
+										<input type="hidden" id="profileId" name="profileId" value="${profile.profileId }">
+										<input type="hidden" id="portId" name="portId" value="${port.portId }">
 										</td>
 									<td class="category">
 										<!-- port.mcId에 따른 출력 --> <c:choose>
