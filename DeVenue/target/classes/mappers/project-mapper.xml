@@ -1696,5 +1696,13 @@
 	 ]]>
 	
 	</select>
+	
+	<update id="updateRecruitStatus">
+	<![CDATA[
+	UPDATE PROJECT
+ 	SET PRO_RECRUIT='N'
+ 	WHERE PRO_R_END_DATE <SYSDATE
+	]]>
+	</update>
 
 </mapper>

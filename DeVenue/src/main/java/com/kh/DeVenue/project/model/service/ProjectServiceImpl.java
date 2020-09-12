@@ -737,6 +737,14 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+	@Override
+	public int updateProjectRecruitStatus() {
+		
+		return proDao.updateProjectRecruitStatus();
+	}
+
+
+
 
 	
 

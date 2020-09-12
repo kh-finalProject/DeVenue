@@ -32,6 +32,10 @@ public class HomeController {
 	@RequestMapping(value = "home.do", method = RequestMethod.GET)
 	public ModelAndView home(ModelAndView mv,Locale locale, Model model) {
 
+		//자동 업데이트, 모집 마감일이 SYSDATE보다 작은 프로젝트를 업데이트한다.
+		int result=pService.updateProjectRecruitStatus();
+		System.out.println("모집마감 업데이트 결과"+result);
+		
 		//신규등록된 프로젝트를 가져오자 
 		//1.웹 프로젝트를 가져오자 
 		ArrayList<ProjectList> web=new ArrayList();
