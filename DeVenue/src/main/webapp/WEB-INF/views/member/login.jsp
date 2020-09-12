@@ -523,8 +523,10 @@
             						window.location.href = "home.do";
             					}else if(data == 'emailFail'){
             						alert("없는 이메일 이거나 이메일을 잘못입력하셨습니다.");
+            						$("#email").val("");            						
             					}else if(data == 'pwdFail'){
             						alert("비밀번호를 잘못 입력하셨습니다.");
+            						$("#pwd").val("");
             					}
             				}
             				, error:function(request, status, error){
