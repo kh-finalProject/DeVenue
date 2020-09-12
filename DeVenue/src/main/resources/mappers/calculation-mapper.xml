@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="calculationMapper">
+
+<resultMap type="Project" id="projectResultSet">
+		<id property="proId" column="PRO_ID"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="proName" column="PRO_NAME"/>
+		<result property="proMaintain" column="PRO_MAINTAIN"/>
+		<result property="proStaId" column="PRO_STA_ID"/>
+		<result property="proRecruit" column="PRO_RECRUIT"/>
+		<result property="proCreateDate" column="PRO_CREATE_DATE"/>
+		<result property="proPlan" column="PRO_PLAN"/>
+		<result property="proPlanDetail" column="PRO_PLANDETAIL"/>
+		<result property="proSummary" column="PRO_SUMMARY"/>	
+		<result property="proNeeds" column="PRO_NEEDS"/>	
+		<result property="proNeedsDetail" column="PRO_NEEDSDETAIL"/>	
+		<result property="proResource" column="PRO_RESOURCE"/>	
+		<result property="proPayment" column="PRO_PAYMENT"/>	
+		<result property="proStartDate" column="PRO_START_DATE"/>	
+		<result property="proDuration" column="PRO_DURATION"/>	
+		<result property="proREndDate" column="PRO_R_END_DATE"/>	
+		<result property="proEndDate" column="PRO_END_DATE"/>	
+		<result property="proMCId" column="MC_ID"/>	
+		<result property="proDCId" column="DC_ID"/>	
+		<result property="proWTId" column="WT_ID"/>	
+		<result property="proRecruitNum" column="PRO_RECRUIT_NUM"/>	
+		<result property="proPlanPaper" column="PRO_PLAN_PAPER"/>
+		<result property="proPlanRePaper" column="PRO_PLAN_REPAPER"/>
+		<result property="proLocation" column="PRO_LOCATION"/>
+		<result property="proHelp" column="PRO_HELP"/>
+		<result property="proManage" column="PRO_MANAGE"/>
+		<result property="proFuturePlan" column="PRO_FUTUREPLAN"/>
+		<result property="proPriority" column="PRO_PRIORTY"/>
+		<result property="proContract" column="PRO_CONTRACT"/>
+		<result property="proTypeCode" column="PRO_TYPE_CODE"/>
+		<result property="proWorkspace" column="PRO_WORKPLACE"/>
+		<result property="proSignId" column="SIG_ID"/>
+		<result property="proPayStatus" column="PRO_PAY_STATUS"/>
+		<result property="proParentId" column="PRO_PARENT_ID"/>
+		<result property ="proMCType" column = "MC_TYPE"/>
+		<result property ="proDCType" column ="DC_TYPE"/>
+		<result property ="proMTK" column ="MEM_TYPE_KIND"/>
+		
+	</resultMap>
+	
+	<resultMap type="Member" id="memberResultSet">
+  	<id property="memId" column="MEM_ID"/>
+  	
+  	<result property="userType" column="USER_TYPE"/>
+  	<result property="memType" column="MEM_TYPE"/>
+  	<result property="memEmail" column="MEM_EMAIL"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memName" column="MEM_NAME"/>
+  	<result property="memPwd" column="MEM_PWD"/>
+  	<result property="address1" column="ADDRESS1"/>
+  	<result property="address2" column="ADDRESS2"/>
+  	<result property="address3" column="ADDRESS3"/>
+  	<result property="phone" column="PHONE"/>
+  	<result property="cellPhone" column="CELLPHONE"/>
+  	<result property="faxNo" column="FAX_NO"/>
+  	<result property="taxEmail" column="TAX_EMAIL"/>
+  	<result property="decCount" column="DEC_COUNT"/>
+  	<result property="memAction" column="MEM_ACTION"/>
+  	<result property="isAdvertise" column="IS_ADVERTISE"/>
+  	<result property="memCreateDate" column="MEM_CREATE_DATE"/>
+  	<result property="memModifyDate" column="MEM_MODIFY_DATE"/>
+  	<result property="memStatus" column="MEM_STATUS"/>
+  	<result property="memTypeName" column="MEM_TYPE_NAME"/>  	
+  </resultMap>
+  	
+  	<resultMap type="Signature2" id="sigNature2ResultSet">
+		<id property="id" column="SIG_ID"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="originFileName" column="SIG_ORIGIN_FILENAME"/>
+		<result property="renameFileName" column="SIG_RENAME_FILENAME"/>
+		<result property="sigType" column="SIG_TYPE"/>
+		<result property="isMain" column="IS_MAIN"/>
+	</resultMap>
+	
+	<resultMap type="Calculation" id="calculateResultSet">
+		<id property="calId" column="CAL_ID"/>
+		<result property="proId" column="PRO_ID"/>
+		<result property="expectPay" column="CAL_EXPECT_PAY"/>
+		<result property="realPay" column="CAL_REAL_PAY"/>
+		<result property="deposit" column="CAL_DEPOSIT"/>
+		<result property="incentive" column="CAL_INCENTIVE"/>
+		<result property="tax" column="CAL_TAX"/>
+		<result property="status" column="CAL_STATUS"/>
+		<result property="payDate" column="CAL_CDATE"/>
+	</resultMap>
+
+	
+	<select id="selectUnpaidProject" resultMap="projectResultSet">
+	SELECT DISTINCT P.*
+	FROM P_APPLY A
+	LEFT JOIN PROJECT P ON (A.PRO_ID=P.PRO_ID)
+	WHERE A.PRO_ASTATUS=1
+	
+	
+	</select>
+	
+	<select id="selectClient" parameterType="_int" resultMap="memberResultSet">
+	SELECT *
+	FROM MEMBER M 
+	LEFT JOIN PROFILE F ON (M.MEM_ID=F.MEM_ID)
+	WHERE M.MEM_ID=#{clientId}
+	</select>
+	
+	<select id="selectPartners" parameterType="_int" resultMap="memberResultSet">
+	SELECT M.*
+	FROM P_APPLY A
+	LEFT JOIN PROJECT P ON (A.PRO_ID=P.PRO_ID)
+	LEFT JOIN MEMBER M ON (A.MEM_PID=M.MEM_ID)
+	WHERE A.PRO_ASTATUS=1 AND A.PRO_ID=#{proId}
+	</select>
+	
+	<select id="selectSignature" parameterType="arraylist" resultMap="sigNature2ResultSet">
+	SELECT *
+	FROM SIGNATURE
+	WHERE IS_MAIN='Y'
+	AND MEM_ID IN 
+	<foreach collection="list" item="partner" open="(" separator="," close=")">
+	#{partner.memId}
+	</foreach>
+	
+	</select>
+	
+	<select id="selectProjectSignature" parameterType="_int" resultMap="sigNature2ResultSet">
+	SELECT S.*
+	FROM SIGNATURE S
+	LEFT JOIN PROJECT P ON (S.SIG_ID=P.SIG_ID)
+	WHERE P.PRO_ID=#{proId}
+	</select>
+	
+	<update id="uploadContractDoc" parameterType="hashmap">
+	UPDATE PROJECT 
+	SET PRO_CONTRACT=#{name}
+	WHERE PRO_ID=#{proId}
+	
+	</update>
+
+	<select id="selectPaidProject" resultMap="projectResultSet">
+	SELECT *
+	FROM PROJECT P 
+	WHERE P.PRO_PAY_STATUS='Y' AND
+	P.PRO_STA_ID IN ('PST5','PST6')
+	
+	</select>
+	
+	<select id="selectCalculation" resultMap="calculateResultSet">
+	SELECT *
+	FROM CALCULATE
+	</select>
+	
+	<select id="selectMatched" parameterType="_int" resultMap="memberResultSet">
+	SELECT MB.*
+	FROM P_MATCH M
+	LEFT JOIN P_PROCESS PR ON (M.PRO_PID=PR.PRO_PID)
+	LEFT JOIN PROJECT P ON (PR.PRO_ID=P.PRO_ID)
+	LEFT JOIN MEMBER MB ON (M.MEM_ID=MB.MEM_ID)
+	WHERE P.PRO_PAY_STATUS='Y' AND (P.PRO_STA_ID IN('PST5','PST6'))
+	AND P.PRO_ID=#{proId}
+	</select>
+	
+	<insert id="uploadCalculation" parameterType="Calculation">
+	
+	INSERT 
+	INTO CALCULATE VALUES
+	(SEQ_CAL.NEXTVAL,
+	#{proId},
+	#{expectPay},
+	#{realPay},
+	#{deposit},
+	#{incentive},
+	#{tax},
+	'Y',
+	SYSDATE)
+	
+	</insert>
+	
+	
+
+
+
+</mapper>

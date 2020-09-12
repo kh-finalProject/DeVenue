@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 
 import com.kh.DeVenue.member.model.dao.MemberDao;
+import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.Member;
 
 import com.kh.DeVenue.member.model.vo.Portfolio;
-
+import com.kh.DeVenue.myPage.model.vo.Eval;
 import com.kh.DeVenue.project.model.dao.ProjectDao;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
@@ -61,9 +62,9 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ArrayList<Project> selectCheckList(String memId) {
+	public ArrayList<Project> selectCheckList(String memId,PageInfo pi) {
 		
-		return proDao.selectCheckList(memId);
+		return proDao.selectCheckList(memId,pi);
 
 	}
 
@@ -620,10 +621,94 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+	
+
+
+	@Override
+	public ArrayList<Project> selectApplyList(int proId) {
+	
+		return proDao.selectApplyList(proId);
+	}
+
+
+
+
+	@Override
+	public ArrayList<Project> selectCommitList() {
+		
+		return proDao.selectCommitList();
+	}
+
+
+
 	@Override
 	public ArrayList<Member> selectModal(String proId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public int commitProject(int proId) {
 		
-		return proDao.selectModal(proId);
+		return proDao.commitProject(proId);
+	}
+
+
+
+	@Override
+	public int getCheckListCount(String memId) {
+	
+		return proDao.getCheckListCount(memId);
+	}
+
+
+
+	@Override
+	public int applyUpdate(int memPId) {
+		// TODO Auto-generated method stub
+		return proDao.applyUpdate(memPId);
+	}
+
+
+
+	@Override
+	public int getCommitListCount(int proId) {
+		
+		return proDao.getCommitListCount(proId);
+
+
+	}
+
+
+
+	@Override
+	public int getRecuritNum(int proId) {
+		// TODO Auto-generated method stub
+		return proDao.getRecuritNum(proId);
+	}
+
+
+
+	@Override
+	public int rejectApply(int memPId) {
+		
+		return proDao.rejectApply(memPId);
+	}
+
+	@Override
+	public int getLikeId(HashMap ids) {
+		
+		return proDao.selectLikeId(ids);
+	}
+
+
+
+	@Override
+	public ArrayList<CPeval> selectEvaluation(HashMap condition) {
+		
+		return proDao.selectEvaluation(condition);
 	}
 
 

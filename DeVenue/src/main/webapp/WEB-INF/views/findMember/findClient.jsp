@@ -250,7 +250,8 @@ hr {
             			contentType : 'application/json; charset=utf-8',
             			dataType:"json",
             			success:function(data){
-            				console.log(data.list.length);
+            				console.log(data.list[0].avgEagv);
+            				
             				
             				$clientBoard=$("#clientBoard");
     						$clientBoard.empty();
@@ -320,6 +321,11 @@ hr {
                 					$col8.append($profile);
                 					$col8.append($div);
                 					$row.append($col8);
+                					
+                					/* switch(data.list[i].avgEagv){
+                					case 0 : 
+                						
+                					} */
                 					
                 					if(data.list[i].avgEagv == 0){
                 						$starDiv.append($firstFar);
@@ -435,7 +441,7 @@ hr {
             
             <div id="clientBoard" class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
            
-           <c:if test="${msg == 'msg' }"> 
+           <c:if test="${empty msg }"> 
            <c:forEach var="b" items="${list }"> 
                     <!-- 클릭이벤트 넣어야함 -->
                     <c:url var="cDetail" value="cDetail.do">
@@ -454,12 +460,11 @@ hr {
                                     <div style="float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;" >
                                         <div>
                                         <c:if test="${empty b.profileImg }">
-                                            <!-- <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
                                             <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                                             <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                                            </svg> -->
-                                            <img id="profileImg" src="${contextPath }/resources/proImg/user1.png">
+                                            </svg>
                                         </c:if>
                                         <c:if test="${!empty b.profileImg }">
                                         	${b.profileImg }
@@ -604,16 +609,9 @@ hr {
                     </ul>
                 </div>
 			</c:forEach>
-          </c:if>
-          
-			<c:if test="${!empty msg }">
-				<p style="margin-top:5%; margin-left:40%;">${msg }</p>
-			</c:if>
-            </div>
-        </div>
-        
-        <c:if test="${empty msg }">
-		<section class="mt-5 mb-5" id="pagination">
+			
+                
+                <section class="mt-5 mb-5" id="pagination">
 
             <div class="row d-flex justify-content-around align-items-center">
 
@@ -659,6 +657,13 @@ hr {
 
           </section>
           </c:if>
+			<c:if test="${!empty msg }">
+				<p style="margin-top:5%; margin-left:40%;">${msg }</p>
+			</c:if>
+            </div>
+
+        </div>
+
     </div>
 			
 	<jsp:include page="../common/footer.jsp"></jsp:include>

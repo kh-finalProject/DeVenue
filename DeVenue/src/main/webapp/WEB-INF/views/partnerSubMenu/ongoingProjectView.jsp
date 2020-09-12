@@ -212,8 +212,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                   <button class="btn btn-secondary btn-block">전체 프로젝트</button> 
-                   <button class="btn btn-info btn-block">연장 신청 프로젝트</button> 
+                   <button class="btn btn-secondary btn-block">전체 프로젝트</button>  
                 </div>
             </div>
 
@@ -406,7 +405,7 @@
                                   </table>
                                 </div>
                                 <div class="col-md-3">
-                                  <a type="button" class="btn btn-outline-secondary btn-block mt-4" download="#">계약서보기</a>
+                                  <a type="button" class="btn btn-outline-secondary btn-block mt-4" href="/DeVenue/resources/contract/${on.project.proContract}" download>계약서보기</a>
                                 </div>
                               </div>
                             </div>

@@ -166,11 +166,26 @@
       #pagination>div{
         margin-top: 1rem;
       }
-
+      
+      /*모달*/
+	.modal-body, .modal-title {
+		color:black;
+	}
+	
+	.modal-body p{
+		font-size:0.8rem;
+		font-weight:bold;
+	}
+	
+	.modal-body textarea{
+		font-size:0.75rem;
+	}
+	
 
   </style>
 
-
+<!-- chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 <body>
 <jsp:include page="../common/menubar.jsp"></jsp:include>
@@ -377,6 +392,98 @@
           <!-- 프로젝트 header 타이틀&검색 Section: Block Content  -->
 
           <!--Section: Block Content 프로젝트 리스트 시작-->
+          
+          <script>
+    		
+          	var star1;
+          	var star2;
+          	var star3;
+          	var star4;
+          	var star5;
+          
+           	function showMyEval(eId){
+           		
+           		<c:forEach items="${eval}" var="ev">
+           		
+           		if(eId=="${ev.eId}"){
+           			
+           			window.star1="${ev.star1}";
+           			window.star2="${ev.star2}";
+           			window.star3="${ev.star3}";
+           			window.star4="${ev.star4}";
+           			window.star5="${ev.star5}";
+           			
+           			$("#star1").text(window.star1+"점");
+           			$("#star2").text(window.star1+"점");
+           			$("#star3").text(window.star1+"점");
+           			$("#star4").text(window.star1+"점");
+           			$("#star5").text(window.star1+"점");
+           			
+           			$("#evalTotal").text("${ev.eAgv}점");
+           			$("#evalContent").text("${ev.eContent}");
+           			
+           			var ctx = document.getElementById('myChart').getContext('2d');
+                    var myRadarChart = new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['전문성', '적극성', '일정준수', '의사소통', '만족도'],
+                            datasets: [{
+                                label: '',
+                                scaleOverride: true,
+                                strokeColor: "rgba(255,255,255,1)",
+                                backgroundColor: 'rgba(23, 162, 184,0.5)',
+                                borderColor: 'rgba(23, 162, 184)',
+                                data: [window.star1,window.star2,window.star3,window.star4,window.star5]
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            legend: {
+                                display: false
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return tooltipItem.yLabel;
+                                    }
+                                }
+                            },
+                            animation: {
+                                duration: 0 // general animation time
+                            },
+                            hover: {
+                                animationDuration: 0 // duration of animations when hovering an item
+                            },
+                            responsiveAnimationDuration: 0, // animation duration after a resize
+                            scale: {
+                                gridLines: {
+                                    color: ['#212426', '#212426', '#212426', '#212426', '#212426']
+                                },
+                                angleLines: {
+                                    display: false,
+                                    color: 'white'
+                                },
+                                ticks: {
+                                    beginAtZero: true,
+                                    min: 0,
+                                    max: 5,
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    });
+           			
+           			
+           			
+           			
+           		}
+           		
+           		</c:forEach>
+           		
+           		$("#myEval").modal('show');
+           	}
+          
+          </script>
            
           <section id="projectList">
 
@@ -421,9 +528,39 @@
                                 </div>
                                 <div class="col-md-3">
                                   <div class="likeCancel"><i class="fas fa-times float-right">삭제</i></div>
-                                  <button type="button" class="btn btn-outline-info btn-block">계약서 보기</button>
-                                  <button type="button" class="btn btn-outline-danger btn-block" disabled>정산중</button>
-                                  <button type="button" class="btn btn-info btn-block">후기작성</button>
+                                  <a type="button" class="btn btn-outline-info btn-block" href="/DeVenue/resources/contract/${co.project.proContract}" download>계약서 보기</a>
+                                  
+                                  <c:if test="${co.calculateStatus eq 'N' }">
+                                   <button type="button" class="btn btn-outline-danger btn-block" disabled>정산중</button>
+                                  </c:if>
+                                  
+                                  <c:if test="${co.calculateStatus eq 'Y' }">
+                                   <button type="button" class="btn btn-outline-danger btn-block" disabled>정산완료</button>
+                                  </c:if>
+                                 
+                                  
+                                  <c:set var="evalFlag" value="false"/>
+                                  <c:forEach items="${eval}" var="ev">
+                                  	<c:if test="${ev.eTarget eq co.project.proId}">
+                                  	
+                                  	<c:set var="evalFlag" value="true"/>
+                                  	<c:set var="eId" value="${ev.eId}"/>
+                                  	</c:if>
+                                  
+                                  </c:forEach>
+                                  
+                                  
+                                   <c:url var="cEvalInsert" value="cEvalInsert.do">
+				                    	<c:param name="cId" value="${co.project.memId }"/>
+					                    <c:param name="pId" value="${loginUser.memId }"/>
+				                    </c:url>
+				                    
+				                  <c:if test="${evalFlag eq 'true'}">
+				                  <button type="button" class="btn btn-info btn-block" onclick="showMyEval(${eId});">후기 보기</button>
+				                  </c:if>  
+				                  <c:if test="${evalFlag eq 'false'}">
+                                  <button type="button" class="btn btn-info btn-block" onclick="location.href='${cEvalInsert}'">후기작성</button>
+                                  </c:if>
                                 </div>
                               </div>
                             </div>
@@ -441,7 +578,69 @@
                 confirm("삭제하시겠어요?");
               })
           </script>
+          
+          
           <!--Section: Block Content project list 끝-->
+          
+          <!-- 내가 쓴 평가 보기용 모달 -->
+          <!-- Modal -->
+		<div class="modal fade" id="myEval" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel">내가 쓴 평가 보기</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        
+		        <div class="row">
+	                                        <div class="point col-3" style="margin-right: 0;">
+	                                            <p>전문성</p>
+	                                            <p>적극성</p>
+	                                            <p>일정 준수</p>
+	                                            <p>의사 소통</p>
+	                                            <p>만족도</p>
+	                                            <p>평균</p>
+	                                        </div>
+	                                        <div class="point col-2" style="margin-left: 0; margin-right: 0;">
+	                                            
+	                                            <p id="star1"></p>
+	                                            <p id="star2"></p>
+	                                            <p id="star3"></p>
+	                                            <p id="star4"></p>
+	                                            <p id="star5"></p>
+	                                            <p id="evalTotal"></p>
+	                                        </div>
+	                                        <div id="graphs" class="col-6">
+	                                            <canvas id="myChart"></canvas>
+	                                            
+	                                        </div>
+	               </div>
+	              
+	               <div class="row mt-4">
+	               				<div class="col-md-12">
+	               				 <p>평가 내용<p>
+	               				</div>
+	               				<div class="col-md-12">
+	               				<textarea id="evalContent" style="width:100%" cols="40"></textarea>
+	               				</div>
+	               
+	               </div>
+		        
+		        
+		        
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+          
+          
+          
 
           <!-- Section: Block Content 하단 페이지네이션 시작 -->
           <section class="mt-5 mb-5" id="pagination">

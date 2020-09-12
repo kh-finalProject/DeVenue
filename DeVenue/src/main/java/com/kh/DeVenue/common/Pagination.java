@@ -12,6 +12,7 @@ public static PageInfo getPageInfo(int currentPage,int listCount) {
 		int maxPage;
 		int startPage;
 		int endPage;
+	
 		
 		int boardLimit=5;
 		

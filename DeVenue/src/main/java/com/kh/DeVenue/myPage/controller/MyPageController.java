@@ -1,5 +1,7 @@
 package com.kh.DeVenue.myPage.controller;
 
+import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,14 +9,15 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,13 +29,17 @@ import com.kh.DeVenue.findMember.model.service.FindMemberService;
 import com.kh.DeVenue.findMember.model.vo.FindPartners;
 import com.kh.DeVenue.findMember.model.vo.PEvalView;
 import com.kh.DeVenue.member.model.exception.MemberException;
+import com.kh.DeVenue.member.model.vo.Member;
+import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.exception.MyPageException;
 import com.kh.DeVenue.myPage.model.service.MyPageService;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.CmypageApplyList;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
 import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
+import com.kh.DeVenue.myPage.model.vo.CmypagePayment;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
@@ -926,7 +933,33 @@ public class MyPageController {
 			
 		}
 		
-		// 포트폴리오 닉네임으로 중복값 제거
+		@RequestMapping(value="cMypageInfoUpdate.do")
+		public ModelAndView cMypageInfoUpdate(ModelAndView mv, HttpServletRequest request, Integer cId) {
+			String introduce=request.getParameter("introduce");
+			String url=request.getParameter("url");
+			
+			System.out.println("introduce : " + introduce);
+			System.out.println("url : " + url);
+			
+			HashMap map = new HashMap();
+			map.put("introduce", introduce);
+			map.put("url", url);
+			map.put("cId", cId);
+			
+			int result=myPageService.updateClientInfo(map);
+			
+			if(result>0) {
+				System.out.println("수정 성공!!");
+				mv.addObject("cId", cId).setViewName("redirect:clientInfo.do");
+			}else {
+				throw new MyPageException("클라이언트 정보 수정 실패");
+			}
+			
+			
+			return mv;
+		}
+		
+			// 포트폴리오 닉네임으로 중복값 제거
 		@RequestMapping(value="portNameChk.do")
 		public void portNameChk(@RequestParam("title") String title, HttpServletResponse response) throws IOException {
 			
@@ -946,5 +979,82 @@ public class MyPageController {
 			}
 		
 			out.close();
+		}
+		
+		// 클라이언트 결제 관리
+		@RequestMapping(value="clientPayment.do")
+		public ModelAndView clientPayment(ModelAndView mv, Integer cId,
+				@RequestParam(value="page",required=false) Integer page) {
+			int currentPage=1;
+			if(page!=null) {
+				currentPage=page;
+			}
+			
+			int listCount=myPageService.getPaymentListCount(cId);
+			System.out.println("listcount : " + listCount);
+					
+			PageInfo pi= getPageInfo(currentPage, listCount);
+			
+			ArrayList<CmypagePayment> list = myPageService.getPaymentList(cId, pi);
+			System.out.println("list : " + list);
+			
+			
+			if(!list.isEmpty()) {
+				mv.addObject("pi", pi)
+				.addObject("list", list)
+				.setViewName("member/clientPayment");
+			}else {
+				throw new MyPageException("결제 대기 프로젝트 조회 실패!!");
+			}
+			
+			return mv;
+		}
+		
+		// 결제 성공 업데이트 > 진행중으로
+		@RequestMapping(value="paymentUpdate.do")
+		public ModelAndView paymentUpdate(ModelAndView mv, Integer proId, Integer cId,
+				HttpServletRequest request) {
+			
+			// PST3 > PST4로 변경
+			int id = Integer.parseInt(request.getParameter("proId"));
+			System.out.println("proId : " + id);
+			
+			int pstUpdateResult = myPageService.updatePst(id);
+			if(pstUpdateResult > 0) {
+				// 진행중 프로젝트로 INSERT
+				int insertProcess = myPageService.insertProcess(id);
+				if(insertProcess>0) {
+					System.out.println("진행중 프로젝트로 인서트 성공!!");
+					
+					// P_APPLY 테이블 해당 프로젝트 지원자 STATUS 1 > P_MATCH로 인서트
+					int insertApplyMatch = myPageService.insertApplyMatch(id);
+					if(insertApplyMatch>0) {
+						System.out.println("매칭파트너스로 인서트 성공!!");
+						
+						// P_APPLY테이블 해당 프로젝트 지원자 STATUS > 3으로변경
+						int updateApplyMatch = myPageService.updateApply(id);
+						if(updateApplyMatch>0) {
+							System.out.println("지원프로젝트 업데이트 성공!!");
+						}else {
+							System.out.println("지원프로젝트 업데이트 실패!!");
+						}
+						
+						mv
+						.addObject("cId", cId)
+						.setViewName("redirect:clientPayment.do");
+					}else {
+						System.out.println("매칭파트너스로 인서트 실패!!");
+					}
+					
+					
+				}else {
+					System.out.println("진행중 프로젝트로 인서트 실패!!");
+				}
+				
+			}else {
+				throw new MyPageException("결제 후 데이터베이스 변경 실패");
+			}
+			
+			return mv;
 		}
 }

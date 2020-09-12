@@ -21,6 +21,7 @@
 		align-items: center;
 		justify-content: center;
 		margin-top: 10%;
+		margin-left:17%;
 	}
 	
 	.image-profile img {
@@ -29,8 +30,11 @@
 </style>
 </head>
 <body>
+	<!-- munubar -->
 	<jsp:include page="../common/menubar.jsp" />
-	<jsp:include page="../common/pSubMenubar.jsp" />
+
+	<!-- sidebar -->
+	<jsp:include page="../common/sideMenubarAll.jsp" />
 
 	<div class="container">
 		<div class="row text-white"	style="border-bottom: 1px solid lightgray;">

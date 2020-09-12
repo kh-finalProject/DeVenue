@@ -207,6 +207,8 @@
 
 <body>
   	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
   	<jsp:include page="../common/pSideMenubar.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 
@@ -344,7 +346,7 @@
                                 <label>주소지</label>
                             </td>
                             <td>
-                                <input type="text" name="idenAdress" class="idenAdress" id="idenAdressInput" value="" required>
+                                <input type="text" name="idenAddress" class="idenAdress" id="idenAdressInput" value="" required>
                             </td>
                         </tr>
                         <tr>
@@ -357,7 +359,7 @@
                                     <span class="input-group-text" id="inputGroupFileAddon01">업로드</span>
                                     </div>
                                     <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="idenFile" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" required>
+                                    <input type="file" class="custom-file-input" name="idenFile" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" required accept="image/x-png,image/gif,image/jpeg">
                                     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                     </div>
                                 </div>

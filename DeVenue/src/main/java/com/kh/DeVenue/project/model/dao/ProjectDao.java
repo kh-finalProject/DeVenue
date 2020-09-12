@@ -8,9 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
+import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.myPage.model.vo.Eval;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
@@ -62,10 +63,11 @@ public class ProjectDao {
 	}
 
 
-	public ArrayList<Project> selectCheckList(String memId) {
+	public ArrayList<Project> selectCheckList(String memId,PageInfo pi) {
 		ArrayList list =new ArrayList();
-		
-		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList",memId);
+		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList",memId,rowBounds);
 		return list;
 	}
 
@@ -546,12 +548,69 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
-	public ArrayList<Member> selectModal(String proId) {
-	ArrayList list =new ArrayList();
+
+	public ArrayList<Project> selectApplyList(int proId) {
+		ArrayList list =new ArrayList();
 		
-		list= (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectModal", proId);
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectApplyList", proId);
 		return list;
+	}
+
+
+
+	public ArrayList<Project> selectCommitList() {
+ArrayList list =new ArrayList();
 		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCommitList");
+		return list;
+	}
+
+
+	public int commitProject(int proId) {
+		
+		return sqlSessionTemplate.update("projectMapper.commitProject",proId);
+	}
+
+
+	public int getCheckListCount(String memId) {
+		
+		 return sqlSessionTemplate.selectOne("projectMapper.getCheckListCount",memId);
+	}
+
+
+	public int applyUpdate(int memPId) {
+		
+		return sqlSessionTemplate.update("projectMapper.applyUpdate",memPId);
+	}
+
+
+	public int getCommitListCount(int proId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getCommitListCount",proId);
+	}
+
+
+	public int getRecuritNum(int proId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getRecuritNum",proId);
+	}
+
+
+	public int rejectApply(int memPId) {
+		
+		return sqlSessionTemplate.update("projectMapper.rejectApply",memPId);
+	}
+
+
+	public int selectLikeId(HashMap ids) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.selectLikeId", ids);
+	}
+
+
+	public ArrayList<CPeval> selectEvaluation(HashMap condition) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectEvaluation", condition);
 	}
 
 

@@ -3,6 +3,7 @@ package com.kh.DeVenue.member.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EPid;
 import com.kh.DeVenue.member.model.vo.EvalProjectList;
 import com.kh.DeVenue.member.model.vo.FCeval;
 import com.kh.DeVenue.member.model.vo.FCprojectHistory;
@@ -160,10 +162,40 @@ public class MemberDao {
 
 	}
 
+	public Map<String, String> isDeathOrSanctions(String memEmail) {
+		return sqlSessionTemplate.selectOne("memberMapper2.isDeathOrSanctions", memEmail);
+	}
+
+	public int updateDecAndDeath(String memEmail) {
+		return sqlSessionTemplate.update("memberMapper2.updateDecAndDeath", memEmail);
+	}
+
+	public int toDeath(String memEmail) {
+		return sqlSessionTemplate.update("memberMapper2.toDeath", memEmail);
+	}
+	
 	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList2", status, rowBounds);
 	}
+
+	public EPid getEPid(HashMap id) {
+		return sqlSessionTemplate.selectOne("memberMapper.getEPid", id);
+	}
+
+	public int insertClientReport(HashMap report) {
+		return sqlSessionTemplate.insert("memberMapper.insertClientReport", report);
+	}
+
+	public int countUpReport(int reportCid) {
+		return sqlSessionTemplate.update("memberMapper.countUpReport", reportCid);
+	}
+
+	public int reportCheck(HashMap report) {
+		return sqlSessionTemplate.selectOne("memberMapper.reportCheck", report);
+	}
+
+	
 }

@@ -682,7 +682,7 @@ body{
     padding-right: 10px;
     color: rgba(255, 255, 255, 0.5);
     font-size: 2px !important;
-    max-width: 90px;
+    max-width: 100px;
     min-width: 50px;
   }
 
@@ -703,7 +703,7 @@ body{
     display: flex;
     position: relative;
     /* left: 100px; */
-    max-width: 200px;
+    max-width: 220px;
     margin-bottom: 3px;
   }
 
@@ -722,7 +722,7 @@ body{
     padding-top: 10px;
     /* margin-right: 5px; */
     min-width: 50px;
-    max-width: 150px;
+    max-width: 80px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -3599,6 +3599,7 @@ function changeChatAllowOper(chatSet){
    		$('.chatRoomInputWrap').find('textarea').each(function(index, item){
 			$(item).prop('disabled', 'disabled').prop('placeholder', '상담 시간이 아닙니다');
 		})
+		$('input[type=file]').prop('disabled', 'disabled');
 		// 운영시간 시작까지 남은 시간을 계산, '~뒤 상담이 운영됩니다' 라고 띄워줌(하루 미만일땐 시간, 한시간 미만일땐 분 그외엔 일 )
 		// 비운영 시간이지만 운영일인 경우
 		if(minGap == 0){
@@ -3642,6 +3643,7 @@ function changeChatAllowOper(chatSet){
 			$('.chatRoomInputWrap').find('textarea').each(function(index, item){
 				$(item).prop('disabled', 'disabled').prop('placeholder', '상담 시간이 아닙니다');
 			})
+			$('input[type=file]').prop('disabled', 'disabled');
 		}else{//운영시간이고 오늘인 경우
 			$('.Messenger_prompt2_main').html('응답시간 빠름&nbsp;&nbsp;<img class="thunderIcon" src="resources/image/thunder.png" width="20px" height="20px">')
 			$('.Messenger_prompt3_main').html('보통 몇 분 내에 응답합니다.');
@@ -3656,6 +3658,7 @@ function changeChatAllowOper(chatSet){
 			$('.chatRoomInputWrap').find('textarea').each(function(index, item){
 				$(item).prop('disabled', false).prop('placeholder', '메시지를 입력하세요');
 			})
+			$('input[type=file]').prop('disabled', false);
 		}
 	}
 	

@@ -1,17 +1,20 @@
 package com.kh.DeVenue.myPage.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
 import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
+import com.kh.DeVenue.myPage.model.vo.CmypagePayment;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
@@ -234,11 +237,37 @@ public class MyPageDao {
 		
 		return sqlSessionTemplate.selectOne("memberMapper.fpselectIntroduce",profileId);
 	}
-
 	
 
+	public int updateClientInfo(HashMap map) {
+		return sqlSessionTemplate.update("myPageMapper.updateClientInfo", map);
+	}
 
+	public int getPaymentListCount(Integer cId) {
+		return sqlSessionTemplate.selectOne("myPageMapper.getPaymentListCount", cId);
+	}
 
-	
+	public ArrayList<CmypagePayment> getPaymentList(Integer cId, PageInfo pi) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getPaymentList", cId, rowBounds);
+	}
+
+	public int updatePst(int id) {
+		return sqlSessionTemplate.update("myPageMapper.updatePst", id);
+	}
+
+	public int updateApply(int id) {
+		return sqlSessionTemplate.update("myPageMapper.updateApply", id);
+	}
+
+	public int insertApplyMatch(int id) {
+		return sqlSessionTemplate.insert("myPageMapper.insertApplyMatch", id);
+	}
+
+	public int insertProcess(int id) {
+		return sqlSessionTemplate.insert("myPageMapper.insertProcess", id);
+	}
 
 }

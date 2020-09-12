@@ -8,6 +8,8 @@
 	<typeAliases>
 		<typeAlias type="com.kh.DeVenue.project.model.vo.Project" alias="Project"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ProjectList" alias="ProjectList"/>
+	
+	    <typeAlias type="com.kh.DeVenue.project.model.vo.ApplyConfirm" alias="ApplyConfirm"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.Tech" alias="Tech"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ProjectQuestion" alias="ProjectQuestion"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.Member" alias="Member"/>
@@ -35,6 +37,8 @@
 		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.Bank" alias="Bank"/>
 		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.MemType" alias="MemType"/>
 		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.Signature2" alias="Signature2"/>
+		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.IdenMember" alias="IdenMember"/>
+		<typeAlias type="com.kh.DeVenue.memberAccount.model.vo.DeclareDTO" alias="DeclareDTO"/>
 
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FindClientDetail" alias="FindClientDetail"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FCprojectHistory" alias="FCprojectHistory"/>
@@ -101,6 +105,11 @@
 		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectMatch" alias="ProjectMatch"/>
 		<!-- 진행중인 프로젝트 -->
 		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectProcess" alias="ProjectProcess"/>
+		<typeAlias type="com.kh.DeVenue.member.model.vo.EPid" alias="EPid"/>
+		
+		<typeAlias type="com.kh.DeVenue.calculation.model.vo.Calculation" alias="Calculation"/>
+		<typeAlias type="com.kh.DeVenue.myPage.model.vo.CmypagePayment" alias="CmypagePayment"/>
+		
 	</typeAliases>
 
 	<mappers>
@@ -110,6 +119,7 @@
 		<mapper resource="/mappers/member2-mapper.xml"/>
 		<mapper resource="/mappers/memberAccountMapper.xml"/>
 		<mapper resource="/mappers/myPage-mapper.xml"/>
+		<mapper resource="/mappers/calculation-mapper.xml"/>
 		<mapper resource="/mappers/findPart-mapper.xml"/>
 	</mappers>
 	
