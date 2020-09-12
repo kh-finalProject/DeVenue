@@ -59,6 +59,7 @@
 /* 			height: 100vh; */
 		}
 
+
       /* 사이드바 타이틀(파트너스/클라이언트) */
       .myPage_sideNav_title {
          padding-left: 10%;
@@ -145,6 +146,7 @@ $(document).ready(function(){
 
 </script>
 <body>
+
 
    <!-- 서브 메뉴바 영역-->
    <c:if test="${loginUser.userType == 'UT3'}">

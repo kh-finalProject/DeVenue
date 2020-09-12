@@ -553,17 +553,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
-//	@Override
-//	public ProjectQuestion getQuestion(int proId) {
-//		
-//		return proDao.getQuestion(proId);
-//	}
 
 
 
 
-
-
+	@Override
+	public int getUpdateForm(Integer proId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 
 
@@ -574,13 +572,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
-
 	@Override
 	public Project selectOne(int proId) {
 		
 		return proDao.selectOne(proId);
 	}
-
 
 
 	@Override
@@ -590,13 +586,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
-
 	@Override
 	public int updateQuestion(ProjectQuestion q) {
 
 		return proDao.updateQuestion(q);
 	}
-
 
 
 	@Override
@@ -720,6 +714,9 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return proDao.selectLikeId(ids);
 	}
+
+
+
 
 
 

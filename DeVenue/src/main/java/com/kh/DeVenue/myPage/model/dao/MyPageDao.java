@@ -227,7 +227,9 @@ public class MyPageDao {
 	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {
 		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getCountPartners", cId);
 	}
+
 	
+
 	public int updateClientInfo(HashMap map) {
 		return sqlSessionTemplate.update("myPageMapper.updateClientInfo", map);
 	}

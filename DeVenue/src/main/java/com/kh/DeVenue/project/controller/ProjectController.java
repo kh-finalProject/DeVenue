@@ -11,9 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,8 +34,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.kh.DeVenue.findMember.model.vo.FindPartners;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.myPage.model.vo.Career;
+import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.PortFolio;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
+import com.kh.DeVenue.myPage.model.vo.SCCareer;
+import com.kh.DeVenue.myPage.model.vo.Skill;
 import com.kh.DeVenue.project.model.exception.ProjectException;
 import com.kh.DeVenue.project.model.service.ProjectService;
 import com.kh.DeVenue.project.model.vo.Application;
@@ -67,77 +72,7 @@ ProjectService pService;
 	
 	}
 	
-//클릭시 디테일페이지로 이동
-@RequestMapping(value = "fpDetail.do")
-public ModelAndView detail(ModelAndView mv, HttpServletRequest request) {
 
-   // 프로필 아이디를 조회하고
-   String id1 = request.getParameter("proId");
-   int profileId = Integer.valueOf(id1);
-   System.out.println(profileId);
-
-   // memId를 비교해서 전체 값 가져오기
-   FindPartners fp = fmService.selectFm(profileId);
-   System.out.println(fp);
-
-   // profileId를 넘겨서 포트폴리오값을 가져오자
-   ArrayList<PortFolio> portfolio = myPageService.portList(profileId);
-   System.out.println(portfolio);
-
-   // profileId를 념겨서 portTec
-   for (int i = 0; i < portfolio.size(); i++) {
-      System.out.println(portfolio.get(i).getPortId());
-
-      int portId = portfolio.get(i).getPortId();
-
-      ArrayList<PortTecView> portTec = myPageService.ptList(portId);
-      System.out.println(portTec);
-
-      mv.addObject("portTec", portTec);
-   }
-
-   // profileId를 넘겨서 보유 기술 list 가져오기
-   ArrayList<Skill> skillList = myPageService.selectSkillInfo(profileId);
-//         System.out.println(skillList);
-
-   // profileId를 넘겨서 경력list 가져오기
-   ArrayList<Career> careerList = myPageService.selectCareerInfo(profileId);
-//         System.out.println(careerList);
-
-   // profileId를 넘겨 학력list 가져오기
-   ArrayList<SCCareer> sccareerList = myPageService.selectSCCareerInfo(profileId);
-//         System.out.println(sccareerList);
-
-   // profileId를 넘겨 자격증list 가져오기
-   ArrayList<Certificate> certiList = myPageService.selectCertificateInfo(profileId);
-//         System.out.println(certiList);
-
-   // profileId를 넘겨 포트폴리오 개수 가져오기
-   int portCount = myPageService.portCount(profileId);
-
-   // memId를 검색해서 평가 가져오기
-   String mId = request.getParameter("memId");
-   int memId = Integer.valueOf(mId);
-
-   // memId를 기준으로 파트너스 평가 가져오기
-   ArrayList<PEvalView> PartEval = fmService.partEvalList(memId);
-   System.out.println(PartEval);
-
-   mv.addObject("fp", fp);
-   mv.addObject("portfolio", portfolio);
-   mv.addObject("skillList", skillList);
-   mv.addObject("careerList", careerList);
-   mv.addObject("sccareerList", sccareerList);
-   mv.addObject("certiList", certiList);
-   mv.addObject("portCount", portCount);
-   mv.addObject("PartEval", PartEval);
-
-   mv.addObject("profileId", profileId);
-   mv.addObject("memId", memId);
-   mv.setViewName("findMember/findPartnersDetail");
-
-   return mv;
-}
 @RequestMapping("proAdmin.do")
 		public ModelAndView projectAdminView(ModelAndView mv) {
 		
@@ -656,8 +591,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="page", required=false) Integer page) {
 		
 		System.out.println("parameter 뭐 넘어왔나?"+project);
-		//프로젝트 디테일 가져오기
-		System.out.println(project);
+		//프로젝트 디테일 가져오기		
 		ProjectDetail detail=pService.selectProjectDetail(project.getId());
 		
 		// 클라이언트의 전체 프로젝트 수 
@@ -674,10 +608,10 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		ArrayList<ProjectList> candidate=pService.selectRecommend(project);
 		System.out.println("화면단 가기 전, 추천 프로젝트 리스트"+candidate);
 		
-		
+		mv.addObject("page",page);
 		mv.addObject("detail", detail);
 		mv.addObject("candidate", candidate);
-		mv.setViewName("project/findProjectDetailView");
+		mv.setViewName("project/find/findProjectDetailView");
 		return mv;
 		
 	}
@@ -2137,5 +2071,5 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		
 	
 	}
-	
+
 }

@@ -1003,7 +1003,9 @@
 		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
 	</insert>
 	
+
 <select id="getLikeCount" parameterType="hashmap" resultType="_int">
+
 		SELECT COUNT(*)
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
@@ -1581,7 +1583,7 @@
 	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	WHERE S.MEM_ID=#{memId} AND P.PRO_STA_ID='PST3'
-	
+
 	</select>
 	
 	<delete id="deleteThisSuggest" parameterType="_int">
@@ -1593,8 +1595,8 @@
 	<select id="selectLikeId" parameterType="hashmap" resultType="_int">
 	SELECT MAX(PRO_LID)
 	FROM P_LIKE
+
 	</select>
-
-
+	
 
 </mapper>

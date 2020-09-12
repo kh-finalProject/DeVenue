@@ -309,7 +309,11 @@ $(document).ready(function(){
 					<c:if test="${loginUser.userType eq 'UT3'}">
 						<h3 align="right" style="color: white">
 							<div class="btn-group">
+
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
 							    <img src="" height="30px" width="30px" style="border-radius: 50%" onerror="this.style.visibility='hidden';">									  
 							  </button>
 							  <div class="dropdown-menu" style="position:absolute;left:-88px;">

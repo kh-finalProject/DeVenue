@@ -284,6 +284,7 @@
   <main>
     <div class="container-fluid">
 	 <!-- 로그인 확인 row 시작 -->
+	 <c:if test="${not empty loginUser}">
       <div class="row mt-5">
 
         <div class="col-md-2"></div>
@@ -292,6 +293,7 @@
         </div>
         <div class="col-md-4"></div>
       </div>
+      </c:if>
       <!-- 로그인 확인 row 끝 -->
       
 
@@ -756,10 +758,13 @@
                             </div>
                             <div class="card-footer">
                             	<c:if test="${r.rAnswerStatus eq 'Y'}">
+                            	
                                 <a class="showAnswer">답글보기</a>
                                 </c:if>
                                 <c:if test="${r.rAnswerStatus eq 'N'}">
+                                <c:if test="${loginUser.memId eq detail.project.memId}">
                                 <a class="writeAnswer">답변하기</a>
+                                </c:if>
                                 </c:if>
                             </div>
                         </div>
@@ -983,7 +988,7 @@
         							
         							if(memId!=""){
         							
-        							if($parent[i].writer.memId==memId||${detail.project.memId}==memId){
+        							if($parent[i].writer.memId==memId||"${detail.project.memId}"==memId){
         								
         								$text.text($parent[i].rContent);
         							}else{
@@ -1021,7 +1026,16 @@
         							$isAnswer.addClass("writeAnswer").text("답글쓰기");
         						}
         						
-        						$foot.append($isAnswer);
+        						if($parent[i].rAnswerStatus=='Y'){
+        							$foot.append($isAnswer);
+        						}else{
+        							
+        							if("${detail.project.memId}"==memId){
+        							$foot.append($isAnswer);
+        							}
+        						}
+        						
+        						
         						$body.append($foot);
         						
         						$card.append($body);
@@ -1145,6 +1159,11 @@
         			
         			if(memId==""){
         				alert("로그인한 회원만 문의 댓글을 남길 수 있습니다.");
+        				return;
+        			}
+        			
+        			if(${loginUser.decCount}>=3){
+        				alert("누적 신고 횟수가 3회를 초과하여 지원할 수 없습니다.");
         				return;
         			}
         			
@@ -1585,11 +1604,13 @@
             <div class="ml-3" id="applyBtnArea">
                 
          		<c:if test="${loginUser.userType eq 'UT4'}">
+         		<c:if test="${detail.project.proRecruit eq 'Y'}">
                 <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="applyProjectBtn">프로젝트 지원하기</button>
+                </c:if>
                 <button type="button" id="likeThisProject" class="btn btn-outline-light btn-lg btn-block mt-3 mb-3">관심 프로젝트 등록</button>
                 </c:if>
                 <c:if test="${loginUser.userType eq 'UT3'}">
-                <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="createProjectBtn">프로젝트 생성하기</button>
+                <button type="button" class="btn btn-info btn-lg btn-block mt-3" id="createProjectBtn" onclick="location.href='addProject.do'">프로젝트 생성하기</button>
                 </c:if>
                 
                 <div style="width: 100%; border-top: 1px solid white;"></div>
@@ -1801,9 +1822,10 @@
         						tempId=data.tempId;
         						agree=confirm("임시저장된 지원서가 있습니다. 계속 작성하시겠습니까?");
         						
-        						console.log("동의여부?"+agree);
         						if(agree){
-        							location.href="loadTempApplication.do?pId="+pId+"&aId"+tempId;
+        							location.href="loadTempApplication.do?pId="+pId+"&aId="+tempId;
+        							return;
+        							
         						}else{
         							return;
         						}

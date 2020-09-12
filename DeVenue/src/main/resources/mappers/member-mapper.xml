@@ -301,7 +301,6 @@
 	<insert id="insertEval" parameterType="hashmap">
 		INSERT INTO EVAL VALUES(CEVAL_SEQ.NEXTVAL, #{pId}, #{cId}, #{proId}, #{total}
 			, #{eContent}, #{star1}, #{star2}, #{star3}, #{star4}, #{star5}, SYSDATE, 'Y')
-
 	</insert>
 
 
@@ -371,7 +370,9 @@
 		AND MEM_STATUS = 'Y'
 	</select>
 	
+
 	<!-- 클라이언트 찾기 정렬 ajax -->
+
 	<!-- <select id="getListCount2" parameterType="_int" resultType="_int">
 		SELECT COUNT(*)
 		FROM MEMBER

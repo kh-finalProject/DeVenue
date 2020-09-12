@@ -527,6 +527,7 @@
 	</select>
 	
 	<!-- 결제후 pst업데이트 -->
+	
 	<update id="updatePst" parameterType="_int">
 		UPDATE PROJECT
 		SET PRO_STA_ID = 'PST4'
@@ -559,4 +560,7 @@
 		SET PRO_ASTATUS=3
 		WHERE PRO_ID = #{id}
 	</update>
+
+	
+	
 </mapper>

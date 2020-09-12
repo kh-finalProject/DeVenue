@@ -241,6 +241,7 @@ public interface ProjectService {
 	ArrayList<Member> selectModal(String proId);
 
 
+
 	ArrayList<Project> selectApplyList(int proId);
 
 

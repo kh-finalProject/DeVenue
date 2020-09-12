@@ -213,6 +213,7 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 
 	@Override
+
 	public ArrayList<PortTecView> ptList(int portId) {
 		 
 		return myPageDao.ptList(portId);
@@ -221,7 +222,10 @@ public class MyPageServiceImpl implements MyPageService{
 	@Override
 	public PmypagePartnersInfo selectPartnersInfo(Integer pId) {
 		return myPageDao.selectPartnersInfo(pId);
+
 	}
+
+
 
 	@Override
 	public ArrayList<PartnersApplyCount> getApplyCount(Integer pId) {
@@ -264,6 +268,7 @@ public class MyPageServiceImpl implements MyPageService{
 	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {
 		return myPageDao.getCountPartners(cId);
 	}
+
 
 
 	@Override
