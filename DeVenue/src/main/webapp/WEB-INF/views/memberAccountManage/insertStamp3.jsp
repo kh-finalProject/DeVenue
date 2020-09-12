@@ -411,7 +411,7 @@
                     <tr>
                         <td style="font-size: 15px; width: 110px;"><span style="color: orange;">*</span> 잘라내기</td>
                         <td style="padding-bottom: 0px;">
-                            서명이 위치한 곳을 드래그하거나 핸들을 움직여 잘라낼 영역을 지정해주세요.
+                            서명이 위치한 곳을 드래그하거나 핸들을 움직여 잘라낼 영역을 지정해주세요.<br><span style="color: orange;">*</span>새로 고침시 새로 파일을 업로드 하셔야 합니다.
                         </td>
                     </tr>
                     <tr>
@@ -438,7 +438,7 @@
                         <td></td>
                         <td style="padding-top: 10px; padding-bottom: 0px !important; display: flex;">
                             <!-- 받은 이미지 -->
-                            <img src="${pageContext.servletContext.contextPath }/resources/sigImg/${renameFileName}" id="target" alt="[Jcrop Example]" />
+                            <img src="${pageContext.servletContext.contextPath }/resources/sigImg/${renameFileName}" id="target" alt="[Jcrop Example]" width="250px" height="250px"/>
                             <button type="button" class="btn btn-secondary" style="margin-left:10px;  height: 35px !important; min-width: 110px;" onclick="reUpload();">다시 첨부하기</button>
                             <!-- 잘려진 영역 미리보기 -->
 							<div id="preview-pane">
@@ -504,6 +504,18 @@
 	            }
     		}
         }
+    	
+    	// 새로고침 막기
+    	function doNotReload(){
+		if( (event.ctrlKey == true && (event.keyCode == 78 || event.keyCode == 82)) //ctrl+N , ctrl+R
+		|| (event.keyCode == 116) // function F5
+		{
+		event.keyCode = 0;
+		event.cancelBubble = true;
+		event.returnValue = false;
+		}
+		}
+		document.onkeydown = doNotReload;
         
      	// 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
 	    $(function(){

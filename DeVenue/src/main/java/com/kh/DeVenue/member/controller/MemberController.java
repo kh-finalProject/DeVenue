@@ -93,7 +93,7 @@ public class MemberController {
 		// 로그인 유저 담기 전, 먼저 제재대상 회원인지 확인(DEATH -> DEC_COUNT 순)
 		// 죽일 회원이면(DEATH 수치 3회) 탈퇴처리 후(원랜 즉시 반영되어야겠지만 이렇게해도 상관없음) 제재회원 페이지로
 		// 일반제재대상 회원이면 제재일로부터 7일이 지났는지 확인 후 7일 이전이면 제재유저페이지로 이동
-		// 7일이 지나면 MODIFYDATE를 0으로 만들고 DEC_COUNT도 0으로 만들고 DEATH컬럼을 1회 증가 시킨 후
+		// 7일이 지나면 MODIFYDATE를 NULL로 만들고 DEC_COUNT도 0으로 만들고 DEATH컬럼을 1회 증가 시킨 후
 		// '로그인유저객체를 담고' 제재회원 안내페이지로 넘어간다
 		Map map = mService.isDeathOrSanctions(memEmail);
 		

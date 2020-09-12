@@ -334,7 +334,7 @@
                                     </div>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="stampFile" id="input_file"
-                                            aria-describedby="inputGroupFileAddon01">
+                                            aria-describedby="inputGroupFileAddon01" accept="image/x-png,image/gif,image/jpeg">
                                         <label id="fileLabel" class="custom-file-label" for="inputGroupFile01"
                                             style="overflow:hidden; text-overflow: ellipsis; min-width: 100px; white-space: nowrap;">사용할
                                             <b style="margin:0px;padding: 0px;">'서명 이미지'</b>를 첨부해 주세요</label>

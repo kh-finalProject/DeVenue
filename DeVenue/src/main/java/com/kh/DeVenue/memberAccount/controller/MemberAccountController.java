@@ -1,18 +1,18 @@
 package com.kh.DeVenue.memberAccount.controller;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -319,8 +318,10 @@ public class MemberAccountController {
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String originFileName = file.getOriginalFilename();
-		originFileName = new String(originFileName.getBytes("8859_1"),"utf-8");
+		String originFileName = file.getOriginalFilename().toString().replace('%', '_'); //리퀘스트로 넘어온 파일명
+//		originFileName = new String(originFileName.getBytes("8859_1"),"UTF-8");
+//		String docName = URLEncoder.encode(originFileName,"EUC-KR");
+//		String originFileName = file.getOriginalFilename();
 	    System.out.println(originFileName);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis()))
 				+"."+originFileName;
@@ -593,8 +594,13 @@ public class MemberAccountController {
 		String filePath = root + folderName + "\\" + beforeFileName;
 		
         File sourceimage = new File(filePath);
-        BufferedImage img = ImageIO.read(sourceimage);
-        
+        BufferedImage img = null;
+        // 새로고침하여 파일을 읽어올 수 없는 경우 첫단계로 보내버림
+        try {
+        	img = ImageIO.read(sourceimage);
+        }catch(IIOException e) {
+        	return "redirect:gotoInsertStamp.do";
+        }
 //        System.out.println("버퍼드이미지 가로 : "+img.getWidth());
 //        System.out.println("버퍼드이미지 세로 : "+img.getHeight());
         
