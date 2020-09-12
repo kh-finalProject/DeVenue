@@ -210,7 +210,7 @@ public class MemberController {
 					request.setAttribute("allUnReadCount", allUnReadCount);
 				}
 				
-				return "common/mainPage";
+				return "redirect:home.do";
 			}
 			//------------------------------------------------------------------------------
 			
@@ -327,7 +327,7 @@ public class MemberController {
 		
 		session.invalidate();
 
-		return "common/mainPage";
+		return "redirect:home.do";
 	}
 	
 
