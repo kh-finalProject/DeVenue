@@ -92,6 +92,15 @@
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PmypageSuggest" alias="PmypageSuggest"/>
 		<typeAlias type="com.kh.DeVenue.myPage.model.vo.PmypageProcess" alias="PmypageProcess"/>
 		
+		<!-- 파트너스찾기 파트너스에 대한 클라이언트 평가 view -->
+		<typeAlias type="com.kh.DeVenue.findMember.model.vo.PEvalView" alias="PEvalView"/>
+		
+		<!-- 종료프로젝트 -->
+		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectEnd" alias="ProjectEnd"/>
+		<!-- 매칭 파트너스 -->
+		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectMatch" alias="ProjectMatch"/>
+		<!-- 진행중인 프로젝트 -->
+		<typeAlias type="com.kh.DeVenue.project.model.vo.ProjectProcess" alias="ProjectProcess"/>
 	</typeAliases>
 
 	<mappers>

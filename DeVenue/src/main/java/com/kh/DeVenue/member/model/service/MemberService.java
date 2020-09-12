@@ -71,5 +71,6 @@ public interface MemberService {
 
 	ArrayList<FindClient> selectList(PageInfo pi, int status);
 
+
 	
 }

@@ -262,6 +262,19 @@ public class MyPageServiceImpl implements MyPageService{
 		return myPageDao.getCountPartners(cId);
 	}
 
+	@Override
+	public int portCount(int profileId) {
+		
+		return myPageDao.portCount(profileId);
+	}
+
+	@Override
+	public Profile selectIntroduce(int profileId) {
+		
+		return myPageDao.fpselectIntroduce(profileId);
+	}
+
+
 
 
 

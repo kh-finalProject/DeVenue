@@ -422,17 +422,9 @@ section {
 	<!-- Section -->
 	<section>
 		<div class="container">
-			<div class="row text-white"
-				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<div class="col-2"
-					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-					${loginUser.memNick } 마이페이지</div>
-			</div>
 			<div class="row">
-				<!-- 구 sideMenubar -->
-				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
 				<!-- 새 sidMenubar -->
-				<jsp:include page="../common/pSideMenubar.jsp" />
+				<jsp:include page="../common/findPartSideMenubar.jsp" />
 			</div>
 			<div class="col-8 text-white"
 				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
@@ -440,14 +432,11 @@ section {
 				<div class="row">
 					<div class="col-12"
 						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
-						<p style="float: left; font-size: 30px;">마이페이지 - 학력</p>
-						<a href="mypagePortfolioAll.html" class="btn btn-info"
-							style="float: right;">전체포트폴리오 보기</a>
+						<p style="float: left; font-size: 30px;">${mem.memNick }님의 학력</p>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h3>
-							학력 <a href="academicUpdate.do" class="btn btn-info"
-								style="float: right;">추가하기</a>
+							학력
 						</h3>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
@@ -461,7 +450,6 @@ section {
 										<td>상태</td>
 										<td>입학일</td>
 										<td>졸업일</td>
-										<td>도구</td>
 									</tr>
 									<tr class="table-light"
 										style="text-align: center; vertical-align: middle; font-size: 15px">
@@ -507,10 +495,6 @@ section {
 													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
 													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
 													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
-										<td><input type="hidden" name="scId" value="${sc.scId }">
-											<input type="hidden" name="profileId"
-											value="${sc.profileId }">
-											<button id="del" class="btn btn-info">삭제</button></td>
 									</tr>
 								</table>
 							</form>

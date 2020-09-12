@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -418,21 +418,12 @@ section {
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
 
-
 	<!-- Section -->
 	<section>
 		<div class="container">
-			<div class="row text-white"
-				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<div class="col-2"
-					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-					${loginUser.memNick } 마이페이지</div>
-			</div>
 			<div class="row">
-				<!-- 구 sideMenubar -->
-				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
 				<!-- 새 sidMenubar -->
-				<jsp:include page="../common/pSideMenubar.jsp" />
+				<jsp:include page="../common/findPartSideMenubar.jsp" />
 			</div>
 			<div class="col-8 text-white"
 				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
@@ -440,77 +431,31 @@ section {
 				<div class="row">
 					<div class="col-12"
 						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
-						<p style="float: left; font-size: 30px;">마이페이지 - 학력</p>
-						<a href="mypagePortfolioAll.html" class="btn btn-info"
-							style="float: right;">전체포트폴리오 보기</a>
+						<p style="float: left; font-size: 30px;">${mem.memNick }자격증</p>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h3>
-							학력 <a href="academicUpdate.do" class="btn btn-info"
-								style="float: right;">추가하기</a>
+							자격증 
 						</h3>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<c:forEach var="sc" items="${sccareerList }">
-							<form method="get" action="delacademic.do">
+						<c:forEach var="certi" items="${certiList }">
+							<form method="get" action="delCerti.do">
 								<table class="table">
 									<tr class="table-secondary" style="text-align: center;">
-										<td>학교명</td>
-										<td>전공</td>
-										<td>분류</td>
-										<td>상태</td>
-										<td>입학일</td>
-										<td>졸업일</td>
-										<td>도구</td>
+										<td>자격증명</td>
+										<td>발급기관</td>
+										<td>발행일자</td>
+										<td>일련번호</td>
 									</tr>
 									<tr class="table-light"
-										style="text-align: center; vertical-align: middle; font-size: 15px">
-
-										<td>${sc.scName }</td>
-										<td>${sc.scMajor }</td>
-										<c:choose>
-											<c:when test="${sc.sgId eq 'SG1'}">
-												<td>중학교</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG2'}">
-												<td>고등학교</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG3'}">
-												<td>전문대(2~3)</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG4'}">
-												<td>대학교(4)</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG5'}">
-												<td>대학원</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG6'}">
-												<td>박사과정</td>
-											</c:when>	
-										</c:choose>
-										<c:choose>
-											<c:when test="${sc.ssId eq 'SS1'}">
-												<td>재학</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS2'}">
-												<td>휴학</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS3'}">
-												<td>졸업</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS4'}">
-												<td>자퇴</td>
-											</c:when>
-										</c:choose>
-										
-										<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
-													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
-													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
-										<td><input type="hidden" name="scId" value="${sc.scId }">
-											<input type="hidden" name="profileId"
-											value="${sc.profileId }">
-											<button id="del" class="btn btn-info">삭제</button></td>
+										style="text-align: center; vertical-align: middle;">
+										<td>${certi.ccName }</td>
+										<td>${certi.ccPlace }</td>
+										<td><fmt:parseDate pattern="yyyy-MM-dd"
+												value="${certi.ccCreateDate }" var="ccStartDate" /> <fmt:formatDate
+												value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
+										<td>${certi.ccNumber }</td>
 									</tr>
 								</table>
 							</form>
@@ -533,8 +478,8 @@ section {
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
 		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script> -->
-	<!-- <script
+		crossorigin="anonymous"></script>
+	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
 		crossorigin="anonymous"></script>

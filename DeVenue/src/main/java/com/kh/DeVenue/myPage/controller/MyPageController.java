@@ -3,7 +3,9 @@ package com.kh.DeVenue.myPage.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.DeVenue.findMember.model.service.FindMemberService;
 import com.kh.DeVenue.findMember.model.vo.FindPartners;
+import com.kh.DeVenue.findMember.model.vo.PEvalView;
 import com.kh.DeVenue.member.model.exception.MemberException;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.exception.MyPageException;
@@ -54,6 +57,12 @@ public class MyPageController {
 	@Autowired
 	private FindMemberService fmService;
 
+	// 로그인페이지로 이동
+	@RequestMapping(value="logingo.do")
+	public String login() {
+		return "member/login";
+	}
+	
 	// 프로필로 이동
 	@RequestMapping(value = "profile.do")
 	public ModelAndView profileView(HttpServletRequest request, ModelAndView mv) {
@@ -83,21 +92,30 @@ public class MyPageController {
 		
 		// profileId를 넘겨서 보유 기술 list 가져오기
 		ArrayList<Skill> skillList = myPageService.selectSkillInfo(profileId);
-		System.out.println(skillList);
+//		System.out.println(skillList);
 		
 		// profileId를 넘겨서 경력list 가져오기
 		ArrayList<Career> careerList = myPageService.selectCareerInfo(profileId);
-		System.out.println(careerList);
+//		System.out.println(careerList);
 		
 		// profileId를 넘겨 학력list 가져오기
 		ArrayList<SCCareer> sccareerList = myPageService.selectSCCareerInfo(profileId);
-		System.out.println(sccareerList);
+//		System.out.println(sccareerList);
 		
 		// profileId를 넘겨 자격증list 가져오기
 		ArrayList<Certificate> certiList = myPageService.selectCertificateInfo(profileId);
-		System.out.println(certiList);
+//		System.out.println(certiList);
 
+		// profileId를 넘겨 포트폴리오 개수 가져오기
+		int portCount = myPageService.portCount(profileId);
 		
+		String mId = request.getParameter("memId");
+		int eTarget = Integer.valueOf(mId);
+		
+		// memId를 기준으로 파트너스 평가 가져오기		
+		ArrayList<PEvalView> PartEval = fmService.partEvalList(eTarget);
+		System.out.println(PartEval);
+		 
 		
 		mv.addObject("fp", fp);
 		mv.addObject("portfolio", portfolio);
@@ -105,6 +123,8 @@ public class MyPageController {
 		mv.addObject("careerList", careerList);
 		mv.addObject("sccareerList", sccareerList);
 		mv.addObject("certiList", certiList);
+		mv.addObject("portCount", portCount);
+		mv.addObject("PartEval", PartEval);
 		
 		mv.setViewName("myPage/myPageDetail");
 		
@@ -129,8 +149,17 @@ public class MyPageController {
 
 	// 자기소개 이동
 	@RequestMapping(value = "PR.do")
-	public String PRView() {
-		return "myPage/introduction";
+	public ModelAndView PRView(ModelAndView mv, HttpServletRequest request) {
+		
+		String pfId = request.getParameter("profileId");
+		int profileId = Integer.parseInt(pfId);
+		
+		Profile profile = myPageService.selectIntroduce(profileId);
+		
+		mv.addObject("profile", profile);
+		mv.setViewName("myPage/introduction");
+		
+		return mv;
 	}
 
 	// 전체 포트폴리오 이동(포트폴리오 전체 출력)
@@ -139,6 +168,9 @@ public class MyPageController {
 		
 		ArrayList<PortFolio> portList = myPageService.selectPortInfo(profileId);
 		System.out.println("포트폴리오에 뿌려줄 "+portList);
+		
+		// 포트폴리오 갯수
+		int portCount = myPageService.portCount(profileId);
 		
 		for(int i=0;i<portList.size();i++) {
 			System.out.println(portList.get(i).getPortId());
@@ -150,8 +182,11 @@ public class MyPageController {
 			
 			mv.addObject("portTec", portTec);
 		}
+		
 		mv.addObject("portList", portList);
 		mv.addObject("profileId", profileId);
+		mv.addObject("portCount", portCount);
+		
 		mv.setViewName("myPage/portfolioAll");
 
 			return mv;
@@ -182,10 +217,10 @@ public class MyPageController {
 	@RequestMapping(value = "skill.do")
 	public ModelAndView skillView(@RequestParam("profileId") int profileId ,HttpServletRequest request, ModelAndView mv){
 
-			ArrayList<Skill> skilllist = myPageService.selectSkillInfo(profileId);
-			System.out.println(skilllist);
+			ArrayList<Skill> skillList = myPageService.selectSkillInfo(profileId);
+			System.out.println(skillList);
 
-			mv.addObject("skilllist", skilllist);
+			mv.addObject("skillList", skillList);
 			mv.setViewName("myPage/skill");
 
 
@@ -261,10 +296,10 @@ public class MyPageController {
 	@RequestMapping(value = "academic.do")
 	public ModelAndView academicView(@RequestParam("profileId") int profileId, HttpServletRequest request, ModelAndView mv) {
 
-		ArrayList<SCCareer> sccareerlist = myPageService.selectSCCareerInfo(profileId);
-		System.out.println(sccareerlist);
+		ArrayList<SCCareer> sccareerList = myPageService.selectSCCareerInfo(profileId);
+		System.out.println(sccareerList);
 
-		mv.addObject("sccareerlist", sccareerlist);
+		mv.addObject("sccareerList", sccareerList);
 		mv.setViewName("myPage/academic");
 
 		return mv;
@@ -274,10 +309,10 @@ public class MyPageController {
 	@RequestMapping(value = "certificate.do")
 	public ModelAndView certificateView(@RequestParam("profileId") int profileId, HttpServletRequest request, ModelAndView mv) {
 
-		ArrayList<Certificate> certilist = myPageService.selectCertificateInfo(profileId);
-		System.out.println(certilist);
+		ArrayList<Certificate> certiList = myPageService.selectCertificateInfo(profileId);
+		System.out.println(certiList);
 
-		mv.addObject("certilist", certilist);
+		mv.addObject("certiList", certiList);
 		mv.setViewName("myPage/certificate");
 
 		return mv;
@@ -539,7 +574,7 @@ public class MyPageController {
 
 	// 경력 추가
 	@RequestMapping(value = "careerInsert.do")
-	public String careerInsert(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public String careerInsert(HttpServletRequest request, RedirectAttributes redirectAttributes) throws ParseException {
 
 		String pfId = request.getParameter("profileId");
 		int profileId = Integer.parseInt(pfId);
@@ -550,16 +585,22 @@ public class MyPageController {
 
 		String sYear = request.getParameter("start-year");
 		String sMonth = request.getParameter("start-month");
-		String start = sYear + "-" + sMonth;
+		
 
 		String eYear = request.getParameter("end-year");
 		String eEnd = request.getParameter("end-month");
-		String end = eYear + "-" + eEnd;
+		
 
+		String start = sYear + "-" + sMonth;
+		String end = eYear + "-" + eEnd;
+		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		Date cStart = (Date) fm.parse(start);
+		Date cEnd = (Date) fm.parse(end);
 		String content = request.getParameter("content");
 
 		// 퇴사일이 null이냐에따라 다르게 길을 간다.
-		Career c = new Career(cName, cDept, cPosition, start, end, content, profileId);
+		Career c = new Career(cName, cDept, cPosition, cStart, cEnd, content, profileId);
 		System.out.println("경력추가"+c);
 		int careerInfo = myPageService.insertCareer(c);
 		if(careerInfo > 0) {
@@ -598,7 +639,7 @@ public class MyPageController {
 
 	// 학력 추가
 	@RequestMapping(value = "SSCareerUpdate.do")
-	public String SScareerInsert(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public String SScareerInsert(HttpServletRequest request, RedirectAttributes redirectAttributes) throws ParseException {
 
 		String pfId = request.getParameter("profileId");
 		int profileId = Integer.parseInt(pfId);
@@ -609,12 +650,18 @@ public class MyPageController {
 		String scMarjor = request.getParameter("major");
 		String sYear = request.getParameter("start-year");
 		String sMonth = request.getParameter("start-month");
-		String scStartDate = sYear + "-" + sMonth;
 		String eYear = request.getParameter("end-year");
 		String eMonth = request.getParameter("end-month");
-		String scEndDate = eYear + "-" + eMonth;
+		
 
-		SCCareer sc = new SCCareer(sgId, ssId, scName, scMarjor, scStartDate, scEndDate, profileId);
+		String scStartDate = sYear + "-" + sMonth;
+		String scEndDate = eYear + "-" + eMonth;
+		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		Date cStart = (Date) fm.parse(scStartDate);
+		Date cEnd = (Date) fm.parse(scEndDate);
+		
+		SCCareer sc = new SCCareer(sgId, ssId, scName, scMarjor, cStart, cEnd, profileId);
 		System.out.println(sc);
 		int SCCareerInfo = myPageService.insertSCCareer(sc);
 		if(SCCareerInfo > 0) {

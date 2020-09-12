@@ -14,14 +14,14 @@ public class Career implements Serializable{
 	private String cName;
 	private String cDept;
 	private String cPosition;
-	private String cStartDate;
-	private String cEndDate;
+	private Date cStartDate;
+	private Date cEndDate;
 	private String cContent;
 	private int profileId;
 	public Career() {
 		super();
 	}
-	public Career(int cId, String cName, String cDept, String cPosition, String cStartDate, String cEndDate,
+	public Career(int cId, String cName, String cDept, String cPosition, Date cStartDate, Date cEndDate,
 			String cContent, int profileId) {
 		super();
 		this.cId = cId;
@@ -35,7 +35,7 @@ public class Career implements Serializable{
 	}
 	
 	// 경력 insert
-	public Career(String cName, String cDept, String cPosition, String cStartDate, String cEndDate, String cContent,
+	public Career(String cName, String cDept, String cPosition, Date cStartDate, Date cEndDate, String cContent,
 			int profileId) {
 		super();
 		this.cName = cName;
@@ -73,16 +73,16 @@ public class Career implements Serializable{
 	public void setcPosition(String cPosition) {
 		this.cPosition = cPosition;
 	}
-	public String getcStartDate() {
+	public Date getcStartDate() {
 		return cStartDate;
 	}
-	public void setcStartDate(String cStartDate) {
+	public void setcStartDate(Date cStartDate) {
 		this.cStartDate = cStartDate;
 	}
-	public String getcEndDate() {
+	public Date getcEndDate() {
 		return cEndDate;
 	}
-	public void setcEndDate(String cEndDate) {
+	public void setcEndDate(Date cEndDate) {
 		this.cEndDate = cEndDate;
 	}
 	public String getcContent() {

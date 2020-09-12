@@ -503,7 +503,7 @@ section {
 
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h4>
-							포트폴리오<span id="num" style="color: grey;"> / 0개  ${profileId }</span> <a
+							포트폴리오<span id="num" style="color: grey;"> / ${portCount }개  </span> <a
 								href="portfolioInsert.do" class="btn btn-info"
 								style="float: right;">추가하기</a>
 						</h4>
@@ -511,14 +511,14 @@ section {
 					<div class="col-12 portfolio-view">
 						<!-- 하나의 포트폴리오 시작 -->
 						<c:forEach var="port" items="${portList }">
-						<form method="POST" action="delPort.do">
+						<!-- <form method="POST" action="delPort.do"> -->
 						<%-- <c:forEach begin="0" end="2"> --%>
 							 <table class="pTable">
 								<tr>
 									<td class="img" rowspan="2"><img src="../image/test.png"
 										style="max-width: 100%; height: auto;">
-										<input type="hidden" id="profileId" name="profileId" value="${profile.profileId }">
-										<input type="hidden" id="portId" name="portId" value="${port.portId }">
+										<input type="text" id="profileId" name="profileId" value="${profile.profileId }">
+										<input type="text" id="portId" name="portId" value="${port.portId }">
 										</td>
 									<td class="category">
 										<!-- port.mcId에 따른 출력 --> <c:choose>
@@ -557,10 +557,13 @@ section {
 								<tr>
 									<td><button type="submit" id="${port.portId }" class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
 									<td class="join">참여율 : ${port.portJoin }%</td>
+										<td class="tec">
 									<c:forEach var="pt" items="${portTec }">
-										<td class="tec">${pt.tName }</td>
+											<span>${pt.tName }</span>
 									</c:forEach>
+										</td>
 								</tr>
+								
 								<!-- <script>
 									$(document).ready(function(){
 										var portId = ${port.portId};
@@ -581,25 +584,29 @@ section {
 								</script> -->
 							</table>
 							<br>
-						</form> 
-						</c:forEach>					
-						<!-- <script type="text/javascript">
+						</form>
+						</c:forEach>	
+							<!-- 문제점 : 버튼 클릭시 똑같은 값이 나온다. -->	
+							<!-- <script type="text/javascript">
 								$(".delPort").on("click",function(){
+									
 									var id1 = $("#profileId").val();
-									var id2 = (this.id);
+									var id2 = $("#portId").val();
 									
 									$.ajax({
 										url:"delPort.do",
-										data:{id1:id1, id2:id2},
-										success:function(data){
+										data:{id1:id1,id2:id2},
+										,success:function(data){
 											
 										},error:function(request, status, errorData){
-											
+											alert("error code: " + request.status + "\n"
+			    									+"message: " + request.responseText
+			    									+"error: " + errorData);
 										}	
 									})
 									
 								})
-						</script> -->
+							</script> -->
 					</div>
 				</div>
 			</div>

@@ -106,6 +106,13 @@ public interface MyPageService {
 
 	ArrayList<PortTecView> tNameList(int ptId);
 
+	int portCount(int profileId);
+
+	Profile selectIntroduce(int profileId);
+
+
+	
+
 	
 
 

@@ -172,4 +172,5 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.selectList(pi, status);
 	}
 
+
 }

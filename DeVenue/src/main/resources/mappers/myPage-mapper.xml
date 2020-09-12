@@ -325,7 +325,7 @@
 	
 	<!-- myPage 경력 전체 Select -->
 	<select id="selectListCareer" parameterType="_int" resultMap="careerResultSet">
-		SELECT C_ID,C_NAME,C_DEPT,C_POSITION,TO_CHAR(C_START_DATE,'YYYYDD') AS C_START_DATE,TO_CHAR(C_END_DATE,'YYYYDD') AS C_END_DATE,C_CONTENT ,PROFILE_ID FROM CAREER
+		SELECT C_ID,C_NAME,C_DEPT,C_POSITION,C_START_DATE,C_END_DATE,C_CONTENT ,PROFILE_ID FROM CAREER
 		WHERE PROFILE_ID=#{profileId}
 		<!-- SELECT * FROM CAREER
 		WHERE PROFILE_ID=#{profileId} -->
@@ -492,6 +492,12 @@
 	<select id="tNameList" parameterType="int" resultMap="portTecViewResultSet">
 		SELECT * FROM PORTTEC_VIEW
 		WHERE PORT_ID=#{portId}
+	</select>
+	
+	<!-- 포트폴리오 갯수 -->
+	<select id="portCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM PORTFOLIO
+		WHERE PROFILE_ID=#{profileId}
 	</select>
 	
 </mapper>

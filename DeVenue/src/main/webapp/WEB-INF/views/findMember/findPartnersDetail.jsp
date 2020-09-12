@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,18 +44,7 @@
 	rel="stylesheet" type="text/css">
 
 <!--jQuery-->
-<!-- <script src="http://code.jquery.com/jquery-Latest.min.js"></script> -->
-<!-- <script
-  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
-  crossorigin="anonymous"></script> -->
-
-<!-- <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script> -->
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"
-	type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-Latest.min.js"></script>
 
 <style>
 body {
@@ -351,7 +342,7 @@ span.round-tab i {
 section {
 	background-color: #212426;
 	width: 100%;
-	height: 1600px;
+	height: 6000px;
 	padding: 50px 0 30px 0;
 	color: white;
 }
@@ -359,310 +350,314 @@ section {
 /* input태그 size */
 .input-size {
 	width: 400px;
-	height: 100px;
+	height: 50px;
 	margin-left: 40px;
 }
 
-/* 파트너스 필터 아래 선 라인 */
-.filter-bottom {
+/* 어느페이지 인지 보여줄 div */
+.main-title {
 	width: 100%;
-	height: 50px;
+	height: 60px;
+	margin-left: 5%;
+	padding-right: 0;
 	border-bottom: 2px dashed white;
 }
 
-/* 필터 div */
-.select-list {
-	display: inline-block;
-}
-
-/* 필터 ul/li 점 없애기 */
-.select-list ul li {
-	list-style: none;
-}
-
-/* 필터 제목 폰트 사이즈 */
-.filter-size {
-	font-size: 15px;
-	margin-bottom: 5px;
-}
-
-/* 필터 내용 폰트 사이즈 */
-.filter-content {
-	font-size: 14px;
-	/* margin: 5px 0 0 0; */
-}
-
-/* 외주 설명 div */
+/* 정보를 나오게할 div */
 .content {
-	position: absolute;
-	width: 500px;
-	height: auto;
-	border: 1px solid white;
-	margin-left: 135px;
-	border-radius: 10px 10px 10px 10px;
-	font-size: 13px;
-	padding-left: 10px;
-	padding-top: 10px;
-	line-height: 25px;
-	margin-top: -90px;
-	display: none;
-	background-color: #242424;
-	z-index: 1;
-}
-
-/* 파트너 지역의 전체선택 btn div */
-.partners-item button {
 	width: 100%;
-	height: 25px;
-	/* text-align: left; */
-}
-
-/* 필터 address(지역) div */
-.partners-item-address {
-	border: 1px solid gray;
-	width: 95%;
 	height: 200px;
-	overflow: auto;
-	border-radius: 10px 10px 10px 10px;
+	margin-left: 5%;
 }
 
-/* 필터 address(지역) list */
-ul li input {
-	margin-bottom: 10;
-}
-
-/* 필터 address(지역) list btn(취소/선택) */
-.partners-item-btn {
-	width: 95%;
-	height: 30px;
-	border: 1px solid gray;
-	text-align: right;
-	border-radius: 5px 5px 5px 5px;
-	text-align: right;
-	padding-right: 10px;
-}
-
-/* 필터 address(지역) 취소/선택 input(button) 크기  */
-.partners-item-btn input {
-	margin: 3 5 0 0;
-	font-size: 15px;
-}
-
-/* overflow 스크롤 설정 */
-.partners-item-address::-webkit-scrollbar {
-	width: 10px;
-}
-
-.partners-item-address::-webkit-scrollbar-thumb {
-	background-color: #2f3542;
-	border-radius: 10px;
-}
-
-.partners-item-address::-webkit-scrollbar-track {
-	background-color: grey;
-	border-radius: 10px;
-	box-shadow: inset 0px 0px 5px white;
-}
-
-/* overflow 스크롤 설정 끝 */
-
-/* 파트너스 찾기해서 나온값을 보여줄 div */
-.container-inner {
-	/* margin-left: 5%; */
-	margin-top: 5%;
-}
-
-/* 파트너스 검색할 div */
-.partners-select {
-	width: 100%;
-	height: 50px;
-	padding: 5px;
-}
-
-/* 파트너스 검색할 table td div 간격 띄우기 */
-.border-spacing {
-	float: right;
-	border-spacing: 100px;
-	border-spacing: 10px;
-	border-collapse: separate;
-}
-
-/* 정렬이 실행되는 div */
-/* .sort-active{
-            display: inline-block;
-        } */
-/* 정렬이 실행되지 않는 div */
-.sort {
-	font-size: 15px;
-	width: 100%;
-	height: 30px;
-	padding: 2%;
-	margin-left: 10%;
-	margin-top: 2%;
-}
-
-/* 각각의 평가 div */
-.sort-item {
-	display: inline-block;
-	border-left: 2px dashed white;
-	margin-left: -60px;
-}
-
-/* 한페이지에 파트너스 정보를 보여줄 div*/
-.partnes-info-container {
-	margin-top: 5%;
-}
-
-/* 파트너스 정보 박스의 안쪽/내부 */
-.inner {
-	padding: 2%;
-	height: auto;
-}
-
-/* 프로필 이미지 보여줄 div */
-.profile {
-	width: 100px;
+/* 사용자의 개인 정보가 나올 div */
+.content-memberinfo {
 	height: 100px;
-	border-radius: 50px 50px 50px 50px;
+	position: relative;
+	border-bottom: 2px dashed white;
 }
 
-/* 하나의 파트너스 정보를 보여줄 div */
-.partnes-info {
-	width: 100%;
-	height: 250px;
-	border: 1px solid white;
-	margin-bottom: 3%;
-}
-
-/* 하나의 파트너스 정보의 왼쪽 div */
-.left {
-	display: inline-block;
-	height: 100%;
-	width: 15%;
-}
-
-/* 하나의 파트너스 정보의 이미지를 보여줄 div */
-.left .img {
-	width: 100px;
-	height: 100px;
-	position: absolute;
-	margin-top: 3%;
-	margin-left: 1%;
-	border-radius: 50px 50px 50px 50px;
-}
-
-/* 파트너스의 정보의 닉네임/활동가능성 div */
-.left .nickname {
-	width: 100px;
-	height: 80px;
-	position: absolute;
-	text-align: center;
-	margin-top: 150px;
-	margin-left: 1%;
-	line-height: 40px;
-}
-
-/* 활동가능의 버튼모양 제거 */
-.nickname .btn {
+/* 활동가능버튼의 마우스 버튼 모양 제거 */
+.content-memberinfo .btn {
 	cursor: default;
 }
 
-/* 하나의 파트너스 정보의 가운데 div */
-.center {
+/* | 의 크기 */
+.bar {
+	padding: 0 10px 0 10px;
+}
+
+/* 자기소개, 보유기술 등등 칸막이 div */
+.partition {
+	padding: 20px 0 20px 0;
+	width: 100%;
+	height: auto;
+	border-bottom: 2px dashed white;
+}
+
+/* 자기소개, 보유기술 등등 제목 */
+.page-title h4 {
+	height: 50px;
+}
+
+/* 평가 항목 title div */
+.evaluation .col-7 {
+	text-align: left;
 	display: inline-block;
+}
+
+/* 평가 항목에서 불러올 값 div */
+.evaluation .col-3 {
+	text-align: right;
+	display: inline-block;
+}
+
+/* 누적된 금액 div */
+.accumulated-amount {
+	width: 100%;
+	height: 30px;
+	border-top: 2px dashed white;
+	margin-top: 10px;
+	padding-top: 10px;
+}
+
+/* 자세히 더보기 */
+.detail-view {
+	width: 100%;
+	height: 30%;
+	text-align: right;
+}
+
+/* 포트폴리오 기본3개 div */
+.portfolio {
+	display: inline-block;
+	width: 30%;
+	height: 300px;
+	border: 1px solid red;
+	margin: 1%;
+}
+
+/* 하나의 포트폴리오 이미지를 보여줄 div */
+.port-img {
+	position: absolute;
+	width: 26.5%;
+	height: 55%;
+	margin: 1%;
+}
+
+.port-img img {
+	top: 0;
+	left: 0;
+	width: 100%;
 	height: 100%;
-	width: 55%;
 }
 
-/* 파트너스의 정보의 개발/신원인증/연락처 등록등을 보여줄 바깥div */
-.center .personal-info {
-	width: 50%;
-	height: 40px;
+/* 하나의 포트폴리오 제목을 보여줄 div */
+.port-title {
 	position: absolute;
+	width: 26.5%;
+	height: 20%;
+	margin: 1%;
+	margin-top: 30%;
+}
+
+/* 포트폴리오가 있을시 */
+/* 하나의 포트폴리오 제목 사이즈 및 설정 */
+.port-title p {
+	overflow: hidden;
+	width: 150px;
+	height: 25px;
+	font-size: 20px;
+}
+
+/* 하나의 포트폴리오 카테고리 사이즈 및 설정 */
+.port-title span {
+	width: 150px;
+	height: 20px;
+	font-size: 15px;
+	color: gray;
+}
+
+/* 포트폴리오가 없을 시 */
+.port-img p {
+	text-align: center;
+	margin-top: 50%;
+	font-size: 25px;
+}
+
+/* 각각의 클라이언트에 평가 div */
+.client-history {
+	width: 100%;
+	height: auto;
+	border: 1px solid white;
+	margin-top: 5%;
+}
+
+/* 각각의 별이 보일 전체 div */
+.star-history {
 	margin-top: 1%;
-	margin-left: 1%;
+	border-top: 2px dashed white;
+	border-bottom: 2px dashed white;
+	font-size: 15px;
+	padding: 15px 20px 15px 20px;
+	text-align: center;
 }
 
-/* 개발자 | 개인 사업자 | 신원등록 | 연락처 등록 이런식으로 */
-.personal-info span {
-	border-right: 1px solid white;
-	margin-left: 3%;
-	padding-right: 3%;
+/* 각각의 별이 보일 div */
+.star {
+	display: inline-block;
+	padding-left: 10px;
+	padding-right: 20px;
+	margin-left: 5px;
+	border-right: 2px dashed white;
 }
 
-/* 파트너스의 정보의 자기소개를 보여줌 */
-.center .self-introduction {
-	width: 50%;
-	height: 120px;
-	position: absolute;
-	margin-top: 45px;
-	margin-left: 1%;
+/* 클라이언트 이미지 */
+.client-img {
+	width: 70px;
+	height: 70px;
+	border-radius: 50px 50px 50px 50px;
+	border: 1px solid white;
+	display: inline-block;
+}
+
+/* 클라이언트 평가의 내용 */
+.history-content {
+	margin-top: 3%;
+	height: 50px;
+	width: 100%;
 	overflow: hidden;
 }
 
-/* 파트너스 정보의 보유기술을 보여줌 */
-.center .skill {
-	width: 50%;
-	height: 60px;
-	position: absolute;
-	margin-left: 1%;
-	margin-top: 170px;
-	padding-top: 1%;
+/* 서브 메뉴바 a 태그 */
+#subInfoMenu p a {
+	text-decoration-line: none;
+	color: white;
 }
 
-/* 파트너스 정보의 보유기술 각각을 보여줌 */
-.skill span {
-	background-color: lightgray;
-	margin: 0 2% 0 2%;
-	padding: 0 1% 0 1%;
+/* 포트폴리오 */
+
+/* 포트폴리오전부를 보여줄 div*/
+.portfolio-view {
+	width: 100%;
+	height: 350px;
+	margin-left: 5%;
+	margin-top: 2%;
+	position: relative;
 }
 
-/* 하나의 파트너스 정보의 오른쪽 div */
-.hisroty {
-	display: inline-block;
-	height: 100%;
-	width: 29%;
+/* 포트폴리오 전체 보여줄 테이블 */
+.pTable {
+	width: 100%;
+	/* border: 1px solid white; */
+	/* border-collapse: separate;
+            border-spacing: 20px 10px; */
 }
 
-/* 오른쪽 div의 별점 */
-.hisroty .star {
-	position: absolute;
-	width: 30%;
-	height: 60px;
-	text-align: center;
-	font-size: 35px;
-}
-
-/* 오른쪽 div의 평균별점 */
-.hisroty .evaluation {
-	position: absolute;
-	width: 30%;
-	height: 50px;
-	margin-top: 60px;
-	text-align: center;
-}
-
-/* 오른쪽 div의 계약한 프로젝트/ 포트폴리오 갯수 */
-.hisroty .contract, .hisroty .portfolio {
-	position: absolute;
-	width: 30%;
-	height: 50px;
+/* 포트폴리오 td */
+.pTable tr td {
+	border: 1px solid white;
+	/* width: 25%; */
+	/* height: 300px; */
 	font-size: 20px;
-	border-width: 60%;
 }
 
-/* div 보다 작은 밑줄 */
-.hisroty .star :before, .hisroty .evaluation :before, .hisroty .evaluation :before,
-	.hisroty .contract :before, .hisroty .portfolio :before {
-	content: "";
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	height: 1px;
-	width: 85%; /* or 100px */
-	border-bottom: 2px dashed white;
-	margin-left: 3%;
+/* 이미지 보여주기 */
+.img {
+	width: 30%;
+	height: 200px;
 }
+
+/* 포트폴리오 내용 */
+.category {
+	width: 20%;
+	text-align: center;
+	vertical-align: middle;
+	height: 30%;
+}
+
+/* 포트폴리오 제목 */
+.title {
+	width: 50%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 참여율 과 기술 */
+.join, .tec {
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 경력 테이블 */
+.Ctable {
+	border: 1px solid white;
+	width: 100%;
+	font-size: 20px;
+	border-collapse: separate;
+	border-spacing: 0 10px;
+}
+
+/* 경력 제목 */
+.career-title {
+	width: 20%;
+	padding-left: 15px;
+	margin-bottom: 5px;
+	margin-top: 1%;
+	border-bottom: 1px solid grey;
+}
+
+/* 경력 내용 */
+.career-text {
+	border-bottom: 1px solid grey;
+}
+
+/* 평가 테이블 */
+.evalTable {
+	width: 100%;
+	border: 1px solid white;
+}
+
+/* 평가 제목 */
+.evalTitle {
+	font-size: 20px;
+	color: #2099bb;
+	padding: 20px 0 10px 20px;
+}
+
+/* 평가 전체 padding */
+.evalPadding {
+	padding: 10px 0 10px 20px;
+}
+
+/* 별점 li */
+.evalPadding .agv li {
+	list-style-type: none;
+	float: left;
+	margin-left: 10px;
+	text-align: center;
+	width: 18%;
+}
+/* 별점 */
+.fa-star {
+	margin-right: 0;
+}
+
+/* 클라이언트 이미지 */
+.client-img {
+	width: 70px;
+	height: 70px;
+	border-radius: 50px 50px 50px 50px;
+	border: 1px solid white;
+}
+
+/* 클라이언트 정보 li */
+.evalPadding .client li {
+	list-style-type: none;
+	float: left;
+	margin-left: 10px;
+}
+
 
 /* 회원찾기 드롭다운 메뉴 */
 .dropbtn {
@@ -716,552 +711,546 @@ ul li input {
 </head>
 
 <body>
+	<!-- menubar -->
+	<!-- 버튼클릭 script가 안먹는다. -->
+	<jsp:include page="../common/menubar.jsp" />
 
-	<c:set var="contextPath"
-		value="${pageContext.servletContext.contextPath }" scope="application" />
-
-	<!--Top Button-->
-	<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top"
-		role="button"><i class="fas fa-chevron-up" style="margin: 0"></i></a>
-	<script>
-		$(document).ready(function() {
-			$(window).scroll(function() {
-				if ($(this).scrollTop() > 10) {
-					$('#back-to-top').css("display", "block")
-
-				} else {
-					$('#back-to-top').css("display", "none")
-
-				}
-			});
-			// scroll body to 0px on click
-			$('#back-to-top').click(function() {
-				$('body,html').animate({
-					scrollTop : 0
-				}, 400);
-				return false;
-			});
-		});
-	</script>
-
-	<!--navigation bar 1-->
-	<nav class="navbar navbar-expand-lg" style="background-color: black;">
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarMain" aria-controls="navbarMain"
-			aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<div class="collapse navbar-collapse" id="navbarMain">
-			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="#"><img
-						src="${contextPath }/resources/images/logo.png" height="80px"
-						style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;"><span
-						class="sr-only">(current)</span></a></li>
-			</ul>
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a
-					class="nav-link hvr-underline-from-center mr-2"
-					href="searchProjectList.do">프로젝트찾기</a></li>
-				<li class="nav-item"><a
-					class="nav-link hvr-underline-from-center mr-2"
-					href="addProject.do">프로젝트등록</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link hvr-underline-from-center dropbtn" href="#">회원
-						찾기</a>
-					<div class="dropdown-content">
-						<a href="clientList.do ">클라이언트 찾기</a> <a href="partnersList.do">파트너스
-							찾기</a>
-					</div></li>
-			</ul>
-
-			<ul class="navbar-nav ml-auto">
-				<!-- 관리자 페이지, 파트너스/클라이언트페이지 -->
-				<c:if test="${empty sessionScope.loginUser }">
-					<!-- <button type="button" class="btn btn-secondary">LOGIN</button> -->
-					<a href="loginpage.do" class="btn btn-secondary">LOGIN</a>
-					<!-- <button type="button" class="btn btn-info" href="sign.do">SIGNIN</button> -->
-					<a href="signpage.do" class="btn btn-info">SIGNIN</a>
-				</c:if>
-				<c:if test="${!empty sessionScope.loginUser }">
-					<!-- 관리자 로그인 -->
-					<c:if
-						test="${loginUser.userType eq 'UT1' || loginUser.userType eq 'UT2'}">
-						<h3 align="right" style="color: white">
-							<c:out value="${loginUser.userType }관리자" />
-							<div class="btn-group">
-								<button type="button" class="btn btn-info dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-									<img src="${contextPath }/resources/images/admin.png"
-										height="50px" width="50px"
-										style="border-radius: 50px 50px 50px 50px">
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">profile</a>
-									<div class="dropdown-divider"></div>
-									<c:url var="logout" value="logout.do" />
-									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
-								</div>
-							</div>
-						</h3>
-					</c:if>
-					<!-- 사용자 로그인 -->
-					<c:if
-						test="${loginUser.userType eq 'UT3' || loginUser.userType eq 'UT4'}">
-						<h3 align="right" style="color: white">
-							<c:out value="${loginUser.userType }사용자" />
-							<div class="btn-group">
-								<button type="button" class="btn btn-info dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-									<!-- 클라이언트시 기본 이미지 -->
-									<c:if test="${loginUser.userType eq 'UT3' }">
-										<img src="${contextPath }/resources/images/client.png"
-											height="50px" width="50px"
-											style="border-radius: 50px 50px 50px 50px">
-									</c:if>
-									<!-- 파트너스 기본 이미지 -->
-									<c:if test="${loginUser.userType eq 'UT4' }">
-										<img src="${contextPath }/resources/images/partners.png"
-											height="50px" width="50px"
-											style="border-radius: 50px 50px 50px 50px">
-									</c:if>
-								</button>
-								<div class="dropdown-menu">
-									<a href="profile.do" class="dropdown-item">profile</a>
-									<div class="dropdown-divider"></div>
-									<c:url var="logout" value="logout.do" />
-									<a class="dropdown-item" onclick="location.href='${logout }'">logout</a>
-								</div>
-							</div>
-						</h3>
-					</c:if>
-				</c:if>
-		</div>
-		</ul>
-		</div>
-		</ul>
-		</div>
-	</nav>
-
-	<script>
-		$(function() {
-			$("#navbarMain .nav-link").mouseenter(function() {
-				$(this).css("font-size", "105%");
-			})
-
-			$("#navbarMain .nav-link").mouseleave(function() {
-				$(this).css("font-size", "100%");
-			})
-		})
-	</script>
-
-	<!-- sidebar -->
+	<!-- sideMenubar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
+
 
 
 	<!-- Section -->
 	<section>
 		<div class="container">
 			<div class="row text-white"
-				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<div class="col-3"
-					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-					파트너스 찾기</div>
-			</div>
-
+				style="border-bottom: 1px solid lightgray; width: 1000px;"></div>
 			<div class="row">
-				<!-- 왼쪽 -->
-				<div class="col-2 text-white"
-					style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-					<br>
-					<div class="col-12 filter-bottom">
-						<span>파트너스 필터</span>
-					</div>
-					<br>
-					<div>
-						<div class="col-12 select-list">
-							<div class="filter-size" style="position: absolute;">
-								선호 프로젝트 형태 <i class="fas fa-question-circle icon"></i>
-							</div>
-
-							<div style="margin-top: 30px;">
-								<ul>
-									<li class="filter-content"><input type="checkbox"
-										id="outP" name="project-form">&nbsp;&nbsp; <label
-										for="outP">외주(도급)</label></li>
-									<li class="filter-content"><input type="checkbox" id="inP"
-										name="project-form">&nbsp;&nbsp; <label for="inP">상주</label>
-									</li>
-									<li class="filter-content"><input type="checkbox"
-										id="allP" name="project-form">&nbsp;&nbsp; <label
-										for="allP">와주 + 상주</label></li>
-								</ul>
-							</div>
-							<!-- 근무형태에 따른 검색 -->
-							<script type="text/javascript">
-                            $(document).ready(function(){
-                                $("#outP").change(function(){
-                                    if($("#outP").is(":checked")){
-                                        alert("외주 선택");
-                                    }else{
-                                        alert("외주 선택 취소");
-                                    }
-                                });
-                                $("#inP").change(function(){
-                                    if($("#inP").is(":checked")){
-                                        alert("상주 선택");
-                                    }else{
-                                        alert("상주 선택 취소");
-                                    }
-                                });
-                                $("#allP").change(function(){
-                                	if($("#allP").is(":checked")){
-                                        alert("외주 + 상주 선택");
-                                    }else{
-                                        alert("외주 + 상주 선택 취소");
-                                    }
-                                })
-                                // 만약 둘다 클릭시는?
-                                // 컨트롤러에서 넘어오는 값이 없으면 외주+상주로?
-                                /* if($("input:checkbox[name=project-form]").is(":checked") == true) {
-									alert("뭔값이?");
-								} */
-                            });
-                            </script>
+				<!-- 구 sideMenubar -->
+				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새버전을 쓸꺼면 로그인 했을시 그거 빼야함 -->
+				<!-- 새 sidMenubar -->
+				<jsp:include page="../common/findPartSideMenubar.jsp" />
+			</div>
+			<div class="col-8 text-white"
+				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
+				<br>
+				<div class="row">
+					<div class="col-12 content">
+						<div class="col-12 content-memberinfo">
+							<h2>
+								<span>${fp.memNick }</span>
+								<%-- <c:if test="${loginUser.memAction eq 'Y'}">
+									<span class="btn btn-success">활동가능</span>
+								</c:if>
+								<c:if test="${loginUser.memAction eq 'N'}">
+									<span class="btn btn-success">활동불가능</span>
+								</c:if> --%>
+								<c:if test="${fp.piType eq 1}">
+									<span class="btn btn-success">활동 가능</span>
+								</c:if>
+								<c:if test="${fp.piType eq 2}">
+									<span class="btn btn-warning">협의 필요</span>
+								</c:if>
+								<c:if test="${fp.piType eq 3}">
+									<span class="btn btn-secondary">활동 불가능</span>
+								</c:if>
+								<button type="button" class="btn btn-danger" style="float: right;">신고하기</button>
+								<button type="button" class="btn btn-primary" style="float: right; margin-right: 10px;">제안하기</button>
+							</h2>
+							<h2 style="float: right;">
+							</h2>
+							<h5>
+								<span>${fp.mcType }</span> <span class="bar">|</span> <span>${fp.memTypeKind }</span>
+								<span class="bar">|</span>
+								<c:choose>
+									<c:when test="${fp.ideStatus eq 'complete'}">
+										<span>신원인증</span>
+									</c:when>
+									<c:otherwise>
+										<span style="color: grey;">신원인증</span>
+									</c:otherwise>
+								</c:choose>
+								<span class="bar">|</span>
+								<c:choose>
+									<c:when test="${empty fp.cellPhone }">
+										<span style="border: none; color: gray;">연락처 없음</span>
+									</c:when>
+									<c:otherwise>
+										<span style="border: none;">연락처 등록</span>
+									</c:otherwise>
+								</c:choose>
+							</h5>
 						</div>
-						<div class="content">
-							<p>
-								<b>외주(도급) 프로젝트</b><br> 프로젝트 단위로 금액을 지급받고 원하는 장소에서 진행하는
-								프로젝트를 선호하는 파트너<br> <b>상주 프로젝트</b><br> 월 단위로 금액을 지급받고
-								클라이언트가 요청한 장소에서 진행하는 프로젝트를 선호하는 파트너
-							</p>
-						</div>
-						<script>
-                            /* ? hover시 보여주고 숨기기 */
-                            $(".icon").hover(function () {
-                                $(".content").show();
-                            }, function () {
-                                $(".content").hide();
-                            })
-                        </script>
-						<div class="col-12 select-list">
-							<ul>
-								<li class="filter-size">파트너스 직종</li>
-								<ul>
-									<li class="filter-content"><input type="checkbox"
-										id="development" name="partners-type">&nbsp;&nbsp; <label
-										for="development">개발</label></li>
-									<li class="filter-content"><input type="checkbox"
-										id="design" name="partners-type">&nbsp;&nbsp; <label
-										for="design">디자인</label></li>
-									<li class="filter-content"><input type="checkbox" id="all"
-										name="partners-type">&nbsp;&nbsp; <label for="all">개발
-											+ 디자인</label></li>
-								</ul>
-							</ul>
-						</div>
-						<!-- 대표 카테고리에 따른 검색 -->
-						<script type="text/javascript">
-                        $(document).ready(function(){
-                            $("#development").change(function(){
-                                if($("#development").is(":checked")){
-                                    alert("개발 선택");
-                                }else{
-                                    alert("개발 선택 취소");
-                                }
-                            });
-                            $("#design").change(function(){
-                                if($("#design").is(":checked")){
-                                    alert("디자인 선택");
-                                }else{
-                                    alert("디자인 선택 취소");
-                                }
-                            });
-                            $("#design").change(function(){
-                                if($("#design").is(":checked")){
-                                    alert("디자인 선택");
-                                }else{
-                                    alert("디자인 선택 취소");
-                                }
-                            });
-  
-                            })
-                        </script>
-						<div class="col-12 select-list">
-							<ul>
-								<li class="filter-size">파트너 형태</li>
-								<ul>
-									<li class="filter-content"><input type="checkbox"
-										id="solo" name="partners-type">&nbsp;&nbsp; <label
-										for="solo">개인</label></li>
-									<li class="filter-content"><input type="checkbox"
-										id="corporate" name="partners-type">&nbsp;&nbsp; <label
-										for="corporate">법인</label></li>
-									<li class="filter-content"><input type="checkbox"
-										id="team" name="partners-type">&nbsp;&nbsp; <label
-										for="team">팀</label></li>
-									<li class="filter-content"><input type="checkbox"
-										id="solo-work" name="partners-type">&nbsp;&nbsp; <label
-										for="solo-work">개인사업자</label></li>
-									<li class="filter-content"><input type="checkbox"
-										id="corporate-work" name="partners-type">&nbsp;&nbsp;
-										<label for="corporate-work">법인사업자</label></li>
-									<li class="filter-content"><input type="checkbox"
-										id="corporation" name="partners-type">&nbsp;&nbsp; <label
-										for="corporation">기업</label></li>
-								</ul>
-							</ul>
-						</div>
-						<!-- 회원 형태에 따른 검색 -->
-						<script type="text/javascript">
-                        	
-                        </script>
-						<div class="col-12 select-list">
-							<div class="filter-size">파트너 지역</div>
-							<div class="area2-filter-check">
-								<div class="partners-item">
-									<button>전체선택</button>
+						<div class="col-12 pofile-info"
+							style="padding: 20px 0 20px 0; text-align: center; position: relative; height: 320px; border-bottom: 2px dashed white;">
+							<div class="col-6"
+								style="border-right: 2px dashed white; padding: 10px 10px 10px 10px; position: absolute;">
+								<div class="col-12" style="height: 120px;">
+									<h4>활동 요약 정보</h4>
+									<div class="col-12" style="width: 100%; font-size: xx-large;">
+										★★★★★</div>
+									<div class="col-12" style="width: 100%;">
+										<span style="font-size: 20px;">평균평점 <span>0.0</span> /
+											평가 <span>0</span>개
+										</span>
+									</div>
 								</div>
-								<div class="partners-item-address">
-									<ul style="list-style: none; padding: 0;">
-										<li><input type="checkbox" id="all-address"> <label>전체선택</label>
-											<ul class="address-list"
-												style="list-style: none; padding: 0; font-size: 13px;">
-												<li><input type="checkbox" id="address1"
-													name="address-list"> <label for="address1">서울특별시</label>
-												</li>
-												<li><input type="checkbox" id="address2"
-													name="address-list"> <label for="address2">경기도</label>
-												</li>
-												<li><input type="checkbox" id="address3"
-													name="address-list"> <label for="address3">인청광역시</label>
-												</li>
-												<li><input type="checkbox" id="address4"
-													name="address-list"> <label for="address4">부산광역시</label>
-												</li>
-												<li><input type="checkbox" id="address5"
-													name="address-list"> <label for="address5">대구광역시</label>
-												</li>
-												<li><input type="checkbox" id="address6"
-													name="address-list"> <label for="address6">광주광역시</label>
-												</li>
-												<li><input type="checkbox" id="address7"
-													name="address-list"> <label for="address7">대구광역시</label>
-												</li>
-												<li><input type="checkbox" id="address8"
-													name="address-list"> <label for="address8">울산광역시</label>
-												</li>
-												<li><input type="checkbox" id="address9"
-													name="address-list"> <label for="address9">세종특별자치시</label>
-												</li>
-												<li><input type="checkbox" id="address10"
-													name="address-list"> <label for="address10">강원도</label>
-												</li>
-												<li><input type="checkbox" id="address11"
-													name="address-list"> <label for="address11">충청북도</label>
-												</li>
-												<li><input type="checkbox" id="address12"
-													name="address-list"> <label for="address12">충청남도</label>
-												</li>
-												<li><input type="checkbox" id="address13"
-													name="address-list"> <label for="address13">전라북도</label>
-												</li>
-												<li><input type="checkbox" id="address14"
-													name="address-list"> <label for="address14">전라남도</label>
-												</li>
-												<li><input type="checkbox" id="address15"
-													name="address-list"> <label for="address15">경상북도</label>
-												</li>
-												<li><input type="checkbox" id="address16"
-													name="address-list"> <label for="address16">경상남도</label>
-												</li>
-												<li><input type="checkbox" id="address17"
-													name="address-list"> <label for="address17">제주특별자치도</label>
-												</li>
-											</ul></li>
-									</ul>
-								</div>
-								<div class="partners-item-btn">
-									<input type="reset" class="btn btn-secondary btn-sm" value="취소"
-										style="width: 40px; height: 25px; font-size: 13px; text-align: center;">
-									<input type="button" class="btn btn-info btn-sm" value="확인"
-										style="width: 40px; height: 25px; font-size: 13px; text-align: center;">
-								</div>
-							</div>
-						</div>
-						<!-- 오른쪽 -->
-					</div>
-				</div>
-				<div class="col-10">
-					<div class="col-12 container-inner">
-						<div class="col-10 partners-select">
-							<table class="border-spacing">
-								<tr>
-									<td><select class="btn btn-info btn-sm" id="select-type"
-										name="select-type">
-											<option value="">----</option>
-											<option value="nickname">닉네임</option>
-											<option value="project">프로젝트명</option>
-									</select></td>
-									<td><input type="text" id="select-form" name="select-form">
-									</td>
-									<td>
-										<button id="MainSelect" class="btn btn-info">검색</button>
-									</td>
-								</tr>
-							</table>
-							<script type="text/javascript">
-                            	$("#MainSelect").on("click",function(){
-                            		var type = $("#select-type").val();
-                            		var text = $("#select-form").val();
-                            		
-                            		console.log(type);
-                            		console.log(text);
-                            		
-                            		$.ajax({
-                            			url:"searchInput.do",
-                            			data:{type:type,text:text},
-                            			success:function(data){
-                							
-                						},
-                						error:function(request, status, errorData){
-                							alert("error code: " + request.status + "\n"
-                									+"message: " + request.responseText
-                									+"error: " + errorData);
-                						}	
-                            		})
-                            		
-                            	})
-                            </script>
-						</div>
-						<div class="col-12 sort">
-							<div class="col-3 sort-item">
-								<i class="fas fa-check sort1" style="color: green;"></i> <span
-									onclick="view(1);" style="cursor: pointer;">최근 등록 순</span>
-							</div>
-							<div class="col-3 sort-item">
-								<i class="fas fa-check sort2"
-									style="color: green; display: none;"></i> <span
-									onclick="view(2);" style="cursor: pointer;">평가 높은 순</span>
-							</div>
-							<div class="col-3 sort-item" onclick="view(3);">
-								<i class="fas fa-check sort3"
-									style="color: green; display: none;"></i> <span
-									onclick="view(3);" style="cursor: pointer;">포트폴리오 많은 순</span>
-							</div>
-						</div>
-						<script>
-                            function view(a){
-                                if(a ==1){
-                                    $(".sort1").css("display","");
-                                    $(".sort2").css("display","none");
-                                    $(".sort3").css("display","none");
-                                }else if(a == 2){
-                                    $(".sort1").css("display","none");
-                                    $(".sort2").css("display","");
-                                    $(".sort3").css("display","none");
-                                }else{
-                                    $(".sort1").css("display","none");
-                                    $(".sort2").css("display","none");
-                                    $(".sort3").css("display","");
-                                }
-                            }
-                        </script>
-						<div class="col-12 partnes-info-container">
-							<div class="col-12 inner">
-								<!-- 하나의 파트너스 정보 -->
-								<c:forEach var="fp" items="${fpList }">
-								<input type="text" name="memId" value="${fp.memId }">
-									<div class="col-12 partnes-info">
-										<div class="left">
-											<div class="img">
-												<img src="image/client.png"
-													style="width: 100%; height: 100%;">
-											</div>
-											<div class="nickname">
-												<span style="font-size: 20px;">${fp.memNick }</span> <span
-													class="btn btn-info btn-sm">활동가능</span>
-											</div>
+								<br>
+								<div class="col-12">
+									<div class="col-12 evaluation">
+										<div class="col-7">
+											<span style="font-size: 20px;">계약한 프로젝트</span>
 										</div>
-										<div class="center">
-											<div class="personal-info">
-												<c:choose>
-													<c:when test="${fp.ideStatus eq 'COMPLETE' }">
-														<span>신원인증</span>	
-													</c:when>
-													<c:otherwise>
-														<span style="color: grey;">신원인증</span>										
-													</c:otherwise>
-												</c:choose>
-												<%-- <span>${mem.memType }</span> --%>
-												<c:choose>
-													<c:when test="${fp.memType eq 'MT1'}">
-														<span>개인</span>
-													</c:when>
-													<c:when test="${fp.memType eq 'MT2'}">
-														<span>법인</span>
-													</c:when>
-													<c:when test="${fp.memType eq 'MT3'}">
-														<span>팀</span>
-													</c:when>
-													<c:when test="${fp.memType eq 'MT4'}">
-														<span>개인사업자</span>
-													</c:when>
-													<c:when test="${fp.memType eq 'MT5'}">
-														<span>법인사업자</span>
-													</c:when>
-													<c:otherwise>
-														<span>기업</span>
-													</c:otherwise>
-												</c:choose>
-												<span>신원인증</span>
-												<c:choose>
-													<c:when test="${empty fp.cellPhone }">																			
-														<span style="border: none; color: gray;">연락처 없음</span>										
-													</c:when>
-													<c:otherwise>
-														<span style="border: none;">연락처 등록</span>		
-													</c:otherwise>
-												</c:choose>
-											</div>
-											<div class="self-introduction">
-												<p>${fp.introduction }</p>
-											</div>
-											<div class="skill">
-												<span>JAVA</span><span>JQUERY</span>
-											</div>
-										</div>
-										<div class="hisroty">
-											<div class="star">
-												<span>★★★★★</span>
-											</div>
-											<div class="evaluation">
-												<span style="font-size: 30px;">0.0</span>&nbsp;&nbsp; / 평가<span>&nbsp;0&nbsp;</span>개
-											</div>
-											<div class="contract" style="margin-top: 120px;">
-												<span style="float: left; margin-left: 10px;">계약한
-													프로젝트</span> <span style="float: right; margin-right: 30px;">0건</span>
-											</div>
-											<div class="portfolio" style="margin-top: 180px;">
-												<span style="float: left; margin-left: 10px;">포트폴리오 수</span>
-												<span style="float: right; margin-right: 30px;">0개</span>
-											</div>
+										<div class="col-3">
+											<span style="margin-right: 5px; font-size: 20px;">0</span><span>건</span>
 										</div>
 									</div>
+									<div class="col-12">
+										<div class="col-7"
+											style="text-align: left; display: inline-block;">
+											<span style="font-size: 20px;">포트폴리오</span>
+										</div>
+										<div class="col-3"
+											style="text-align: right; display: inline-block;">
+											<span style="margin-right: 5px; font-size: 20px;">${portCount }</span><span>개</span>
+										</div>
+									</div>
+									<div class="col-12 accumulated-amount">
+										<div class="col-7"
+											style="text-align: left; display: inline-block;">
+											<span style="font-size: 20px;">누적 완료 금액</span>
+										</div>
+										<div class="col-3"
+											style="text-align: right; display: inline-block;">
+											<span style="margin-right: 5px; font-size: 20px;">0</span><span>원</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-6"
+								style="padding: 10px 10px 10px 10px; position: absolute; margin-left: 370px;">
+								<h4>세부 항목 평가</h4>
+								<canvas id="marksChart"></canvas>
+							</div>
+							<script>
+								var marksCanvas = document
+										.getElementById("marksChart");
+
+								Chart.defaults.global.defaultFontFamily = "Lato";
+								Chart.defaults.global.defaultFontSize = 18;
+
+								var marksData = {
+									labels : [ "전문성(2)", "만족도(3)", "의사소통(4)",
+											"일정 준수(0)", "적극성(5)" ],
+									datasets : [ {
+										lable : "",
+										scaleOverride : true,
+
+										backgroundColor : "#2693F2",
+										borderColor : "#2693F2",
+										fill : false,
+										radius : 6,
+										pointRadius : 3,
+										pointBorderWidth : 0,
+										pointBorderColor : "#2693F2",
+										data : [ 2, 3, 4, 0, 5 ]
+									} ]
+								};
+
+								var chartOptions = {
+									scale : {
+										gridLines : {
+											color : "lightgrey",
+											lineWidth : 3,
+											backgroundColor : "#2693F2",
+										},
+										angleLines : {
+											display : false
+										},
+										ticks : {
+											/* 눈금선제거 */
+											display : false,
+											beginAtZero : true,
+											min : 0,
+											max : 5,
+											stepSize : 1
+										},
+										pointLabels : {
+											fontSize : 18,
+											fontColor : "lightgrey"
+										}
+									},
+									/* 왼쪽레이블 제거 */
+									legend : {
+										display : false
+									}
+								};
+
+								var radarChart = new Chart(marksCanvas, {
+									type : 'radar',
+									data : marksData,
+									options : chartOptions
+								});
+							</script>
+						</div>
+						<div class="col-12 partition">
+							<div class="col-12 page-title">
+								<h3>
+									<b>자기소개</b>
+								</h3>
+								<br>
+								<p style="overflow: hidden; height: 200px;">${fp.introduction }</p>
+							</div>
+							<!-- <div class="detail-view">
+								<h6>
+									<a href="#">자기소개 더보기 ></a>
+								</h6>
+							</div> -->
+						</div>
+						<div class="col-12 partition">
+							<div class="col-12 page-title"
+								style="border-bottom: 2px dashed white;">
+								<h4 style="height: 50px;">포트폴리오</h4>
+								<!-- 포트폴리오 -->
+								<c:forEach var="port" items="${portfolio }">
+									<table class="pTable">
+										<tr>
+											<td class="img" rowspan="2"><img src="../image/test.png"
+												style="max-width: 100%; height: auto;">
+											<td class="category">
+												<!-- port.mcId에 따른 출력 --> <c:choose>
+													<c:when test="${port.mcId eq 'MC1'}">
+														<span>개발자</span>
+														<br>
+													</c:when>
+													<c:when test="${port.mcId eq 'MC2'}">
+														<span>디자인</span>
+														<br>
+													</c:when>
+													<c:otherwise>
+														<span>개발/디자인</span>
+														<br>
+													</c:otherwise>
+												</c:choose> <!-- port.dcId에 따른 출력 --> <c:choose>
+													<c:when test="${port.dcId eq 'DC1'}">
+														<span>웹</span>
+													</c:when>
+													<c:when test="${port.dcId eq 'DC2'}">
+														<span>어플리케이션</span>
+													</c:when>
+													<c:when test="${port.dcId eq 'DC3'}">
+														<span>퍼블리싱</span>
+													</c:when>
+													<c:otherwise>
+														<span>기타</span>
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td class="title">${port.portName }</td>
+										</tr>
+										<tr>
+											<td colspan="2" rowspan="2" class="text">
+												<p style="margin-left: 3%;">${port.content }</p>
+											</td>
+										</tr>
+										<tr></tr>
+										<tr>
+											<td><button type="submit" id="${port.portId }"
+													class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
+											<td class="join">참여율 : ${port.portJoin }%</td>
+											<td class="tec"><c:forEach var="pt" items="${portTec }">
+													<span>${pt.tName }</span>
+												</c:forEach></td>
+										</tr>
+									</table>
 								</c:forEach>
-								<!-- 하나의 파트너스 정보 끝 -->
+								<br>
+								<!-- <div class="detail-view">
+									<h6>
+										<a href="#">포트폴리오 더보기 ></a>
+									</h6>
+								</div> -->
+							</div>
+							<!-- 보유 기술 -->
+							<div class="col-12 partition">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">보유 기술</h4>
+									<div class="skill">
+										<table class="table">
+											<tr class="table-secondary"
+												style="font-size: 20px; text-align: center;">
+												<td>종류</td>
+												<td>숙련도</td>
+												<td>경험</td>
+											</tr>
+											<c:forEach var="skill" items="${skillList }">
+												<tr>
+													<td><input class="text" type="text" readonly
+														style="width: 190px; height: 40px; text-align: center;"
+														value="${skill.skillKind }"></td>
+													<td><input type="text" readonly
+														style="width: 190px; height: 40px; text-align: center;"
+														value="${skill.skillKind }등급"></td>
+													<td><input type="text" readonly
+														style="width: 190px; height: 40px; text-align: center;"
+														value="${skill.skillYear }"></td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+								<!-- <div class="detail-view">
+									<h6>
+										<a href="#">보유기술 더보기 ></a>
+									</h6>
+								</div> -->
+							</div>
+							<!-- 경력 -->
+							<div class="col-12" style="margin-top: 2%;">
+								<div class="col-12 page-title"
+									style="border-bottom: 2px dashed white;">
+									<h4 style="height: 50px;">경력</h4>
 
+									<c:forEach var="career" items="${careerList }">
+										<table class="Ctable">
+											<tr>
+												<td class="career-title">회사명</td>
+												<td class="career-text">: ${career.cName }</td>
+											</tr>
+											<tr>
+												<td class="career-title">근무 부서</td>
+												<td class="career-text">: ${career.cDept }</td>
+											</tr>
+											<tr>
+												<td class="career-title">직위</td>
+												<td class="career-text">: ${career.cPosition }</td>
+											</tr>
+											<tr>
+												<td class="career-title" style="border: none">근무시간</td>
+												<td>: ${career.cStartDate }</td>
+											</tr>
+											<tr>
+												<td><input type="hidden" name="cId"
+													value="${career.cId }"> <input type="hidden"
+													name="profileId" value="${career.profileId }"></td>
+											</tr>
+										</table>
+										<br>
+									</c:forEach>
+								</div>
+							</div>
+							<div class="col-12 partition">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">학력</h4>
+									<div class="academic">
+										<table class="table">
+											<tr class="table-secondary" style="text-align: center;">
+												<td>학교명</td>
+												<td>전공</td>
+												<td>분류</td>
+												<td>상태</td>
+												<td>입학일</td>
+												<td>졸업일</td>
+											</tr>
+											<c:forEach var="sc" items="${sccareerList }">
+												<tr class="table-light"
+													style="text-align: center; vertical-align: middle;">
+													<td>${sc.scName }</td>
+													<td>${sc.scMajor }</td>
+													<c:choose>
+														<c:when test="${sc.sgId eq 'SG1'}">
+															<td>중학교</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG2'}">
+															<td>고등학교</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG3'}">
+															<td>전문대(2~3)</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG4'}">
+															<td>대학교(4)</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG5'}">
+															<td>대학원</td>
+														</c:when>
+														<c:when test="${sc.sgId eq 'SG6'}">
+															<td>박사과정</td>
+														</c:when>
+													</c:choose>
+													<c:choose>
+														<c:when test="${sc.ssId eq 'SS1'}">
+															<td>재학</td>
+														</c:when>
+														<c:when test="${sc.ssId eq 'SS2'}">
+															<td>휴학</td>
+														</c:when>
+														<c:when test="${sc.ssId eq 'SS3'}">
+															<td>졸업</td>
+														</c:when>
+														<c:when test="${sc.ssId eq 'SS4'}">
+															<td>자퇴</td>
+														</c:when>
+													</c:choose>
+													<td>2020년 1월</td>
+													<td>2020년 3월</td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+								<!-- <dlv class="detail-view">
+                                    <h6><a href="#">학력 더보기 ></a></h6>
+                                </dlv> -->
+							</div>
+							<div class="col-12 partition">
+								<div class="col-12 page-title">
+									<h4 style="height: 50px;">자격증</h4>
+									<div class="certificate">
+										<table class="table">
+											<tr class="table-secondary" style="text-align: center;">
+												<td>자격증명</td>
+												<td>발급기관</td>
+												<td>발행일자</td>
+												<td>일련번호</td>
+											</tr>
+											<c:forEach var="certi" items="${certiList }">
+												<tr class="table-light"
+													style="text-align: center; vertical-align: middle;">
+													<td>${certi.ccName }</td>
+													<td>${certi.ccPlace }</td>
+													<td>2020년 09월 03일</td>
+													<td>${certi.ccNumber }</td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+								<!-- <dlv class="detail-view">
+                                    <h6><a href="#">자격증 더보기 ></a></h6>
+                                </dlv> -->
+							</div>
+							<div class="col-12 partition" style="border: none;">
+								<h4 style="height: 50px;">평가</h4>
+								<div class="history">
+									<c:forEach var="eval" items="${PartEval }">
+										<!-- 평가 시작 -->
+										<table class="evalTable">
+											<tr>
+												<td class="evalTitle" colspan="3"><a href="#">${eval.proName }</a></td>
+											</tr>
+											<tr>
+												<td class="evalPadding" colspan="3">${eval.mcType }|
+													${eval.dcType }</td>
+											</tr>
+											<tr>
+												<td class="evalPadding" style="width: 230px;"><i
+													class="fas fa-won-sign">계약금액 : </i>${eval.proPayment }원</td>
+												<td style="padding-bottom: 10px; padding-top: 10px;"><i
+													class="far fa-clock">프로젝트 기간 : </i>${eval.proDuration }일</td>
+												<td style="padding-bottom: 10px; padding-top: 10px;"><i
+													class="far fa-calendar-alt">계약일자 : </i>
+												<fmt:parseDate pattern="yyyy-MM-dd"
+														value="${eval.proStartDate }" var="parsedDate" /> <fmt:formatDate
+														value="${parsedDate}" pattern="yyyy년 MM월 dd일" /></td>
+											</tr>
 
-
+											<tr>
+												<td class="evalPadding" colspan="3"
+													style="text-align: center; font-size: 20px; border-bottom: 2px dashed white;">평균
+													평점 : <c:choose>
+														<c:when test="${eval.eAgv eq 1}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 2}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 3}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 4}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 5}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+														</c:when>
+													</c:choose>
+												</td>
+											</tr>
+											<tr>
+												<td class="evalPadding" colspan="3"
+													style="border-bottom: 2px dashed white;">
+													<ul class="agv">
+														<li>전문성(${eval.eStar1 })</li>
+														<li>결과물 만족도(${eval.eStar2 })</li>
+														<li>의사소통(${eval.eStar3 })</li>
+														<li>일정 준수(${eval.eStar4 })</li>
+														<li>적극성(${eval.eStar5 })</li>
+													</ul>
+													<ul class="agv">
+														<li><c:forEach begin="1" end="${eval.eStar1 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar2 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar3 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar4 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar5 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+													</ul>
+												</td>
+											</tr>
+											<tr>
+												<td class="evalPadding" colspan="3">
+													<ul class="client">
+														<li><img class="client-img"></li>
+														<li><span class="btn btn-secondary btn-sm"
+															style="margin-right: 5px; margin-bottom: 5px;">클라이언트</span><span>${eval.memNick }</span>
+															<br>
+															<p>${eval.eContent }</p></li>
+													</ul>
+												</td>
+											</tr>
+										</table>
+									</c:forEach>
+									<!-- 평가 div끝-->
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-	</section>
-	<br>
+			</div>
 
+		</div>
+		</div>
+
+	</section>
 
 	<!-- Footer -->
 	<jsp:include page="../common/footer.jsp" />
@@ -1269,8 +1258,8 @@ ul li input {
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script> -->
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
@@ -1278,7 +1267,7 @@ ul li input {
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-		crossorigin="anonymous"></script>
+		crossorigin="anonymous"></script> -->
 </body>
 
 </html>

@@ -50,13 +50,18 @@
 	WHERE MEM_ID = #{memId}
   </select>
   
+  <select id="selectIntroduce" parameterType="int" resultMap="profileResultSet">
+  	SELECT * FROM PROFILE
+	WHERE PROFILE_ID=#{profileId}
+  </select>
+  
+  
   <!-- 로그인하면서 프로필 없으면 생성 -->
   <insert id="insertProfile" parameterType="Profile">
   	INSERT INTO PROFILE
   	VALUES(PROFILE_SEQ.nextval,#{memId},'자기소개를 작성해주세요.',NULL,NULL)
   </insert>
    
-  
   
   <!-- 자기소개 수정 -->
   <update id="profileUpdate" parameterType="Profile">
@@ -378,7 +383,23 @@
 		ORDER BY MEM_CREATE_DATE ASC	
 	</select>
 	
+	<!-- 파트너스찾기용 멤버 찾기 -->
+	<select id="selectMember" parameterType="string" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEM_ID=#{mId}
+	</select>
 	
+	<!-- 파트너스 찾긱 자기소개 -->
+	<select id="selectMemNick" parameterType="int" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEM_ID=#{mId}
+	</select>
+	
+	<!-- 파트너스 찾기 프로필 -->
+	<select id="fpselectIntroduce" parameterType="int" resultMap="profileResultSet">
+		SELECT * FROM PROFILE
+		WHERE PROFILE_ID=#{profileId}
+	</select>
 	
 	
 </mapper>
