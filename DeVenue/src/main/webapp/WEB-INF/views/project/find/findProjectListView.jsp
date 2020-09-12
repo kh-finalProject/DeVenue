@@ -1969,17 +1969,17 @@ if(session!=null){
 	      					
 	      					var $dTr=$("<tr>");
 	      					
-	      					var $tdWorkType=$("<td>").css("border-right","dashed 1px white").css("width","20%");
+	      					var $tdWorkType=$("<td>").css("border-right","dashed 1px white").css("width","10%");
 	      					var $workType=$("<span>").addClass("badge badge-info");
 	      					
 	      					var $tdTech=$("<td>").css("border-right","dashed 1px white").css("width","40%").css("padding-left","1rem");
 	      					
 	      					
-	      					var $tdLocation=$("<td>").css("width","10%").css("padding-left","1rem").css("padding-top","0.375rem").css("font-size","0.875rem");
+	      					var $tdLocation=$("<td>").css("width","15%").css("padding-left","1rem").css("padding-top","0.375rem").css("font-size","0.875rem");
 	      					var $locationIcon=$("<i>").addClass("fas fa-map-marker-alt mr-2");
 	      					var $location=$("<label>");
 	      					
-	      					var $tdCDate=$("<td>").css("width","30%").css("font-size","0.875rem");
+	      					var $tdCDate=$("<td>").css("width","35%").css("font-size","0.875rem");
 	      					var $cDateLabel=$("<label>").addClass("mt-2 mr-2 ml-4 text-muted").text("등록일자:");
 	      					var $cDate=$("<label>").addClass("text-muted");
 	      					
@@ -2109,19 +2109,19 @@ if(session!=null){
       						}
       						
       						if($list[i].project.proPlanDetail==2){
-      							$progressDiv.append($20);
+      							$progressDiv.append($40);
       						}
       						
       						if($list[i].project.proPlanDetail==3){
-      							$progressDiv.append($20);
+      							$progressDiv.append($60);
       						}
       						
       						if($list[i].project.proPlanDetail==4){
-      							$progressDiv.append($20);
+      							$progressDiv.append($80);
       						}
       						
       						if($list[i].project.proPlanDetail==5){
-      							$progressDiv.append($20);
+      							$progressDiv.append($98);
       						}
       						
       					
@@ -2653,7 +2653,7 @@ if(session!=null){
                           </div>
                           <table style="width:100%;">
                             <tr>
-                              <td style="border-right: 1px dashed white;width:20%;">
+                              <td style="border-right: 1px dashed white;width:10%;">
                                 <span class="badge badge-info">${p.workType}</span>
                               </td>
                               <td style="border-right: 1px dashed white;width: 40%;padding-left: 1rem;">
@@ -2663,10 +2663,10 @@ if(session!=null){
                                 </c:if>
                               </c:forEach>  
                               </td>
-                              <td style="width: 10%;padding-left:1rem;padding-top:0.375rem;font-size: 0.875rem;">
+                              <td style="width: 15%;padding-left:1rem;padding-top:0.375rem;font-size: 0.875rem;">
                                 <i class="fas fa-map-marker-alt mr-2"></i><label>${p.project.proLocation}</label>
                               </td>
-                              <td style="width: 30%;font-size: 0.875rem;">
+                              <td style="width: 35%;font-size: 0.875rem;">
                                 <label class="mt-2 mr-2 ml-4 text-muted">등록일자:</label><label class="text-muted">
                                		${p.project.proCreateDate}
                                 </label>
