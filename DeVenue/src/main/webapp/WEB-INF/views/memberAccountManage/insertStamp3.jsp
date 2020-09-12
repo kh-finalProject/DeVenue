@@ -24,7 +24,7 @@
     <!--responsive meta tag-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>도장 이미지 업로드1</title>
+    <title>계정관리 - 도장 이미지 업로드3(자르고 업로드)</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,12 +39,130 @@
     <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
 
     <!-- Jcrop -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://jcrop-cdn.tapmodo.com/v2.0.0-RC1/js/Jcrop.js"></script>
-    <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v2.0.0-RC1/css/Jcrop.css" type="text/css">
+<!--     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<!--     <script src="http://jcrop-cdn.tapmodo.com/v2.0.0-RC1/js/Jcrop.js"></script> -->
+<!--     <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v2.0.0-RC1/css/Jcrop.css" type="text/css"> -->
+	<script src="${pageContext.servletContext.contextPath }/resources/Jcrop/js/jquery.min.js"></script>
+	<script src="${pageContext.servletContext.contextPath }/resources/Jcrop/js/jquery.Jcrop.js"></script>
+<%-- 	<script src="${pageContext.servletContext.contextPath }/resources/Jcrop/custom/jquery.Jcrop.js"></script> --%>
+	<script type="text/javascript">
+  jQuery(function($){
 
+    // Create variables (in this scope) to hold the API and image size
+    var jcrop_api,
+        boundx,
+        boundy,
+
+        // Grab some information about the preview pane
+        $preview = $('#preview-pane'),
+        $pcnt = $('#preview-pane .preview-container'),
+        $pimg = $('#preview-pane .preview-container img'),
+
+        xsize = $pcnt.width(),
+        ysize = $pcnt.height();
+    
+    console.log('init',[xsize,ysize]);
+    $('#target').Jcrop({
+      onChange: updatePreview, 
+      onSelect: updatePreview, 
+      aspectRatio: 1//가로세로 비율을 정함
+    },function(){
+      // Use the API to get the real image size
+      var bounds = this.getBounds();
+      boundx = bounds[0];
+      boundy = bounds[1];
+      // Store the API in the jcrop_api variable
+      jcrop_api = this;
+
+      // Move the preview into the jcrop container for css positioning
+      $preview.appendTo(jcrop_api.ui.holder);
+    });
+
+    function updatePreview(c)
+    {
+      if (parseInt(c.w) > 0)
+      {
+        var rx = xsize / c.w;
+        var ry = ysize / c.h;
+
+        $pimg.css({
+          width: Math.round(rx * boundx) + 'px',
+          height: Math.round(ry * boundy) + 'px',
+          marginLeft: '-' + Math.round(rx * c.x) + 'px',
+          marginTop: '-' + Math.round(ry * c.y) + 'px'
+        });
+      }
+      $('#x1').val(c.x);
+      $('#y1').val(c.y);
+      $('#x2').val(c.x2);
+      $('#y2').val(c.y2);
+      $('#w').val(c.w);
+      $('#h').val(c.h);
+    };
+    
+    $('#coords').on('change','input',function(e){
+        var x1 = $('#x1').val(),
+            x2 = $('#x2').val(),
+            y1 = $('#y1').val(),
+            y2 = $('#y2').val();
+        jcrop_api.setSelect([x1,y1,x2,y2]);
+      });
+  });
+  
+  
+  
+    // Simple event handler, called from onChange and onSelect
+    // event handlers, as per the Jcrop invocation above
+    function showCoords(c)
+    {
+      $('#x1').val(c.x);
+      $('#y1').val(c.y);
+      $('#x2').val(c.x2);
+      $('#y2').val(c.y2);
+      $('#w').val(c.w);
+      $('#h').val(c.h);
+    };
+
+    function clearCoords()
+    {
+      $('#coords input').val('');
+    };
+</script>
+<%-- <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/Jcrop/demos/demo_files/main.css" type="text/css" /> --%>
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/Jcrop/demos/demo_files/demos.css" type="text/css" />
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/Jcrop/css/jquery.Jcrop.css" type="text/css" />
 
     <style>
+    	/* 잘려진 이미지 미리보기 영역 css */
+		.jcrop-holder #preview-pane {
+		  display: block;
+		  position: relative;
+		  z-index: 2000;
+		  top: 77px;
+ 		  right: -270px;
+		  padding: 6px;
+		  border: 1px solid #212426;
+		  background-color: #212426;
+		  width: 177px;
+		  height: 177px;
+		  
+		  -webkit-border-radius: 3px;
+		  -moz-border-radius: 3px;
+		  border-radius: 3px;
+		
+		  -webkit-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+		  -moz-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+		  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+		}
+		
+		/* 미리보기 영역 사이즈 설정 */
+		#preview-pane .preview-container {
+		  width: 165px;
+		  height: 165px;
+		  overflow: hidden;
+		}
+    	/* --------------------------------------------------------------------- */
+    
         body {
             font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             /* font-family: 'Jua', sans-serif; */
@@ -229,6 +347,8 @@
 <body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 	<!-- 메인 메뉴바 -->
    	<jsp:include page="../common/menubar.jsp"/>
+ 	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 	<!-- 마이페이지 사이드 메뉴바 -->
 	<jsp:include page="../common/pSideMenubar.jsp"/>
@@ -283,7 +403,8 @@
                 </div>
             </div>
             <!-- 각 단계 -->
-            <form action="cutImgAndUpload.do" method="post" enctype="multipart/form-data" id="stampImgUploadForm">
+            <form action="cutImgAndUpload.do" method="get" id="coords" class="coords" onsubmit="return sigCutSubmit();" >
+            	<input type="hidden" name="renameFileName" value="${renameFileName }">
                 <!-- 3단계 영역 - 이미지 자르기 및 업로드 -->
                 <div class="stamp_cut_area">
                     <table border="0" style="width: 80%; margin: auto; margin-top: 30px; margin-bottom: 40px; font-size: 14px;">
@@ -316,22 +437,35 @@
                     <tr>
                         <td></td>
                         <td style="padding-top: 10px; padding-bottom: 0px !important; display: flex;">
-                            <!-- 이미지 크롭 첨부 -->
-                            <form action="/crop">
-                                <input type="hidden" name="x" id="x" />
-                                <input type="hidden" name="y" id="y" />
-                                <input type="hidden" name="w" id="w" />
-                                <input type="hidden" name="h" id="h" />
-                            </form>
-                            <img src="${pageContext.servletContext.contextPath }/resources/sigImg/${renameFileName}" id="img" width="200" height="200"/>
+                            <!-- 받은 이미지 -->
+                            <img src="${pageContext.servletContext.contextPath }/resources/sigImg/${renameFileName}" id="target" alt="[Jcrop Example]" />
                             <button type="button" class="btn btn-secondary" style="margin-left:10px;  height: 35px !important; min-width: 110px;" onclick="reUpload();">다시 첨부하기</button>
+                            <!-- 잘려진 영역 미리보기 -->
+							<div id="preview-pane">
+							   <div class="preview-container">
+							      <img src="${pageContext.servletContext.contextPath }/resources/sigImg/${renameFileName}" class="jcrop-preview" alt="Preview" />
+							   </div>
+							</div>
                         </td>
+                    </tr>
+                    <tr>
+                    	<td></td>
+                    	<td>
+                    		<div class="inline-labels">
+							    <label>X1 <input type="text" size="4" id="x1" name="x1" /></label>
+							    <label>Y1 <input type="text" size="4" id="y1" name="y1" /></label>
+							    <label>X2 <input type="text" size="4" id="x2" name="x2" /></label>
+							    <label>Y2 <input type="text" size="4" id="y2" name="y2" /></label>
+							    <label>W <input type="text" size="4" id="w" name="w" /></label>
+							    <label>H <input type="text" size="4" id="h" name="h" /></label>
+						    </div>
+                    	</td>
                     </tr>
                 </table>
                 <hr style="border-style: dashed; border-color: gray;">
                 <div style="width: 100%; text-align: right; margin-top: 20px; margin-bottom: 10px;">
                     <!-- 대비 조정 버튼 : 이미지로 변환 후 저장 -->
-                    <button onclick="sigUpload();" type="button" class="btn btn-info" style="font-size: 14px;">업로드 완료</button>
+                    <button type="submit" class="btn btn-info" style="font-size: 14px;">업로드 완료</button>
                 </div>
                 </div>
             </form>
@@ -356,14 +490,21 @@
             location.href="reUploadStampImg.do?renameFileName="+renameFileName;
         }
     	
-    	// 업로드 완료버튼 클릭시
-        function sigUpload(){
-            alert('업로드 완료');
+    	// 업로드 완료버튼 클릭시 => 자르기를 하지 않았을 경우도 고려해야 겠군
+        function sigCutSubmit(){
+    		if($('#x1').val().trim()==''){
+    			var isNotCut = confirm('이미지를 그대로 업로드 하시겠습니까?');    			
+    			if(!isNotCut){
+	            	return false;
+	            }
+    		}else{
+	            var isCut = confirm('미리보기 화면의 이미지가 업로드됩니다. 계속하시겠습니까?');
+	            if(!isCut){
+	            	return false;
+	            }
+    		}
         }
         
-    	// Jcrop 관련
-    	
-    	
      	// 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
 	    $(function(){
 	        $('.myPage_sideNav_area').height($('.allWrap').height());

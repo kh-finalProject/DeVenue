@@ -42,7 +42,49 @@
 		<result property="sigType" column="SIG_TYPE"/>
 		<result property="isMain" column="IS_MAIN"/>
 	</resultMap>
-	
+	<resultMap type="IdenMember" id="idenMemberResultMap">
+		<id property="memId" column="IDE_ID"/>
+		<result property="memName" column="MEM_NAME"/>
+		<result property="phone" column="PHONE"/>
+		<result property="cellPhone" column="CELLPHONE"/>
+		<result property="faxNo" column="FAX_NO"/>
+		<result property="memInGroup" column="MEM_TYPE_NAME"/>
+		<result property="ideName" column="IDE_NAME"/>
+		<result property="ideAddress" column="IDE_ADDRESS"/>
+		<result property="originalFileName" column="IDE_ORIGINFILE"/>
+		<result property="renameFileName" column="IDE_RENAMEFILE"/>
+	</resultMap>
+	 <!-- 회원정보 -->
+  <resultMap type="Member" id="memberResultSet">
+  	<id property="memId" column="MEM_ID"/>
+  	
+  	<result property="userType" column="USER_TYPE"/>
+  	<result property="memType" column="MEM_TYPE_KIND"/>
+  	<result property="memEmail" column="MEM_EMAIL"/>
+  	<result property="memNick" column="MEM_NICK"/>
+  	<result property="memName" column="MEM_NAME"/>
+  	<result property="address1" column="ADDRESS1"/>
+  	<result property="address2" column="ADDRESS2"/>
+  	<result property="address3" column="ADDRESS3"/>
+  	<result property="phone" column="PHONE"/>
+  	<result property="cellPhone" column="CELLPHONE"/>
+  	<result property="faxNo" column="FAX_NO"/>
+  	<result property="taxEmail" column="TAX_EMAIL"/>
+  	<result property="decCount" column="DEC_COUNT"/>
+  	<result property="memAction" column="MEM_ACTION"/>
+  	<result property="isAdvertise" column="IS_ADVERTISE"/>
+  	<result property="memCreateDate" column="MEM_CREATE_DATE"/>
+  	<result property="memModifyDate" column="MEM_MODIFY_DATE"/>
+  	<result property="memStatus" column="MEM_STATUS"/>
+  	<result property="memTypeName" column="MEM_TYPE_NAME"/>
+  </resultMap>
+  <resultMap type="DeclareDTO" id="declareDTOResultSet">
+		<id property="decId" column="DEC_ID"/>
+		<result property="fromName" column="MEM_NAME"/>
+		<result property="fromPhone" column="CELLPHONE"/>
+		<result property="decContent" column="DEC_CONTENT"/>
+	</resultMap>
+  
 	<!-- 회원 비밀번호 변경 쿼리 -->
 	<select id="updatePwd" parameterType="map">
 		UPDATE MEMBER
@@ -175,4 +217,61 @@
 		INSERT INTO IDENTIFY
 		VALUES(#{memId},NULL,NULL,NULL,NULL,DEFAULT)
 	</insert>
+	
+	<!-- 도장 날인 등록 -->
+	<insert id="insertStamp" parameterType="map">
+		INSERT INTO SIGNATURE
+		VALUES ((SELECT NVL(MAX(SIG_ID), 0) + 1 FROM SIGNATURE), #{mId}, '비어있음', #{renameFileName}, 'STAMP', 'N')
+	</insert>
+	
+	<!-- 보안로그인 위해 비번 가져오기 -->
+	<select id="getPwd" parameterType="_int" resultType="string">
+		SELECT MEM_PWD FROM MEMBER
+		WHERE MEM_ID = #{mId}
+	</select>
+	
+	<!-- 신원인증요청 내역 관리를 위해 요청 관련 정보 가져오기(최신순으로 순서를 매길 수 있는 컬럼이 없다..날짜도 없고 기본키가 순서를 내포하는 고유식별자도 아님..날짜를 넣었어야했다) -->
+	<select id="selectIdenMember" resultMap="idenMemberResultMap">
+		SELECT I.*, MEM_NAME, PHONE, CELLPHONE, FAX_NO, MEM_TYPE_NAME
+		FROM IDENTIFY I
+		JOIN MEMBER M ON(I.IDE_ID = M.MEM_ID)
+		WHERE IDE_STATUS = 'ING'
+	</select>
+	
+	<!-- 신원인증 요청(수락/거부) -->
+	<update id="acceptIden" parameterType="string">
+		UPDATE IDENTIFY
+		SET IDE_STATUS = 'COMPLETE'
+		WHERE IDE_ID = #{ideId}
+	</update>
+	<update id="requestIden" parameterType="string">
+		UPDATE IDENTIFY
+		SET IDE_STATUS = 'RE'
+		WHERE IDE_ID = #{ideId}
+	</update>
+	
+	<!-- 신고 3회이상이라 제재먹은 회원 불러오기(쓸제업는 컬럼 빼야하지만 귀찮) -->
+	<select id="selectDeclareMems" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER M
+		JOIN MEMTYPE MT ON (M.MEM_TYPE = MT.MEM_TYPE_CODE)
+		WHERE DEC_COUNT >= 3
+		ORDER BY MEM_MODIFY_DATE
+	</select>
+	
+	<!-- 신고내역 디테일 -->
+	<select id="selectDeclares" resultMap="declareDTOResultSet">
+		SELECT DEC_ID, MEM_NAME, CELLPHONE, DEC_CONTENT
+		FROM DECLARE D
+		LEFT JOIN MEMBER M ON (D.FROM_ID = MEM_ID)
+		WHERE TO_ID = 5
+		ORDER BY DEC_ID DESC
+	</select>
+	
+	<!-- 신고카운트 리셋하여 풀어주고 부활절 카운트 추가하지 않음(관리자가 풀어준건 죄가 없기때문이라고 생각하므로) -->
+	<update id="releaseSanctions" parameterType="string">
+		UPDATE MEMBER
+		SET DEC_COUNT = 0
+		WHERE MEM_ID = #{memId}
+	</update>
 </mapper>

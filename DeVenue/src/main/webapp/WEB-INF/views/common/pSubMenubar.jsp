@@ -9,6 +9,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.bg-light{
+		background: #7F7FD5;
+	    background: -webkit-linear-gradient(to bottom, #2a2f38, #272b31, #26292c);
+	    background: linear-gradient(to bottom, #2a2f38, #272b31,#26292c);
+		border-bottom:1px solid #2a2f38;
+	}
+	.nav-item a{
+		color:white !important;
+	}
+</style>
 </head>
 <body>
 	<!--navigation bar2-->

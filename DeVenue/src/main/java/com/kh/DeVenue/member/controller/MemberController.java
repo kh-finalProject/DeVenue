@@ -1,9 +1,15 @@
 package com.kh.DeVenue.member.controller;
 
+import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,13 +32,9 @@ import com.kh.DeVenue.member.model.vo.FCprojectHistory;
 import com.kh.DeVenue.member.model.vo.FindClient;
 import com.kh.DeVenue.member.model.vo.FindClientDetail;
 import com.kh.DeVenue.member.model.vo.MatchingPartnersList;
-
 import com.kh.DeVenue.member.model.vo.Member;
-
-import static com.kh.DeVenue.common.PaginationClient.getPageInfo;
 import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
-import com.kh.DeVenue.memberAccount.model.vo.Identify;
 import com.kh.DeVenue.model.service.MemberService2;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
 import com.kh.DeVenue.util.model.service.ChatService;
@@ -86,6 +88,79 @@ public class MemberController {
 
 		Member m = new Member(memEmail,memPwd);
 //		System.out.println(m);
+		
+		// 원래는 로그인단이 아닌 상시 돌아가야하는것(접속자도 session invalidate 시켜줘야함)
+		// 로그인 유저 담기 전, 먼저 제재대상 회원인지 확인(DEATH -> DEC_COUNT 순)
+		// 죽일 회원이면(DEATH 수치 3회) 탈퇴처리 후(원랜 즉시 반영되어야겠지만 이렇게해도 상관없음) 제재회원 페이지로
+		// 일반제재대상 회원이면 제재일로부터 7일이 지났는지 확인 후 7일 이전이면 제재유저페이지로 이동
+		// 7일이 지나면 MODIFYDATE를 0으로 만들고 DEC_COUNT도 0으로 만들고 DEATH컬럼을 1회 증가 시킨 후
+		// '로그인유저객체를 담고' 제재회원 안내페이지로 넘어간다
+		Map map = mService.isDeathOrSanctions(memEmail);
+		
+		if(map.get("DEC_COUNT")!=null&&Integer.valueOf(String.valueOf(map.get("DEC_COUNT")))!=0 ) {
+			if(Integer.valueOf(String.valueOf(map.get("DEATH"))) >= 2 && Integer.valueOf(String.valueOf(map.get("DEC_COUNT"))) >= 3) {
+				System.out.println("죽음이 찾아온 회원");
+				// 죽음이 찾아오게 해주자(status N으로 바꾸고, Death를 3으로 바꾸자)
+				int result = mService.toDeath(memEmail);
+				if(result > 0) {
+					System.out.println("강탈된 회원");
+					request.setAttribute("goodByeMsg", "누적 신고수 9회 이상,<br>제재 수 3회차가 되어<br>탈퇴처리된 계정입니다.");
+					return "common/errorPageGhost";
+					
+				}else {
+					System.out.println("강탈된 회원이지만 강탈시키는데 실패");
+					request.setAttribute("msg", "강제탈퇴대상 회원이나 아직 처리되지 않았습니다.");
+					return "common/errorPageGhost";
+				}
+			}else {
+				System.out.println("죽진 않은 회원");
+				
+				if(Integer.valueOf(String.valueOf(map.get("DEC_COUNT"))) >= 3) {
+					System.out.println("제재중인 회원");
+					
+					// 날짜 비교
+					Date date = new Date();
+					Date getDate = new Date(((java.sql.Timestamp)map.get("MEM_MODIFY_DATE")).getTime());
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+					SimpleDateFormat sdfShow = new SimpleDateFormat("yyyy.MM.dd");
+	//				Date getDate =  null;
+	//				try {
+	//					getDate = sdf.parse(String.valueOf());
+	//				} catch (ParseException e) {
+	//					e.printStackTrace();
+	//				}
+					String showDate = sdfShow.format(getDate);
+					System.out.println("date : " + date);
+					System.out.println("getDate : " + getDate);
+					
+					long dateGap = (date.getTime() - getDate.getTime()) / (24*60*60*1000);
+					long finalDateGap = (Math.abs(dateGap));
+					System.out.println("몇일 차 ? " + finalDateGap);
+					
+					if(finalDateGap >= 7) {// 제재해제후 데스 카운트 증가
+						int result = mService.updateDecAndDeath(memEmail);
+						if(result > 0) {
+							System.out.println("축하해요 님 제재 풀렸어요");
+							
+						}else {
+							System.out.println("재제푸는데 실패");
+							request.setAttribute("msg", "제재기간이 종료되었으나 자동해제되지 않았습니다. 고객센터로 문제주십시오");
+							return "common/errorPageGhost";
+						}
+					}else {// 바로 제재회원안내페이지로 이동
+						System.out.println("아직 제재상태");
+						request.setAttribute("msg", "3회 이상의 신고 누적으로<br>7일간 이용이 정지됩니다.<br>이용정지 2회가 초과될 경우<br>사이트 이용이 영구 불가합니다.");
+						request.setAttribute("showDate", showDate);
+						request.setAttribute("finalDateGap", 7-finalDateGap);
+						return "common/errorPageGhost";
+					}
+				}else {
+					System.out.println("정상상태 회원");
+				}
+			}
+		}
+		
 		Member loginUser = mService.loginUserMember(m);
 		System.out.println(loginUser);
 //		System.out.println(loginUser.getMemId());

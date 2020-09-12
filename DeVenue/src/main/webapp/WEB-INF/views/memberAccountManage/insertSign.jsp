@@ -208,6 +208,8 @@
 <body onload="init();">
    	<!-- 메인 메뉴바 -->
    	<jsp:include page="../common/menubar.jsp"/>
+   	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 	<!-- 마이페이지 사이드 메뉴바 -->
 	<jsp:include page="../common/pSideMenubar.jsp"/>

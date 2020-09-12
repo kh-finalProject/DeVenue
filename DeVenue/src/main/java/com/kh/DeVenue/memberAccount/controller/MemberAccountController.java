@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -189,7 +190,8 @@ public class MemberAccountController {
 	@RequestMapping("securityLogin.do")
 	public void securityLogin(HttpServletResponse response, HttpSession session, String password) throws IOException {
 		// 원래는 이렇게 하면 안되지만 loginUser세션에 이미 pwd가 들어있으므로, 세션의 값과 비교한다. 
-		String memPwd = ((Member)session.getAttribute("loginUser")).getMemPwd();
+		int mId = ((Member)session.getAttribute("loginUser")).getMemId();
+		String memPwd = maService.getPwd(mId);
 		
 		PrintWriter out = response.getWriter();
 		if(password.equals(memPwd)) {
@@ -275,7 +277,7 @@ public class MemberAccountController {
 		int memId = ((Member)session.getAttribute("loginUser")).getMemId();
 		System.out.println("신원인증 이미지 업로드하러 옴");
 		response.setCharacterEncoding("UTF-8");
-		
+		System.out.println("idenAdress : " + idenAddress);
 		if(!file.getOriginalFilename().equals("")) {
 			String folderName = "\\idenFile";
 			String renameFileName = saveFile(file, request, folderName);
@@ -704,4 +706,72 @@ public class MemberAccountController {
 		
 		return renameFileName;
 	}
+
+	@RequestMapping("cutImgAndUpload.do")
+	public String cutImgAndUpload(String x1, String y1, String x2, String y2, String w, String h, String renameFileName, HttpServletRequest request, HttpSession session) throws IOException {
+		System.out.println("커팅좌표 : (" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")");
+		System.out.println("커팅된 크기 : " + w + "," + h);
+		System.out.println("커팅 전 파일 이름 : " + renameFileName);
+		
+		// 좌표를 int형으로 변환
+		int x = Integer.valueOf(x1);
+		int y = Integer.valueOf(y1);
+		int width = Integer.valueOf(w);
+		int height = Integer.valueOf(h);
+		
+		String folderName = "\\sigImg";
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String filePath = root + folderName + "\\" + renameFileName;
+		
+        File sourceimage = new File(filePath);
+        BufferedImage img = ImageIO.read(sourceimage);
+		
+        Rectangle rect = new Rectangle(x, y, width, height);
+        
+        BufferedImage cropImg = cropImage(img, rect);
+        
+        // 제대로 잘려 반환되었으면 이전 이미지 삭제 후 자른이미지 저장 및 DB로 해당 이미지 날인 정보 송신
+        if(cropImg != null) {
+        	deleteFile(renameFileName, folderName, request);
+        	
+        	String finalFileName = saveBufferFile(cropImg, request, folderName);
+        	
+        	int mId = ((Member)session.getAttribute("loginUser")).getMemId();
+        	
+        	Map map = new HashedMap();
+        	map.put("mId", mId);
+        	map.put("renameFileName", finalFileName);
+        	
+        	int result = maService.insertStamp(map);
+        	
+        	if(result > 0) {
+        		System.out.println("성공적으로 도장 날인 업로드를 마무리함");
+        	}else {
+        		System.out.println("커팅 이미지는 있지만 db에 저장을 못함");
+        	}
+        }else {
+        	System.out.println("이미지 커팅이 정상적으로 되지 않았음");
+        }
+		return "redirect:gotoSignatureList.do";
+	}
+	
+	// 좌표 및 완성 이미지 크기를 담는 내부클래스
+	class Rectangle{
+		int x;
+		int y;
+		int width;
+		int height;
+		
+		Rectangle(int x, int y, int width, int height){
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
+		}
+	}
+	// 이미지 컷팅 후 반환 메소드
+   private BufferedImage cropImage(BufferedImage img, Rectangle rect) {
+      BufferedImage cutImg = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
+      return cutImg; 
+   }
 }

@@ -207,6 +207,8 @@
 
 <body>
   	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
   	<jsp:include page="../common/pSideMenubar.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 
@@ -344,7 +346,7 @@
                                 <label>주소지</label>
                             </td>
                             <td>
-                                <input type="text" name="idenAdress" class="idenAdress" id="idenAdressInput" value="" required>
+                                <input type="text" name="idenAddress" class="idenAdress" id="idenAdressInput" value="" required>
                             </td>
                         </tr>
                         <tr>

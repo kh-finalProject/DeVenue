@@ -10,6 +10,9 @@ footer.footer {
 	padding-top: 2rem;
 	padding-bottom: 4.5rem;
 	position:relative;
+	height:180px;
+	position: relative;
+	bottom: 0px;
 }
 
 .footer-link {

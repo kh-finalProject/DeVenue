@@ -102,7 +102,7 @@
   /* ----------------------------------------------------------------------- */
 </style>
 </head>
-<body style="overflow-x: hidden;">
+<body >
 	
 	<!-- 채팅 아이콘 영역----------------------------------------------------------------------------------- -->
 	<div id="chatDiv">
@@ -118,7 +118,7 @@
 	</div>
 	
 	<!-- 채팅 iframe 영역 --------------------------------------------------------------------------------->
-	<div style="">
+	<div style="width:300px; height:500px">
 		<iframe id="chatIframe" name="chatIframe" src="${contextPath}/firstLoadChat.do" class="chatIframe" frameborder="0" scrolling="no" ></iframe>
 	</div>
 	
@@ -228,7 +228,7 @@
 			<c:if test="${!empty loginUser}">
 				reloadAllReadCount();
 			</c:if>
-	  }, 10000)
+	  }, 15000)
 	</script>
 	<!-- -------------------------------------------------------------------------------------------- -->
 
