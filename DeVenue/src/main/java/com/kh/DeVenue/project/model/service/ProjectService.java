@@ -3,10 +3,11 @@ package com.kh.DeVenue.project.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.Member;
 
 import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.myPage.model.vo.Eval;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
@@ -28,7 +29,7 @@ public interface ProjectService {
 	int addProject(Project p);
 
 	
-	ArrayList<Project> selectCheckList(String memId);
+	ArrayList<Project> selectCheckList(String memId ,PageInfo pi);
 
 	int getListCount(ProjectFilter filter);
 
@@ -241,7 +242,44 @@ public interface ProjectService {
 	ArrayList<Member> selectModal(String proId);
 
 
+
+	ArrayList<Project> selectApplyList(int proId);
+
+
+	ArrayList<Project> selectCommitList();
+
+
+	int commitProject(int proId);
+
+
+	int getCheckListCount(String memId);
+
+
+	int applyUpdate(int memPId);
+
+
+	int getCommitListCount(int proId);
+
+
+	int getRecuritNum(int proId);
+
+
+	int rejectApply(int memPId);
+
+
 	int getLikeId(HashMap ids);
+
+
+	ArrayList<CPeval> selectEvaluation(HashMap condition);
+
+
+	ArrayList<ProjectList> selectFourWeb();
+
+
+	ArrayList<ProjectList> selectFourApp();
+
+
+	ArrayList<ProjectList> selectFourPub();
 
 
 	

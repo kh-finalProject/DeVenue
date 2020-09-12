@@ -9,6 +9,10 @@
 footer.footer {
 	padding-top: 2rem;
 	padding-bottom: 4.5rem;
+	position:relative;
+	height:180px;
+	position: relative;
+	bottom: 0px;
 }
 
 .footer-link {
@@ -18,7 +22,7 @@ footer.footer {
 
 </head>
 <body>
-	<footer class="footer" style="background-color: black;z-index:9;">
+	<footer class="footer" style="background-color: black;z-index:9 !important;">
 		<div class="container">
 			<div style="margin-bottom:20px;">
 				<img src="${contextPath }/resources/images/logo.png" height="60px" style="padding-bottom: 0; padding-top: 0; margin-top: 0; margin-bottom: 0;">

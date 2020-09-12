@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -449,7 +451,7 @@ section {
 						</h3>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<c:forEach var="sc" items="${sccareerlist }">
+						<c:forEach var="sc" items="${sccareerList }">
 							<form method="get" action="delacademic.do">
 								<table class="table">
 									<tr class="table-secondary" style="text-align: center;">
@@ -501,12 +503,13 @@ section {
 											</c:when>
 										</c:choose>
 										
-										<td>2020년 1월</td>
-										<td>2020년 3월</td>
+										<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
+													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
+													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
 										<td><input type="hidden" name="scId" value="${sc.scId }">
 											<input type="hidden" name="profileId"
-											value="${sc.profileId }"> <a
-											href="academicUpdate.html" class="btn btn-info">수정</a>
+											value="${sc.profileId }">
 											<button id="del" class="btn btn-info">삭제</button></td>
 									</tr>
 								</table>

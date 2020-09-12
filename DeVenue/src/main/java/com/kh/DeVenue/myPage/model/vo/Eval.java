@@ -42,6 +42,23 @@ public class Eval implements Serializable{
 		this.eCreateDate = eCreateDate;
 		this.eStatus = eStatus;
 	}
+	
+	// 생성용
+	public Eval(int eWriter, int eTarget, int epId, int eAgv, String eContent, int eStar1, int eStar2, int eStar3,
+			int eStar4, int eStar5) {
+		super();
+		this.eWriter = eWriter;
+		this.eTarget = eTarget;
+		this.epId = epId;
+		this.eAgv = eAgv;
+		this.eContent = eContent;
+		this.eStar1 = eStar1;
+		this.eStar2 = eStar2;
+		this.eStar3 = eStar3;
+		this.eStar4 = eStar4;
+		this.eStar5 = eStar5;
+	}
+	
 	public int geteId() {
 		return eId;
 	}

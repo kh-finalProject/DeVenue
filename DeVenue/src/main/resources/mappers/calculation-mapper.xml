@@ -77,6 +77,18 @@
 		<result property="sigType" column="SIG_TYPE"/>
 		<result property="isMain" column="IS_MAIN"/>
 	</resultMap>
+	
+	<resultMap type="Calculation" id="calculateResultSet">
+		<id property="calId" column="CAL_ID"/>
+		<result property="proId" column="PRO_ID"/>
+		<result property="expectPay" column="CAL_EXPECT_PAY"/>
+		<result property="realPay" column="CAL_REAL_PAY"/>
+		<result property="deposit" column="CAL_DEPOSIT"/>
+		<result property="incentive" column="CAL_INCENTIVE"/>
+		<result property="tax" column="CAL_TAX"/>
+		<result property="status" column="CAL_STATUS"/>
+		<result property="payDate" column="CAL_CDATE"/>
+	</resultMap>
 
 	
 	<select id="selectUnpaidProject" resultMap="projectResultSet">
@@ -128,6 +140,46 @@
 	
 	</update>
 
+	<select id="selectPaidProject" resultMap="projectResultSet">
+	SELECT *
+	FROM PROJECT P 
+	WHERE P.PRO_PAY_STATUS='Y' AND
+	P.PRO_STA_ID IN ('PST5','PST6')
+	
+	</select>
+	
+	<select id="selectCalculation" resultMap="calculateResultSet">
+	SELECT *
+	FROM CALCULATE
+	</select>
+	
+	<select id="selectMatched" parameterType="_int" resultMap="memberResultSet">
+	SELECT MB.*
+	FROM P_MATCH M
+	LEFT JOIN P_PROCESS PR ON (M.PRO_PID=PR.PRO_PID)
+	LEFT JOIN PROJECT P ON (PR.PRO_ID=P.PRO_ID)
+	LEFT JOIN MEMBER MB ON (M.MEM_ID=MB.MEM_ID)
+	WHERE P.PRO_PAY_STATUS='Y' AND (P.PRO_STA_ID IN('PST5','PST6'))
+	AND P.PRO_ID=#{proId}
+	</select>
+	
+	<insert id="uploadCalculation" parameterType="Calculation">
+	
+	INSERT 
+	INTO CALCULATE VALUES
+	(SEQ_CAL.NEXTVAL,
+	#{proId},
+	#{expectPay},
+	#{realPay},
+	#{deposit},
+	#{incentive},
+	#{tax},
+	'Y',
+	SYSDATE)
+	
+	</insert>
+	
+	
 
 
 

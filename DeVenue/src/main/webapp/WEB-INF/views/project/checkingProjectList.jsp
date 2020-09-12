@@ -57,24 +57,27 @@
 
     header.masthead {
       position: relative;
-      background-color: #343a40;
+      background-color:  #212426;
       background: url("mainImg.jpg") no-repeat center center;
       background-size: cover;
       padding-top: 8rem;
       padding-bottom: 8rem;
       height: 50rem;
-    }
+    }	
 
     header.masthead .overlay {
       position: absolute;
-      background-color: #212529;
+      background-color: #2124269;
       height: 100%;
       width: 100%;
       top: 0;
       left: 0;
       opacity: 0.3;
     }
-
+.boxbox{
+width:536px;
+background-color :#192424;
+}
     header.masthead h1 {
       font-size: 2rem;
     }
@@ -221,7 +224,9 @@
       left: 0;
       right: 0;
     }
-
+form{
+background:#21242;
+}
     /* 마우스 호버 끝 */
 
     /* 메뉴바 폰트 */
@@ -276,7 +281,7 @@
   
 }
 #projectbox{
-    width:100;
+  
     height:200;
   border: 1px solid #2098d1;
 }
@@ -306,79 +311,101 @@ button{
 
   
 
-  
-<div class ="middle" style ="background-color:black;  font-family: 'Jua', sans-serif; " >
+  <div class= "container">
+<div class ="middle" style ="background-color:#212426;  font-family: 'Jua', sans-serif; " >
   <form id="regForm" action="">
-
-  <div class ="container">
-    <br>
-
-    <div class="row" style ="margin-top: 60px; margin-bottom:60px;" >
-      <div class="col-2 text-white" style="border-right: 2px solid white; margin-right:40px; margin-left:70px; font-family: 'Jua', sans-serif;">
-         
-          <div style="padding-bottom: 5.5%;  " >
-            <div>
-              <table  width="100px" height="100px" >  
-                  <td  id="bText" style ="color:white; border-bottom: 3px solid white; margin-bottom: 100px;">클라이언트</td>
-                  <tr>
-                    
-                    <td>
-                        <br>
-                        <div id="profilebox">
-                          <img id="profile" src="profileEx.png">
-                        
-                      </div>
-                      
-                      
-                    </tr>
-                    <c:if test="${loginUser.userType eq 'UT3'}">
-                    <td  id="sText" style ="color:gray">클라이언트</td>
-                    </c:if>
-                    
-                    <tr>
-                      <td style= "color:#2098D1">${loginUser.memNick}</td>
-                    </tr>
-                    
-                    <td>${loginUser.memEmail }</td>
-                 
-                  </tr>
-              </table>
-
-              
+      <div class="row text-white" style="border-bottom: 1px solid lightgray;">
+      
+            <div class="col-3" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+               프로젝트 정보 등록
             </div>
-            <br>
 
-              <div>
-                <li class="nav-item" >
-                  <a class="nav-link hvr-underline-from-center mr-2" width="100px;" height="100px;" href="#">검수중인 프로젝트</a>
-                </li>
-              </div>
-              <br>
-              <br>
-              <br>
-              <div>
-                <li class="nav-item" >
-                	<c:url var="temStoreList" value="temStoreList.do">
-						<c:param name="memId" value= "${loginUser.memId}" ></c:param>
-					</c:url>
-                  <a class="nav-link hvr-underline-from-center mr-2" width="100px;" height="100px;" href="${temStoreList}" style ="color:white">임시 저장</a>
-                </li>
-                   <br>
+        </div>
+
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray;font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%; ">
+         
+                </div>
+            </div>
+           
+
+        </div>
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="padding-bottom: 5.5%;">
                   
+                      <div class="proImg_area" style="text-align: center;margin-top:5px; margin-bottom:10px;display:flex;margin-left:15px;">
+            <table border="0" style="margin-left:5px;">
+               <tr>
+                  <td>
+                     <img id="changeImg" style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/${mImg}" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="200px" height="200px" style="max-width: 100%;">
+                  </td>
+               </tr>
+               <tr style="text-align:left;">
+               
+                  
+                  <td style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;">이름 </td>
+                  <td style="padding:5px;max-width:80px;max-height:80px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">${loginUser.memName }</td>
+               </tr>
+               <tr style="text-align:left;">
+                  <td style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;">닉네임</td>
+                  <td style="padding:5px;max-width:80px;max-height:80px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">${loginUser.memNick }</td>
+               </tr>
+               <tr>
+                  <td colspan="2" style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;text-align: left;">
+                     <c:if test="${loginUser.memAction =='Y'}">
+                        <h6><span class="badge badge-primary" style="text-indent:0px;">활동 중</span></h6>
+                     </c:if>
+                     <c:if test="${loginUser.memAction =='N'}">
+                        <h6><span class="badge badge-secondary" style="text-indent:0px;">활동 비활성화</span></h6>
+                     </c:if>
+                  </td>
+               </tr>
+            </table>
+         </div>
+                 
+                    
+                    <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
+                    <div>
+              
+                        
+                        <p id="clientEvaluate" style="cursor:pointer;">카테고리<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
+                        <div id="subClientEva" style="display:none; margin-left: 5%;">
+                           <li id="btext" style ="color:blue;">검수중</li>
                   <br>
-                
-              </div>
-              <br>
-              <div>
-                <li class="nav-item" >
-                  <a class="nav-link hvr-underline-from-center mr-2" width="100px;" height="100px;" href="addFailProjectList.do" style ="color:whitesmoke;">등록 실패</a>
-                </li>
+                  <c:url var="temStoreList" value="temStoreList.do">
+						<c:param name="memId" value= "${loginUser.memId}" ></c:param>
+						</c:url>
+                  <li><a href ="${temStoreList}" style ="color :white;">임시 저장 </a></li>
                   <br>
-                
+                  <li ><a href ="addFailProjectList.do"  style ="color :white;">등록 실패</a></li>
+                  <br>
+                  
+                            
+                        </div>
+                    </div>
+                   
+                    
+                    <script>
+                 
 
-              </div>
-          </div>
-      </div>
+                        $("#clientEvaluate").click(function() {
+                            $("#subClientEva").toggle();
+                        });
+
+                       
+                    </script>
+
+                </div>
+            </div>
+
+  
+    
 
 
 
@@ -387,9 +414,9 @@ button{
 
 
         <!--정보입력-->
-        <div class= "col-lg-6" style ="background-color: black; height:auto;  color:white">
+        <div class= "col-lg-5" style ="background-color:#212426;margin-left:120px; height:auto;  color:white">
         
-        <table width="540px">
+        <table width="536px">
           <tr style ="border-bottom: solid 3px white;" >
            <td> <li id  ="bText" >검수중</li></td>
            
@@ -398,12 +425,12 @@ button{
           
           <br> 
 
-        <div id= "explainbox" style ="padding:20px;">
+        <div class ="boxbox" id= "explainbox" style ="padding:20px;">
             
             <li id ="sText">1. DEVENUE 내부에서 검수 중인 프로젝트 목록입니다.<br> &nbsp;&nbsp; 검수에는 최대 24시간이 소요됩니다.<br>
             2. 검수 과정에서 DEVENUE 매니저가 유선 또는 이메일 연락을 할 수 있습니다.<br>
             3. 검수가 완료되면 지원자 모집이 시작됩니다.<br>
-            4. 이용약관에 위배되거나 불법적인 내용이 있는 경우, 프로젝트가 등록되지 않을 수 있습니다.
+            4. 이용약관에 위배되거나 불법적인 내용이 있는 경우, 프로젝트가 등록되지 않을 수 &nbsp;&nbsp;&nbsp;있습니다.
             </li>
         </div>
         <br>
@@ -413,8 +440,8 @@ button{
        <c:forEach var ="p" items="${list1}">
          
        
-        <div id ="projectbox" style ="margin-top:50px;" >
-          <table width="533px"   >
+        <div class = "boxbox" id ="projectbox" style ="margin-top:50px;" >
+          <table width="535px"   >
               <thead>
 				<input type ="hidden" value = ${p.proId} >
                   <tr >
@@ -423,17 +450,17 @@ button{
                       
                   </tr>
                   
-                  <tr id ="sText" >
-                      <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
+                  <tr id ="sText"  >
+                      <td colspan="8" style="border-bottom:2px solid #2098d1; padding-left:10px; margin-left:30px; ">
                         <span class="badge badge-primary">${p.proMCType}</span>
                         <span class="badge badge-success">${p.proDCType}</span></td>
                       
                   </tr>
-                  <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
+                  <tr style= "border-bottom:2px solid #2098d1; border-top:2px solid #2098d1;" id ="sText" >
                      
                       <td><img
 						src="${contextPath}/resources/images/money	.png" height="30px"
-						 width  ="20px" style ="margin-left: 20px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span> ${p.proPayment}원
+						 width  ="20px" style ="margin-left: 25px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span> ${p.proPayment}원
                     </td>
                      
               
@@ -449,7 +476,7 @@ button{
                   </tr>
                   <tr >
                       <table  id ="sText" width="534px">
-                          <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
+                          <tr  align ="center" style ="border-bottom:2px solid  #2098d1; ; padding:1px; height:50px;" id ="sText">
                             
                               <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트번호    </span></td>
                               <td  >${p.proId}</td>
@@ -464,8 +491,8 @@ button{
                               <td  >${p.proMTK }</td>
                               <td style   ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px; width:80px;">위치</span></td>
                               <td>${p.proLocation }</td>
-                              <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">파트너스 수 </span></td>
-                              <td width="120px; " >${p.proRecruitNum}</td>
+                              <td style =  ><span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">모집인원 </span></td>
+                              <td width="120px; " >${p.proRecruitNum}명</td>
                             
                           </tr>
                        
@@ -476,15 +503,14 @@ button{
 					
 							
 						
-                              <td colspan="6">
+                              <td colspan="6" style ="border-right: 1px solid #2098d1 ">
                                   <div style= "float:right; margin-right:30px; padding:10px;">
-                                  <button type ='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
+                                  <button id ="test6" type ='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
                                   <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proUpdateForm.do?proId='+${p.proId}"> 수정</button>
                                   </tr>
 
 
-
-
+	
     </div>
   </div>
 </div>
@@ -497,20 +523,75 @@ button{
       </div>
        
      </c:forEach>
+      <section class="mt-5 mb-5" id="pagination" style ="margin-left:70px;">
+
+            <div class="row d-flex justify-content-around align-items-center">
+
+              <!--페이지네이션-->
+              <div class="col-12 col-md-4 text-center">
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center mb-0 text-dark">
+                  	<c:if test="${pi.currentPage eq 1 }">
+                    <li class="page-item"><a class="page-link"><i class="fas fa-chevron-left"></i></a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage gt 1}">
+                    <c:url var="clistBack" value="checkList.do">
+                    	<c:param name="page" value="${pi.currentPage-1}"/>
+                    	<c:param name="memId" value="${memId}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${clistBack}"><i class="fas fa-chevron-left"></i></a></li>
+                    </c:if>
+                    
+                    <c:forEach begin="${pi.startPage}" end="${pi.endPage}" step="1" var="pn">
+                    <c:if test="${pi.currentPage eq pn}">
+                    <li class="page-item active"><a class="page-link">${pn}</a></li>
+                    </c:if>
+                    <c:if test="${pi.currentPage ne pn}">
+                    <c:url var="clistCheck" value="checkList.do">
+                    <c:param name="page" value="${pn}"/>
+                    <c:param name="memId" value="${memId}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${clistCheck}">${pn}</a></li>
+                    </c:if>
+                    </c:forEach>
+                   
+                    <c:if test="${pi.currentPage eq pi.maxPage}">
+                    <li class="page-item"><a class="page-link"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
+                  	<c:if test="${pi.currentPage lt pi.maxPage}">
+                  	<c:url var="clistFront" value="checkList.do">
+                    	<c:param name="page" value="${pi.currentPage+1}"/>
+                    	<c:param name="memId" value="${memId}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${clistFront}"><i class="fas fa-chevron-right"></i></a></li>
+                  	</c:if>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+
+          </section>
       </c:when>
+     
     <c:when test="${empty list1}">
    
     <br>
- <div id= "explainbox" style ="padding:30px;">
+ <div id= "explainbox" class ="boxbox" style ="padding:30px;">
               
-              <li id ="sText" style ="margin-left:80px; font-size:20px;">
-              	종료된 프로젝트를 찾을 수 없습니다!
+              <li id ="sText" style =" margin-left:0px; font-size:20px; text-align:center;">
+              	검수중인 프로젝트를 찾을 수 없습니다!
                 
               </li>
+              
+              
           </div>
+    <br>
+    <br>
     
     </c:when>
     </c:choose>
+   
+		
     </form>
   </div>
   

@@ -217,6 +217,8 @@
 <body>
    	<!-- 메인 메뉴바 -->
    	<jsp:include page="../common/menubar.jsp"/>
+   	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 	<!-- 마이페이지 사이드 메뉴바 -->
 	<jsp:include page="../common/pSideMenubar.jsp"/>
@@ -410,10 +412,10 @@
              $('.createSigSelection').each(function(index, item){
                  $(item).click(function(){
                      if($(item).hasClass('mouse')){
-                         alert('마우스로');
+//                          alert('마우스로');
                          location.href="gotoInsertSign.do";
                      }else{
-                         alert('도장으로');
+//                          alert('도장으로');
                          location.href="gotoInsertStamp.do";
                      }
                  })

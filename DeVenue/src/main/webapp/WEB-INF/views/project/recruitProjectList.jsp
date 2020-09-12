@@ -55,68 +55,9 @@
       font-weight: 700;
     }
 
-    header.masthead {
-      position: relative;
-      background-color: #343a40;
-      background: url("mainImg.jpg") no-repeat center center;
-      background-size: cover;
-      padding-top: 8rem;
-      padding-bottom: 8rem;
-      height: 50rem;
-    }
+ 
 
-    header.masthead .overlay {
-      position: absolute;
-      background-color: #212529;
-      height: 100%;
-      width: 100%;
-      top: 0;
-      left: 0;
-      opacity: 0.3;
-    }
-
-    header.masthead h1 {
-      font-size: 2rem;
-    }
-
-    @media (min-width: 768px) {
-      header.masthead {
-        padding-top: 12rem;
-        padding-bottom: 12rem;
-      }
-
-      header.masthead h1 {
-        font-size: 3rem;
-      }
-    }
-
-    .showcase .showcase-text {
-      padding: 3rem;
-    }
-
-    .showcase .showcase-img {
-      min-height: 30rem;
-      background-size: cover;
-    }
-
-    @media (min-width: 768px) {
-      .showcase .showcase-text {
-        padding: 7rem;
-      }
-    }
-
-    footer.footer {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-
-    #navbarMain>ul>li>a {
-      color: white;
-    }
-
-    #navbarMain>ul>li>a:hover {
-      color: lightblue;
-    }
+   
 
 
     @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -295,6 +236,10 @@
 button{
   width:90px;
 }
+.boxbox{
+width:536px;
+background-color :#192424;
+}
 </style>
 
 </head>
@@ -305,53 +250,102 @@ button{
 	<!-- 클라이언트 계정 로그인 -->
 	<jsp:include page="../common/cSubMenubar.jsp" />
 	
-<div class ="middle" style ="background-color:black;  font-family: 'Jua', sans-serif; " >
+
+   <div class= "container">
+<div class ="middle" style ="background-color:#212426;  font-family: 'Jua', sans-serif; " >
   <form id="regForm" action="">
-
-  <div class ="container">
-    <br>
-
-    <div class="row" style ="margin-top: 60px; margin-bottom:60px;" >
-      <div class="col-2 text-white" style="border-right: 2px solid #2098d1; margin-right:40px; margin-left:70px; font-family: 'Jua', sans-serif;">
-         
-          <div style="padding-bottom: 5.5%;  " >
-            <div>
-              <table  width="100px" height="100px" >
-                  <td  id="bText" style ="color:white; border-bottom: 3px solid #2098D1; margin-bottom: 100px;">클라이언트</td>
-                  <tr>
-                    
-                    <td>
-                        <br>
-                        <div id="profilebox">
-                          <img id="profile" src="profileEx.png">
-                        
-                      </div>
-                      
-                      
-                    </tr>
-                    <td  id="sText" style ="color:gray">클라이언트</td>
-                    
-                    
-                    <tr>
-                      <td style= "color:#2098D1">닉네임</td>
-                    </tr>
-                    
-                    <td>sailer5247@gmail.com</td>
-                 
-                  </tr>
-              </table>
-
-              
+      <div class="row text-white" style="border-bottom: 1px solid lightgray;">
+      
+            <div class="col-3" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+               모집중인 프로젝트
             </div>
-            <br>
 
-              <div>
-                <li  id ="bText" style ="color:#2098d1  "> 지원자 모집중</li>
-              </div>
-             
+        </div>
 
-          </div>
-      </div>
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray;font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%; ">
+         
+                </div>
+            </div>
+           
+
+        </div>
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="padding-bottom: 5.5%;">
+                  
+                      <div class="proImg_area" style="text-align: center;margin-top:5px; margin-bottom:10px;display:flex;margin-left:15px;">
+            <table border="0" style="margin-left:5px;">
+               <tr>
+                  <td>
+                     <img id="changeImg" style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/${mImg}" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="200px" height="200px" style="max-width: 100%;">
+                  </td>
+               </tr>
+               <tr style="text-align:left;">
+               
+                  
+                  <td style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;">이름 </td>
+                  <td style="padding:5px;max-width:80px;max-height:80px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">${loginUser.memName }</td>
+               </tr>
+               <tr style="text-align:left;">
+                  <td style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;">닉네임</td>
+                  <td style="padding:5px;max-width:80px;max-height:80px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">${loginUser.memNick }</td>
+               </tr>
+               <tr>
+                  <td colspan="2" style="text-indent:10px;padding:5px;max-width:80px;max-height:80px;text-align: left;">
+                     <c:if test="${loginUser.memAction =='Y'}">
+                        <h6><span class="badge badge-primary" style="text-indent:0px;">활동 중</span></h6>
+                     </c:if>
+                     <c:if test="${loginUser.memAction =='N'}">
+                        <h6><span class="badge badge-secondary" style="text-indent:0px;">활동 비활성화</span></h6>
+                     </c:if>
+                  </td>
+               </tr>
+            </table>
+         </div>
+                 
+                    
+                    <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
+                    <div>
+              
+                        
+                        <p id="clientEvaluate" style="cursor:pointer;">카테고리<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
+                        <div id="subClientEva" style="display:none; margin-left: 5%;">
+                           <li id="btext" style ="color:blue;">검수중</li>
+                  <br>
+                  <c:url var="temStoreList" value="temStoreList.do">
+						<c:param name="memId" value= "${loginUser.memId}" ></c:param>
+						</c:url>
+                  <li><a href ="${temStoreList}" style ="color :white;">임시 저장 </a></li>
+                  <br>
+                  <li ><a href ="addFailProjectList.do"  style ="color :white;">등록 실패</a></li>
+                  <br>
+                  
+                            
+                        </div>
+                    </div>
+                   
+                    
+                    <script>
+                 
+
+                        $("#clientEvaluate").click(function() {
+                            $("#subClientEva").toggle();
+                        });
+
+                       
+                    </script>
+
+                </div>
+            </div>
+
+  
+    
 
 
 
@@ -361,7 +355,7 @@ button{
 
 
         <!--정보입력-->
-        <div class= "col-6" style ="background-color: black; height:auto;  color:white">
+        <div class= "col-6" style ="background-color: #212426;  margin-left:120px; height:auto;  color:white">
         
           <table width="540px">
             <tr style ="border-bottom: solid 3px #2098d1;" >
@@ -372,7 +366,7 @@ button{
             
             <br> 
   
-          <div id= "explainbox" style ="padding:30px;">
+          <div id= "explainbox" class="boxbox" style ="padding:30px;">
               
               <li id ="sText">1. 프로젝트 내용 작성 중 임시 저장한 프로젝트 목록입니다.<br>
                 2. [수정] 버튼을 클릭하여 프로젝트의 내용을 수정할 수 있습니다.
@@ -388,15 +382,15 @@ button{
 <c:choose>
 <c:when test="${!empty list1}">
        <c:forEach var ="p" items="${list1}">
-        <div id ="projectbox" style ="margin-top:50px;" >
+        <div id ="projectbox" class="boxbox" style ="margin-top:50px;" >
           <table width="533px"   >
               <thead>
 <input type ="hidden" value = ${p.proId} >
-                  <tr >
-                      <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
+               
+                      <li style= "color: white; width:400px; padding-left:10px; padding-top:10px;" >${p.proName}</li>
                       
                       
-                  </tr>
+                 
                <tr id ="sText" >
                       <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
                         <span class="badge badge-primary">${p.proMCType}</span>
@@ -423,7 +417,7 @@ button{
                   </tr>
                   <tr >
                       <table  id ="sText" width="534px">
-                          <tr  align ="center" style ="border-bottom:2px solid ; padding:1px; height:50px;" id ="sText">
+                          <tr  align ="center" style ="border-bottom:2px solid #2098d1 ; padding:1px; height:50px;" id ="sText">
                             
                               <td  style =  > <span class="badge badge-primary" style ="font-size:15px; padding:5px; margin-left:10px;  width:80px;">프로젝트번호    </span></td>
                               <td  >${p.proId}</td>
@@ -442,250 +436,16 @@ button{
                               <td width="120px; " >${p.proRecruitNum}</td>
                             
                           </tr>
-                            <tr  align ="center" style= "border:1px solid black;" height="30" id ="sText">
+                            <tr  align ="center" height="30" id ="sText">
                              
-                                <td colspan="6">
+                                <td colspan="6" style= "border:1px solid #2098d1;">
                                     <div style= "float:right; margin-right:30px; padding:10px;">
                                     <button class="btn/middle btn-info" style= "color:black; width:90px;">취소</button>
-                                    <!-- Button trigger modal -->
-<button type="button" onclick="rListCheck(this)" value="p.proId" id = "modal"
-class="btn/middle btn-info" style= "color:black; width:90px;" data-toggle="modal" data-target="#exampleModal">
- 지원자 목록
-  </button>
-  <script>
-  function rListCheck(id){
-	var proId = $(id).val();
+<button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='applycomfirmList.do?proId='+${p.proId}"> 지원자 목록</button>
+ 
 
-	$.ajax({
-	url:"recruitModal.do",
-        	data:{proId:proId, pro},
-        	success:function(data){
-	
-	},
-	error:function(request, status, errorData){
-        		alert("error code: " + request.status + "\n"
-        		+"message: " + request.responseText
-        		+"error: " + errorData);
-        	}
-	})
 
-// 에이작스가 완료되면 모달안에 데이터가 다 붙어있게 되고 그 이후 감춰둔 모달 버튼을 클릭되도록 해서
-// 모달이 실행되면 결과적으로 너가 누른 프로젝트의 지원자 목록이 붙어있게 된다.
-	$("#modal").click(){
-		$tableBody = $("#inquiryTable tbody");
-    	$tableBody.html("");
 
-		var $tr;
-		var $proId;
-		var $boardTitle;
-		var $boardWriter;
-    	var $inquiryName;
-    	var $boardUpdateDate;
-    	var $inquiryYN;
-    					
-    	if(data.inquiry.length > 0){	// 조회된 문의가 존재하면
-    	for(var i in data.inquiry){
-    		$tr = $("<tr>");
-    		$proId = $("<td style='display: none'>").text(data.inquiry[i].proId);
-    		$memNick = $("<td>").text(data.inquiry[i].boardTitle);
-    		$boardWriter = $("<td>").text(data.inquiry[i].nickname);
-    		$inquiryName = $("<td>").text(data.inquiry[i].inquiryName);
-    		$boardUpdateDate = $("<td>").text(data.inquiry[i].boardUpdateDate);
-    		$inquiryYN = $("<td>").text(data.inquiry[i].inquiryYN);
-    		$tr.append($boardId);
-    		$tr.append($boardTitle);
-    		$tr.append($boardWriter);
-    		$tr.append($inquiryName);
-    		$tr.append($boardUpdateDate);
-    		$tr.append($inquiryYN);
-    		
-    		$tableBody.append($tr);        							
-    	}
-    	}else{					// 조회된 문의가 없으면
-    		$tr = $("<tr>");
-    		$boardTitle = $("<td colspan='5'>").text("조회된 문의가 없습니다.");
-    	
-    		$tr.append($boardTitle);
-    		$tableBody.append($tr);
-    	
-    	}
-	}
-}
-  </script>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-    <div class="modal-dialog" >
-      <div class="modal-content" style= "background-color:#2098d1; width:800px; ">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">지원자 목록</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style ="background-color: black;">
-             <c:forEach var="b" items="${list }"> 
-                    <!-- 클릭이벤트 넣어야함 -->
-                    <c:url var="cDetail" value="cDetail.do">
-                    	<c:param name="cId" value="${b.memId }"/>
-                    	<%-- <c:param name="page" value="${pi.currentPage }"/> --%>
-                    </c:url>
-                <div class="userBoard" onclick="location.href='${cDetail }'" style="cursor:pointer;">
-                    &emsp;
-                    <input type="hidden" value="${b.memId }">
-                    
-                    
-                    <ul style="list-style: none;">
-                        <li>
-                            <div class="row" style="margin-left:3%; margin-right:3%;border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
-                                <div class="col-8">
-                                    <div style="float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;" >
-                                        <div>
-                                            <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-person-circle-lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-                                            <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                            <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <ul style="list-style: none; margin-top: 2%;">
-                                            <li>
-                                                <!-- qwer01(닉네임) -->
-                                                ${b.memNick }
-                                            </li>
-                                            <li>
-                                                <!-- kh_Bclass(소속)&emsp; -->
-                                                ${b.memTypeName }
-                                                <!-- <a class="badge badge-info">개인</a> -->
-                                                <a class="badge badge-info">${b.memTypeKind }</a>
-                                            </li>
-                                            <li>
-                                                <!-- 예아! 호우! 예예예~
-                                             
-                                                ${b.introduction }
-                                                <br><br>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div id="starPoint" class="point">
-                                    <c:choose>
-                                    	<c:when test="${b.avgEagv == 0 }">
-	                                        <i id="firstStar" class="far fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star-half-alt"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star-half-alt"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv > 0 && b.avgEagv < 1 }">
-	                                        <i id="firstStar" class="fas fa-star-half-alt"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv == 1 }">
-	                                        <i id="firstStar" class="fas fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv > 1 && b.avgEagv < 2 }">
-	                                        <i id="firstStar" class="fas fa-star"></i>
-	                                        <i class="fas fa-star-half-alt"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv == 2 }">
-                                        	<i id="firstStar" class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-                                        	<i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv > 2 && b.avgEagv < 3 }">
-	                                        <i id="firstStar" class="fas fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star-half-alt"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv == 3 }">
-                                        	<i id="firstStar" class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-	                                        <i class="far fa-star"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv > 3 && b.avgEagv < 4 }">
-	                                        <i id="firstStar" class="fas fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star-half-alt"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv == 4 }">
-                                        	<i id="firstStar" class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="far fa-star"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv > 4 && b.avgEagv < 5 }">
-	                                        <i id="firstStar" class="fas fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star"></i>
-	                                        <i class="fas fa-star-half-alt"></i>
-                                        </c:when>
-                                        <c:when test="${b.avgEagv == 5 }">
-                                        	<i id="firstStar" class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-                                        	<i class="fas fa-star"></i>
-										</c:when>
-                                    </c:choose>
-                                        <!-- <b>4.5 / 평가 4개</b>  -->
-                                        <b>${b.avgEagv } / 평가 ${b.countEagv }개</b> 
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    <div class="point">
-                                        <b>진행한 프로젝트 수</b>
-                                        <!-- <b style="float:right">22개</b> -->
-                                        <b style="float:right">${b.countProId }개</b>
-                                    </div>
-                                    <div class="point">
-                                        <b>자주 진행한 프로젝트</b>
-                                        <!-- <a class="badge badge-info" style="float:right;">WEB</a> -->
-                                        <a class="badge badge-info" style="float:right;">${b.maxDcType }</a>
-                                    </div>
-                                    <hr style="width:90%; margin:0px auto;">
-                                    
-                                    <div class="point" align="center">
-                                    <c:if test="${b.ideStatus eq 'COMPLETE' }">
-                                        <a class="badge badge-info" style="padding:1%;">신원 인증된 회원</a>&nbsp;
-                                    </c:if>
-                                    <c:if test="${!empty b.phone }">    
-                                        <a class="badge badge-info" style="padding:1%;">연락처 등록</a>
-                                    </c:if>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-			</c:forEach>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary">저장</button>
-         
         </div>
       </div>
     </div>
@@ -712,13 +472,7 @@ class="btn/middle btn-info" style= "color:black; width:90px;" data-toggle="modal
     </c:when>
     </c:choose>
     </div>
-    
-    <div class= "col-lg-1" style ="background-color: black;">.col-lg-3</div>
-</div>
-
-</div>
-
-
+ 
 	
 	
 	

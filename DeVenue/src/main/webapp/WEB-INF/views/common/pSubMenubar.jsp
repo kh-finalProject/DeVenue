@@ -9,10 +9,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.bg-light{
+		background: #7F7FD5;
+	    background: -webkit-linear-gradient(to bottom, #2a2f38, #272b31, #26292c);
+	    background: linear-gradient(to bottom, #2a2f38, #272b31,#26292c);
+		border-bottom:1px solid #2a2f38;
+	}
+	
+	#pSubMenubar .nav-item a{
+		color:white !important;
+	}
+</style>
 </head>
 <body>
 	<!--navigation bar2-->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" id="pSubMenubar">
 		<div class="collapse navbar-collapse" id="navbarSub" style="margin-left: 3%;">
 			<ul class="navbar-nav">
 				<li class="nav-item">

@@ -15,14 +15,14 @@ public class SCCareer implements Serializable{
 	private String ssId;
 	private String scName;
 	private String scMajor;
-	private String scStartDate;
-	private String scEndDate;
+	private Date scStartDate;
+	private Date scEndDate;
 	private int profileId;
 	public SCCareer() {
 		super();
 	}
-	public SCCareer(int scId, String sgId, String ssId, String scName, String scMajor, String scStartDate,
-			String scEndDate, int profileId) {
+	public SCCareer(int scId, String sgId, String ssId, String scName, String scMajor, Date scStartDate,
+			Date scEndDate, int profileId) {
 		super();
 		this.scId = scId;
 		this.sgId = sgId;
@@ -35,7 +35,7 @@ public class SCCareer implements Serializable{
 	}
 	
 	// 학력 insert
-	public SCCareer(String sgId, String ssId, String scName, String scMajor, String scStartDate, String scEndDate,
+	public SCCareer(String sgId, String ssId, String scName, String scMajor, Date scStartDate, Date scEndDate,
 			int profileId) {
 		super();
 		this.sgId = sgId;
@@ -45,8 +45,7 @@ public class SCCareer implements Serializable{
 		this.scStartDate = scStartDate;
 		this.scEndDate = scEndDate;
 		this.profileId = profileId;
-	}	
-	
+	}
 	public int getScId() {
 		return scId;
 	}
@@ -77,16 +76,16 @@ public class SCCareer implements Serializable{
 	public void setScMajor(String scMajor) {
 		this.scMajor = scMajor;
 	}
-	public String getScStartDate() {
+	public Date getScStartDate() {
 		return scStartDate;
 	}
-	public void setScStartDate(String scStartDate) {
+	public void setScStartDate(Date scStartDate) {
 		this.scStartDate = scStartDate;
 	}
-	public String getScEndDate() {
+	public Date getScEndDate() {
 		return scEndDate;
 	}
-	public void setScEndDate(String scEndDate) {
+	public void setScEndDate(Date scEndDate) {
 		this.scEndDate = scEndDate;
 	}
 	public int getProfileId() {
@@ -97,10 +96,12 @@ public class SCCareer implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "SSCareer [scId=" + scId + ", sgId=" + sgId + ", ssId=" + ssId + ", scName=" + scName + ", scMajor="
+		return "SCCareer [scId=" + scId + ", sgId=" + sgId + ", ssId=" + ssId + ", scName=" + scName + ", scMajor="
 				+ scMajor + ", scStartDate=" + scStartDate + ", scEndDate=" + scEndDate + ", profileId=" + profileId
 				+ "]";
-	}
+	}	
+	
+	
 
 	
 	

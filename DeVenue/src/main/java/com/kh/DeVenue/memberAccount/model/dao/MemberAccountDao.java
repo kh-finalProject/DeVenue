@@ -7,8 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.memberAccount.model.dto.MemBasicInfo;
 import com.kh.DeVenue.memberAccount.model.vo.Bank;
+import com.kh.DeVenue.memberAccount.model.vo.DeclareDTO;
+import com.kh.DeVenue.memberAccount.model.vo.IdenMember;
 import com.kh.DeVenue.memberAccount.model.vo.Identify;
 import com.kh.DeVenue.memberAccount.model.vo.MemType;
 import com.kh.DeVenue.memberAccount.model.vo.Signature2;
@@ -90,5 +93,37 @@ public class MemberAccountDao {
 
 	public int insertSign(Map map) {
 		return sqlSessionTemplate.insert("memberAccountMapper.insertSign", map);
+	}
+
+	public int insertStamp(Map map) {
+		return sqlSessionTemplate.insert("memberAccountMapper.insertStamp", map);
+	}
+
+	public String getPwd(int mId) {
+		return sqlSessionTemplate.selectOne("memberAccountMapper.getPwd", mId);
+	}
+
+	public ArrayList<IdenMember> selectIdenMember() {
+		return (ArrayList)sqlSessionTemplate.selectList("memberAccountMapper.selectIdenMember");
+	}
+
+	public int acceptIden(String ideId) {
+		return sqlSessionTemplate.update("memberAccountMapper.acceptIden", ideId);
+	}
+
+	public int requestIden(String ideId) {
+		return sqlSessionTemplate.update("memberAccountMapper.requestIden", ideId);
+	}
+
+	public ArrayList<Member> selectDeclareMems() {
+		return (ArrayList)sqlSessionTemplate.selectList("memberAccountMapper.selectDeclareMems");
+	}
+
+	public ArrayList<DeclareDTO> selectDeclares(String memId) {
+		return (ArrayList)sqlSessionTemplate.selectList("memberAccountMapper.selectDeclares", memId);
+	}
+
+	public int releaseSanctions(String memId) {
+		return sqlSessionTemplate.update("memberAccountMapper.releaseSanctions", memId);
 	}
 }

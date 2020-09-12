@@ -51,13 +51,18 @@
 	WHERE MEM_ID = #{memId}
   </select>
   
+  <select id="selectIntroduce" parameterType="int" resultMap="profileResultSet">
+  	SELECT * FROM PROFILE
+	WHERE PROFILE_ID=#{profileId}
+  </select>
+  
+  
   <!-- 로그인하면서 프로필 없으면 생성 -->
   <insert id="insertProfile" parameterType="Profile">
   	INSERT INTO PROFILE
   	VALUES(PROFILE_SEQ.nextval,#{memId},'자기소개를 작성해주세요.',NULL,NULL)
   </insert>
    
-  
   
   <!-- 자기소개 수정 -->
   <update id="profileUpdate" parameterType="Profile">
@@ -304,7 +309,6 @@
 	<insert id="insertEval" parameterType="hashmap">
 		INSERT INTO EVAL VALUES(CEVAL_SEQ.NEXTVAL, #{pId}, #{cId}, #{proId}, #{total}
 			, #{eContent}, #{star1}, #{star2}, #{star3}, #{star4}, #{star5}, SYSDATE, 'Y')
-
 	</insert>
 
 
@@ -374,7 +378,9 @@
 		AND MEM_STATUS = 'Y'
 	</select>
 	
+
 	<!-- 클라이언트 찾기 정렬 ajax -->
+
 	<!-- <select id="getListCount2" parameterType="_int" resultType="_int">
 		SELECT COUNT(*)
 		FROM MEMBER
@@ -404,6 +410,13 @@
 		ORDER BY COUNT_PRO_ID DESC
 	</select>
 	
+	
+	<!-- 파트너스찾기용 멤버 찾기 -->
+	<select id="selectMember" parameterType="string" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEM_ID=#{mId}
+	</select>
+
 	<!-- 종료된 프로젝트 아이디 조회(평가등록) -->
 	<select id="getEPid" parameterType="hashmap" resultMap="getEPidResult">
 		SELECT *
@@ -411,6 +424,18 @@
 		WHERE MEM_ID =#{pId} AND E_TARGET = #{cId} AND PRO_ID = #{proId}
 	</select>
 	
+	<!-- 파트너스 찾긱 자기소개 -->
+	<select id="selectMemNick" parameterType="int" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEM_ID=#{mId}
+	</select>
+	
+	<!-- 파트너스 찾기 프로필 -->
+	<select id="fpselectIntroduce" parameterType="int" resultMap="profileResultSet">
+		SELECT * FROM PROFILE
+		WHERE PROFILE_ID=#{profileId}
+	</select>	
+		
 	<!-- 클라이언트 신고 -->
 	<insert id="insertClientReport" parameterType="hashmap">
 		INSERT INTO DECLARE VALUES(REPORT_SEQ.NEXTVAL, #{pId}, #{reportCid}, #{reportContent})
@@ -439,6 +464,11 @@
 		</if>
 	</select>
 	
+	<!-- 로그인 할시 멤버 리시트를 비교 -->
+	<select id="memberList" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+	</select>
+	
 	<!-- 필터 검색 -->
 	<!-- <select id="filterList" parameterType="hashmap" resultMap="selectListResult">
 		SELECT *
@@ -462,4 +492,5 @@
 		</choose>
 		</where>
 	</select> -->
+	
 </mapper>

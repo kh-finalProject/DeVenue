@@ -6,9 +6,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.memberAccount.model.dao.MemberAccountDao;
 import com.kh.DeVenue.memberAccount.model.dto.MemBasicInfo;
 import com.kh.DeVenue.memberAccount.model.vo.Bank;
+import com.kh.DeVenue.memberAccount.model.vo.DeclareDTO;
+import com.kh.DeVenue.memberAccount.model.vo.IdenMember;
 import com.kh.DeVenue.memberAccount.model.vo.Identify;
 import com.kh.DeVenue.memberAccount.model.vo.MemType;
 import com.kh.DeVenue.memberAccount.model.vo.Signature2;
@@ -107,6 +110,46 @@ public class MemberAccountServiceImpl implements MemberAccountService{
 	@Override
 	public int insertSign(Map map) {
 		return maDao.insertSign(map);
+	}
+
+	@Override
+	public int insertStamp(Map map) {
+		return maDao.insertStamp(map);
+	}
+
+	@Override
+	public String getPwd(int mId) {
+		return maDao.getPwd(mId);
+	}
+
+	@Override
+	public ArrayList<IdenMember> selectIdenMember() {
+		return  maDao.selectIdenMember();
+	}
+
+	@Override
+	public int acceptIden(String ideId) {
+		return maDao.acceptIden(ideId);
+	}
+
+	@Override
+	public int requestIden(String ideId) {
+		return maDao.requestIden(ideId);
+	}
+
+	@Override
+	public ArrayList<Member> selectDeclareMems() {
+		return maDao.selectDeclareMems();
+	}
+
+	@Override
+	public ArrayList<DeclareDTO> selectDeclares(String memId) {
+		return maDao.selectDeclares(memId);
+	}
+
+	@Override
+	public int releaseSanctions(String memId) {
+		return  maDao.releaseSanctions(memId);
 	}
 
 

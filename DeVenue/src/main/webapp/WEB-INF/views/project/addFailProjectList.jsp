@@ -475,7 +475,7 @@
  <div id= "explainbox" style ="padding:30px;">
               
               <li id ="sText" style ="margin-left:80px; font-size:20px;">
-              	모집중인 프로젝트를 찾을 수 없습니다!
+              	등록실패한 프로젝트를 찾을 수 없습니다!
                 
               </li>
           </div>

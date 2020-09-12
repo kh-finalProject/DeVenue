@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -221,6 +223,23 @@ span.round-tab i {
     }
   }
   
+  .row>.col h3{
+  
+  	max-width: 500px;
+  	overflow: hidden;
+  	white-space: nowrap;
+   	text-overflow: ellipsis;
+  }
+  
+  .row>.col p{
+  
+  	max-width: 500px;
+  	overflow: hidden;
+  	white-space: nowrap;
+   	text-overflow: ellipsis;
+  }
+  
+  
 </style>
 
 </head>
@@ -275,7 +294,7 @@ span.round-tab i {
 									'url("${contextPath}/resources/images/mainImg.jpg")');
 							flag = 1;
 						}
-					}, 2000);
+					}, 10000);
 				})
 	</script>
 
@@ -295,11 +314,11 @@ span.round-tab i {
 				<br>
 				<ul class="nav nav-pills" style="margin-bottom:8px;">
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#qwe" onclick="giveInfo(1);" id="p1">애플리케이션</a></li>
+						href="#qwe" onclick="giveInfo(1);" id="p1">웹</a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#asd" onclick="giveInfo(2);" id="p2">웹</a></li>
+						href="#asd" onclick="giveInfo(2);" id="p2">애플리케이션</a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#zxc" onclick="giveInfo(3);" id="p3">소프트웨어</a></li>
+						href="#zxc" onclick="giveInfo(3);" id="p3">퍼블리싱</a></li>
 				</ul>
 
 				<script>
@@ -332,192 +351,354 @@ span.round-tab i {
 					}
 				</script>
 				<div class="tab-content">
+					
+					<!-- 웹프로젝트 시작 -->
+					<c:if test="${fn:length(web)>=1}">
 					<div class="tab-pane fade show active" id="qwe">
 						<div class="row mb-2">
+						
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
 									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">웹</strong>
+										<h3 class="mb-0">${web[0].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${web[0].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${web[0].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail1" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${web[0].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${web[0].mCategory}"/>
+							            	<c:param name="dCategory" value="${web[0].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail1}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							
+							<c:if test="${fn:length(web)>=2}">
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
 									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">웹</strong>
+										<h3 class="mb-0">${web[1].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${web[1].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${web[1].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail2" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${web[1].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${web[1].mCategory}"/>
+							            	<c:param name="dCategory" value="${web[1].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail2}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							</c:if>
+							
 						</div>
+						
+						<c:if test="${fn:length(web)>=3}">
 						<div class="row mb-2">
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
 									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">웹</strong>
+										<h3 class="mb-0">${web[2].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${web[2].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${web[2].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail3" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${web[2].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${web[2].mCategory}"/>
+							            	<c:param name="dCategory" value="${web[2].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail3}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							
+							<c:if test="${fn:length(web)>=4}">
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
 									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-info">애플리케이션</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">웹</strong>
+										<h3 class="mb-0">${web[3].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${web[3].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${web[3].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail4" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${web[3].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${web[3].mCategory}"/>
+							            	<c:param name="dCategory" value="${web[3].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail4}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							</c:if>
+							
 						</div>
+						</c:if>
 					</div>
-					<div class="tab-pane fade" id="asd">
+					</c:if>
+					<!-- 웹프로젝트 끝 -->
+					
+					<!-- 애플리케이션 프로젝트 시작 -->
+					<c:if test="${fn:length(app)>=1}">
+					<div class="tab-pane fade show" id="asd">
+						<div class="row mb-2">
+						
+							<div class="col-md-6">
+								<div
+									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
+									<div class="col p-4 d-flex flex-column position-static">
+										<strong class="d-inline-block mb-2 text-info">앱</strong>
+										<h3 class="mb-0">${app[0].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${app[0].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${app[0].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail5" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${app[0].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${app[0].mCategory}"/>
+							            	<c:param name="dCategory" value="${app[0].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail5}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+									</div>
+								</div>
+							</div>
+							
+							<c:if test="${fn:length(app)>=2}">
+							<div class="col-md-6">
+								<div
+									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
+									<div class="col p-4 d-flex flex-column position-static">
+										<strong class="d-inline-block mb-2 text-info">앱</strong>
+										<h3 class="mb-0">${app[1].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${app[1].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${app[1].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail6" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${app[1].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${app[1].mCategory}"/>
+							            	<c:param name="dCategory" value="${app[1].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail6}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+									</div>
+								</div>
+							</div>
+							</c:if>
+							
+						</div>
+						
+						<c:if test="${fn:length(app)>=3}">
 						<div class="row mb-2">
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-primary">웹</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">앱</strong>
+										<h3 class="mb-0">${app[2].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${app[2].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${app[2].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail7" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${app[2].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${app[2].mCategory}"/>
+							            	<c:param name="dCategory" value="${app[2].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail7}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							
+							<c:if test="${fn:length(app)>=4}">
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-success">웹</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">앱</strong>
+										<h3 class="mb-0">${app[3].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${app[3].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${app[3].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail8" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${app[3].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${app[3].mCategory}"/>
+							            	<c:param name="dCategory" value="${app[3].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail8}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							</c:if>
+							
 						</div>
-						<div class="row mb-2">
-							<div class="col-md-6">
-								<div
-									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
-									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-primary">웹</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div
-									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
-									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-success">웹</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
-									</div>
-								</div>
-							</div>
-						</div>
+						</c:if>
 					</div>
-					<div class="tab-pane fade" id="zxc">
+					</c:if>
+					<!-- 애플리케이션 프로젝트 끝 -->
+					
+					
+					<!-- 퍼블리싱 프로젝트 시작 -->
+					<c:if test="${fn:length(pub)>=1}">
+					<div class="tab-pane fade show" id="zxc">
+						<div class="row mb-2">
+						
+							<div class="col-md-6">
+								<div
+									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
+									<div class="col p-4 d-flex flex-column position-static">
+										<strong class="d-inline-block mb-2 text-info">퍼블리싱</strong>
+										<h3 class="mb-0">${pub[0].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${pub[0].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${pub[0].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail9" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${pub[0].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${pub[0].mCategory}"/>
+							            	<c:param name="dCategory" value="${pub[0].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail9}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+									</div>
+								</div>
+							</div>
+							
+							<c:if test="${fn:length(pub)>=2}">
+							<div class="col-md-6">
+								<div
+									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
+									<div class="col p-4 d-flex flex-column position-static">
+										<strong class="d-inline-block mb-2 text-info">퍼블리싱</strong>
+										<h3 class="mb-0">${pub[1].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${pub[1].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${pub[1].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail10" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${pub[1].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${pub[1].mCategory}"/>
+							            	<c:param name="dCategory" value="${pub[1].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail10}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
+									</div>
+								</div>
+							</div>
+							</c:if>
+							
+						</div>
+						
+						<c:if test="${fn:length(pub)>=3}">
 						<div class="row mb-2">
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-primary">소프트웨어</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">퍼블리싱</strong>
+										<h3 class="mb-0">${pub[2].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${pub[2].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${pub[2].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail11" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${pub[2].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${pub[2].mCategory}"/>
+							            	<c:param name="dCategory" value="${pub[2].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail11}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							
+							<c:if test="${fn:length(pub)>=4}">
 							<div class="col-md-6">
 								<div
 									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
+									style="background-color: #212426;border:2px solid rgb(61, 68, 82) !important;">
 									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-success">소프트웨어</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
+										<strong class="d-inline-block mb-2 text-info">퍼블리싱</strong>
+										<h3 class="mb-0">${pub[3].project.proName}</h3>
+										<p class="card-text mb-auto" style="font-size: 14px;">
+											${pub[3].project.proSummary}
+										</p>
+										<div class="mb-1 text-muted">예상 예산:<fmt:formatNumber type="currency">${pub[3].project.proPayment}</fmt:formatNumber>원</div>
+										
+										<c:url var="pdetail12" value="searchProjectDetail.do">
+							            	<c:param name="id" value="${pub[3].id}"/>
+							            	<c:param name="page" value="1"/>
+							            	<c:param name="mCategory" value="${pub[3].mCategory}"/>
+							            	<c:param name="dCategory" value="${pub[3].dCategory}"/>
+							            </c:url>
+										
+										<a href="${pdetail12}" class="stretched-link" style="color:#17a2b8;">Continue reading</a>
 									</div>
 								</div>
 							</div>
+							</c:if>
+							
 						</div>
-						<div class="row mb-2">
-							<div class="col-md-6">
-								<div
-									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
-									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-primary">소프트웨어</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div
-									class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative text-white"
-									style="background-color: #212426;">
-									<div class="col p-4 d-flex flex-column position-static">
-										<strong class="d-inline-block mb-2 text-success">소프트웨어</strong>
-										<h3 class="mb-0">프로젝트명</h3>
-										<p class="card-text mb-auto" style="font-size: 14px;">이
-											프로젝트는 영국으로부터 시작되어서.....</p>
-										<div class="mb-1 text-muted">예상 예산 : 50000원</div>
-										<a href="#" class="stretched-link">Continue reading</a>
-									</div>
-								</div>
-							</div>
-						</div>
+						</c:if>
 					</div>
+					</c:if>
+					<!-- 퍼블리싱 프로젝트 끝 -->
+					
+					
 				</div>
 			</div>
 

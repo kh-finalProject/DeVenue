@@ -242,7 +242,7 @@
             display: inline-block;
 /*             width: 20px; */
             height: 20px;
-            padding: 0px 0px 0px 6px;
+            padding: 0px 3px 3px 3px;
             background-color: red;
             border-radius: 50%;
             color:white;
@@ -252,6 +252,7 @@
 /*             text-overflow: ellipsis; */
             position: relative;
             top:-7px;
+            padding-left:6px;
         }
         /* 마지막 채팅내역 */
         .lastChatContent{
@@ -1033,6 +1034,30 @@
     		}
     		return true;
     	}
+     
+    	// alert 사이즈 동적으로 지정
+    	  $('.alertRead').each(function(index, item){
+    		  var aText = textWidth($(item).text(),'sans-serif')
+    		  $(item).width(aText+5);
+    	  });
+    	  
+    	  //텍스트 길이 구해주는 함수
+    	  function textWidth(text, fontProp) {
+    	    var tag = document.createElement("div");
+    	    tag.style.position = "absolute";
+    	    tag.style.left = "-999em";
+    	    tag.style.whiteSpace = "pre-wrap";
+    	    tag.style.font = fontProp;
+    	    tag.innerHTML = text;
+
+    	    document.body.appendChild(tag);
+
+    	    var result = tag.clientWidth;
+
+    	    document.body.removeChild(tag);
+
+    	    return result;
+    	  }
     </script>
 </body>
 

@@ -89,17 +89,28 @@ public interface MyPageService {
 
 	PmypagePartnersInfo selectPartnersInfo(Integer pId);
 
+
 	ArrayList<PartnersApplyCount> getApplyCount(Integer pId);
+
+
+
 
 	ArrayList<PartnersContractCount> getContractCount(Integer pId);
 
 	ArrayList<PmypageSuggest> selectPartnersSuggest(Integer pId);
 
-	ArrayList<PmypageProcess> selectPartnersProcess(Integer pId);
+
+
+	
 
 	String getMyPageSidebarProImg(String mId);
 
+
+	ArrayList<PmypageProcess> selectPartnersProcess(Integer pId);
+
 	ArrayList<CmypageCountPartners> getCountPartners(Integer cId);
+
+
 
 	int updateClientInfo(HashMap map);
 
@@ -110,6 +121,10 @@ public interface MyPageService {
 	int portNameCount(String title);
 
 	ArrayList<PortTecView> tNameList(int ptId);
+
+	int portCount(int profileId);
+
+	Profile selectIntroduce(int profileId);
 
 	int getPaymentListCount(Integer cId);
 
@@ -122,6 +137,7 @@ public interface MyPageService {
 	int insertApplyMatch(int id);
 
 	int insertProcess(int id);
+
 
 	
 

@@ -212,8 +212,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                   <button class="btn btn-secondary btn-block">전체 프로젝트</button> 
-                   <button class="btn btn-info btn-block">연장 신청 프로젝트</button> 
+                   <button class="btn btn-secondary btn-block">전체 프로젝트</button>  
                 </div>
             </div>
 

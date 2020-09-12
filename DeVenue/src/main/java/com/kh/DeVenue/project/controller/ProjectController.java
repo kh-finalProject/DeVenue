@@ -11,9 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,8 +34,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+
+import com.kh.DeVenue.findMember.model.service.FindMemberService;
+import com.kh.DeVenue.findMember.model.vo.FindPartners;
+
+import com.kh.DeVenue.member.model.vo.CPeval;
+
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.myPage.model.service.MyPageService;
+import com.kh.DeVenue.myPage.model.vo.Career;
+import com.kh.DeVenue.myPage.model.vo.Certificate;
+import com.kh.DeVenue.myPage.model.vo.PortFolio;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
+import com.kh.DeVenue.myPage.model.vo.SCCareer;
+import com.kh.DeVenue.myPage.model.vo.Skill;
 import com.kh.DeVenue.project.model.exception.ProjectException;
 import com.kh.DeVenue.project.model.service.ProjectService;
 import com.kh.DeVenue.project.model.vo.Application;
@@ -59,20 +70,181 @@ import com.kh.DeVenue.project.model.vo.Tech;
 public class ProjectController {
 @Autowired
 ProjectService pService;
-	@RequestMapping("addProject.do")
+@Autowired
+MyPageService myService;	
+@Autowired
+private MyPageService myPageService;
+@Autowired
+private FindMemberService fmService;
+
+@RequestMapping("addProject.do")
 	public String projectAddView() {
 		
 		return "project/addProject";
 	
 	}
 	
+
+@RequestMapping(value = "goProfile.do")
+public ModelAndView profileView(HttpServletRequest request, ModelAndView mv, @RequestParam(value ="memId",required=false) int memId,
+		@RequestParam(value ="proId",required=false) int proId) {
 	
+	int profileId = memId;
+	System.out.println(profileId);
+	// memId를 비교해서 전체 값 가져오기
+	FindPartners fp = fmService.selectFm(profileId);
+	System.out.println(fp);
+	
+	// profileId를 넘겨서 포트폴리오값을 가져오자
+	ArrayList<PortFolio> portfolio = myPageService.portList(profileId);
+	System.out.println(portfolio);
+	
+	// profileId를 념겨서 portTec
+	for(int i=0;i<portfolio.size();i++) {
+		System.out.println(portfolio.get(i).getPortId());
+		
+		int portId = portfolio.get(i).getPortId();
+		
+		ArrayList<PortTecView> portTec = myPageService.ptList(portId);
+		System.out.println(portTec);
+		
+		mv.addObject("portTec", portTec);
+	}
+	
+	// profileId를 넘겨서 보유 기술 list 가져오기
+	ArrayList<Skill> skillList = myPageService.selectSkillInfo(profileId);
+	System.out.println(skillList);
+	
+	// profileId를 넘겨서 경력list 가져오기
+	ArrayList<Career> careerList = myPageService.selectCareerInfo(profileId);
+	System.out.println(careerList);
+	
+	// profileId를 넘겨 학력list 가져오기
+	ArrayList<SCCareer> sccareerList = myPageService.selectSCCareerInfo(profileId);
+	System.out.println(sccareerList);
+	
+	// profileId를 넘겨 자격증list 가져오기
+	ArrayList<Certificate> certiList = myPageService.selectCertificateInfo(profileId);
+	System.out.println(certiList);
+
+	
+	
+	mv.addObject("fp", fp);
+	mv.addObject("portfolio", portfolio);
+	mv.addObject("skillList", skillList);
+	mv.addObject("careerList", careerList);
+	mv.addObject("sccareerList", sccareerList);
+	mv.addObject("certiList", certiList);
+	
+	mv.setViewName("myPage/myPageDetail");
+	
+	return mv;
+}
+
+@RequestMapping("proAdmin.do")
+		public ModelAndView projectAdminView(ModelAndView mv) {
+		
+		ArrayList<Project> list = pService.selectCommitList();
+		
+		System.out.println("관리자 검수 리스트"+list);
+		if(!list.isEmpty()) {
+			mv.addObject("list1",list);
+			mv.setViewName("project/projectAdmin");
+			
+		}else {
+			mv.setViewName("project/projectAdmin");
+		}
+		
+		return mv;
+		
+	}
+
+
+@RequestMapping("proGoRecruit.do")
+public ModelAndView proGoRecruit(ModelAndView mv,  Project p,
+								HttpServletRequest request, 
+						
+								@RequestParam(value ="proId",required=false) int proId) throws ParseException {
+   int a =p.getMemId();
+	
+	System.out.println("mv"+mv);
+	
+	int result = pService.commitProject(proId);
+	
+	
+	if(result > 0) {
+		mv.setViewName("redirect:proAdmin.do");
+	
+	
+	}else {
+		throw new ProjectException("게시글 수정 실패!!");
+	}
+	
+	return mv;
+}
+@RequestMapping("applyUpdate.do")
+public ModelAndView applyUpdate(ModelAndView mv, 
+								HttpServletRequest request, RedirectAttributes redirectAttributes,
+							
+								@RequestParam(value ="proId",required=false) int proId,
+								@RequestParam(value ="memPId",required=false) int memPId) throws ParseException {
+	
+	
+	System.out.println("mv"+mv);
+	 redirectAttributes.addAttribute("proId", proId);
+	 System.out.println("프로아이디"+proId);
+	System.out.println("멤피아이디"+ memPId);
+	int result = pService.applyUpdate(memPId);
+	System.out.println(result);
+	
+	if(result > 0) {
+		
+		mv.setViewName("redirect:applycomfirmList.do");
+	
+	
+	}else {
+		mv.setViewName("redirect:applycomfirmList.do");
+	}
+	
+	return mv;
+}
+
+
+	
+	@RequestMapping("rejectapply.do")
+	public ModelAndView rejectApply(ModelAndView mv, 
+									HttpServletRequest request, RedirectAttributes redirectAttributes,
+								
+									@RequestParam(value ="proId",required=false) int proId,
+									@RequestParam(value ="memPId",required=false) int memPId) throws ParseException {
+		
+		
+		System.out.println("mv"+mv);
+		 redirectAttributes.addAttribute("proId", proId);
+		 System.out.println("프로아이디"+proId);
+		System.out.println("멤피아이디"+ memPId);
+		int result = pService.rejectApply(memPId);
+		System.out.println(result);
+		
+		if(result > 0) {
+			
+			mv.setViewName("redirect:applycomfirmList.do");
+		
+		
+		}else {
+			throw new ProjectException("게시글 수정 실패!!");
+		}
+		
+		return mv;
+	}
 	@RequestMapping(value="proinsert.do", method=RequestMethod.POST)
 	public String projectInsert(Project p, ProjectQuestion q, HttpServletRequest request,
 								@RequestParam(value="proPlanPaper1",required=false) MultipartFile file,
 								@RequestParam(value ="proAQContent",required=false) String[] proAQContent,
 								@RequestParam(value ="proStartDate",required=false) String proStartDate,
-								@RequestParam(value ="proDuration",required=false) int proDuration
+								@RequestParam(value ="proDuration",required=false) int proDuration,
+								@RequestParam(value ="memId" ,required= false) String memId,
+								RedirectAttributes redirectAttributes
 								) throws ParseException {
 								
 	System.out.println("proStartDate= "+proStartDate);
@@ -82,7 +254,7 @@ ProjectService pService;
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	Date date = null;
 	
-	
+	 redirectAttributes.addAttribute("memId", memId);
 	try {
 		date = df.parse(proStartDate);
 	} catch (ParseException e) {
@@ -131,9 +303,9 @@ ProjectService pService;
 	
 		
 		if(result > 0) {
-			return "redirect:addProject.do";
+			return "redirect:checkList.do";
 		}else {
-			throw new ProjectException("프로젝트 등록 실패!");
+			return "redirect:checkList.do";
 		}
 		
 		// DB에 공지사항이 잘 들어갔으면 noticeListView.jsp로 가서
@@ -155,7 +327,7 @@ ProjectService pService;
 			mv.setViewName("project/temporaryStoreList");
 			
 		}else {
-			
+			mv.setViewName("project/temporaryStoreList");
 		}
 		
 		return mv;
@@ -168,7 +340,7 @@ ProjectService pService;
 								@RequestParam(value ="proAQContent",required=false) String[] proAQContent) {
 	
 	
-		
+		System.out.println("p객체"+p);	
 		
 		
 		if(!file.getOriginalFilename().contentEquals("")) {
@@ -191,9 +363,9 @@ ProjectService pService;
 	
 		
 		if(result > 0) {
-			return "redirect:addProject.do";
+			return "project/temporaryStoreList";
 		}else {
-			throw new ProjectException("프로젝트 등록 실패!");
+			return "project/temporaryStoreList";
 		}
 		
 		// DB에 공지사항이 잘 들어갔으면 noticeListView.jsp로 가서
@@ -243,23 +415,35 @@ ProjectService pService;
 	}
 	
 	@RequestMapping("checkList.do")
-	public ModelAndView checkProjectList(ModelAndView mv, @RequestParam(value ="memId" ,required= false) String memId
-			
+	public ModelAndView checkProjectList(ModelAndView mv, @RequestParam(value ="memId" ,required= false) String memId,
+			@RequestParam(value="page", required=false) Integer page
 			) {
 		
-	  
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		String mId =memId; 
+		int listCount = pService.getCheckListCount(memId);
+		String mImg = myService.getMyPageSidebarProImg(mId);
 		System.out.println("진입");
-		int a = Integer.valueOf(memId);
+		System.out.println("mImg"+mImg);
 		System.out.println("memId?" +memId);
-		ArrayList<Project> list = pService.selectCheckList(memId);
+		PageInfo pi = getPageInfo(currentPage, listCount);
+		ArrayList<Project> list = pService.selectCheckList(memId,pi);
 		
 		System.out.println("검수 리스트"+list);
+		System.out.println("페이지네이션:" + pi);
 		if(!list.isEmpty()) {
 			mv.addObject("list1",list);
+			mv.addObject("memId",memId);
+			mv.addObject("mImg",mImg);
+			mv.addObject("pi",pi);
 			mv.setViewName("project/checkingProjectList");
 			
 		}else {
-			
+			mv.addObject("mImg",mImg);
+			mv.setViewName("project/checkingProjectList");
 		}
 		 
 		return mv;
@@ -377,31 +561,6 @@ ProjectService pService;
 		return mv;
 	}
 	
-	@RequestMapping("recruitModal.do")
-	public void 메소드명(HttpServletResponse response, String proId) throws JsonIOException, IOException {
-		response.setContentType("application/json;charset=utf-8");
-		
-//		프로젝트 Id로 디비에 접근해서 해당 프로젝트 지원자 list를 받아와야한다.
-		ArrayList<Member> memberList = pService.selectModal(proId);
-		
-		
-		Map<String, Object> result = new HashMap();
-		result.put("memberList", memberList);		
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		gson.toJson(result , response.getWriter());
-		
-	}
-
-	private void deleteFile(String fileName, HttpServletRequest request) {
-		String root = 
-			request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "\\nuploadFiles";
-		
-		File f = new File(savePath + "\\" + fileName);
-		if(f.exists()) {
-			f.delete();
-		}
-	}
 	
 	@RequestMapping("proDelete.do")
 	public String proDelete(Integer proId, HttpServletRequest request) {
@@ -415,7 +574,7 @@ ProjectService pService;
 		}
 		
 		// 게시글 삭제하기
-		int result1 = pService.deleteQuestion(proId);
+		
 		int result = pService.deleteProject(proId);
 		
 		if(result > 0) {
@@ -424,14 +583,24 @@ ProjectService pService;
 			throw new ProjectException("게시물 삭제 실패!");
 		}
 	}
-	
+	private void deleteFile(String fileName, HttpServletRequest request) {
+		String root = 
+			request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\nuploadFiles";
+		
+		File f = new File(savePath + "\\" + fileName);
+		if(f.exists()) {
+			f.delete();
+		}
+	}
 	@RequestMapping("recruitProjectList.do")
 	public ModelAndView recruitProjectList(ModelAndView mv,
 			@RequestParam(value ="memId",required=false) int memId
 			) {
 	
 		System.out.println("memid:" +memId);
-		
+		String mId = Integer.toString(memId);
+		String mImg = myService.getMyPageSidebarProImg(mId);
 //		HashMap prof=new HashMap();
 //		prof.put("proId",proId);
 //		prof.put("memId",memId);
@@ -444,10 +613,11 @@ ProjectService pService;
 		
 		if(!list.isEmpty() ) {
 			mv.addObject("list1",list);
-		
+			mv.addObject("mImg",mImg);
 			mv.setViewName("project/recruitProjectList");
 			
 		}else {
+			mv.addObject("mImg",mImg);
 			mv.setViewName("project/recruitProjectList");
 		}
 		
@@ -494,8 +664,7 @@ ProjectService pService;
 	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="page", required=false) Integer page) {
 		
 		System.out.println("parameter 뭐 넘어왔나?"+project);
-		//프로젝트 디테일 가져오기
-		
+		//프로젝트 디테일 가져오기		
 		ProjectDetail detail=pService.selectProjectDetail(project.getId());
 		
 		// 클라이언트의 전체 프로젝트 수 
@@ -520,7 +689,43 @@ ProjectService pService;
 		
 	}
 
-
+	@RequestMapping("applycomfirmList.do")
+	public ModelAndView applyComfirmList(ModelAndView mv, @RequestParam(value ="memId" ,required= false) String memId,
+			@RequestParam(value ="proId" ,required= false) int proId,
+			@RequestParam(value="page", required=false) Integer page
+			
+			) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int RecruitNum = pService.getRecuritNum(proId);	
+		int listCount = pService.getCommitListCount(proId);
+		PageInfo pi = getPageInfo(currentPage, listCount);
+		System.out.println(listCount);
+		System.out.println(pi);
+		System.out.println("모집인원 : " +RecruitNum);
+		System.out.println("진입");
+		System.out.println("프로프로"+proId);
+		ArrayList<Project> list = pService.selectApplyList(proId);
+		
+		System.out.println("승인 리스트"+list);
+		if(!list.isEmpty()) {
+			mv.addObject("RecruitNum",RecruitNum);
+			mv.addObject("list1",list);
+			mv.addObject("pi",pi);
+			mv.setViewName("project/applycomfirmList");
+			
+		}else {
+			mv.addObject("RecruitNum",RecruitNum);
+		
+			mv.setViewName("project/applycomfirmList");
+		}
+		 
+		return mv;
+		
+	}
 
 	
 	@RequestMapping("addFailProjectList.do")
@@ -1868,15 +2073,22 @@ ProjectService pService;
 				int listCount=pService.getCompleteListCount(condition);
 				PageInfo pi=getPageInfo(currentPage, listCount);
 				
-				//
+				//종료 프로젝트 리스트 조회
 				ArrayList<ProjectList> complete=pService.selectCompleteList(condition,pi);
 				
+				
+				//로그인 유저가 작성한 후기 조회(상태 확인을 위해)
+				ArrayList<CPeval> evaluation=pService.selectEvaluation(condition);
+				
+				
 				System.out.println("화면단 가기 전 완료 프로젝트"+complete);
+				System.out.println("화면단 가기 전 평가"+evaluation);
 				
 				mv.addObject("complete", complete);
 				mv.addObject("pi", pi);
 				mv.addObject("sorting", sorting);
 				mv.addObject("search", search);
+				mv.addObject("eval", evaluation);
 				
 				mv.setViewName("partnerSubMenu/completeProjectView");
 				
