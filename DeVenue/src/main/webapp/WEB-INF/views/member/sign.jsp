@@ -506,15 +506,32 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<label for="name">* 회원형태</label>
 						</div>
 						<div class="form-input">
-							<select name="memtype" class="input-size" required>
-								<option value="MT1">개인</option>
-								<option value="MT2">법인</option>
-								<option value="MT3">팀</option>
-								<option value="TT4">개인사업자</option>
-								<option value="MT5">개인</option>
-								<option value="MT6">법인사업자</option>
-								<option value="MT7">기업</option>
+							<select id="memType" name="memtype" class="input-size" required>
+								<option class="memTypeOption" value="MT1">개인</option>
+								<option class="memTypeOption" value="MT2">법인</option>
+								<option class="memTypeOption" value="MT3">팀</option>
+								<option class="memTypeOption" value="MT4">개인사업자</option>
+								<option class="memTypeOption" value="MT5">개인</option>
+								<option class="memTypeOption" value="MT6">법인사업자</option>
+								<option class="memTypeOption" value="MT7">기업</option>
 							</select>
+							<script>
+								$("input[name='purpose']").change(function(){
+									if($("input[name='purpose']:checked").val() == "UT3"){
+										$("#memType").html("");
+										$("#memType").append("<option class='memTypeOption' value='MT5'>개인</option>");
+										$("#memType").append("<option class='memTypeOption' value='MT7'>기업</option>");
+									}else if($("input[name='purpose']:checked").val() == "UT4"){
+										$("#memType").append("<option class='memTypeOption' value='MT1'>개인</option>");
+										$("#memType").append("<option class='memTypeOption' value='MT2'>법인</option>");
+										$("#memType").append("<option class='memTypeOption' value='MT3'>팀</option>");
+										$("#memType").append("<option class='memTypeOption' value='MT4'>개인사업자</option>");
+										$("#memType").append("<option class='memTypeOption' value='MT5'>개인</option>");
+										$("#memType").append("<option class='memTypeOption' value='MT6'>법인사업자</option>");
+										$("#memType").append("<option class='memTypeOption' value='MT7'>기업</option>");
+									}
+								});
+							</script>
 						</div>
 					</div>
 					<div class="form-submit">
@@ -917,12 +934,22 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				$("#partnes").removeAttr("checked");
 				$(".client-radio").css("border-color", "#165FF2");
 				$(".partnes-radio").css("border-color", "white");
+				$("#memType").html("");
+				$("#memType").append("<option class='memTypeOption' value='MT5'>개인</option>");
+				$("#memType").append("<option class='memTypeOption' value='MT7'>기업</option>");
 			})
 			$(".partnes-radio").on("click", function() {
 				$("#partnes").prop("checked", "true");
 				$("#client").removeAttr("checked");
 				$(".client-radio").css("border-color", "white");
 				$(".partnes-radio").css("border-color", "#165FF2");
+				$("#memType").append("<option class='memTypeOption' value='MT1'>개인</option>");
+				$("#memType").append("<option class='memTypeOption' value='MT2'>법인</option>");
+				$("#memType").append("<option class='memTypeOption' value='MT3'>팀</option>");
+				$("#memType").append("<option class='memTypeOption' value='MT4'>개인사업자</option>");
+				$("#memType").append("<option class='memTypeOption' value='MT5'>개인</option>");
+				$("#memType").append("<option class='memTypeOption' value='MT6'>법인사업자</option>");
+				$("#memType").append("<option class='memTypeOption' value='MT7'>기업</option>");
 			})
 
 			// 비밀번호 보이기/숨기기

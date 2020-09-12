@@ -193,6 +193,17 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.reportCheck(report);
 	}
 
+	@Override
+	public ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress) {
+		return mDao.addressList(pi, mapAddress);
+	}
+
+	@Override
+	public ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter) {
+		return mDao.filterList(pi, mapFilter);
+	}
+
+
 	
 
 }

@@ -80,5 +80,9 @@ public interface MemberService {
 
 	int reportCheck(HashMap report);
 
+	ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress);
+
+	ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter);
+
 	
 }
