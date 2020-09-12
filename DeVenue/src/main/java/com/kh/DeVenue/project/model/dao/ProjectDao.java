@@ -614,5 +614,23 @@ ArrayList list =new ArrayList();
 	}
 
 
+	public ArrayList<ProjectList> selectFourWeb() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectFourWeb");
+	}
+
+
+	public ArrayList<ProjectList> selectFourApp() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectFourApp");
+	}
+
+
+	public ArrayList<ProjectList> selectFourPub() {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectFourPub");
+	}
+
+
 
 }

@@ -713,6 +713,30 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
+	@Override
+	public ArrayList<ProjectList> selectFourWeb() {
+		
+		return proDao.selectFourWeb();
+	}
+
+
+
+	@Override
+	public ArrayList<ProjectList> selectFourApp() {
+		
+		return proDao.selectFourApp();
+	}
+
+
+
+	@Override
+	public ArrayList<ProjectList> selectFourPub() {
+		
+		return proDao.selectFourPub();
+	}
+
+
+
 
 	
 

@@ -1658,5 +1658,43 @@
 	WHERE E_WRITER=#{memId}
 
 	</select>
+	
+	<select id="selectFourWeb" resultMap="projectListResultSet">
+	<![CDATA[
+	 SELECT *   
+	 FROM(SELECT *
+	 FROM PROJECTLIST_VIEW V
+	 LEFT JOIN PROJECT P ON (V.ID=P.PRO_ID)
+	 WHERE P.DC_ID='DC1' AND P.PRO_STA_ID='PST3'
+	 ORDER BY 1 DESC)
+	 WHERE ROWNUM<=4
+	 ]]>
+	</select>
+	
+	<select id="selectFourApp" resultMap="projectListResultSet">
+	<![CDATA[
+	 SELECT *   
+	 FROM(SELECT *
+	 FROM PROJECTLIST_VIEW V
+	 LEFT JOIN PROJECT P ON (V.ID=P.PRO_ID)
+	 WHERE P.DC_ID='DC2' AND P.PRO_STA_ID='PST3'
+	 ORDER BY 1 DESC)
+	 WHERE ROWNUM<=4
+	 ]]>
+	
+	</select>
+	
+	<select id="selectFourPub" resultMap="projectListResultSet">
+	<![CDATA[
+	 SELECT *   
+	 FROM(SELECT *
+	 FROM PROJECTLIST_VIEW V
+	 LEFT JOIN PROJECT P ON (V.ID=P.PRO_ID)
+	 WHERE P.DC_ID='DC3' AND P.PRO_STA_ID='PST3'
+	 ORDER BY 1 DESC)
+	 WHERE ROWNUM<=4
+	 ]]>
+	
+	</select>
 
 </mapper>

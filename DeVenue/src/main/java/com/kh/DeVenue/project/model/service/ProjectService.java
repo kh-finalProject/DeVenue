@@ -261,9 +261,6 @@ public interface ProjectService {
 	int getCommitListCount(int proId);
 
 
-
-
-
 	int getRecuritNum(int proId);
 
 
@@ -274,6 +271,15 @@ public interface ProjectService {
 
 
 	ArrayList<CPeval> selectEvaluation(HashMap condition);
+
+
+	ArrayList<ProjectList> selectFourWeb();
+
+
+	ArrayList<ProjectList> selectFourApp();
+
+
+	ArrayList<ProjectList> selectFourPub();
 
 
 	
