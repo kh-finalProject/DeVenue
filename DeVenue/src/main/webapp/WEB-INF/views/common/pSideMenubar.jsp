@@ -42,24 +42,23 @@
 
    <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
-   <!-- chart -->
-   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-   <style>
-      body{
-         background-color: #212426;
-         z-index:0 !important;
-      }
-      /* 마이페이지 사이드 메뉴바 전용 css */
-      /* 사이드 메뉴바 전체 영역 */
-      .myPage_sideNav_area {
-         width: 17%;
-         /* position: relative; */
-         position: absolute;
-         box-shadow: 0px 1px 1px 1px rgb(20, 20, 20);
-         font-family: 'Do Hyeon', sans-serif !important;
-         /* float:left; */
-/*          height: 100vh; */
-      }
+	<!-- chart -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<style>
+		body{
+			background-color: #212426;
+			z-index:0 !important;
+		}
+		/* 마이페이지 사이드 메뉴바 전용 css */
+		/* 사이드 메뉴바 전체 영역 */
+		.myPage_sideNav_area {
+			width: 17%;
+			position: absolute;
+			box-shadow: 0px 1px 1px 1px rgb(20, 20, 20);
+			font-family: 'Do Hyeon', sans-serif !important;
+/* 			height: 100vh; */
+		}
+
 
       /* 사이드바 타이틀(파트너스/클라이언트) */
       .myPage_sideNav_title {
@@ -76,12 +75,12 @@
          margin-bottom: 10px;
       }
 
-      /* 사이드바 타이틀 제외 항목 영역 */
-      .myPage_sideNav_content {
-         background-color: #262a2c;
-         height: 100%;
-         z-index:11 !important;
-      }
+		/* 사이드바 타이틀 제외 항목 영역 */
+		.myPage_sideNav_content {
+			background-color: #262a2c;
+			height: 100%;
+			z-index:11 !important;
+		}
 
       /* 사이드바 메인 항목 */
       .myPage_sideNav_mainC {
@@ -147,6 +146,7 @@ $(document).ready(function(){
 
 </script>
 <body>
+
 
    <!-- 서브 메뉴바 영역-->
    <c:if test="${loginUser.userType == 'UT3'}">
@@ -243,7 +243,6 @@ $(document).ready(function(){
                   class="fas fa-angle-right"></i></div>
             <div id="subInfoMenu" class="myPage_sideNav_serveC">
                <%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
-<<<<<<< HEAD
                <%-- <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div> --%>
                <form method="GET" action="profile.do">
                   <input type="hidden" name="profileId" value="${profile.profileId }">
@@ -253,23 +252,18 @@ $(document).ready(function(){
                   <input type="hidden" name="profileId" value="${profile.profileId }">
                   <%-- <button class="aTag" style="cursor: text;">${clOrPt } 정보</button> --%>
                   <button class="aTag" style="cursor: text;">파트너스 정보</button>
-=======
                <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/clientProfile.do?cId=${loginUser.memId}'">마이 페이지</div>
                <form method="GET" action="clientInfo.do">
                   <input type="hidden" name="cId" value="${loginUser.memId}">
                   <button class="aTag" style="cursor: text;">${clOrPt } 정보</button>
->>>>>>> refs/remotes/origin/master
                </form>
-<<<<<<< HEAD
                <!-- <div id="pPR">자기소개</div> -->
                <form method="GET" action="PR.do">
                   <input type="hidden" name="profileId" value="${profile.profileId }">
                   <button class="aTag" style="cursor: text;">자기소개</button>
                </form>
-=======
                <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/cMyPageProjectHistory.do?cId=${loginUser.memId}'">프로젝트 히스토리</div>
                <%-- <!-- <div id="pPR">자기소개</div> -->
->>>>>>> refs/remotes/origin/master
                <!-- <div id="pPortfolio">포트폴리오</div> -->
                <form method="GET" action="portfolioAll.do">
                   <input type="hidden" name="profileId" value="${profile.profileId }">
@@ -306,7 +300,7 @@ $(document).ready(function(){
                <div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/gotoAccountChangePwd.do'">비밀번호 변경</div>
                <div id="insertCComment" onclick="location.href='${pageContext.servletContext.contextPath}/outOfMember.do'">회원 탈퇴</div>
             </div>
-            <div id="paymentMangement" class="myPage_sideNav_mainC" onclick="location.href='#'">결제 관리</div>
+            <div id="paymentMangement" class="myPage_sideNav_mainC" onclick="location.href='${pageContext.servletContext.contextPath}/clientPayment.do?cId=${loginUser.memId}'">결제 관리</div>
             <div id="pEvaluate" class="myPage_sideNav_mainC">내게 온 제안</div>
          </c:if>
       </div>

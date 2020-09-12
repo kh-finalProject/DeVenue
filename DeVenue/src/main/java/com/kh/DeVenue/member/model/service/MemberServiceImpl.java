@@ -2,6 +2,7 @@ package com.kh.DeVenue.member.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -169,6 +170,20 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	public Map<String, String> isDeathOrSanctions(String memEmail) {
+		return mDao.isDeathOrSanctions(memEmail);
+	}
+
+	@Override
+	public int updateDecAndDeath(String memEmail) {
+		return mDao.updateDecAndDeath(memEmail);
+	}
+
+	@Override
+	public int toDeath(String memEmail) {
+		return mDao.toDeath(memEmail);
+	}
+
 	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
 		return mDao.selectList(pi, status);
 	}
@@ -193,6 +208,5 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.reportCheck(report);
 	}
 
-	
 
 }

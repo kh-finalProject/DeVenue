@@ -242,6 +242,17 @@
   	<result property="memId" column="MEM_ID"/>
   </resultMap>
   
+  <resultMap type="CmypagePayment" id="clientPaymentResult">
+  	<result property="memId" column="MEM_ID"/>
+  	<result property="proId" column="PRO_ID"/>
+  	<result property="proName" column="PRO_NAME"/>
+  	<result property="mcType" column="MC_TYPE"/>
+  	<result property="dcType" column="DC_TYPE"/>
+  	<result property="proREndDate" column="PRO_R_END_DATE"/>
+  	<result property="payment" column="PRO_PAYMENT"/>
+  	<result property="applyCount" column="APPLY_COUNT"/>
+  </resultMap>
+  
 	
 	<!-- 회원가입시  파트너스 정보 기본으로 생성 -->
 	<insert id="insertPartInfo" parameterType="PartInfo">
@@ -501,5 +512,55 @@
 		SELECT * FROM PORTTEC_VIEW
 		WHERE PORT_ID=#{portId}
 	</select>
+	
+	<!-- 결제 대기 프로젝트 -->
+	<select id="getPaymentListCount" parameterType="_int" resultType="_int">
+		SELECT count(*)
+		FROM CLIENT_PAYMENT_VIEW
+		WHERE MEM_ID=#{cId}
+	</select>
+	
+	<select id="getPaymentList" parameterType="_int" resultMap="clientPaymentResult">
+		SELECT *
+		FROM CLIENT_PAYMENT_VIEW
+		WHERE MEM_ID=#{cId}
+	</select>
+	
+	<!-- 결제후 pst업데이트 -->
+	
+	<update id="updatePst" parameterType="_int">
+		UPDATE PROJECT
+		SET PRO_STA_ID = 'PST4'
+		WHERE PRO_ID = #{id}
+	</update>
+	
+	<!-- 진행중 프로젝트로 인서트 -->
+	<insert id="insertProcess" parameterType="_int">
+		INSERT INTO P_PROCESS(PRO_PID, PRO_ID)
+		SELECT PROCESS_SEQ.NEXTVAL, PRO_ID
+		FROM PROJECT
+		WHERE PRO_STA_ID = 'PST4' AND PRO_ID=#{id}
+	</insert>
+	
+	<!-- p_match로 인서트 -->
+	<insert id="insertApplyMatch" parameterType="_int">
+		INSERT INTO P_MATCH(PRO_PM_ID, PRO_PID, MEM_ID, SIG_ID)
+		SELECT MATCH_SEQ.NEXTVAL, PP.PRO_PID, PA.MEM_PID, S.SIG_ID
+		FROM P_APPLY PA
+		JOIN PROJECT P ON(P.PRO_ID = PA.PRO_ID)
+		JOIN MEMBER M ON(M.MEM_ID = PA.MEM_PID)
+		JOIN SIGNATURE S ON(S.MEM_ID = M.MEM_ID)
+		JOIN P_PROCESS PP ON(PP.PRO_ID = P.PRO_ID)
+		WHERE PRO_ID=#{id} AND PRO_ASTATUS=1
+	</insert>
+	
+	<!-- status 3(삭제) 변경 -->
+	<update id="updateApply" parameterType="_int">
+		UPDATE P_APPLY
+		SET PRO_ASTATUS=3
+		WHERE PRO_ID = #{id}
+	</update>
+
+	
 	
 </mapper>

@@ -33,7 +33,7 @@
 		<result property="proFuturePlan" column="PRO_FUTUREPLAN"/>
 		<result property="proPriority" column="PRO_PRIORTY"/>
 		<result property="proContract" column="PRO_CONTRACT"/>
-		<result property="proTypeCode" column="PRO_TYPE_CODE"/>
+		<result property="proTypeCode" column="MEM_TYPE_CODE"/>
 		<result property="proWorkspace" column="PRO_WORKPLACE"/>
 		<result property="proSignId" column="SIG_ID"/>
 		<result property="proPayStatus" column="PRO_PAY_STATUS"/>
@@ -52,6 +52,23 @@
 		<result property ="proId" column ="PRO_ID"/>
 		
 		
+	</resultMap>
+	
+	<resultMap type ="ApplyConfirm" id ="applyConfirmResultSet">
+		<id property ="proAId" column ="PRO_AID"/>
+		<result property ="memPId" column ="MEM_PID"/>
+		<result property ="proAPayment" column ="PRO_APAYMENT"/>
+		<result property ="proADuration" column ="PRO_ADURATION"/>
+		<result property ="proAContent" column ="PRO_ACONTENT"/>
+		<result property ="proReAResume" column ="PRO_REARESUME"/>
+		<result property ="proApplyDate" column ="PRO_APPLY_DATE"/>
+		<result property ="memNick" column ="MEM_NICK"/>
+		<result property ="memIntro" column ="INTRODUCTION"/>
+		<result property ="memImg" column ="PROFILE_IMG"/>
+		<result property ="portId" column ="PORT_ID"/>
+	<association property="project" javaType="Project">
+				<id property="proId" column="PRO_ID"/>
+			</association>
 	</resultMap>
 	
 	
@@ -393,6 +410,7 @@
 			,#{proPriority}
 			,NULL
 			,#{proTypeCode}
+			,NULL
 			,1  <!-- 날인ID -->
 			,'N'
 			,SEQ_PRO_ID.CURRVAL
@@ -414,13 +432,37 @@
 <insert id ="temStoreProject" parameterType = "Project">
 	INSERT INTO PROJECT VALUES(
 			SEQ_PRO_ID.NEXTVAL
-			,#{memId}
-			,#{proName}
-			,#{proMaintain}
-			,'PST2'
-			,DEFAULT
-			,SYSDATE
-			,#{proPlan}
+	,#{memId}
+   
+		<choose>
+    <when test ="proName == ''">
+    	,'***프로젝트 명을 작성해주세요 ***'
+    </when>
+    <otherwise>
+		,#{proName}     
+    </otherwise>
+   </choose>
+ 
+		<choose>
+    <when test ="proMaintain == ''">
+    	,DEFAULT
+    </when>
+    <otherwise>
+		,#{proMaintain}     
+    </otherwise>
+   </choose>    
+     
+   ,'PST7'
+   ,DEFAULT
+   ,SYSDATE 
+			<choose>
+    <when test ="proPlan == ''">
+    	,'1'
+    </when>
+    <otherwise>
+		,#{proPlan}     
+    </otherwise>
+   </choose>
 			,#{proPlanDetail}
 			,#{proSummary}
 			,#{proNeeds}
@@ -467,9 +509,55 @@
 		WHERE PRO_ID = #{proId}
 	</select>
 	
-		
+	<select id ="selectCommitList"  resultMap ="projectResultSet">
+		SELECT * 
+		FROM CHK_PRO
+		WHERE PRO_STA_ID ='PST2'
+	</select>
 	
 	
+	<update id ="applyUpdate"  parameterType ="ApplyConfirm">
+	UPDATE P_APPLY
+	SET PRO_ASTATUS = '1'
+	WHERE MEM_PID = #{memPId}
+	</update> 
+	<update id ="rejectApply" parameterType ="ApplyConfirm">
+		UPDATE P_APPLY
+	SET PRO_ASTATUS = '2'
+	WHERE MEM_PID = #{memPId}
+	
+	</update>
+	<update id ="commitProject"  parameterType ="Project">
+	UPDATE PROJECT
+	SET PRO_STA_ID = 'PST3'
+	WHERE PRO_ID = #{proId}
+	</update>
+	
+	<select id ="selectApplyList"  parameterType ="int" resultMap ="applyConfirmResultSet">
+	SELECT *
+	FROM P_APPLY A
+	LEFT JOIN MEMBER M ON(A.MEM_PID =M.MEM_ID)
+	LEFT JOIN PROJECT P ON (A.PRO_ID=P.PRO_ID)
+	LEFT JOIN PORT_APPLY PA ON(A.PRO_ID=PA.PRO_AID)
+	LEFT JOIN PORTFOLIO PF ON( PA.PORT_ID =PF.PORT_ID)
+	LEFT JOIN PROFILE PRF ON (PF.PROFILE_ID= PRF.PROFILE_ID)
+	WHERE P.PRO_ID = #{proId} AND A.PRO_ASTATUS = '0'
+	
+	</select>
+	
+	
+	<select id="getRecuritNum" resultType="_int">
+	SELECT PRO_RECRUIT_NUM
+	FROM PROJECT
+    where PRO_ID =#{proId}
+</select>
+
+<select id="getCommitListCount" resultType="_int">
+	SELECT COUNT(*) 
+	FROM P_APPLY
+    where PRO_ID =#{proId} AND PRO_ASTATUS ='1'
+</select>
+
 	<select id ="temUpdateForm" parameterType ="int" resultMap ="projectResultSet">
 			SELECT * 
 		FROM PROJECT
@@ -494,6 +582,7 @@
 		,PRO_NEEDSDETAIL = #{proNeedsDetail}
 		,PRO_RESOURCE = #{proResource}
 		,PRO_PAYMENT = #{proPayment}
+		,PRO_START_DATE = #{proStartDate}
 		,PRO_DURATION = #{proDuration}
 		,PRO_R_END_DATE =#{proREndDate}
 		,PRO_END_DATE =#{proREndDate}
@@ -522,7 +611,8 @@
 	</update>
 	
 	<delete id ="deleteProject" parameterType ="Project">
-	DELETE FROM PROJECT
+	UPDATE SET 
+		PRO_STA_ID = 'PST6'
 	WHERE PRO_ID = #{proId}
 	
 	</delete>
@@ -532,15 +622,23 @@
 	WHERE PRO_ID = #{proId}
 	
 	</delete>
-	
-	
-	
+
+	<select id ="getQuestion" parameterType ="int" resultMap ="projectQuestionResultSet"> 
+		SELECT * 
+		FROM P_QUESTION
+		WHERE PRO_ID = #{proId}
+	</select>
 	
 <select id = "selectCheckList" resultMap="projectResultSet">
 	SELECT * 
 	FROM CHK_PRO
 	WHERE MEM_ID= #{memId} AND PRO_STA_ID = 'PST2'
 	ORDER BY PRO_ID DESC
+</select>
+<select id="getCheckListCount" resultType="_int">
+	SELECT COUNT(*) 
+	FROM CHK_PRO
+    where pro_sta_id ='PST2' AND MEM_ID =#{memId}
 </select>
 
 <select id ="selectrecruitList" resultMap="projectResultSet">
@@ -1504,7 +1602,7 @@
 	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	WHERE S.MEM_ID=#{memId} AND P.PRO_STA_ID='PST3'
-	
+
 	</select>
 	
 	<delete id="deleteThisSuggest" parameterType="_int">

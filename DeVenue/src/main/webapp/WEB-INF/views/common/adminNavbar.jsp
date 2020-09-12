@@ -81,10 +81,8 @@
                                 <li><a title="Dashboard v.1" href="gotoChatOption.do"><span class="mini-sub-pro">채팅 설정</span></a></li>
                                 <li><a title="Dashboard v.2" href="gotoChatBotManage.do"><span class="mini-sub-pro">챗봇 데이터 설정</span></a></li>
                                 <li><a title="Dashboard v.3" href="goChatListManage.do"><span class="mini-sub-pro">채팅목록 관리</span></a></li>
-                                <li><a title="Dashboard v.3" href="tutorial2"><span class="mini-sub-pro">1</span></a></li>
-                                <li><a title="Dashboard v.3" href="tutorial3"><span class="mini-sub-pro">2</span></a></li>
-                                <li><a title="Dashboard v.3" href="tutorial4"><span class="mini-sub-pro">3</span></a></li>
-                                <li><a title="Dashboard v.3" href="tutorial5"><span class="mini-sub-pro">4</span></a></li>
+                                <li><a title="Dashboard v.3" href="gotoIdenManage.do"><span class="mini-sub-pro">신원인증 관리</span></a></li>
+                                <li><a title="Dashboard v.3" href="gotoDeclareManage.do"><span class="mini-sub-pro">신고 관리</span></a></li>
                             </ul>
                         </li>
                         <li>

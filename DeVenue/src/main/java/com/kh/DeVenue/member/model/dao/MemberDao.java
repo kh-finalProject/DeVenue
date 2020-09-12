@@ -3,6 +3,7 @@ package com.kh.DeVenue.member.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -161,6 +162,18 @@ public class MemberDao {
 
 	}
 
+	public Map<String, String> isDeathOrSanctions(String memEmail) {
+		return sqlSessionTemplate.selectOne("memberMapper2.isDeathOrSanctions", memEmail);
+	}
+
+	public int updateDecAndDeath(String memEmail) {
+		return sqlSessionTemplate.update("memberMapper2.updateDecAndDeath", memEmail);
+	}
+
+	public int toDeath(String memEmail) {
+		return sqlSessionTemplate.update("memberMapper2.toDeath", memEmail);
+	}
+	
 	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());

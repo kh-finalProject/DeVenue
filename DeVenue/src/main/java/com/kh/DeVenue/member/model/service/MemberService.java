@@ -2,6 +2,7 @@ package com.kh.DeVenue.member.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.EPid;
@@ -69,6 +70,12 @@ public interface MemberService {
 	ArrayList<FindClient> selectList2(PageInfo pi, String introduction);
 	
 	int insertIden(int memId);
+
+	Map<String, String> isDeathOrSanctions(String memEmail);
+
+	int updateDecAndDeath(String memEmail);
+
+	int toDeath(String memEmail);
 
 	ArrayList<FindClient> selectList(PageInfo pi, int status);
 

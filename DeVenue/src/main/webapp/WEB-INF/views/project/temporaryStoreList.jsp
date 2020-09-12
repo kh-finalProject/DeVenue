@@ -457,7 +457,7 @@ button{
  <div id= "explainbox" style ="padding:30px;">
               
               <li id ="sText" style ="margin-left:80px; font-size:20px;">
-              	종료된 프로젝트를 찾을 수 없습니다!
+              	임시저장된 프로젝트를 찾을 수 없습니다.
                 
               </li>
           </div>

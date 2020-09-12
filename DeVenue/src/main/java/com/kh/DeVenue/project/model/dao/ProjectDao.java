@@ -63,10 +63,11 @@ public class ProjectDao {
 	}
 
 
-	public ArrayList<Project> selectCheckList(String memId) {
+	public ArrayList<Project> selectCheckList(String memId,PageInfo pi) {
 		ArrayList list =new ArrayList();
-		
-		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList",memId);
+		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCheckList",memId,rowBounds);
 		return list;
 	}
 
@@ -547,12 +548,57 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
-	public ArrayList<Member> selectModal(String proId) {
-	ArrayList list =new ArrayList();
+
+	public ArrayList<Project> selectApplyList(int proId) {
+		ArrayList list =new ArrayList();
 		
-		list= (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectModal", proId);
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectApplyList", proId);
 		return list;
+	}
+
+
+
+	public ArrayList<Project> selectCommitList() {
+ArrayList list =new ArrayList();
 		
+		list= (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCommitList");
+		return list;
+	}
+
+
+	public int commitProject(int proId) {
+		
+		return sqlSessionTemplate.update("projectMapper.commitProject",proId);
+	}
+
+
+	public int getCheckListCount(String memId) {
+		
+		 return sqlSessionTemplate.selectOne("projectMapper.getCheckListCount",memId);
+	}
+
+
+	public int applyUpdate(int memPId) {
+		
+		return sqlSessionTemplate.update("projectMapper.applyUpdate",memPId);
+	}
+
+
+	public int getCommitListCount(int proId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getCommitListCount",proId);
+	}
+
+
+	public int getRecuritNum(int proId) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.getRecuritNum",proId);
+	}
+
+
+	public int rejectApply(int memPId) {
+		
+		return sqlSessionTemplate.update("projectMapper.rejectApply",memPId);
 	}
 
 
