@@ -88,6 +88,11 @@ public interface MemberService {
 	int reportCheck(HashMap report);
 
 	Member selectMmber(String email, String pwd);
+	
+	ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress);
+
+	ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter);
+	
 
 	
 }

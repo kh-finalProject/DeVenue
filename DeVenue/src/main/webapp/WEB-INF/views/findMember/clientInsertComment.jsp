@@ -415,15 +415,12 @@
                             <input type="hidden" name="pId" value="${loginUser.memId }">
                             <input type="hidden" name="cId" value="${epList[0].memId }">
                             <div>
-                                <table>
+                                <table style="width:100%;">
                                     <tr>
-                                        <td style="width:40%;">
-                                            <div style="margin-top:25%; margin-left: 25%;">
-                                                <p>프로젝트</p>&emsp;
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group dropdown" style="margin-top:2%; margin-left: 25%;">
+                                        <td colspan="4">
+                                            <div style="margin-top:5%; margin-left:3%;">
+                                               	 프로젝트&emsp;
+                                            <div class="btn-group dropdown" style="margin-left: 1%;">
                                                 <button id="projectName" class="btn btn-outline-light dropdown-toggle" type="button"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&emsp;&emsp;&emsp;&emsp;&emsp;</button>
                                                 <div id="projectList" class="dropdown-menu" style="max-height: 400%; overflow-y: auto;">
@@ -448,17 +445,18 @@
                                                     </c:forEach>
                                                 </div>
                                             </div>
+                                        </div>
                                         </td> 
                                     </tr>
                                     <tr>
-                                        <td style="width:40%;">
-                                            <div style="margin-top:25%; margin-left: 25%;">
-                                                <p>평가 점수</p>&emsp;
+                                        <td style="width:13%;">
+                                            <div style="margin-top:5%; margin-left:15%;">
+                                                	&nbsp;&nbsp;평가 점수&emsp;
                                             </div>
                                         </td>
                                         <td>
-                                        	<div>
-                                            <fieldset class="starability-slot" style="margin-top:15%;">
+                                        	<div style="width:auto">
+                                            <fieldset class="starability-slot" style="margin-top:5%;">
                                             	<input type="radio" id="no-rate-slot" class="input-no-rate" name="total" value="0" checked aria-label="No rating." />
 										        <input type="radio" id="total5" name="total" value="1" />
 										        <label for="total5" title="Amazing">5 stars</label>
@@ -481,9 +479,33 @@
                                             // 별점 스크립트
                                         </script>
                                     </tr>
+                                    <tr>
+                                    	<td colspan="2">
+                                    		<div style="width:90%; margin-left: 2%;">
+				                                <div class="form-group shadow-textarea" style="width:60%;">
+				                                    <label for="ratingContent" style="margin-left: 3%;">평가 내용</label>
+				                                    <textarea style="margin-left: 15%;" class="form-control z-depth-1" id="ratingContent" name="eContent" rows="3" placeholder="클라이언트를 평가해주세요..."></textarea>
+				                                    <br>
+				                                    <span style="color:#aaa; margin-left: 15%;" id="counter">(0 / 최대 200자)</span>
+				                                  </div>
+				                                  <script>
+				                                  $("#ratingContent").keyup(function (e){
+				                                	    var content = $(this).val();
+				                                	    $('#counter').html("("+content.length+" / 최대 200자)");    //글자수 실시간 카운팅
+				
+				                                	    if (content.length > 200){
+				                                	        alert("최대 200자까지 입력 가능합니다.");
+				                                	        $(this).val(content.substring(0, 200));
+				                                	        $('#counter').html("(200 / 최대 200자)");
+				                                	    }
+				                                	});
+				                                  </script>
+				                            </div>
+                                    	</td>
+                                    </tr>
                                 </table>
                             </div>
-                            <div style="width:90%; margin-left: 2%;">
+                            <!-- <div style="width:90%; margin-left: 2%;">
                                 <div class="form-group shadow-textarea" style="width:60%;">
                                     <label for="ratingContent" style="margin-left: 3%;">평가 내용</label>
                                     <textarea style="margin-left: 15%;" class="form-control z-depth-1" id="ratingContent" name="eContent" rows="3" placeholder="클라이언트를 평가해주세요..."></textarea>
@@ -502,7 +524,7 @@
                                 	    }
                                 	});
                                   </script>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="point col-12" style="margin-left:2%;">

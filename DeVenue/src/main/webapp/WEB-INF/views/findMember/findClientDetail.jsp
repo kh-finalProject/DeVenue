@@ -117,7 +117,9 @@
                         </c:if>
                     </div>
                     <div class="col-2" style="margin:0 auto; margin-right: 5%;">
-                        <button class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
+                    <c:if test="${!empty sessionScope.loginUser }">
+                        <button id="reportBtn" class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
+                    </c:if>
                     </div>
 					  <!-- 신고 모달 -->
 					  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -320,7 +322,7 @@
                             </div>
                             <div style="text-align: center;">
                                 <!-- <p>4.5 / 평가 4개</p> -->
-                                ${fc[0].avgEagv } / 평가 ${fc[0].countEagv }개
+                                <fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].avgEagv }"/> / 평가 ${fc[0].countEagv }개
                             </div>
                             <div class="point">
                                 <b>진행한 프로젝트 수</b>
@@ -330,7 +332,12 @@
                             <div class="point" style="margin-right:0;">
                                 <b>자주 진행한 프로젝트</b>
                                 <!-- <a class="badge badge-info">WEB</a> -->
+                                <c:if test="${fc[0].maxDcType eq '웹 '}">
+                                	<a class="badge badge-info">WEB</a>
+                                </c:if>
+                                <c:if test="${fc[0].maxDcType ne '웹 '}">
                                 <a class="badge badge-info">${fc[0].maxDcType }</a>
+                                </c:if>
                             </div>
                         </div>
                         <div class="col-3">
@@ -344,29 +351,31 @@
                                     <p>만족도</p>
                                 </div>
                                 <div class="point" style="flex:1; margin-right: 0;">
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star1 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star2 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star3 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star4 }"/>점</p>
-                                    <p style="margin-left:65%; width: 100%;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${fc[0].star5 }"/>점</p>
+                                    <p style="margin-left:40%; width: 100%;"><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="1" value="${fc[0].star1 }"/>점</p>
+                                    <p style="margin-left:40%; width: 100%;"><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="1" value="${fc[0].star2 }"/>점</p>
+                                    <p style="margin-left:40%; width: 100%;"><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="1" value="${fc[0].star3 }"/>점</p>
+                                    <p style="margin-left:40%; width: 100%;"><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="1" value="${fc[0].star4 }"/>점</p>
+                                    <p style="margin-left:40%; width: 100%;"><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="1" value="${fc[0].star5 }"/>점</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3" style="border-right: 1px solid lightgray;">
+                        <div class="col-4" style="border-right: 1px solid lightgray;">
                             <div id="graphs" class="point" style="flex:1;" style="width: 20%;">
                                 <canvas id="myChart"></canvas>
                                 <script>
-                                	var star1=${fc[0].star1 };
-                                	var star2=${fc[0].star2 };
-                                	var star3=${fc[0].star3 };
-                                	var star4=${fc[0].star4 };
-                                	var star5=${fc[0].star5 };
+                                	var star1= Math.round(${fc[0].star1 } * 10) /10;
+                                	var star2=Math.round(${fc[0].star2 } * 10) /10;
+                                	var star3=Math.round(${fc[0].star3 } * 10) /10;
+                                	var star4=Math.round(${fc[0].star4 } * 10) /10;
+                                	var star5=Math.round(${fc[0].star5 } * 10) /10;
                                 
+                                	
+                                	
                                     var ctx = document.getElementById('myChart').getContext('2d');
                                     var myRadarChart = new Chart(ctx, {
                                         type: 'radar',
                                         data: {
-                                            labels: ['전문성', '적극성', '일정준수', '의사소통', '만족도'],
+                                            labels: ['전문성('+star1+')', '적극성('+star2+')', '일정준수('+star3+')', '의사소통('+star4+')', '만족도('+star5+')'],
                                             datasets: [{
                                                 label: '',
                                                 scaleOverride: true,
@@ -409,7 +418,7 @@
                                                     min: 0,
                                                     max: 5,
                                                     stepSize: 1,
-                                                    display:true
+                                                    display:false
                                                 }
                                             }
                                         }
@@ -418,7 +427,7 @@
                                 </script>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             <div class="point"><b>진행한 프로젝트 분류</b></div>
                             <div class="point">
                             	<c:forEach var="dc" items="${fc }">

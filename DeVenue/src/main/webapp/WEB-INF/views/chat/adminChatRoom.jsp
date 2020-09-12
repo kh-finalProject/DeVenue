@@ -942,8 +942,8 @@ try {
                         </tr>
 	                       	<c:if test="${proInfos != null && !empty proInfos }">
                             	<c:forEach var="i" begin="0" end="${proInfos.size()-1 }" step="1">
-	                            	<c:if test="${proInfos.get(i).getProStatName() eq '진행중' }">
-		                    
+	                            	<c:if test="${proInfos.get(i).getProStatName() eq '진행중' && firstIngP != true}">
+		                    		<c:set var="firstIngP" value="true"/>
 			                        <tr>
 			                            <th scope="row"></th>
 			                            <td colspan="2">&ensp;&ensp;- 타이틀</td>
@@ -1278,6 +1278,12 @@ try {
 										<!-- 메시지 반복 끝 -->
                             		</c:forEach>
                             	</c:if>
+                            	<!-- 상대 타자인식 -->
+							    <div id="sendingShow" style="display: none;">
+							        <span style="background-color:lightgray;border-radius: 50%; width:10px;height: 10px;display: inline-block;transition-duration: 0.2s;opacity: 0;"></span>
+							        <span style="background-color:lightgray;border-radius: 50%; width:10px;height: 10px;display: inline-block;"></span>
+							        <span style="background-color:lightgray;border-radius: 50%; width:10px;height: 10px;display: inline-block;"></span>
+							    </div>
                             </div>
                         </div>
                         <!-- 채팅방 메시지 입력 공간 -->
@@ -1558,7 +1564,7 @@ try {
 	};
 	webSocket.onclose = function(message) {
 		isReadT = '';
-// 		alert('웹소켓 종료되어서 리로드가 필요해')
+		alert('웹소켓 종료되어서 리로드가 필요해')
 		location.reload();
 	};
 	webSocket.onerror = function(message) {
@@ -1569,6 +1575,57 @@ try {
 	isReadT = '';
 	// 서버로부터 메시지가 도착하면 화면에 메시지를 남긴다.(리턴한 것)
 	webSocket.onmessage = function(message) {
+		// 상대가 그냥 키다운을 하고 있을 때
+		console.log(message.data.split(',')[0]);
+		if(message.data.split(',')[0] == "keyDownIng"){
+			var acceptRoomId = message.data.split(',')[1]
+			var chatRoom = null;
+			var eachChatRoomArea = null;
+			$('.Messages_list').each(function(index, item){//기존채팅방들은 하나의 텍스트창을 공유하고 새채팅방만 다르므로 그와만 구분하면 된다.
+				if(acceptRoomId == 'roomId'){
+					if($(item).css('display') != 'none'){
+						chatRoom = $(item).parents('.Layout-chatRoom');
+						message = $(chatRoom).find("#textMessage");
+						filBtn = $(chatRoom).find("#file");
+						eachChatRoomArea = $(item);
+					}
+				}else{
+					if($(item).find('.chatRoom_room_id').val() == acceptRoomId){
+						chatRoom = $(item).parents('.Layout-chatRoom');
+						message = $(chatRoom).find("#textMessage");
+						filBtn = $(chatRoom).find("#file");
+						eachChatRoomArea = $(item);
+					}
+				}
+			});
+			$(eachChatRoomArea).find('#sendingShow').css('display', 'block');
+			sendingInterval = setInterval(function(){
+	             var sendingTimeout = setTimeout(function(){
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'hidden').css('opacity', 0);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'hidden').css('opacity', 0);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'hidden').css('opacity', 0);
+	             },100);
+	             var sendingTimeout2 = setTimeout(function(){
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'visible').css('opacity', 1);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'hidden').css('opacity', 0);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'hidden').css('opacity', 0);
+	             },300);
+	             var sendingTimeout3 = setTimeout(function(){
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'hidden').css('opacity', 0);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'visible').css('opacity', 1);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'hidden').css('opacity', 0);
+	             },500);
+	             var sendingTimeout4 = setTimeout(function(){
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(1)').css('visibility', 'hidden').css('opacity', 0);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'hidden').css('opacity', 0);
+	            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'visible').css('opacity', 1);
+	             },700);
+	         },1300);
+			endSendingTimeout = setTimeout(function(){
+				clearInterval(sendingInterval);
+				$(eachChatRoomArea).find('#sendingShow').css('display', 'none');
+			},2600);
+		}else{
 		console.log('수신 message.data:'+message.data);
 		console.log(typeof(message.data))
 			if(message.data == 'Y'){
@@ -1681,6 +1738,7 @@ try {
 			}
 		// 스크롤 최하단으로
 		showRecentChatView();
+		}
 	};
 	
 	// 받은 날짜를 채팅에 어울리는 형식으로 변환( ex) AM 08:05 )
@@ -2077,6 +2135,8 @@ try {
 			// form에 의해 자동 submit을 막는다.
 			return false;
 			
+		}else{// 그냥 텍스트 입력하느라 키다운인 경우
+			webSocket.send('keyDownIng');
 		}
 		return true;
 	}

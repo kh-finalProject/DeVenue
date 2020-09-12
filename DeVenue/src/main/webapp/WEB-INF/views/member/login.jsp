@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -425,8 +425,6 @@
             height: 100px;
             margin: auto;
             margin-top: 20px;
-            padding: 5px 5px 5px 5px;
-            border-bottom: 2px dashed white;
         }
 
     </style>
@@ -464,7 +462,7 @@
                             <label for="email">* 이메일</label>
                         </div>
                         <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email" required="required">
+                            <input type="text" class="input-size" id="email" name="email">
                         </div>
                     </div>
                     <div class="form-title">
@@ -472,7 +470,7 @@
                             <label for="pwd">* 비밀번호</label>
                         </div>
                         <div class="form-input">
-                            <input type="password" class="input-size" id="pwd" name="pwd" required="required">
+                            <input type="password" class="input-size" id="pwd" name="pwd">
                         </div>
                     </div>
                     <div class="login-keeping">
@@ -504,47 +502,15 @@
 						}
                     </script>
                </form>
-                
-                <!-- <script type="text/javascript">
-                	$("#login").on("click",function(){
-                		var memEmail = $("#email").val();
-                		var memPwd = $("#pwd").val();
-                		var check = $("#checkbox").val();
-                		$.ajax({
-                			url:"login.do",
-                			data:{memEmail:memEmail,memPwd:memPwd,check:check}
-                			,type:"POST"
-                			,success:function(data){
-            					if(data == 'session'){
-            						/* location.reload(true); */
-            						window.location.href = "home.do";
-            					}else if(data == 'cookie'){
-            						/* location.reload(true); */
-            						window.location.href = "home.do";
-            					}else if(data == 'emailFail'){
-            						alert("없는 이메일 이거나 이메일을 잘못입력하셨습니다.");
-            						$("#email").val("");            						
-            					}else if(data == 'pwdFail'){
-            						alert("비밀번호를 잘못 입력하셨습니다.");
-            						$("#pwd").val("");
-            					}
-            				}
-            				, error:function(request, status, error){
-            					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            				}
-                		})
-                		
-                	})
-                </script> -->
                     <div class="pwd-forget">
                         <label>비밀번호를 잊으셨나요?&nbsp;&nbsp;<a href="forgetPwd.do">비밀번호 찾기</a></label>
                     </div>
             </div>
                 <div class="area-right" style="margin-left: 900px; position: absolute;">
-                    <!-- <div class="kakao-login">
+                    <div class="kakao-login">
                         <p><b>이미 카카오톡계정으로 가입하셨나요?</b></p>
                         <button type="button" class="btn btn-warning btn-lg" style="font-size: 15px; width: 200px;">카카오톡으로 로그인</button>
-                    </div> -->
+                    </div>
                     <div class="sign">
                         <p>아직 회원이 아니신가요?<br><a href="signpage.do">회원가입 하기</a></p>
                     </div>
@@ -565,12 +531,12 @@
     <<!-- script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script> -->
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

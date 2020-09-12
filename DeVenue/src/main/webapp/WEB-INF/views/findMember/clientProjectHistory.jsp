@@ -256,7 +256,7 @@
                                                 <!-- 100%<br>
                                                 10개<br>
                                                 12개 -->
-                                                ${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}%<br>
+                                                <fmt:formatNumber type="number" maxFractionDigits="1" value="${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}"/>%<br>
                                                 ${ph.ingProject }개<br>
                                                 ${ph.completeProject }개
                                             </div>

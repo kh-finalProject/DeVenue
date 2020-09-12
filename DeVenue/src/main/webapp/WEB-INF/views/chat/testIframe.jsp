@@ -118,8 +118,8 @@
 	</div>
 	
 	<!-- 채팅 iframe 영역 --------------------------------------------------------------------------------->
-	<div style="width:300px; height:500px">
-		<iframe id="chatIframe" name="chatIframe" src="#" class="chatIframe" frameborder="0" scrolling="no" ></iframe>
+	<div style="">
+		<iframe id="chatIframe" name="chatIframe" src="" class="chatIframe" frameborder="0" scrolling="no" ></iframe>
 	</div>
 	
 	<!-- 채팅 관련 부모측 스크립트 ------------------------------------------------------------------------------->
@@ -147,9 +147,12 @@
 // 			$('#chatIframe').prop('src', '#');
 			return;
 		</c:if>
+		<c:if test="${ !empty loginUser}">
 		$('#chatIframe').prop('src', '${contextPath}/firstLoadChat.do');
+		</c:if>
+		
 		clearInterval(iframeInterval);
-			
+		
 		$("#chatIframe").show();
 		$("#chatDiv").hide();
 	});
