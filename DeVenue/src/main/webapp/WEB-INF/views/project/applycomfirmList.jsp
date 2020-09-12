@@ -438,7 +438,7 @@ button{
                                 <td colspan="2" >
                                     <div style= "margin-left:100px;">
                             
-                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:100px;" onclick="location.href='temUpdateForm.do?proId='+">포트폴리오 열람</button>
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:100px;" onclick="location.href='goProfile.do?memId='+${p.memPId}+'&proId='+${p.proId}">포트폴리오 열람</button>
                                   <button type='button' class="btn/middle btn-info" style= "color:black; width:50px;" onclick="location.href='applyUpdate.do?memPId='+${p.memPId}+'&proId='+${p.proId}">수락</button>
                                   <button type='button' class="btn/middle btn-info" style= "color:black; width:50px;" onclick="location.href='rejectapply.do?memPId='+${p.memPId}+'&proId='+${p.proId}">거절</button>
                                             </div>
