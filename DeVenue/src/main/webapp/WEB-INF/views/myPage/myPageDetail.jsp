@@ -671,8 +671,9 @@ section {
 	<jsp:include page="../common/menubar.jsp" />
 
 	<!-- sideMenubar -->
-	<jsp:include page="../common/sideMenubarAll.jsp" />
-
+	
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
+	
 
 
 	<!-- Section -->
@@ -680,17 +681,24 @@ section {
 		<div class="container">
 			<div class="row text-white"
 				style="border-bottom: 1px solid lightgray; width: 1000px;">
+				<c:if test ="${loginUser.userType eq 'UT4'}" >
 				<div class="col-12"
 					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
 					${loginUser.memNick }님의 마이페이지 <input type="hidden" id="userType"
 						value="${loginUser.userType }">
 				</div>
+				</c:if>
 			</div>
 			<div class="row">
 				<!-- 구 sideMenubar -->
 				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
 				<!-- 새 sidMenubar -->
+				<c:if test ="${loginUser.userType eq 'UT4'}" >
 				<jsp:include page="../common/pSideMenubar.jsp" />
+				</c:if>
+				<c:if test ="${loginUser.userType eq 'UT3'}" >
+				
+				</c:if>
 			</div>
 			<div class="col-8 text-white"
 				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
@@ -718,8 +726,10 @@ section {
 								<c:if test="${fp.piType eq 3}">
 									<span class="btn btn-secondary">활동 불가능</span>
 								</c:if>
+									<c:if test ="${loginUser.userType eq 'UT4'}">
 								<a href="partInfo.do" class="btn btn-info"
 									style="float: right; margin-top: 30px;">업데이트 하기</a>
+							</c:if>
 							</h2>
 							<h5>
 								<span>${fp.mcType }</span> <span class="bar">|</span> <span>${fp.memTypeKind }</span>
@@ -859,8 +869,12 @@ section {
 						<div class="col-12 partition">
 							<div class="col-12 page-title">
 								<h4>
-									자기소개 <a href="PR.do" class="btn btn-info" style="float: right;">업데이트
+									자기소개
+				<c:if test ="${loginUser.userType eq 'UT4'}" >
+				
+				 <a href="PR.do" class="btn btn-info" style="float: right;">업데이트
 										하기</a>
+										</c:if>
 								</h4>
 								<p style="overflow: hidden; height: 200px;">${fp.introduction }</p>
 							</div>
@@ -871,8 +885,11 @@ section {
 						<div class="col-12 partition">
 							<div class="col-12 page-title">
 								<h4 style="height: 50px;">
-									포트폴리오 <a href="portfolioAll.do" class="btn btn-info"
+									포트폴리오
+									<c:if test ="${loginUser.userType eq 'UT4'}" >
+									 <a href="portfolioAll.do" class="btn btn-info"
 										style="float: right;">업데이트 하기</a>
+									</c:if>
 								</h4>
 								<!-- 포트폴리오 -->
 								<c:forEach var="port" items="${portfolio }">
@@ -918,8 +935,13 @@ section {
 										</tr>
 										<tr></tr>
 										<tr>
-											<td><button type="submit" id="${port.portId }"
-													class="btn btn-info delPort" style="width: 100%;">삭제</button></td>
+										
+				
+											<td><c:if test ="${loginUser.userType eq 'UT3'}" >
+				
+											<button type="submit" id="${port.portId }"
+													class="btn btn-info delPort" style="width: 100%;">삭제</button></c:if></td>
+
 											<td class="join">참여율 : ${port.portJoin }%</td>
 											<td class="tec"><c:forEach var="pt" items="${portTec }">
 													<span>${pt.tName }</span>
@@ -936,8 +958,11 @@ section {
 							<div class="col-12 partition">
 								<div class="col-12 page-title">
 									<h4 style="height: 50px;">
-										보유 기술 <a href="skill.do" class="btn btn-info"
+										보유 기술
+											<c:if test ="${loginUser.userType eq 'UT4'}">
+										 <a href="skill.do" class="btn btn-info"
 											style="float: right;">업데이트 하기</a>
+									</c:if>
 									</h4>
 									<div class="skill">
 										<table class="table">
@@ -971,8 +996,10 @@ section {
 							<div class="col-12" style="margin-top: 2%;">
 								<div class="col-12 page-title">
 									<h4 style="height: 50px;">
-										경력 <a href="career.do" class="btn btn-info"
-											style="float: right;">업데이트 하기</a>
+										경력 
+										<c:if test ="${loginUser.userType eq 'UT4'}">
+											<a href="career.do" class="btn btn-info" style="float: right;">업데이트 하기</a>
+										</c:if>
 									</h4>
 
 									<c:forEach var="career" items="${careerList }">
@@ -1012,8 +1039,11 @@ section {
 							<div class="col-12 partition">
 								<div class="col-12 page-title">
 									<h4 style="height: 50px;">
-										학력 <a href="academic.do" class="btn btn-info"
+										학력
+											<c:if test ="${loginUser.userType eq 'UT4'}">
+										 <a href="academic.do" class="btn btn-info"
 											style="float: right;">업데이트 하기</a>
+										</c:if>
 									</h4>
 									<div class="academic">
 										<table class="table">
@@ -1080,8 +1110,11 @@ section {
 							<div class="col-12 partition">
 								<div class="col-12 page-title">
 									<h4 style="height: 50px;">
-										자격증 <a href="certificate.do" class="btn btn-info"
+										자격증 
+											<c:if test ="${loginUser.userType eq 'UT4'}">
+											<a href="certificate.do" class="btn btn-info"
 											style="float: right;">업데이트 하기</a>
+									</c:if>
 									</h4>
 									<div class="certificate">
 										<table class="table">

@@ -178,7 +178,15 @@ public class MemberDao {
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList2", status, rowBounds);
+		if(status == 1) {
+			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList1", status, rowBounds);
+		}else if(status ==2) {
+			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList2", status, rowBounds);
+		}else if(status ==3) {
+			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList3", status, rowBounds);
+		}else{
+			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList4", status, rowBounds);
+		}
 	}
 
 	public EPid getEPid(HashMap id) {
@@ -197,9 +205,32 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.reportCheck", report);
 	}
 
+	public ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.addressList", mapAddress, rowBounds);
+	}
+
+	public ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter) {
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.filterList", mapFilter, rowBounds);
+	}
+	
 	public ArrayList<Member> memberList() {
 
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.memberList");
+	}
+
+	public Member selectMember(String email, String pwd) {
+		
+		Map map = new HashMap();
+		map.put("email", email);
+		map.put("pwd", pwd);
+		
+		return sqlSessionTemplate.selectOne("memberMapper.memberChk",map);
 	}
 
 	

@@ -440,7 +440,7 @@ background-color :#192424;
                              
                                 <td colspan="6" style= "border:1px solid #2098d1;">
                                     <div style= "float:right; margin-right:30px; padding:10px;">
-                                    <button class="btn/middle btn-info" style= "color:black; width:90px;">취소</button>
+                                    <button class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
 <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='applycomfirmList.do?proId='+${p.proId}"> 지원자 목록</button>
  
 

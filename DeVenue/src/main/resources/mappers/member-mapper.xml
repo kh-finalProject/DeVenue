@@ -25,6 +25,7 @@
   	<result property="memModifyDate" column="MEM_MODIFY_DATE"/>
   	<result property="memStatus" column="MEM_STATUS"/>
   	<result property="memTypeName" column="MEM_TYPE_NAME"/>
+  	<result property="death" column="DEATH"/>
 
   </resultMap>
 
@@ -79,6 +80,7 @@
   	<result property="memTypeKind" column="MEM_TYPE_KIND"/>
   	<result property="profileImg" column="PROFILE_IMG"/>
   	<result property="introduction" column="INTRODUCTION"/>
+  	<result property="address" column="ADDRESS"/>
   	<result property="avgEagv" column="AVG_E_AGV"/>
   	<result property="countEagv" column="COUNT_E_AGV"/>
   	<result property="countProId" column="COUNT_PRO_ID"/>
@@ -221,9 +223,10 @@
   		,DEFAULT
   		,DEFAULT
   		,SYSDATE
-  		,SYSDATE
+  		,NULL
   		,DEFAULT
   		,null
+  		,DEFAULT
   		)
   </insert>
 
@@ -386,11 +389,27 @@
 			ORDER BY MEM_CREATE_DATE DESC;		
 		</if>
 	</select> -->
-	<select id="selectList2" parameterType="_int" resultMap="selectListResult">
+	<select id="selectList1" parameterType="_int" resultMap="selectListResult">
 		SELECT *
 		FROM CLIENTLIST_VIEW
 		ORDER BY MEM_CREATE_DATE ASC	
 	</select>
+	<select id="selectList2" parameterType="_int" resultMap="selectListResult">
+		SELECT *
+		FROM CLIENTLIST_VIEW
+		ORDER BY AVG_E_AGV DESC
+	</select>
+	<select id="selectList3" parameterType="_int" resultMap="selectListResult">
+		SELECT *
+		FROM CLIENTLIST_VIEW
+		ORDER BY COUNT_E_AGV DESC
+	</select>
+	<select id="selectList4" parameterType="_int" resultMap="selectListResult">
+		SELECT *
+		FROM CLIENTLIST_VIEW
+		ORDER BY COUNT_PRO_ID DESC
+	</select>
+	
 	
 	<!-- 파트너스찾기용 멤버 찾기 -->
 	<select id="selectMember" parameterType="string" resultMap="memberResultSet">
@@ -436,9 +455,44 @@
 		WHERE FROM_ID=#{pId} AND TO_ID=#{reportCid}
 	</select>
 	
-	<!-- 로그인 할시 멤버 리시트를 비교 -->
-	<select id="memberList" resultMap="memberResultSet">
-		SELECT * FROM MEMBER
+	<!-- 지역조회 -->
+	<select id="addressList" parameterType="hashmap" resultMap="selectListResult">
+		SELECT *
+		FROM CLIENTLIST_VIEW
+		<if test='address != "전체"'>
+		WHERE ADDRESS LIKE '%'||#{address}||'%'
+		</if>
 	</select>
+	
+	<!-- 로그인 할시 멤버 리시트를 비교 -->
+	<select id="memberChk" parameterType="map" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+		WHERE MEM_EMAIL = #{email}
+		AND MEM_PWD = #{pwd}
+	</select>
+	
+	<!-- 필터 검색 -->
+	<!-- <select id="filterList" parameterType="hashmap" resultMap="selectListResult">
+		SELECT *
+		FROM CLIENTLIST_VIEW
+		<where>
+		<choose>
+			<when test='person != "x"'>
+			
+			</when>
+			<when test='company != "x"'>
+			
+			</when>
+			<when test='greatUser != "x"'>
+			
+			</when>
+			<when test='identify != "x"'>
+			
+			</when>
+			<otherwise></otherwise>
+			
+		</choose>
+		</where>
+	</select> -->
 	
 </mapper>

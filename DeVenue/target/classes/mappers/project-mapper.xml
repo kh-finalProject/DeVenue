@@ -612,7 +612,7 @@
 	
 	<delete id ="deleteProject" parameterType ="Project">
 	UPDATE SET 
-		PRO_STA_ID = 'PST6'
+		PRO_STA_ID = 'PST8'
 	WHERE PRO_ID = #{proId}
 	
 	</delete>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -112,9 +113,13 @@ hr {
                     &emsp;
                     	정렬 기준 :  &emsp;
                     	<a id="recentDate" href="#">최신 등록 순</a>&emsp;
-                    	<a href="#">평점 높은 순</a>&emsp;
-                    	<a href="#">평가 많은 순</a>&emsp;
-                    	<a href="#">프로젝트 많은 순</a>
+                    	<input id="recentVal" type="hidden" value="1">
+                    	<a id="highPoint" href="#">평점 높은 순</a>&emsp;
+                    	<input id="highPointVal" type="hidden" value="2">
+                    	<a id="manyEval" href="#">평가 많은 순</a>&emsp;
+                    	<input id="manyEvalVal" type="hidden" value="3">
+                    	<a id="manyPro" href="#">프로젝트 많은 순</a>
+                    	<input id="manyProVal" type="hidden" value="4">
                 </div>
                 
                 
@@ -130,9 +135,11 @@ hr {
                         클라이언트 형태
                         <br>
                         <div style="margin-top:2%; margin-left: 5%;">
-                            <label name="clientType"><input type="checkbox" name="clientType">&nbsp;개인</label>
+                            <label for="personal"><input id="personal" type="checkbox" name="client">&nbsp;개인</label>
+                            <input id="filterVal1" type="hidden" value="개인">
                             <br>
-                            <label name="clientType"><input type="checkbox" name="clientType">&nbsp;기업</label>
+                            <label for="company"><input id="company" type="checkbox" name="client">&nbsp;기업</label>
+                            <input id="filterVal2" type="hidden" value="기업">
                         </div>
                     </div>
                     <br>
@@ -140,9 +147,9 @@ hr {
                         검증된 클라이언트
                         <br>
                         <div style="margin-top:2%; margin-left: 5%;">
-                            <label name="clientVertify"><input type="checkbox" name="clientVertify">&nbsp;평가 우수</label>
+                            <label for="greatUser"><input id="greatUser" type="checkbox" name="client" value="">&nbsp;평가 우수</label>
                             <br>
-                            <label name="clientVertify"><input type="checkbox" name="clientVertify">&nbsp;인증 완료</label>
+                            <label for="identify"><input id="identify" type="checkbox" name="client" value="">&nbsp;인증 완료</label>
                         </div>
                     </div>
                     <br>
@@ -152,10 +159,11 @@ hr {
                         <div class="btn-group dropright" style="margin-top:2%; margin-left: 5%;">
                             <button id="clientPlace" class="btn btn-outline-light dropdown-toggle" type="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전체 선택</button>
-                            <div class="dropdown-menu" style="max-height: 400%; overflow-y: auto;">
+                            <div class="dropdown-menu" style="max-height: 1000%; overflow-y: auto;">
                                 <a id="korea" class="dropdown-item">전체 선택</a>
                                 <a id="seoul" class="dropdown-item">서울특별시</a>
                                 <a id="busan" class="dropdown-item">부산광역시</a>
+                                <a id="daegu" class="dropdown-item">대구광역시</a>
                                 <a id="incheon" class="dropdown-item">인천광역시</a>
                                 <a id="gwangju" class="dropdown-item">광주광역시</a>
                                 <a id="daejeon" class="dropdown-item">대전광역시</a>
@@ -173,62 +181,993 @@ hr {
                             </div>
                         </div>
                         <script>
+                        	function addressFilter(address){
+                        		$.ajax({
+                            			url:"addressFilter.do",
+                            			data:{address:address},
+                            			contentType : 'application/json; charset=utf-8',
+                            			dataType:"json",
+                            			success:function(data){
+                            				console.log(data.list[0].avgEagv);
+                            				
+                            				
+                            				$clientBoard=$("#clientBoard");
+                    						$clientBoard.empty();
+                    						for(var i in data.list){
+                		    						var $ul = $("<ul style='list-style: none;'>");
+                		        					var $li = $("<li>");
+                		        					var $ul2 = $("<ul style='list-style: none; margin-top: 2%;'>");
+                		        					var $li2 = $("<li>");
+                		        					var $li3 = $("<li>");
+                		        					var $userBoard = $("<div class='userBoard' style='cursor:pointer;'>");
+                		        					
+                		        					
+                		        					var $hidden = $("<input type='hidden'>");
+                		        					var $row = $("<div class='row' style='margin-left:3%; margin-right:3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;'>");
+                		        					var $col8 = $("<div class='col-8'>");
+                		        					var $col4 = $("<div class='col-4'>");
+                		        					var $profile = $("<div style='float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;'>");
+                		        					var $div = $("<div>");
+                		        					var $div2 = $("<div>");
+                		        					var $noneImg = $("<img id='profileImg' src='${contextPath }/resources/proImg/user1.png'>");
+                		        					var $a = $("<a class='btn btn-info' style='padding:1%;'>");
+                		        					var $memTypeName = $("<a class='badge badge-info'>");
+                		        					var $introduction = $("<li id='introduction' style='line-height:2.4rem; -webkit-box-orient: vertical; word-wrap:break-word;'>");
+                		        					var $br = $("<br>");
+                		        					var $br2 = $("<br>");
+                		        					var $starDiv = $("<div id='starPoint' class='point'>");
+                		        					var $firstFas = $("<i id='firstStar' class='fas fa-star'>");
+                		        					var $firstFar = $("<i id='firstStar' class='far fa-star'>");
+                		        					var $firstFasHarf = $("<i id='firstStar' class='fas fa-star-half-alt'>");
+                		        					var $fas1 = $("<i class='fas fa-star'>");
+                		        					var $fas2 = $("<i class='fas fa-star'>");
+                		        					var $fas3 = $("<i class='fas fa-star'>");
+                		        					var $fas4 = $("<i class='fas fa-star'>");
+                		        					var $far2 = $("<i class='far fa-star'>");
+                		        					var $far3 = $("<i class='far fa-star'>");
+                		        					var $far4 = $("<i class='far fa-star'>");
+                		        					var $far1 = $("<i class='far fa-star'>");
+                		        					var $harf = $("<i class='fas fa-star-half-alt'>");
+                		        					var $hr = $("<hr style='width:90%; margin:0px auto;'>");
+                		        					var $hr2 = $("<hr style='width:90%; margin:0px auto;'>");
+                		        					var $pointDiv = $("<div class='point'>");
+                		        					var $pointDiv2 = $("<div class='point'>");
+                		        					var $b = $("<b>");
+                		        					var $badge = $("<a class='badge badge-info' style='float:right;'>");
+                		        					var $centerPoint = $("<div class='point' align='center'>");
+                		        					var $a2 = $("<a class='btn btn-info' style='padding:1%;'>");
+                		        					var $a3 = $("<a class='btn btn-info' style='padding:1%;'>");
+                		        					
+                		            					
+                            						$userBoard.empty();
+                            						console.log(data.list[i].avgEagv);
+                            						
+                                					if(data.list[i].profileImg != null){
+                                						$div2.text(data.list[i].profileImg);
+                                					}else{
+                                						$div2.append($noneImg);	
+                                					}
+                                					$profile.append($div2);
+                                					$li2.text(data.list[i].memNick);
+                                					$li3.text(data.list[i].memTypeName);
+                                					$memTypeName.text(data.list[i].memTypeKind);
+                                					$li3.append($memTypeName);
+                                					$introduction.text(data.list[i].introduction);
+                                					$introduction.append($br);
+                                					$introduction.append($br2);
+                                					$ul2.append($li2);
+                                					$ul2.append($li3);
+                                					$ul2.append($introduction);
+                                					$div.append($ul2);
+                                					$col8.append($profile);
+                                					$col8.append($div);
+                                					$row.append($col8);
+                                					
+                                					var roundAvg = Math.round(data.list[i].avgEagv * 10) /10;
+                                	
+                                					if(data.list[i].avgEagv == 0){
+                                						$starDiv.html("<i id='firstStar' class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv > 0 && data.list[i].avgEagv < 1){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv == 1){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv > 1 && data.list[i].avgEagv < 2){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv == 2){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i>i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv > 2 && data.list[i].avgEagv < 3){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv == 3){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv > 3 && data.list[i].avgEagv < 4){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv == 4){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv > 4 && data.list[i].avgEagv < 5){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}else if(data.list[i].avgEagv == 5){
+                                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                                					}
+                                					
+                                					
+                                					/* $starDiv.text(data.list[i].avgEagv+" / 평가 "+data.list[i].countEagv); */
+                                					$col4.append($starDiv);
+                                					$col4.append($hr);
+                                					$b.text("자주 진행한 프로젝트");
+                                					if(data.list[i].maxDcType == "웹"){
+                                						$badge.text("WEB");
+                                						$b.append($badge);
+                                					}else{
+                                						$badge.text(data.list[i].maxDcType);
+                                						$b.append($badge);
+                                					}
+                                					
+                                					$pointDiv.append($b);
+                                					
+                                					
+                                					if(data.list[i].ideStatus == "COMPLETE"){
+                                						$a2.text("신원 인증된 회원");
+                                						$centerPoint.append($a2);
+                                					}
+                                					if(data.list[i].phone != null){
+                                						$a3.text("연락처 등록");
+                                						$centerPoint.append($a3);
+                                					}
+                                					$col4.append($pointDiv);
+                                					$col4.append($hr2);
+                                					$col4.append($centerPoint);
+                                					$row.append($col4);
+                                					$li.append($row);
+                                					$ul.append($li);
+                                					$userBoard.append($ul);
+                                					/* $userBoard.append($hidden); */
+                                					
+                                					var memId = data.list[i].memId;
+                                					var html = $userBoard.html();
+                                					$userBoard.html(html+"<input class='memId' type='hidden' value="+memId+">");
+                                					$clientBoard.append($userBoard);
+                                					
+                            					}
+                    						
+                    						$(".userBoard").click(function(){
+                    							var cId = $(this).find('.memId').val();
+                    							console.log(cId);
+                        						location.href="cDetail.do?cId="+cId;
+                    						})
+                    							
+                            			},
+                            			error:function(request, status, errorData){
+                		                    alert("error code: " + request.status + "\n"
+                			                          +"message: " + request.responseText
+                			                          +"error: " + errorData);
+                			            }
+                            		})
+                        	}
+                        
+                        
+                            	$("#personal").on("click", function () {
+                            		if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+                            			
+                            			var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+                            			
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#identify").is(":checked") && $("#greatUser").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $("#company").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $(this).is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}
+                            	})
+                            	
+                            $("#company").on("click", function () {
+                            		if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+                            			
+                            			var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+                            			
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#identify").is(":checked") && $("#greatUser").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $("#company").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $(this).is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}
+                            	})
+                            
+                            $("#greatUser").on("click", function () {
+                            		if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+                            			
+                            			var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+                            			
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#identify").is(":checked") && $("#greatUser").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $("#company").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $(this).is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}
+                            	})
+                            	
+                            $("#identify").on("click", function () {
+                            		if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+                            			
+                            			var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+                            			
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#identify").is(":checked") && $("#greatUser").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $("#company").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked") && $(this).is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = $("#filterVal4").val();
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked")==false && $("#greatUser").is(":checked") && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = "x";
+                            			var greatUser = $("#filterVal3").val();
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked")==false && $("#company").is(":checked") && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = "x";
+                            			var company = $("#filterVal2").val();
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}else if($(this).is(":checked") && $("#company").is(":checked")==false && $("#greatUser").is(":checked")==false && $("#identify").is(":checked")==false){
+                            			var personal = $("#filterVal1").val();
+                            			var company = "x";
+                            			var greatUser = "x";
+                            			var identify = "x";
+										var filter = [personal,company,greatUser,identify];
+                            			
+                            			clientFilter(filter);
+
+                            		}
+                            	})
+                            	
+                            	//personal company greatUser identify
+                        	function clientFilter(filter){
+                            		
+                        		$.ajax({
+                        			url:"clientFilter.do",
+                        			data:{filter:filter},
+                        			traditional : true,
+                        			dataType:"json",
+                        			success:function(data){
+                        				console.log(data.list[0].avgEagv);
+                        				
+                        				
+                        				$clientBoard=$("#clientBoard");
+                						$clientBoard.empty();
+                						for(var i in data.list){
+            		    						var $ul = $("<ul style='list-style: none;'>");
+            		        					var $li = $("<li>");
+            		        					var $ul2 = $("<ul style='list-style: none; margin-top: 2%;'>");
+            		        					var $li2 = $("<li>");
+            		        					var $li3 = $("<li>");
+            		        					var $userBoard = $("<div class='userBoard' style='cursor:pointer;'>");
+            		        					
+            		        					
+            		        					var $hidden = $("<input type='hidden'>");
+            		        					var $row = $("<div class='row' style='margin-left:3%; margin-right:3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;'>");
+            		        					var $col8 = $("<div class='col-8'>");
+            		        					var $col4 = $("<div class='col-4'>");
+            		        					var $profile = $("<div style='float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;'>");
+            		        					var $div = $("<div>");
+            		        					var $div2 = $("<div>");
+            		        					var $noneImg = $("<img id='profileImg' src='${contextPath }/resources/proImg/user1.png'>");
+            		        					var $a = $("<a class='btn btn-info' style='padding:1%;'>");
+            		        					var $memTypeName = $("<a class='badge badge-info'>");
+            		        					var $introduction = $("<li id='introduction' style='line-height:2.4rem; -webkit-box-orient: vertical; word-wrap:break-word;'>");
+            		        					var $br = $("<br>");
+            		        					var $br2 = $("<br>");
+            		        					var $starDiv = $("<div id='starPoint' class='point'>");
+            		        					var $firstFas = $("<i id='firstStar' class='fas fa-star'>");
+            		        					var $firstFar = $("<i id='firstStar' class='far fa-star'>");
+            		        					var $firstFasHarf = $("<i id='firstStar' class='fas fa-star-half-alt'>");
+            		        					var $fas1 = $("<i class='fas fa-star'>");
+            		        					var $fas2 = $("<i class='fas fa-star'>");
+            		        					var $fas3 = $("<i class='fas fa-star'>");
+            		        					var $fas4 = $("<i class='fas fa-star'>");
+            		        					var $far2 = $("<i class='far fa-star'>");
+            		        					var $far3 = $("<i class='far fa-star'>");
+            		        					var $far4 = $("<i class='far fa-star'>");
+            		        					var $far1 = $("<i class='far fa-star'>");
+            		        					var $harf = $("<i class='fas fa-star-half-alt'>");
+            		        					var $hr = $("<hr style='width:90%; margin:0px auto;'>");
+            		        					var $hr2 = $("<hr style='width:90%; margin:0px auto;'>");
+            		        					var $pointDiv = $("<div class='point'>");
+            		        					var $pointDiv2 = $("<div class='point'>");
+            		        					var $b = $("<b>");
+            		        					var $badge = $("<a class='badge badge-info' style='float:right;'>");
+            		        					var $centerPoint = $("<div class='point' align='center'>");
+            		        					var $a2 = $("<a class='btn btn-info' style='padding:1%;'>");
+            		        					var $a3 = $("<a class='btn btn-info' style='padding:1%;'>");
+            		        					
+            		            					
+                        						$userBoard.empty();
+                        						console.log(data.list[i].avgEagv);
+                        						
+                            					if(data.list[i].profileImg != null){
+                            						$div2.text(data.list[i].profileImg);
+                            					}else{
+                            						$div2.append($noneImg);	
+                            					}
+                            					$profile.append($div2);
+                            					$li2.text(data.list[i].memNick);
+                            					$li3.text(data.list[i].memTypeName);
+                            					$memTypeName.text(data.list[i].memTypeKind);
+                            					$li3.append($memTypeName);
+                            					$introduction.text(data.list[i].introduction);
+                            					$introduction.append($br);
+                            					$introduction.append($br2);
+                            					$ul2.append($li2);
+                            					$ul2.append($li3);
+                            					$ul2.append($introduction);
+                            					$div.append($ul2);
+                            					$col8.append($profile);
+                            					$col8.append($div);
+                            					$row.append($col8);
+                            					
+                            					var roundAvg = Math.round(data.list[i].avgEagv * 10) /10;
+                            	
+                            					if(data.list[i].avgEagv == 0){
+                            						$starDiv.html("<i id='firstStar' class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv > 0 && data.list[i].avgEagv < 1){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv == 1){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv > 1 && data.list[i].avgEagv < 2){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv == 2){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i>i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv > 2 && data.list[i].avgEagv < 3){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv == 3){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv > 3 && data.list[i].avgEagv < 4){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv == 4){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv > 4 && data.list[i].avgEagv < 5){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}else if(data.list[i].avgEagv == 5){
+                            						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
+                            					}
+                            					
+                            					
+                            					/* $starDiv.text(data.list[i].avgEagv+" / 평가 "+data.list[i].countEagv); */
+                            					$col4.append($starDiv);
+                            					$col4.append($hr);
+                            					$b.text("자주 진행한 프로젝트");
+                            					if(data.list[i].maxDcType == "웹"){
+                            						$badge.text("WEB");
+                            						$b.append($badge);
+                            					}else{
+                            						$badge.text(data.list[i].maxDcType);
+                            						$b.append($badge);
+                            					}
+                            					
+                            					$pointDiv.append($b);
+                            					
+                            					
+                            					if(data.list[i].ideStatus == "COMPLETE"){
+                            						$a2.text("신원 인증된 회원");
+                            						$centerPoint.append($a2);
+                            					}
+                            					if(data.list[i].phone != null){
+                            						$a3.text("연락처 등록");
+                            						$centerPoint.append($a3);
+                            					}
+                            					$col4.append($pointDiv);
+                            					$col4.append($hr2);
+                            					$col4.append($centerPoint);
+                            					$row.append($col4);
+                            					$li.append($row);
+                            					$ul.append($li);
+                            					$userBoard.append($ul);
+                            					/* $userBoard.append($hidden); */
+                            					
+                            					var memId = data.list[i].memId;
+                            					var html = $userBoard.html();
+                            					$userBoard.html(html+"<input class='memId' type='hidden' value="+memId+">");
+                            					$clientBoard.append($userBoard);
+                            					
+                        					}
+                						
+                						$(".userBoard").click(function(){
+                							var cId = $(this).find('.memId').val();
+                							console.log(cId);
+                    						location.href="cDetail.do?cId="+cId;
+                						})
+                							
+                        			},
+                        			error:function(request, status, errorData){
+            		                    alert("error code: " + request.status + "\n"
+            			                          +"message: " + request.responseText
+            			                          +"error: " + errorData);
+            			            }
+                        		})
+                        	}
+                          
+                        	
+                        	
+                        
                             $(function () {
+                            	$("#korea").on("click", function () {
+                                    $("#clientPlace").text($(this).text());
+                                    var address="전체";
+                                    addressFilter(address);
+                                });
+                            	
                                 $("#seoul").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="서울";
+                                    addressFilter(address);
                                 });
 
                                 $("#busan").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="부산";
+                                    addressFilter(address);
+                                });
+                                $("#daegu").on("click", function () {
+                                    $("#clientPlace").text($(this).text());
+                                    var address="대구";
+                                    addressFilter(address);
                                 });
                                 $("#incheon").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="인천";
+                                    addressFilter(address);
                                 });
 
                                 $("#gwangju").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="광주";
+                                    addressFilter(address);
                                 });
                                 $("#daejeon").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="대전";
+                                    addressFilter(address);
                                 });
 
                                 $("#ulsan").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="울산";
+                                    addressFilter(address);
                                 });
                                 $("#sejong").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="세종특별자치시";
+                                    addressFilter(address);
                                 });
 
                                 $("#gyeonggi").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="경기";
+                                    addressFilter(address);
                                 });
                                 $("#gamja").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="강원";
+                                    addressFilter(address);
                                 });
 
                                 $("#chungbuk").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="충북";
+                                    addressFilter(address);
                                 });
                                 $("#chungnam").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="충남";
+                                    addressFilter(address);
                                 });
 
                                 $("#jeonbuk").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="전북";
+                                    addressFilter(address);
                                 });
                                 $("#jeonnam").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="전남";
+                                    addressFilter(address);
                                 });
 
                                 $("#gyeongbuk").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="경북";
+                                    addressFilter(address);
                                 });
                                 $("#gyeongnam").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="경남";
+                                    addressFilter(address);
                                 });
 
                                 $("#jeju").on("click", function () {
                                     $("#clientPlace").text($(this).text());
+                                    var address="제주특별자치도";
+                                    addressFilter(address);
                                 });
                             })
                         </script>
@@ -239,67 +1178,83 @@ hr {
             
             <script>
 	            $("#recentDate").on("click",function(){
-					recentClient();	
-				})
+	            	var status=$("#recentVal").val();
+					recentClient(status);	
+				});
+	            $("#highPoint").on("click",function(){
+	            	var status=$("#highPointVal").val();
+					recentClient(status);	
+				});
+	            $("#manyPro").on("click",function(){
+	            	var status=$("#manyProVal").val();
+					recentClient(status);	
+				});
+	            $("#manyEval").on("click",function(){
+	            	var status=$("#manyEvalVal").val();
+					recentClient(status);	
+				});
+				
             
 				// 정렬 ajax 시작
-            	function recentClient(){
+            	function recentClient(status){
             		$.ajax({
             			url:"recentList.do",
-            			data:{status:1},
+            			data:{status:status},
             			contentType : 'application/json; charset=utf-8',
             			dataType:"json",
             			success:function(data){
             				console.log(data.list[0].avgEagv);
             				
-            				
             				$clientBoard=$("#clientBoard");
     						$clientBoard.empty();
-    						
-    						var $ul = $("<ul style='list-style: none;'>");
-        					var $li = $("<li>");
-        					var $ul2 = $("<ul style='list-style: none; margin-top: 2%;'>");
-        					var $li2 = $("<li>");
-        					var $li3 = $("<li>");
-        					var $userBoard = $("<div class='userBoard' style='cursor:pointer;'>");
-        					var $hidden = $("<input type='hidden'>");
-        					var $row = $("<div class='row' style='margin-left:3%; margin-right:3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;'>");
-        					var $col8 = $("<div class='col-8'>");
-        					var $col4 = $("<div class='col-4'>");
-        					var $profile = $("<div style='float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;'>");
-        					var $div = $("<div>");
-        					var $div2 = $("<div>");
-        					var $noneImg = $("<img id='profileImg' src='${contextPath }/resources/proImg/user1.png'>");
-        					var $a = $("<a class='btn btn-info' style='padding:1%;'>");
-        					var $memTypeName = $("<a class='badge badge-info'>");
-        					var $introduction = $("<li id='introduction' style='line-height:2.4rem; -webkit-box-orient: vertical; word-wrap:break-word;'>");
-        					var $br = $("<br>");
-        					var $br2 = $("<br>");
-        					var $starDiv = $("<div id='starPoint' class='point'>");
-        					var $firstFas = $("<i id='firstStar' class='fas fa-star'>");
-        					var $firstFar = $("<i id='firstStar' class='far fa-star'>");
-        					var $firstFasHarf = $("<i id='firstStar' class='fas fa-star-half-alt'>");
-        					var $fas1 = $("<i class='fas fa-star'>");
-        					var $fas2 = $("<i class='fas fa-star'>");
-        					var $fas3 = $("<i class='fas fa-star'>");
-        					var $fas4 = $("<i class='fas fa-star'>");
-        					var $far2 = $("<i class='far fa-star'>");
-        					var $far3 = $("<i class='far fa-star'>");
-        					var $far4 = $("<i class='far fa-star'>");
-        					var $far1 = $("<i class='far fa-star'>");
-        					var $harf = $("<i class='fas fa-star-half-alt'>");
-        					var $hr = $("<hr style='width:90%; margin:0px auto;'>");
-        					var $hr2 = $("<hr style='width:90%; margin:0px auto;'>");
-        					var $pointDiv = $("<div class='point'>");
-        					var $pointDiv2 = $("<div class='point'>");
-        					var $b = $("<b>");
-        					var $badge = $("<a class='badge badge-info' style='float:right;'>");
-        					var $centerPoint = $("<div class='point' align='center'>");
-        					var $a2 = $("<a class='btn btn-info' style='padding:1%;'>");
-        					var $a3 = $("<a class='btn btn-info' style='padding:1%;'>");
-        					
-            					for(var i in data.list){
-            						
+    						for(var i in data.list){
+		    						var $ul = $("<ul style='list-style: none;'>");
+		        					var $li = $("<li>");
+		        					var $ul2 = $("<ul style='list-style: none; margin-top: 2%;'>");
+		        					var $li2 = $("<li>");
+		        					var $li3 = $("<li>");
+		        					var $userBoard = $("<div class='userBoard' style='cursor:pointer;'>");
+		        					
+		        					
+		        					var $hidden = $("<input type='hidden'>");
+		        					var $row = $("<div class='row' style='margin-left:3%; margin-right:3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;'>");
+		        					var $col8 = $("<div class='col-8'>");
+		        					var $col4 = $("<div class='col-4'>");
+		        					var $profile = $("<div style='float:left; margin-left:1%; margin-right:3%; height: 100%; display: flex; align-items: center;'>");
+		        					var $div = $("<div>");
+		        					var $div2 = $("<div>");
+		        					var $noneImg = $("<img id='profileImg' src='${contextPath }/resources/proImg/user1.png'>");
+		        					var $a = $("<a class='btn btn-info' style='padding:1%;'>");
+		        					var $memTypeName = $("<a class='badge badge-info'>");
+		        					var $introduction = $("<li id='introduction' style='line-height:2.4rem; -webkit-box-orient: vertical; word-wrap:break-word;'>");
+		        					var $br = $("<br>");
+		        					var $br2 = $("<br>");
+		        					var $starDiv = $("<div id='starPoint' class='point'>");
+		        					var $firstFas = $("<i id='firstStar' class='fas fa-star'>");
+		        					var $firstFar = $("<i id='firstStar' class='far fa-star'>");
+		        					var $firstFasHarf = $("<i id='firstStar' class='fas fa-star-half-alt'>");
+		        					var $fas1 = $("<i class='fas fa-star'>");
+		        					var $fas2 = $("<i class='fas fa-star'>");
+		        					var $fas3 = $("<i class='fas fa-star'>");
+		        					var $fas4 = $("<i class='fas fa-star'>");
+		        					var $far2 = $("<i class='far fa-star'>");
+		        					var $far3 = $("<i class='far fa-star'>");
+		        					var $far4 = $("<i class='far fa-star'>");
+		        					var $far1 = $("<i class='far fa-star'>");
+		        					var $harf = $("<i class='fas fa-star-half-alt'>");
+		        					var $hr = $("<hr style='width:90%; margin:0px auto;'>");
+		        					var $hr2 = $("<hr style='width:90%; margin:0px auto;'>");
+		        					var $pointDiv = $("<div class='point'>");
+		        					var $pointDiv2 = $("<div class='point'>");
+		        					var $b = $("<b>");
+		        					var $badge = $("<a class='badge badge-info' style='float:right;'>");
+		        					var $centerPoint = $("<div class='point' align='center'>");
+		        					var $a2 = $("<a class='btn btn-info' style='padding:1%;'>");
+		        					var $a3 = $("<a class='btn btn-info' style='padding:1%;'>");
+		        					
+		            					
+            						$userBoard.empty();
+            						console.log(data.list[i].avgEagv);
             						
                 					if(data.list[i].profileImg != null){
                 						$div2.text(data.list[i].profileImg);
@@ -322,79 +1277,34 @@ hr {
                 					$col8.append($div);
                 					$row.append($col8);
                 					
-                					/* switch(data.list[i].avgEagv){
-                					case 0 : 
-                						
-                					} */
-                					
+                					var roundAvg = Math.round(data.list[i].avgEagv * 10) /10;
+                	
                 					if(data.list[i].avgEagv == 0){
-                						$starDiv.append($firstFar);
-                						$starDiv.append($far1);
-                						$starDiv.append($far2);
-                						$starDiv.append($far3);
-                						$starDiv.append($far4);
+                						$starDiv.html("<i id='firstStar' class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv > 0 && data.list[i].avgEagv < 1){
-                						$starDiv.append($firstFasHarf);
-                						$starDiv.append($far1);
-                						$starDiv.append($far2);
-                						$starDiv.append($far3);
-                						$starDiv.append($far4);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv == 1){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($far1);
-                						$starDiv.append($far2);
-                						$starDiv.append($far3);
-                						$starDiv.append($far4);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv > 1 && data.list[i].avgEagv < 2){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($harf);
-                						$starDiv.append($far1);
-                						$starDiv.append($far2);
-                						$starDiv.append($far3);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv == 2){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($fas1);
-                						$starDiv.append($far1);
-                						$starDiv.append($far2);
-                						$starDiv.append($far3);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i>i class='far fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv > 2 && data.list[i].avgEagv < 3){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($fas1);
-                						$starDiv.append($harf);
-                						$starDiv.append($far1);
-                						$starDiv.append($far2);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv == 3){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($fas1);
-                						$starDiv.append($fas2);
-                						$starDiv.append($far1);
-                						$starDiv.append($far2);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='far fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv > 3 && data.list[i].avgEagv < 4){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($fas1);
-                						$starDiv.append($fas2);
-                						$starDiv.append($harf);
-                						$starDiv.append($far);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv == 4){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($fas1);
-                						$starDiv.append($fas2);
-                						$starDiv.append($fas3);
-                						$starDiv.append($far1);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='far fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv > 4 && data.list[i].avgEagv < 5){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($fas1);
-                						$starDiv.append($fas2);
-                						$starDiv.append($fas3);
-                						$starDiv.append($harf);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half-alt'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}else if(data.list[i].avgEagv == 5){
-                						$starDiv.append($firstFas);
-                						$starDiv.append($fas1);
-                						$starDiv.append($fas2);
-                						$starDiv.append($fas3);
-                						$starDiv.append($fas4);
+                						$starDiv.html("<i id='firstStar' class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i>&emsp;"+roundAvg+" / 평가 "+data.list[i].countEagv);
                 					}
-                					$starDiv.text(data.list[i].avgEagv+" / 평가 "+data.list[i].countEagv);
+                					
+                					
+                					/* $starDiv.text(data.list[i].avgEagv+" / 평가 "+data.list[i].countEagv); */
                 					$col4.append($starDiv);
                 					$col4.append($hr);
                 					$b.text("자주 진행한 프로젝트");
@@ -424,10 +1334,21 @@ hr {
                 					$li.append($row);
                 					$ul.append($li);
                 					$userBoard.append($ul);
-                					$userBoard.append($hidden);
+                					/* $userBoard.append($hidden); */
+                					
+                					var memId = data.list[i].memId;
+                					var html = $userBoard.html();
+                					$userBoard.html(html+"<input class='memId' type='hidden' value="+memId+">");
                 					$clientBoard.append($userBoard);
                 					
             					}
+    						
+    						$(".userBoard").click(function(){
+    							var cId = $(this).find('.memId').val();
+    							console.log(cId);
+        						location.href="cDetail.do?cId="+cId;
+    						})
+    							
             			},
             			error:function(request, status, errorData){
 		                    alert("error code: " + request.status + "\n"
@@ -573,7 +1494,7 @@ hr {
 										</c:when>
                                     </c:choose>
                                         <!-- <b>4.5 / 평가 4개</b>  -->
-                                        ${b.avgEagv } / 평가 ${b.countEagv }개 
+                                    <fmt:formatNumber type="number" maxFractionDigits="1" value="${b.avgEagv }"/> / 평가 ${b.countEagv }개 
                                     </div>
                                     <hr style="width:90%; margin:0px auto;">
                                     <div class="point">

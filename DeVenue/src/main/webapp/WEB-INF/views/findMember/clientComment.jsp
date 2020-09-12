@@ -11,7 +11,6 @@
         hr {
             background-color: lightgray;
         }
-
         #starPoint b {
             /* margin-right:10%; */
             float: right;
@@ -23,24 +22,20 @@
 		.far{
 			margin-right:0;
 		}
-
         .point {
             margin-top: 3%;
             margin-bottom: 3%;
             margin-left: 5%;
             margin-right: 10%;
         }
-
         .point p {
             margin-bottom: 2%;
             margin-left: 2%;
         }
-
         .point div ul li {
             margin: 0;
             margin-top: 2%;
         }
-
         /* 이미지 사이즈 맞추기 */
         .image-container {
             width: auto;
@@ -50,13 +45,11 @@
             align-items: center;
             justify-content: center;
         }
-
         .image-container img {
             object-fit: fill;
         }
         
         /*페이지네이션*/
-
       #pagination>div{
         margin-top: 1rem;
       }
@@ -213,19 +206,15 @@
                         }).on("mouseenter", function(){
                             
                         });
-
                         $("#projectHistory").on("click", function(){
                             location.href="${cProjectHistory }";
                         });
-
                         $("#clientEvaluate").click(function() {
                             $("#subClientEva").toggle();
                         });
-
                         $("#clientComment").on("click", function(){
                             location.href="${cEvalSelect }";
                         });
-
                         $("#insertCComment").on("click", function(){
                             location.href="${cEvalInsert }";
                         });
@@ -317,7 +306,6 @@
                                         $("#develop").on("click", function () {
                                             $("#dropdownMenuOffset").text($(this).text());
                                         });
-
                                         $("#design").on("click", function () {
                                             $("#dropdownMenuOffset").text($(this).text());
                                         })
@@ -469,8 +457,7 @@
 	                        <!-- 평가 더보기 눌렀을 때 -->
 	                        <div id="moreComment" style="display:none;">
 	                        <c:forEach var="cp" items="${cp }" varStatus="status">
-	                        <table id="cp${status.count }"
-	                            style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
+	                        <table id="cp${status.count }" border="0" style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
 	                            <tr>
 	                                <td style="height: 15%;">
 	                                    <p>프로젝트명</p>

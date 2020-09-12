@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -456,7 +456,7 @@
             </div>
             <div class="area" style="position: relative;">
                 <div class="area-left" style="width: 100%; position: absolute;">
-                <form method="POST" action="login.do">
+                <form method="POST" action="login.do" onsubmit="return loginCheck();">
                     <div class="form-title">
                         <div class="form-label">
                             <label for="email">* 이메일</label>
@@ -480,29 +480,28 @@
                         <button type="submit" id="login" class="btn btn-info btn-lg"
                             style="font-size: 25px; width: 400px; margin-left: -60px;">로그인하기</button>
                     </div>
-                </form>
-                
-                <!-- <script type="text/javascript">
-                	$("#login").on("click",function(){
-                		var email = $("#email").val();
-                		var pwd = $("#pwd").val();
-                		console.log(email);
-                		console.log(pwd);
-                		
-                		$.ajax({
-                			url:"login.do",
-                			data:{email:email,pwd:pwd},
-                			success : function(data){
-                				
-                			},error:function(request, status, errorData){
-                				alert("error code: " + request.status + "\n"
-    									+"message: " + request.responseText
-    									+"error: " + errorData);
-    						}
-                		})
-                		
-                	})
-                </script> -->
+                    <script type="text/javascript">
+                    	function loginCheck() {
+							var email = $("#email").val();
+							var pwd = $("#pwd").val();
+							$.ajax({
+								url:"loginChk.do",
+								data:{email:email,pwd:pwd},
+								success:function(data){
+	            					if(data == 'true'){
+	            						return true;
+	            					}else{
+	            						alert("이메일과 비밀번호를 다시 한번 확인해 주세요.");
+	            						return false;
+	            					}
+	            				}
+	            				, error:function(request, status, error){
+	            					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	            				}
+							})
+						}
+                    </script>
+               </form>
                     <div class="pwd-forget">
                         <label>비밀번호를 잊으셨나요?&nbsp;&nbsp;<a href="forgetPwd.do">비밀번호 찾기</a></label>
                     </div>
