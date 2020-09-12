@@ -799,7 +799,7 @@
 				                        	</c:when>
 				                        </c:choose>
                                         <div id="downloadDocument">
-                                            <a href="${contextPath}/resources/projectUpload/${detail.project.proPlanPaper}" download="${detail.project.proPlanRePaper}">프로젝트 관련 문서 다운로드</a>
+                                            <a href="${contextPath}/resources/puploadFiles/${detail.project.proPlanPaper}" download="${detail.project.proPlanRePaper}">프로젝트 관련 문서 다운로드</a>
                                         </div>
                                     </div>
                                 </div>
