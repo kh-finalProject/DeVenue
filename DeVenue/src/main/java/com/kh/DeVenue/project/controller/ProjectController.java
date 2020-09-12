@@ -591,8 +591,12 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	public ModelAndView projectDetail(ModelAndView mv,@ModelAttribute ProjectList project,@RequestParam(value="page", required=false) Integer page) {
 		
 		System.out.println("parameter 뭐 넘어왔나?"+project);
+		System.out.println("page:"+page);
+		
 		//프로젝트 디테일 가져오기		
 		ProjectDetail detail=pService.selectProjectDetail(project.getId());
+		
+		System.out.println("디테일 잘 가져왔니?"+detail);
 		
 		// 클라이언트의 전체 프로젝트 수 
 		ProjectDetail number=pService.selectAllNumber(detail.getProject().getMemId());

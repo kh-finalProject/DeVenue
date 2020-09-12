@@ -2820,7 +2820,7 @@ if(session!=null){
             	var dCate=$(this).parents(".card-body").find(".dCate").text();
             	var page=${pi.currentPage};
             	
-            	location.href="searchProjectDetail.do?id="+pId+"&page="+page+"&mCategory="+mCate+"$dCategory="+dCate;
+            	location.href="searchProjectDetail.do?id="+pId+"&page="+page+"&mCategory="+mCate+"&$dCategory="+dCate;
             	
             })
             
