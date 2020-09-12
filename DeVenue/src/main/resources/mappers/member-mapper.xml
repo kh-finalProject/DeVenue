@@ -465,8 +465,10 @@
 	</select>
 	
 	<!-- 로그인 할시 멤버 리시트를 비교 -->
-	<select id="memberList" resultMap="memberResultSet">
+	<select id="memberChk" parameterType="map" resultMap="memberResultSet">
 		SELECT * FROM MEMBER
+		WHERE MEM_EMAIL = #{email}
+		AND MEM_PWD = #{pwd}
 	</select>
 	
 	<!-- 필터 검색 -->

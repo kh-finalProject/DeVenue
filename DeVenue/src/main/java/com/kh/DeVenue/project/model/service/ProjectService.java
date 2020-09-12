@@ -282,6 +282,9 @@ public interface ProjectService {
 	ArrayList<ProjectList> selectFourPub();
 
 
+	int updateProjectRecruitStatus();
+
+
 	
 
 

@@ -632,5 +632,11 @@ ArrayList list =new ArrayList();
 	}
 
 
+	public int updateProjectRecruitStatus() {
+		
+		return sqlSessionTemplate.update("projectMapper.updateRecruitStatus");
+	}
+
+
 
 }
