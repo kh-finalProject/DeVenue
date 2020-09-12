@@ -14,7 +14,6 @@
     }
     body {
       font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-           background:#212426;
     }
 
     h1,
@@ -264,7 +263,6 @@
 }
 .tab {
 display:none;
-margin-left:120px;
 }
 td{
 padding-left:50px;
@@ -303,45 +301,28 @@ style="display: inline-block;"
 <jsp:include page = "../common/menubar.jsp"/>
 <jsp:include page ="../common/cSubMenubar.jsp"/>
 
-<div class ="middle"  style ="background-color:#212426;  font-family: 'Jua', sans-serif;" >
-    
-<div class="container">
-        <div class="row text-white" style="border-bottom: 1px solid lightgray;">
-            <div class="col-3" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-               프로젝트 수정
-            </div>
+<div class ="middle"  style ="background-color:black;  font-family: 'Jua', sans-serif;" >
+ 
 
-        </div>
+  <div class ="container" >
+    <br>
 
-
-        <div class="row">
-            <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-                <br>
-                <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
-              클라이언트
-                </div>
-            </div>
-            <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
-                <br>
-          
-            </div>
-
-        </div>
-
-        <div class="row">
-            <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
-                <br>
-                <div style="padding-bottom: 5.5%;">
-                    <div class="image-container">
-                      
-                    </div>
-                    <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
-                    <div>
-               
-                        
-                        <p id="clientEvaluate" style="cursor:pointer;">프로젝트 수정<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
-                        <div id="subClientEva" style="display:none; margin-left: 5%;">
-                           <li >1.기본 정보</li>
+    <div class="row" style ="margin-top: 60px; margin-bottom:60px;">
+      <div class="col-2 text-white" style="border-right: 2px solid lightgray; margin-right:40px; margin-left:100px; font-family: 'Jua', sans-serif;">
+          <br>
+          <div style="padding-bottom: 5.5%;">
+             
+                <li id ="bText" style ="color:lightslategray"> 프로젝트 수정</li>
+            
+              <br>
+              <br>
+              <br>
+              
+              <div>
+                  <li id ="mText" style ="color:lightslategray">프로젝트 정보 등록</li>
+                   <br>
+                  <ul style ="margin-left:10px;" id ="sText"> 
+                  <li >1.기본 정보</li>
                   <br>
                   <li >2.준비 상태</li>
                   <br>
@@ -353,42 +334,50 @@ style="display: inline-block;"
                   <br>
                   <li >6.추가 정보</li>
                   <br>
-      
-                            
-                        </div>
-                    </div>
-                   
-                    
-                    <script>
-                 
+                  <li >7.검토 및 수정</li>
+                 </ul>
 
-                        $("#clientEvaluate").click(function() {
-                            $("#subClientEva").toggle();
-                        });
+                  <br>
+                
+              </div>
+              <br>
+              <div>
+             <li id ="mtext" , style= "color:lightslategray"> 프로젝트 등록 완료</li>
+                  <br>
+                
 
-                       
-                    </script>
+              </div>
+          </div>
+      </div>
 
-                </div>
-            </div>
-	
+
+ <div class= "col-6" style ="color:white; height:auto;">
+        
+          <table style ="border-bottom: 2px solid white; width:540px; margin-bottom:20px;">
+            <tr>
+              <td><li  id ="bText" style ="margin-bottom: 15px;">프로젝트 정보 등록</li>
+              </td>
+              </tr>
+          
+          </table>
+          
 <form action ="proUpdate.do" id= "regform" method = "post" enctype ="multipart/form-data">
 
 
 
 <div class="tab"> 
-<table style ="color: white; border-bottom:2px solid white; " width="540px;">
+<table style ="color: white; border:2px solid white; " width="540px;">
 
-<input type = "hidden" name ="memId" value ="${loginUser.memId}"/>
+<input type = "hidden" name ="memId" value ="${loginUser.memId}" />
            <tr>
-            <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">기본 정보</li></td>
+            <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">기본 정보</li></td>
             </tr>
             <input type ="hidden" name = "proId" value ="${p.proId }"/>
             <tr>
             <td colspan="2" style ="padding-top:50px;"><li id ="mText"> 프로젝트 제목<i style ="color:red;">*</i></li></td>
             </tr>
             <tr>
-            <td colspan="2" ><input type ="text" size =50 maxlength= 50 name="proName" value ="${p.proName}"></td>
+            <td colspan="2" ><input type ="text" size =50 maxlength= 50 name="proName" value ="${p.proName} readonly"></td>
            </tr> 
           
             <tr>
@@ -398,11 +387,11 @@ style="display: inline-block;"
 
              <td colspan="2">
                <label class="choice" ><input type ="radio"   name="proMaintain" value= "N" 
-                             <c:if test ="${p.proMaintain eq 'N' }">checked</c:if>
+                             <c:if test ="${p.proMaintain eq 'N' }" disabled>checked</c:if>
                ><span>신규 프로젝트를 진행하려 합니다.</span></label>
                
                <label class="choice" ><input type ="radio"   name="proMaintain" value= "Y" 
-                             <c:if test ="${p.proMaintain eq 'Y' }">checked</c:if>
+                             <c:if test ="${p.proMaintain eq 'Y' }" disabled>checked</c:if>
                ><span>서비스의 리뉴얼 또는 유지보수를 하려 합니다.</span></label>
             
             </td>
@@ -416,7 +405,7 @@ style="display: inline-block;"
           <tr>
          <td colspan="2"> <label class="choice" ><input type ="radio" name="proWTId" value ="WT1" 
          <c:if test ="${p.proWTId eq 'WT1' }">checked</c:if>
-         > <span>외주</span></label></td>
+         disabled> <span>외주</span></label></td>
          </tr>
          <tr>
           <td colspan="2"> <label class="choice" > <input type ="radio" name ="proWTId" value ="WT2"
@@ -482,10 +471,10 @@ style="display: inline-block;"
 
 
 
-<div class="tab" >
-<table style ="color: white; border-bottom:2px solid white; width:540px;">
+<div class="tab">
+<table style ="color: white; border:2px solid white; width:540px;">
     <tr >
-              <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">준비 상태</li></td>
+              <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">준비 상태</li></td>
 </tr>
 
   <tr>
@@ -511,8 +500,8 @@ style="display: inline-block;"
   
   <tr>
    <td colspan="2">
-      <label class="choice" ><input type ="radio"   name="proPlanDetail" value= "1"
-      <c:if test ="${p.proPlanDetail eq 1 }">checked</c:if>>
+      <label class="choice" ><input type ="radio"   name="proPlanDetail" value= "1">
+       <c:if test ="${p.proPlanDetail eq 1 }"></c:if>
       <span>요구사항 정의서</span></label>
       <label class="choice" ><input type ="radio" name="proPlanDetail" value ="2"
         <c:if test ="${p.proPlanDetail eq 2 }">checked</c:if>>
@@ -539,31 +528,20 @@ style="display: inline-block;"
     </li></td>
  
     <tr>
-    	<c:if test ="${!empty p.proPlanPaper}">
     <td colspan="2"  style ="padding-bottom:50px;"><div class="filebox">
         <label for="ex_file"  >+ 프로젝트 관련 자료 추가</label>
         <input type="file" id="ex_file" name="proPlanPaper1"> 
-        <a href = "${contentPath }/resources/puploadFiles/${p.proPlanRePaper}" download="${p.proPlanRePaper }">
-						${p.proPlanPaper }
-					</a>
-				</c:if>
-				<c:if test ="${empty p.proPlanPaper}">
-				<td colspan="2"  style ="padding-bottom:50px;"><div class="filebox">
-      				  <label for="ex_file"  >+ 프로젝트 관련 자료 추가</label>
-        		<input type="file" id="ex_file" name="proPlanPaper1"> 
-				</c:if>
       </div></td>
      </tr> 
     
     
      </table>
      </div>
-     	
-				
+     
   <div class ="tab">
-      <table style ="color: white; border-bottom:2px solid white; width:540px;">
+      <table style ="color: white; border:2px solid white; width:540px;">
  <tr>
-  <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id="mText">프로젝트 상세</li></td>
+  <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id="mText">프로젝트 상세</li></td>
 </tr>
 <tr>
  <td colspan="2"  style ="padding-top:50px;"><li id="mText">프로젝트 개요 </li>
@@ -601,57 +579,17 @@ style="display: inline-block;"
 </div>	
 
 <div class="tab">
-<table style ="color: white; border-bottom:2px solid white; " width="540px;">
+<table style ="color: white; border:2px solid white; " width="540px;">
 <tr>
- <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText" >예산 및 일정</li></td>
+ <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText" >예산 및 일정</li></td>
   </tr>
 <tr>
 
 <td colspan="2"  style ="padding-top:50px;"> 
 
 <li id ="mText">지출 가능 예산 <a style = "color:red">*</a></li>
- <table class="table table-bordered exam">
-  <tbody>
-    <tr class="">
-      <th class="align-middle w-10 bg-light text-center">금액</th>
-      <td class="w-70 pl-4"><input type="text" class="form-control num_only num_comma num_sum" id="proPayment" name="proPayment" value="${p.proPayment }" placeholder=""></td>
-    </tr>
-    <tr>
-      <th class="align-middle bg-light text-center p-2" >예상 결제 금액<br>(부가세 10% 포함)</th>
-      <td class="pl-4" colspan="2">
-        <input type="text" class="form-control text-left font-weight-bold num_only num_comma num_sum" id="fn_total" name="fn_total" value="" placeholder="">
-        <div id="han_money" class="text-right"></div>
-      </td>
-    </tr>
-
-  </tbody>
-</table>
-    
-    <script>
-    $(function(){
-
-    	$('input.num_only').on('keyup',function(){
-    	          var cnt = $(".exam input.num_sum").length;     
-    	          console.log(cnt);
-    	          
-    	  for( var i=1; i< cnt; i++){
-    	     var sum = parseInt($(this).val() || 0 );
-    	     sum++
-    	    console.log(sum);
-    	  }
-    	  
-    	            var sum1 = parseInt($("#proPayment").val() || 0 ); // input 값을 가져오며 계산하지만 값이 없을경우 0이 대입된다  뒷부분에 ( || 0 ) 없을경우 합계에 오류가 생겨 NaN 값이 떨어진다
-    	     
-
-    	            var sum = sum1+(sum1 *0.1)
-    	            console.log(sum);
-    	            $("#fn_total").val(sum);
-    	        });
-
-
-    	 
-    	});
-    </script>
+<li><input type="text" name="proPayment" value = "${p.proPayment }"	></li>
+    <li>예상 결제 금액  : 0원(부가가치세 10% 포함)    </li>
 <br>
 <li id ="mText">예상 시작일<a style ="color:red">*</a></li>
 <li id ="sText" style ="color:grey;"> 파트너가 프로젝트에 착수하는 날짜입니다. <br>
@@ -677,9 +615,9 @@ style="display: inline-block;"
 </div>
 
 <div class="tab">
-<table style ="color: white; border-bottom:2px solid white; " >
+<table style ="color: white; border:2px solid white; " >
 <tr>
- <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;" width="540px;">
+ <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;" width="540px;">
 <li id ="bText">모집 요건</li>
 </td>
 </tr>
@@ -692,7 +630,6 @@ style="display: inline-block;"
 
   <li id="mText" style ="padding-top:30px;">지원자 필수 요건</li>
   <li id ="sText" style ="color:grey">아래 조건에 맞는 파트너를  지원자로 받습니다.</li>
-  
     <label class="choice" ><input type ="radio" name="proTypeCode" value= "MT1"
       <c:if test ="${p.proTypeCode eq 'MT1' }">checked</c:if>>
       <span>개인</span> </label>
@@ -714,7 +651,7 @@ style="display: inline-block;"
     
 <li id="sText" style ="color:grey">프로젝트에 참여시킬 인원 수를 입력해주세요.
 </li>
-  <li><input type= "number" name ="proRecruitNum" value ="${p.proRecruitNum}">명</li>
+  <li><input type= "number" name ="proRecruitNum" value =${proRecruitNum }></li>
 
     
 
@@ -724,14 +661,20 @@ style="display: inline-block;"
     
     </table>
 </div>
+<script>
 
+
+
+
+
+</script>
 
 
 
 <div class ="tab">
-<table style ="color: white; border-bottom:2px solid white; " >
+<table style ="color: white; border:2px solid white; " >
 <tr>   
-     <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">추가 정보</li></td>
+     <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">추가 정보</li></td>
       </tr>
         <tr>
 <td colspan="2" style ="padding-top:50px;"><li id = "mText">프로젝트 인력 상황<a style ="color:red">*</a></li>
@@ -795,7 +738,7 @@ style="display: inline-block;"
  
 <div style="overflow:auto;">
   <div style="float:right;">
-  
+  	<button type="button" >임시 저장</button>
     <button type="button" id="prevBtn" onclick="nextPrev(-1)">이전</button>
     <button type="button" id="nextBtn" onclick="nextPrev(1)">다음</button>
   </div>
@@ -835,14 +778,14 @@ function showTab(n) {
     document.getElementById("prevBtn").style.display = "inline";
   }
   if (n == (x.length - 1)) {
-    document.getElementById("nextBtn").innerHTML = "수정 완료";
+    document.getElementById("nextBtn").innerHTML = "Submit";
    $("#nextBtn").removeAttr("onclick");
    $("#nextBtn").attr("onclick","submit();");
     
 
     
   } else {
-    document.getElementById("nextBtn").innerHTML = "다음";
+    document.getElementById("nextBtn").innerHTML = "Next";
   }
 
   fixStepIndicator(n)

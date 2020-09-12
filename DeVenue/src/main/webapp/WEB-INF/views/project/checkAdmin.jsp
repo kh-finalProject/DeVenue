@@ -304,7 +304,7 @@ button{
 <title>Insert title here</title>
 </head>
 <body>
-${p.proId } ,${p.proName} ,${p.memId}, .
+
 <jsp:include page = "../common/footer.jsp"/>
 </body>
 </html>

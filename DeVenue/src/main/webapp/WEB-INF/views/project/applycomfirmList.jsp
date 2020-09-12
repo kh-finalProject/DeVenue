@@ -50,7 +50,7 @@
     h3,
     h4,
     h5,
-    h6 {
+    h6 { h
       font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-weight: 700;
     }
@@ -374,7 +374,7 @@ button{
         
         <table width="540px">
           <tr style ="border-bottom: solid 3px #2098d1;" >
-           <td> <li id  ="bText">임시 저장</li></td>
+           <td> <li id  ="bText">승인 페이지</li></td>
            
           </tr>
         </table>
@@ -383,12 +383,13 @@ button{
 
         <div id= "explainbox">
             
-            <li id ="sText">1. 프로젝트 내용 작성 중 임시 저장한 프로젝트 목록입니다.<br>
-              2. [수정] 버튼을 클릭하여 프로젝트의 내용을 수정할 수 있습니다.
+            <li id ="sText">1.해당 프로젝트에 지원을 원하는 파트너스들의 정보입니다.<br>
               
+              		
             </li>
         </div>
-        <br>
+          수락된  파트너스 수  <span class="badge badge-primary" style ="margin-right:5px;">${pi.listCount } / ${RecruitNum}     </span>
+             
            <c:choose>
           <c:when test="${!empty list1}">
        <c:forEach var ="p" items="${list1}">
@@ -397,52 +398,57 @@ button{
             <table width="540px" >
                 <thead>
                   <tr >
-                    <td><li style= "color: white; padding-left:10px; padding-top:10px;" >${p.proName}</li></td>
+                    <td colspan="2"><li style= "color: #2098d1;  padding-top:10px;" ><span class="badge badge-secondary" style ="margin-right:5px;">닉네임    </span>${p.memNick}</li></td>
                     
-                    <td colspan="5"><a id ="sText" style ="float:right; font-size:25px; padding-top:10px; padding-left:10px;" > 
-  
-                   
-                      
-  </td>
+                 
                 </tr>
                   <tr id ="sText" style ="">
                     <td colspan="6" style="border-bottom:2px solid #2098d1; padding-left:10px; ">
-                    <span class="badge badge-primary">${p.proMCType}</span>
-                        <span class="badge badge-success">${p.proDCType}</span></td>
+     
                     
                 </tr>
-                 <tr style= "border-bottom:2px solid #2098d1" id ="sText" >
+                 <tr style= "border-bottom:2px solid #2098d1;" id ="sText" >
                      
-                      <td><img
-						src="${contextPath }/resources/images/money	.png" height="30px"
-						 width  ="20px" style ="margin-left: 25px; padding-top:10px;  padding-bottom:10px;" >  <span class="badge badge-secondary" style ="margin-right:5px;">예상금액    </span>${p.proPayment}
+                      <td>  <span class="badge badge-secondary" style ="margin-right:5px;">파트너스소개    </span>
                     </td>
+                     <td>
+                    	${p.memIntro } 11
+                     </td>
+                      <td  ><li style ="margin-left:50px;"><span class="badge badge-secondary" style ="margin-right:25px;">제안한 기간</span><a style ="color:yellow;">${p.proADuration}일</a></li></td>
+                      <td></td>
                      
-                      <td ><img
-						src="${contextPath }/resources/images/period.png" height="30px"
-						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">예상기간   </span></td>
-                      <td>${p.proDuration}&nbsp;&nbsp;&nbsp;</td>
-                      <td><li><img
-						src="${contextPath }/resources/images/deadline.png" height="30px"
-						 width  ="20px;"> <span class="badge badge-secondary" style ="margin-right:5px;">모집마감    </span></li></td>
-                      <td><li style= "margin-right:15px;">${p.proREndDate}&nbsp;&nbsp;&nbsp;</li></td>
+                    
                  
                   </tr>
-
+                  <tr>
+                  <td>
+                   <span class="badge badge-secondary" style ="margin-right:5px;"> 파트너스의 메시지	  </span>
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="3">
+                  ${p.proAContent}
+                  </td>
+                  </tr>
+                  <tr>
+                  <td> 
+				
                             <tr  align ="center" style= "border:1px solid black;" height="30" id ="sText">
-                                <td colspan="2">  </td>
-                                <td colspan="6">
+                                <td> <li><span class="badge badge-secondary" style ="margin-right:5px;"> 파트너스의 제안금액   </span><a style ="color:yellow;"> ${p.proAPayment }원</a></li></td>
+                                <td colspan="2" >
                                     <div style= "margin-left:100px;">
-                                     <button type ='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='proDelete.do?proId='+${p.proId}">취소</button>
-                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:90px;" onclick="location.href='temUpdateForm.do?proId='+${p.proId}"> 수정</button>
-                                  
+                            
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:100px;" onclick="location.href='temUpdateForm.do?proId='+">포트폴리오 열람</button>
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:50px;" onclick="location.href='applyUpdate.do?memPId='+${p.memPId}+'&proId='+${p.proId}">수락</button>
+                                  <button type='button' class="btn/middle btn-info" style= "color:black; width:50px;" onclick="location.href='rejectapply.do?memPId='+${p.memPId}+'&proId='+${p.proId}">거절</button>
                                             </div>
                                 </td>
                             </tr>
                         </table>
                     </tr>
                 </thead>
-                    
+
+		
            
           
              
@@ -457,7 +463,7 @@ button{
  <div id= "explainbox" style ="padding:30px;">
               
               <li id ="sText" style ="margin-left:80px; font-size:20px;">
-              	임시저장된 프로젝트를 찾을 수 없습니다.
+              	신청한 파트너스를 조회할 수 없습니다.
                 
               </li>
           </div>

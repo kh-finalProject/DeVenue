@@ -13,6 +13,7 @@
     }
     body {
       font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background:#212426;
     }
 
     h1,
@@ -27,7 +28,7 @@
 
     header.masthead {
       position: relative;
-      background-color: #343a40;
+      background-color: #212426;
       background: url("mainImg.jpg") no-repeat center center;
       background-size: cover;
       padding-top: 8rem;
@@ -37,7 +38,7 @@
 
     header.masthead .overlay {
       position: absolute;
-      background-color: #212529;
+      background-color: #212426;
       height: 100%;
       width: 100%;
       top: 0;
@@ -262,6 +263,7 @@
 }
 .tab {
 display:none;
+margin-left:130px;
 }
 td{
 padding-left:50px;
@@ -300,28 +302,44 @@ style="display: inline-block;"
 <jsp:include page = "../common/menubar.jsp"/>
 <jsp:include page ="../common/cSubMenubar.jsp"/>
 
-<div class ="middle"  style ="background-color:black;  font-family: 'Jua', sans-serif;" >
- 
 
-  <div class ="container" >
-    <br>
+<div class="container">
+        <div class="row text-white" style="border-bottom: 1px solid lightgray;">
+            <div class="col-3" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+               프로젝트 정보 등록
+            </div>
 
-    <div class="row" style ="margin-top: 60px; margin-bottom:60px;">
-      <div class="col-2 text-white" style="border-right: 2px solid lightgray; margin-right:40px; margin-left:100px; font-family: 'Jua', sans-serif;">
-          <br>
-          <div style="padding-bottom: 5.5%;">
-             
-                <li id ="bText" style ="color:lightslategray"> 프로젝트 등록</li>
-            
-              <br>
-              <br>
-              <br>
-              
-              <div>
-                  <li id ="mText" style ="color:lightslategray">프로젝트 정보 등록</li>
-                   <br>
-                  <ul style ="margin-left:10px;" id ="sText"> 
-                  <li >1.기본 정보</li>
+        </div>
+
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="border-bottom: 1px solid lightgray; padding-bottom: 5.5%;">
+              클라이언트
+                </div>
+            </div>
+            <div class="col-10 text-white" style="font-family: 'Jua', sans-serif;">
+                <br>
+          
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-2 text-white" style="border-right: 1px solid lightgray; font-family: 'Jua', sans-serif;">
+                <br>
+                <div style="padding-bottom: 5.5%;">
+                    <div class="image-container">
+                      
+                    </div>
+                    <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
+                    <div>
+               
+                        
+                        <p id="clientEvaluate" style="cursor:pointer;">프로젝트 정보등록<i style="float: right; margin-right: 5%;" class="fas fa-angle-down"></i></p>
+                        <div id="subClientEva" style="display:none; margin-left: 5%;">
+                           <li >1.기본 정보</li>
                   <br>
                   <li >2.준비 상태</li>
                   <br>
@@ -334,43 +352,38 @@ style="display: inline-block;"
                   <li >6.추가 정보</li>
                   <br>
                   <li >7.검토 및 수정</li>
-                 </ul>
+                            
+                        </div>
+                    </div>
+                   
+                    
+                    <script>
+                 
 
-                  <br>
-                
-              </div>
-              <br>
-              <div>
-             <li id ="mtext" , style= "color:lightslategray"> 프로젝트 등록 완료</li>
-                  <br>
-                
+                        $("#clientEvaluate").click(function() {
+                            $("#subClientEva").toggle();
+                        });
 
-              </div>
-          </div>
-      </div>
+                       
+                    </script>
 
+                </div>
+            </div>
 
- <div class= "col-6" style ="color:white; height:auto;">
         
-          <table style ="border-bottom: 2px solid white; width:540px; margin-bottom:20px;">
-            <tr>
-              <td><li  id ="bText" style ="margin-bottom: 15px;">프로젝트 정보 등록</li>
-              </td>
-              </tr>
           
-          </table>
-          
+        
 <form action="proinsert.do" id= "regform" name= "form" method = "post" enctype ="multipart/form-data">
 
 
 
 <div class="tab"> 
-<table style ="color: white; border:2px solid white; " width="540px;">
+<table style ="color: white; border-bottom:2px solid white; " width="540px;">
 
 <input type = "hidden" name ="memId" value ="${loginUser.memId}"/>
 
-           <tr>
-            <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">기본 정보</li></td>
+           <tr >
+            <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">기본 정보</li></td>
             </tr>
             
             <tr>
@@ -395,17 +408,14 @@ style="display: inline-block;"
           
              <tr> 
           <td colspan="2" style ="padding-top:30px;" ><li id ="mText">프로젝트 진행 방식<i style ="color:red;">*</i><br>
-          <i id ="sText" style ="color:gray;" >프로젝트에 적합한 작업자를 모집하기 위해 프로젝트 진행 방식을 선택해 주세요.</li></td>
+          <i id ="sText" style ="color:gray;" > 프로젝트에 적합한 작업자를 모집하기 위해 프로젝트 진행 방식을 선택해 주세요.</li></td>
           </tr>
           <tr>
-         <td colspan="2"> <label class="choice" ><input type ="radio" name="proWTId" value ="WT1"> <span>외주</span></label></td>
+         <td colspan="2"> <label class="choice" ><input type ="radio" name="proWTId" value ="WT1"> <span>외주</span></label>
+         					 <label class="choice" > <input type ="radio" name ="proWTId" value ="WT2"> <span>상주</span></label>
+         					  <label class="choice" > <input type ="radio" name ="proWTId" value ="WT3"> <span> 상관없음</span></label></td>
          </tr>
-         <tr>
-          <td colspan="2"> <label class="choice" > <input type ="radio" name ="proWTId" value ="WT2"> <span>상주</span></label></td>
-          </tr>
-          <tr>
-           <td colspan="2"> <label class="choice" > <input type ="radio" name ="proWTId" value ="WT3"> <span> 상관없음</span></label></td>
-          </tr>
+        
              <tr>
             <td colspan="2" style ="padding-top:30px;"><li id ="mText">프로젝트 분야<i style ="color:red;">*</i></li></td>
             </tr>
@@ -469,9 +479,9 @@ style="display: inline-block;"
 
 
 <div class="tab">
-<table style ="color: white; border:2px solid white; width:540px;">
+<table style ="color: white; border-bottom:2px solid white; width:540px;">
     <tr >
-              <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">준비 상태</li></td>
+              <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText">준비 상태</li></td>
 </tr>
 
   <tr>
@@ -511,6 +521,7 @@ style="display: inline-block;"
     <tr>
     <td colspan="2"  style ="padding-bottom:50px;"><div class="filebox">
         <label for="ex_file"  >+ 프로젝트 관련 자료 추가</label>
+        
         <input type="file" id="ex_file" name="proPlanPaper1"> 
       </div></td>
      </tr> 
@@ -520,9 +531,9 @@ style="display: inline-block;"
      </div>
      
   <div class ="tab">
-      <table style ="color: white; border:2px solid white; width:540px;">
+      <table style ="color: white; border-bottom:2px solid white; width:540px;">
  <tr>
-  <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id="mText">프로젝트 상세</li></td>
+  <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id="bText">프로젝트 상세</li></td>
 </tr>
 <tr>
  <td colspan="2"  style ="padding-top:50px;"><li id="mText">프로젝트 개요 </li>
@@ -559,18 +570,59 @@ style="display: inline-block;"
 </table>
 </div>	
 
-<div class="tab">
-<table style ="color: white; border:2px solid white; " width="540px;">
+<div class="tab" >
+<table style ="color: white; border-bottom:2px solid white; " width="540px;">
 <tr>
- <td colspan="2" style ="border:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText" >예산 및 일정</li></td>
+ <td colspan="2" style ="border-bottom:2px solid white; padding-top:10px; padding-bottom:10px;"><li id ="bText" >예산 및 일정</li></td>
   </tr>
 <tr>
 
 <td colspan="2"  style ="padding-top:50px;"> 
 
 <li id ="mText">지출 가능 예산 <a style = "color:red">*</a></li>
-<li><input type="number" name="proPayment" ></li>
-    <li>예상 결제 금액  : 0(부가가치세 10% 포함)    </li>
+    
+    <table class="table table-bordered exam">
+  <tbody>
+    <tr class="">
+      <th class="align-middle w-10 bg-light text-center">금액</th>
+      <td class="w-70 pl-4"><input type="text" class="form-control num_only num_comma num_sum" id="proPayment" name="proPayment" value="" placeholder=""></td>
+    </tr>
+    <tr>
+      <th class="align-middle bg-light text-center p-2" >예상 결제 금액<br>(부가세 10% 포함)</th>
+      <td class="pl-4" colspan="2">
+        <input type="text" class="form-control text-left font-weight-bold num_only num_comma num_sum" id="fn_total" name="fn_total" value="" placeholder="">
+        <div id="han_money" class="text-right"></div>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+    
+    <script>
+    $(function(){
+
+    	$('input.num_only').on('keyup',function(){
+    	          var cnt = $(".exam input.num_sum").length;     
+    	          console.log(cnt);
+    	          
+    	  for( var i=1; i< cnt; i++){
+    	     var sum = parseInt($(this).val() || 0 );
+    	     sum++
+    	    console.log(sum);
+    	  }
+    	  
+    	            var sum1 = parseInt($("#proPayment").val() || 0 ); // input 값을 가져오며 계산하지만 값이 없을경우 0이 대입된다  뒷부분에 ( || 0 ) 없을경우 합계에 오류가 생겨 NaN 값이 떨어진다
+    	     
+
+    	            var sum = sum1+(sum1 *0.1)
+    	            console.log(sum);
+    	            $("#fn_total").val(sum);
+    	        });
+
+
+    	 
+    	});
+    </script>
 <br>
 <li id ="mText">예상 시작일<a style ="color:red">*</a></li>
 <li id ="sText" style ="color:grey;"> 파트너가 프로젝트에 착수하는 날짜입니다. <br>

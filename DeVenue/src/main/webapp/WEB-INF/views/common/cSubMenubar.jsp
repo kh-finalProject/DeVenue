@@ -41,9 +41,12 @@
 				<li class="nav-item"><a
 					class="nav-link ml-4 hvr-underline-from-center" href="${end}">종료된
 						프로젝트</a></li>
+						<li class="nav-item"><a
+					class="nav-link ml-4 hvr-underline-from-center" href="proAdmin.do">프로젝트 관리자</a></li>
 			</ul>
 			</div>
 			</form>
 	</nav>
+
 </body>
 </html>

@@ -2,7 +2,7 @@ package com.kh.DeVenue.common;
 
 import com.kh.DeVenue.project.model.vo.PageInfo;
 
-public class Pagination {
+public class PaginationH {
 	
 public static PageInfo getPageInfo(int currentPage,int listCount) {
 		
@@ -12,7 +12,6 @@ public static PageInfo getPageInfo(int currentPage,int listCount) {
 		int maxPage;
 		int startPage;
 		int endPage;
-	
 		
 		int boardLimit=5;
 		

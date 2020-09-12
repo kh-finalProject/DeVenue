@@ -28,7 +28,7 @@ public interface ProjectService {
 	int addProject(Project p);
 
 	
-	ArrayList<Project> selectCheckList(String memId);
+	ArrayList<Project> selectCheckList(String memId ,PageInfo pi);
 
 	int getListCount(ProjectFilter filter);
 
@@ -236,6 +236,33 @@ public interface ProjectService {
 
 
 	ArrayList<Member> selectModal(String proId);
+
+
+	ArrayList<Project> selectApplyList(int proId);
+
+
+	ArrayList<Project> selectCommitList();
+
+
+	int commitProject(int proId);
+
+
+	int getCheckListCount(String memId);
+
+
+	int applyUpdate(int memPId);
+
+
+	int getCommitListCount(int proId);
+
+
+
+
+
+	int getRecuritNum(int proId);
+
+
+	int rejectApply(int memPId);
 
 
 

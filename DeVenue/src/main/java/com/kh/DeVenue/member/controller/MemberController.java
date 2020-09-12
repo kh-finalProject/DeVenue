@@ -87,7 +87,7 @@ public class MemberController {
 		Member m = new Member(memEmail,memPwd);
 //		System.out.println(m);
 		Member loginUser = mService.loginUserMember(m);
-		System.out.println(loginUser);
+		System.out.println("logunUser"+loginUser);
 //		System.out.println(loginUser.getMemId());
 		
 		

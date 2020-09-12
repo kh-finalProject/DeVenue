@@ -17,7 +17,7 @@
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.Profile" alias="Profile"/>
 	    <typeAlias type="com.kh.DeVenue.project.model.vo.ProjectLike" alias="Like"/>
 	    <typeAlias type="com.kh.DeVenue.member.model.vo.FindClient" alias="FindClient"/>
-		
+		<typeAlias type="com.kh.DeVenue.project.model.vo.ApplyConfirm" alias="ApplyConfirm"/>
 		<typeAlias type="com.kh.DeVenue.model.vo.Member" alias="Member2"/>
 		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatRel" alias="ChatRel"/>
 		<typeAlias type="com.kh.DeVenue.util.model.vo.ChatRoom" alias="ChatRoom"/>
