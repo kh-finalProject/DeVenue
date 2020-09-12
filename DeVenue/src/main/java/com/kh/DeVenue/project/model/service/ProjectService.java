@@ -73,9 +73,9 @@ public interface ProjectService {
 
 	int addLikeProject(HashMap ids);
 
-	ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi);
+	ArrayList<ProjectLike> selectLikeProject(HashMap condition, PageInfo pi);
 
-	int getLikeListCount(int memId);
+	int getLikeListCount(HashMap condition);
 
 	int deleteLikeProject(Integer lId);
 
@@ -95,10 +95,10 @@ public interface ProjectService {
 	int addApplyPofol(ApplyPortfolio applyPortfolio);
 
 
-	int getapplyListCount(int memId);
+	int getapplyListCount(HashMap condition);
 
 
-	ArrayList<Application> selectApplyProject(int memId, PageInfo pi);
+	ArrayList<Application> selectApplyProject(HashMap condition, PageInfo pi);
 
 
 	int getTempSave(HashMap application);
@@ -134,10 +134,10 @@ public interface ProjectService {
 	Application selectTempResume(int aId);
 
 
-	int getTempApplyListCount(int memId);
+	int getTempApplyListCount(HashMap condition);
 
 
-	ArrayList<ProjectList> selectTempApplyProject(int memId, PageInfo pi);
+	ArrayList<ProjectList> selectTempApplyProject(HashMap condition, PageInfo pi);
 
 
 	Application selectTempApplication(Integer aId);
@@ -179,22 +179,25 @@ public interface ProjectService {
 	ArrayList<ProjectLike> selectUserLike(int memId);
 
 
-	int getOngoingListCount(int memId);
+	int getOngoingListCount(HashMap condition);
 
 
-	ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi);
+	ArrayList<ProjectList> selectOngoingList(HashMap condition, PageInfo pi);
 
 
-	int getCompleteListCount(int memId);
+	int getCompleteListCount(HashMap condition);
 
 
-	ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi);
+	ArrayList<ProjectList> selectCompleteList(HashMap condition, PageInfo pi);
 
 
 	int getRequestListCount(int memId);
 
 
 	ArrayList<ProjectList> selectSuggestList(int memId, PageInfo pi);
+
+
+	int deleteThisSuggest(Integer sgId);
 
 
 
@@ -263,6 +266,12 @@ public interface ProjectService {
 
 
 	int rejectApply(int memPId);
+
+
+	int getLikeId(HashMap ids);
+
+
+	
 
 
 

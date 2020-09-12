@@ -142,18 +142,18 @@
       }
 
       /*관심 삭제*/
-      .likeCancel{
+      .suggestCancel{
           position: relative;
           bottom:0.5rem;
           margin-bottom: 1rem;
 
       }
 
-      .likeCancel>i{
+      .suggestCancel>i{
           font-size:0.75rem;
       }
 
-      .likeCancel>i:hover{
+      .suggestCancel>i:hover{
          color: #2793F2;
       }
 
@@ -309,6 +309,7 @@
 				            	<c:param name="mCategory" value="${su.mCategory}"/>
 				            	<c:param name="dCategory" value="${su.dCategory}"/>
 				            </c:url>
+				           
                            
                               <div class="row">
                                 <div class="col-md-9">
@@ -354,16 +355,16 @@
                                   </table>
                                   <table>
                                     <tr>
-                                      <td><i class="far fa-circle"></i>${su.mCategory }</td>
-                                      <td><i class="far fa-circle"></i>${su.dCategory }</td>
+                                      <td><i class="far fa-circle"></i>${su.mCategory}</td>
+                                      <td><i class="far fa-circle"></i>${su.dCategory}</td>
                                       <td><i class="fas fa-map-marker-alt"></i>${su.project.proLocation }</td>
                                     </tr>
                                   </table>
                                 </div>
                                 <div class="col-md-3">
-                                  <div class="suggestCancel"><i class="fas fa-times float-right mb-2">삭제</i></div>
+                                  <input type="hidden" name="suggestId" value="${su.id}">	
+                                  <div class="suggestCancel ml-2"><i class="fas fa-times float-right mb-4">삭제</i></div>
                                   <button type="button" class="btn btn-secondary btn-block" onclick="location.href='${pdetail}'">상세보기</button>
-                                  <button type="button" class="btn btn-info btn-block">지원하기</button>
                                 </div>
                               </div>
                               
@@ -380,9 +381,29 @@
 
           </section>
           <script>
-              $(".likeCancel").click(function(){
-                confirm("삭제하시겠어요?");
+             
+              $(document).on("click",".suggestCancel",function(){
+            	  
+            	  var sgId=$(this).parent().find("input[type='hidden']").val();
+            	 
+            	  $.ajax({
+            		
+            		  url:"deleteSuggestion.do",
+            		  data:{sgId:sgId},
+            		  success:function(data){
+            			  location.href="suggestProjectList.do?page="+${pi.currentPage};
+            		  },
+            		  error:function(request, status, errorData){
+                          alert("error code: " + request.status + "\n"
+                                +"message: " + request.responseText
+                                +"error: " + errorData);
+                       } 
+            		  
+            	  })
+            	  
+            	  
               })
+              
           </script>
           <!--Section: Block Content project list 끝-->
 

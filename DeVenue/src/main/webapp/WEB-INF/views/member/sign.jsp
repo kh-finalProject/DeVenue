@@ -424,6 +424,28 @@ section {
 	font-size: 15px;
 	width: 200px;
 }
+
+/* number 버튼 제거 */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
+	{
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* 핸드폰 select 태그 */
+.selCellPhone {
+	width: 60px;
+	height: 40px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+/* 핸드폰 input 태그 */
+.cellPhone {
+	width: 110px;
+	height: 40px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
 </style>
 <script src="https://kit.fontawesome.com/4b6b63d8f6.js"
 	crossorigin="anonymous"></script>
@@ -509,8 +531,21 @@ section {
 							<label for="phone">* 연락처</label>
 						</div>
 						<div class="form-input">
-							<input type="tel" class="input-size" id="phone" name="phone"
-								required placeholder="ex) '-'를 빼고 입력해주세요">
+							<!-- <input type="tel" class="input-size" id="phone" name="phone"
+								required placeholder="ex) '-'를 빼고 입력해주세요"> -->
+							<select name="cellPhone0" class="selCellPhone" style="margin-left:
+							40px;">
+							<option selected value="korea">국내</option>
+							<option value="overseas">해외</option>
+							</select> <select name="cellPhone1" class="selCellPhone">
+								<option selected value="010">010</option>
+								<option value="011">011</option>
+								<option value="016">016</option>
+								<option value="017">017</option>
+								<option value="018">018</option>
+								<option value="019">019</option>
+							</select> -<input type="number" name="cellPhone2" class="cellPhone">-
+							<input type="number" name="cellPhone3" class="cellPhone">
 						</div>
 					</div>
 					<div class="form-submit">
@@ -704,8 +739,31 @@ section {
 					</div>
 					<div class="input-subtitle"
 						style="width: 500px; margin-left: 260px;">
-						<span>비밀번호는 8자 이상 32자 이하로 입력해 주세요.</span>
+						<span id="pwdChk">비밀번호는 8자 이상 32자 이하로 입력해 주세요.</span>
 					</div>
+					<script>
+/* 			            $("#pwd").keypress(function(){
+			              var pwd = $(this).val();
+			              
+			              if(pwd.length>8 || pwd.length<32){
+			            	 $("#pwdChk").html("사용가능");
+			            	 $("#pwdChk").css({"color":"green"});
+			              }else{
+			            	$("#pwdChk").html("사용불가능");
+				        	$("#pwdChk").css({"color":"red"});
+			              }
+			              
+			            }) */
+			            
+			            $("#pwd").focusout(function(){
+				              if($(this).val().length>=8 && $(this).val().length<32){
+				            	 alert("사용가능");
+				              }else{
+								 alert("사용불가능");
+								 $("#pwd").val("");
+				              }
+			            })
+		          	</script>
 					<div class="form-submit">
 						<div class="form-label"
 							style="width: 200px; margin-left: 100px; text-align: right; font-size: x-large; position: absolute;">
@@ -846,7 +904,7 @@ section {
 					<p>
 						<b>이미 회원이신가요?</b>
 					</p>
-					<a href="login.do" class="btn btn-info btn-lg">로그인하러 가기</a>
+					<a href="loginpage.do" class="btn btn-info btn-lg" >로그인하러 가기</a>
 				</div>
 			</div>
 		</div>

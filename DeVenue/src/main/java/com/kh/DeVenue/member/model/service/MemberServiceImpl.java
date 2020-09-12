@@ -2,12 +2,14 @@ package com.kh.DeVenue.member.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.DeVenue.member.model.dao.MemberDao;
 import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EPid;
 import com.kh.DeVenue.member.model.vo.EvalProjectList;
 import com.kh.DeVenue.member.model.vo.FCeval;
 import com.kh.DeVenue.member.model.vo.FCprojectHistory;
@@ -72,7 +74,7 @@ public class MemberServiceImpl implements MemberService{
 //	}
 
 	@Override
-	public FindClientDetail selectClientDetail(Integer cId) {
+	public ArrayList<FindClientDetail> selectClientDetail(Integer cId) {
 		return mDao.selectClientDetail(cId);
 	}
 
@@ -166,5 +168,45 @@ public class MemberServiceImpl implements MemberService{
 	public ArrayList<FindClient> selectList2(PageInfo pi, String introduction) {
 		return mDao.selectList2(pi, introduction);
 	}
+
+	@Override
+	public Map<String, String> isDeathOrSanctions(String memEmail) {
+		return mDao.isDeathOrSanctions(memEmail);
+	}
+
+	@Override
+	public int updateDecAndDeath(String memEmail) {
+		return mDao.updateDecAndDeath(memEmail);
+	}
+
+	@Override
+	public int toDeath(String memEmail) {
+		return mDao.toDeath(memEmail);
+	}
+
+	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
+		return mDao.selectList(pi, status);
+	}
+
+	@Override
+	public EPid getEPid(HashMap id) {
+		return mDao.getEPid(id);
+	}
+
+	@Override
+	public int insertClientReport(HashMap report) {
+		return mDao.insertClientReport(report);
+	}
+
+	@Override
+	public int countUpReport(int reportCid) {
+		return mDao.countUpReport(reportCid);
+	}
+
+	@Override
+	public int reportCheck(HashMap report) {
+		return mDao.reportCheck(report);
+	}
+
 
 }

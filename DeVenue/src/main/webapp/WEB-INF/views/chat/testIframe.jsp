@@ -119,7 +119,7 @@
 	
 	<!-- 채팅 iframe 영역 --------------------------------------------------------------------------------->
 	<div style="width:300px; height:500px">
-		<iframe id="chatIframe" name="chatIframe" src="${contextPath}/firstLoadChat.do" class="chatIframe" frameborder="0" scrolling="no" ></iframe>
+		<iframe id="chatIframe" name="chatIframe" src="#" class="chatIframe" frameborder="0" scrolling="no" ></iframe>
 	</div>
 	
 	<!-- 채팅 관련 부모측 스크립트 ------------------------------------------------------------------------------->
@@ -144,9 +144,10 @@
 	$("#chatDiv").click(function () {
 		<c:if test="${ empty loginUser}">
 			alert('채팅 상담은 로그인 이후에 가능합니다.');
+// 			$('#chatIframe').prop('src', '#');
 			return;
 		</c:if>
-		
+		$('#chatIframe').prop('src', '${contextPath}/firstLoadChat.do');
 		clearInterval(iframeInterval);
 			
 		$("#chatIframe").show();

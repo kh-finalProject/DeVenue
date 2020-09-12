@@ -1,22 +1,32 @@
 package com.kh.DeVenue.myPage.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.DeVenue.member.model.vo.PageInfo;
 import com.kh.DeVenue.member.model.vo.Profile;
 import com.kh.DeVenue.myPage.model.dao.MyPageDao;
 import com.kh.DeVenue.myPage.model.vo.Career;
 import com.kh.DeVenue.myPage.model.vo.Certificate;
 import com.kh.DeVenue.myPage.model.vo.CmypageClientInfo;
+import com.kh.DeVenue.myPage.model.vo.CmypageCountPartners;
+import com.kh.DeVenue.myPage.model.vo.CmypagePayment;
 import com.kh.DeVenue.myPage.model.vo.CmypageProcess;
 import com.kh.DeVenue.myPage.model.vo.CmypageProjectHistory;
 import com.kh.DeVenue.myPage.model.vo.CmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PartInfo;
+import com.kh.DeVenue.myPage.model.vo.PartnersApplyCount;
+import com.kh.DeVenue.myPage.model.vo.PartnersContractCount;
+import com.kh.DeVenue.myPage.model.vo.PmypagePartnersInfo;
+import com.kh.DeVenue.myPage.model.vo.PmypageProcess;
+import com.kh.DeVenue.myPage.model.vo.PmypageSuggest;
 import com.kh.DeVenue.myPage.model.vo.PortFolio;
 import com.kh.DeVenue.myPage.model.vo.PortImg;
 import com.kh.DeVenue.myPage.model.vo.PortTec;
+import com.kh.DeVenue.myPage.model.vo.PortTecView;
 import com.kh.DeVenue.myPage.model.vo.SCCareer;
 import com.kh.DeVenue.myPage.model.vo.Skill;
 
@@ -196,7 +206,100 @@ public class MyPageServiceImpl implements MyPageService{
 		return myPageDao.selectClientInfo(cId);
 	}
 
+	@Override
+	public ArrayList<PortFolio> portList(int profileId) {
+		
+		return myPageDao.portList(profileId);
+	}
 
+	@Override
+	public ArrayList<PortTecView> ptList(int portId) {
+		 
+		return myPageDao.ptList(portId);
+	}
+
+	@Override
+	public PmypagePartnersInfo selectPartnersInfo(Integer pId) {
+		return myPageDao.selectPartnersInfo(pId);
+	}
+
+	@Override
+	public ArrayList<PartnersApplyCount> getApplyCount(Integer pId) {
+		return myPageDao.getApplyCount(pId);
+	}
+
+	@Override
+	public ArrayList<PartnersContractCount> getContractCount(Integer pId) {
+		return myPageDao.getContractCount(pId);
+	}
+
+	@Override
+	public ArrayList<PmypageSuggest> selectPartnersSuggest(Integer pId) {
+		return myPageDao.selectPartnersSuggest(pId);
+	}
+
+	@Override
+	public ArrayList<PmypageProcess> selectPartnersProcess(Integer pId) {
+		return myPageDao.selectPartnersProcess(pId);
+	}
+	
+	@Override
+	public String getMyPageSidebarProImg(String mId) {
+		return myPageDao.getMyPageSidebarProImg(mId);
+
+	}
+
+	@Override
+	public int portNameCount(String title) {
+		
+		return myPageDao.portNameCount(title);
+	}
+
+	@Override
+	public ArrayList<PortTecView> tNameList(int ptId) {
+
+		return myPageDao.tNameList(ptId);
+	}
+
+	public ArrayList<CmypageCountPartners> getCountPartners(Integer cId) {
+		return myPageDao.getCountPartners(cId);
+	}
+
+
+	@Override
+	public int updateClientInfo(HashMap map) {
+		return myPageDao.updateClientInfo(map);
+	}
+
+	@Override
+	public int getPaymentListCount(Integer cId) {
+		return myPageDao.getPaymentListCount(cId);
+	}
+
+	@Override
+	public ArrayList<CmypagePayment> getPaymentList(Integer cId, PageInfo pi) {
+		return myPageDao.getPaymentList(cId, pi);
+	}
+
+	@Override
+	public int updatePst(int id) {
+		return myPageDao.updatePst(id);
+	}
+
+	@Override
+	public int updateApply(int id) {
+		return myPageDao.updateApply(id);
+	}
+
+	@Override
+	public int insertApplyMatch(int id) {
+		return myPageDao.insertApplyMatch(id);
+	}
+
+	@Override
+	public int insertProcess(int id) {
+		return myPageDao.insertProcess(id);
+	}
 
 
 

@@ -13,7 +13,7 @@ public class FCprojectHistory implements Serializable {
 	private String memNick;		// 닉네임
 	private String memTypeKind;
 	private String ideStatus;	// 신원확인
-	private int phone;			// 번호등록
+	private String phone;			// 번호등록
 	private String proImg;
 	private int addProject;
 	private int stopProject;
@@ -32,9 +32,9 @@ public class FCprojectHistory implements Serializable {
 		super();
 	}
 
-	public FCprojectHistory(int memId, String memNick, String memTypeKind, String ideStatus, int phone, String proImg,
-			int addProject, int stopProject, int ingProject, int allPayment, int avgEagv, int completeProject,
-			int countEagv, double star1, double star2, double star3, double star4, double star5) {
+	public FCprojectHistory(int memId, String memNick, String memTypeKind, String ideStatus, String phone,
+			String proImg, int addProject, int stopProject, int ingProject, int allPayment, int avgEagv,
+			int completeProject, int countEagv, double star1, double star2, double star3, double star4, double star5) {
 		super();
 		this.memId = memId;
 		this.memNick = memNick;
@@ -88,11 +88,11 @@ public class FCprojectHistory implements Serializable {
 		this.ideStatus = ideStatus;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -214,4 +214,5 @@ public class FCprojectHistory implements Serializable {
 				+ "]";
 	}
 
+	
 }

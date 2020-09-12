@@ -155,6 +155,8 @@
 <body>
 	<!-- 메인 메뉴바 -->
    	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 	<!-- 마이페이지 사이드 메뉴바 -->
 	<jsp:include page="../common/pSideMenubar.jsp"/>
@@ -232,11 +234,11 @@
 					type:"post",
 					data:{password:password},
 					success:function(data){
-						alert(data);
 						// 보안로그인 성공
 						if(data=="true"){
+							alert('확인되었습니다.')
 							$('#outOfMemForm').css('display', 'block');
-							$('.login_for_passwordChange').css('display', 'none');
+							$('.login_for_passwordChange').css('display', 'block');
 							$('#scurityloginPwdInput').val('');
 							$('#scurityloginPwdInput').focus();
 						// 보안로그인 실패

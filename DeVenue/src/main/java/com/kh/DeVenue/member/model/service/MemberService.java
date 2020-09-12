@@ -2,8 +2,10 @@ package com.kh.DeVenue.member.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.kh.DeVenue.member.model.vo.CPeval;
+import com.kh.DeVenue.member.model.vo.EPid;
 import com.kh.DeVenue.member.model.vo.EvalProjectList;
 import com.kh.DeVenue.member.model.vo.FCeval;
 import com.kh.DeVenue.member.model.vo.FCprojectHistory;
@@ -47,7 +49,7 @@ public interface MemberService {
 
 	ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id);
 
-	FindClientDetail selectClientDetail(Integer cId);
+	ArrayList<FindClientDetail> selectClientDetail(Integer cId);
 
 	int insertEval(HashMap id);
 	
@@ -68,6 +70,22 @@ public interface MemberService {
 	ArrayList<FindClient> selectList2(PageInfo pi, String introduction);
 	
 	int insertIden(int memId);
+
+	Map<String, String> isDeathOrSanctions(String memEmail);
+
+	int updateDecAndDeath(String memEmail);
+
+	int toDeath(String memEmail);
+
+	ArrayList<FindClient> selectList(PageInfo pi, int status);
+
+	EPid getEPid(HashMap id);
+
+	int insertClientReport(HashMap report);
+
+	int countUpReport(int reportCid);
+
+	int reportCheck(HashMap report);
 
 	
 }

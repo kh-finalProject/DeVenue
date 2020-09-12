@@ -13,7 +13,7 @@ public class EvalProjectList implements Serializable {
 	private String memNick;		// 닉네임
 	private String memTypeKind;
 	private String ideStatus;	// 신원확인
-	private int phone;			// 번호등록
+	private String phone;			// 번호등록
 	private String profileImg;
 	private String proId;		// 프로젝트 번호
 	private String proName;		// 프로젝트 이름
@@ -22,7 +22,7 @@ public class EvalProjectList implements Serializable {
 		super();
 	}
 
-	public EvalProjectList(int memId, String memNick, String memTypeKind, String ideStatus, int phone,
+	public EvalProjectList(int memId, String memNick, String memTypeKind, String ideStatus, String phone,
 			String profileImg, String proId, String proName) {
 		super();
 		this.memId = memId;
@@ -67,11 +67,11 @@ public class EvalProjectList implements Serializable {
 		this.ideStatus = ideStatus;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -107,12 +107,7 @@ public class EvalProjectList implements Serializable {
 	public String toString() {
 		return "EvalProjectList [memId=" + memId + ", memNick=" + memNick + ", memTypeKind=" + memTypeKind
 				+ ", ideStatus=" + ideStatus + ", phone=" + phone + ", profileImg=" + profileImg + ", proId=" + proId
-				+ ", proName=" + proName + ", getMemId()=" + getMemId() + ", getMemNick()=" + getMemNick()
-				+ ", getMemTypeKind()=" + getMemTypeKind() + ", getIdeStatus()=" + getIdeStatus() + ", getPhone()="
-				+ getPhone() + ", getProfileImg()=" + getProfileImg() + ", getProId()=" + getProId() + ", getProName()="
-				+ getProName() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
+				+ ", proName=" + proName + "]";
 	}
-
 	
 }

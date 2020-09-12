@@ -100,10 +100,6 @@ public class ProjectDao {
 	}
 
 	
-	
-	
-	
-
 
 public ArrayList<Tech> selectTechList() {
 		
@@ -177,17 +173,17 @@ public ArrayList<Tech> selectTechList() {
 		return sqlSessionTemplate.insert("projectMapper.addLikeProject",ids );
 	}
 
-	public ArrayList<ProjectLike> selectLikeProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectLike> selectLikeProject(HashMap condition, PageInfo pi) {
 		
 		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getLikeList", memId, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.getLikeList", condition, rowBounds);
 	}
 
-	public int getLikeListCount(int memId) {
+	public int getLikeListCount(HashMap condition) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getLikeCount", memId);
+		return sqlSessionTemplate.selectOne("projectMapper.getLikeCount", condition);
 	}
 
 	public int deleteLikeProject(Integer lId) {
@@ -226,18 +222,18 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
-	public int getApplyListCount(int memId) {
+	public int getApplyListCount(HashMap condition) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getApplyCount", memId);
+		return sqlSessionTemplate.selectOne("projectMapper.getApplyCount", condition);
 	}
 
 
-	public ArrayList<Application> selectApplyProject(int memId, PageInfo pi) {
+	public ArrayList<Application> selectApplyProject(HashMap condition, PageInfo pi) {
 		
 		int offset=pi.getBoardLimit()*(pi.getCurrentPage()-1);
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectApplyProject", memId, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectApplyProject", condition, rowBounds);
 	}
 
 
@@ -307,18 +303,18 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
-	public int getTempApplyListCount(int memId) {
+	public int getTempApplyListCount(HashMap condition) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getTempApplyCount", memId);
+		return sqlSessionTemplate.selectOne("projectMapper.getTempApplyCount", condition);
 	}
 
 
-	public ArrayList<ProjectList> selectTempApplyProject(int memId, PageInfo pi) {
+	public ArrayList<ProjectList> selectTempApplyProject(HashMap condition, PageInfo pi) {
 		
 		int offset=(pi.getCurrentPage()-1)*(pi.getBoardLimit());
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectTempApplyProject", memId, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectTempApplyProject", condition, rowBounds);
 	}
 
 
@@ -410,34 +406,34 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
-	public int getOngoingListCount(int memId) {
+	public int getOngoingListCount(HashMap condition) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getOngoingCount", memId);
+		return sqlSessionTemplate.selectOne("projectMapper.getOngoingCount", condition);
 	}
 
 
 
-	public ArrayList<ProjectList> selectOngoingList(int memId, PageInfo pi) {
+	public ArrayList<ProjectList> selectOngoingList(HashMap condition, PageInfo pi) {
 		
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectOngoingList", memId, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectOngoingList", condition, rowBounds);
 	}
 
 
-	public int getCompleteListCount(int memId) {
+	public int getCompleteListCount(HashMap condition) {
 		
-		return sqlSessionTemplate.selectOne("projectMapper.getCompleteCount",memId);
+		return sqlSessionTemplate.selectOne("projectMapper.getCompleteCount",condition);
 	}
 
 
-	public ArrayList<ProjectList> selectCompleteList(int memId, PageInfo pi) {
+	public ArrayList<ProjectList> selectCompleteList(HashMap condition, PageInfo pi) {
 		
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCompleteList", memId, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectCompleteList", condition, rowBounds);
 	}
 
 
@@ -456,6 +452,11 @@ public ArrayList<Tech> selectTechList() {
 	}
 
 
+
+	public int deleteThisSuggest(Integer sgId) {
+		
+		return sqlSessionTemplate.delete("projectMapper.deleteThisSuggest", sgId);
+	}
 
 
 
@@ -599,17 +600,11 @@ ArrayList list =new ArrayList();
 	}
 
 
+	public int selectLikeId(HashMap ids) {
+		
+		return sqlSessionTemplate.selectOne("projectMapper.selectLikeId", ids);
+	}
 
-
-
-
-
-
-//	public ProjectQuestion getQuestion(int proId) {
-//		
-//		return sqlSessionTemplate.selectOne("projectMapper.getQuestion",proId);
-//	
-//	}
 
 
 

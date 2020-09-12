@@ -11,7 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -757,6 +759,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		ProjectFilter filter=(ProjectFilter)session.getAttribute("filter");
 		
 		System.out.println("페이지네이션 필터"+filter);
+		System.out.println("페이지네이션 필터"+search);
 		
 		int listCount=0;
 		PageInfo pi=new PageInfo();
@@ -845,6 +848,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				mv.addObject("pi", pi);
 				mv.addObject("tech", tech);
 				mv.addObject("search", search);
+				System.out.println("검색 조건 확인:"+search);
 				
 				mv.setViewName("project/find/findProjectListView");
 				
@@ -861,9 +865,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		//필터가 존재할 때,
 		if(filter!=null) {
 			
-			if(search!=null) {
-				filter.setSearch(search);
-			}
+			System.out.println("필터가 존재하는데, filter는요?"+filter);
 			
 			
 			//페이징 처리를 위해 게시물 수 알아오기
@@ -890,8 +892,12 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				mv.addObject("tech", tech);
 				mv.addObject("filter", filter);
 				
+				System.out.println("화면에 보내지는 filter"+filter);
+				
+				
 				if(search!=null) {
 					mv.addObject("search", search);
+					System.out.println("화면에 보내지는 search"+search);
 				}
 				
 				mv.setViewName("project/find/findProjectListView");
@@ -1081,14 +1087,18 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		
 		result=pService.addLikeProject(ids);
 		
+		//추가한 관심 리스트의 id를 가져온다.(Max)
+		int lId=pService.getLikeId(ids);
+		System.out.println("추가한 관심 리스트의 id:"+lId);
+		
+		JSONObject likeId=new JSONObject();
+		likeId.put("likeId", lId);
+		System.out.println("관심 아이디 jsonobject:"+likeId);
+		
 		PrintWriter out=response.getWriter();
 		
 		if(result>0) {
-			out.append("success");
-			out.flush();
-			out.close();
-		}else {
-			out.append("fail");
+			out.print(likeId);
 			out.flush();
 			out.close();
 		}
@@ -1096,11 +1106,27 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	}
 	
 	@RequestMapping(value = "likeProjectList.do")
-	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page) {
+	public ModelAndView likeProjectList(HttpServletRequest request,ModelAndView mv, @RequestParam(value="page", required = false) Integer page,
+			@ModelAttribute ProjectSearch search, @RequestParam(value="sorting", required=false) String sorting) {
+		
+		String category="";
+		String keyword="";
+		
+		if(search!=null) {
+			category=search.getCategory();
+			keyword=search.getKeyword();
+		}
+		
+		System.out.println("관심 프로젝트 리스트 컨트롤러로 진입");
 		
 		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
 		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
 		int memId=loginUser.getMemId();
+		
+		
+		System.out.println("memId:"+memId);
+		System.out.println("sorting:"+sorting);
+		System.out.println("search:"+search);
 		
 		//페이지네이션
 		int currentPage=1;
@@ -1108,21 +1134,36 @@ public ModelAndView applyUpdate(ModelAndView mv,
 			currentPage=page;
 		}
 		
+		//조회를 위해 hash map 준비
+		HashMap condition=new HashMap();
+		condition.put("memId", memId);
+		condition.put("sorting",sorting);
+		condition.put("category",category);
+		condition.put("keyword",keyword);
+		
+		System.out.println("condition"+condition);
+		
 		//전체 관심프로젝트 수
-		int listCount=pService.getLikeListCount(memId);
+		int listCount=pService.getLikeListCount(condition);
 		PageInfo pi=getPageInfo(currentPage, listCount);
 		
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectLike> likeList=pService.selectLikeProject(memId,pi);
+		ArrayList<ProjectLike> likeList=pService.selectLikeProject(condition,pi);
 		
 		System.out.println("화면단 가기전 관심 등록 리스트:"+likeList);
+		System.out.println("화면단 가기전 sorting:"+sorting);
+		System.out.println("화면단 가기전 search:"+search);
 		
 		mv.addObject("like", likeList);
 		mv.addObject("pi", pi);
+		mv.addObject("sorting", sorting);
+		mv.addObject("search", search);
+		
 		mv.setViewName("partnerSubMenu/likeProjectView");
 		
 		return mv;
 	}
+	
 	
 	@RequestMapping(value = "deleteLikeProject.do")
 	public void deleteLikeProject(HttpServletResponse response, @RequestParam(value = "lId", required=false) Integer lId) throws IOException {
@@ -1148,7 +1189,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	
 	
 	@RequestMapping(value="applyThisProject.do")
-	public ModelAndView applyProjectDetail(HttpServletRequest request,ModelAndView mv, @RequestParam(value="pId") Integer pId, @RequestParam(value="page") Integer page) {
+	public ModelAndView applyProjectDetail(HttpServletRequest request,ModelAndView mv, @RequestParam(value="pId") Integer pId, @RequestParam(value="page", required=false) Integer page) {
 		
 		//프로젝트 디테일 정보 가져오기
 		ProjectDetail detail=pService.selectProjectDetail(pId);
@@ -1180,6 +1221,9 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		cate.put("dCate",dCate);
 		cate.put("memId",memId);
 		
+		System.out.println("포트폴리오 검색 mCate:"+mCate);
+		System.out.println("포트폴리오 검색 dCate:"+dCate);
+		System.out.println("포트폴리오 검색 memId:"+memId);
 		
 		ArrayList<Portfolio> pf=pService.findPortfolio(cate);
 		
@@ -1239,7 +1283,9 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		//답변을 set
 		ArrayList<ApplyAnswer> answer=new ArrayList<>();
 		
-		if(aqId!=null) {
+		
+		
+		if(aaContent.length!=0) {
 		
 		for(int i=0;i<aqId.length;i++) {
 			ApplyAnswer a=new ApplyAnswer();
@@ -1251,6 +1297,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		application.setAnswer(answer);
 		
 		}
+		
+		
 		
 		System.out.println("지원서 insert 전, 지원서:"+application);
 		
@@ -1264,7 +1312,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		if(result1>0) {
 			
 			//지원답변이 있을 경우,
-			if(aqId!=null) {
+			if(aaContent.length!=0) {
 			for(int i=0;i<aqId.length;i++) {
 			result2=pService.addApplyAnswer(application.getAnswer().get(i));
 			}
@@ -1277,7 +1325,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		ArrayList<ApplyPortfolio> pofo=new ArrayList<>();
 		//지원 포트폴리오도 insert한다
 		
-		if(portId!=null) {
+		if(portId.length!=0) {
 		
 		for(int i=0;i<portId.length;i++) {
 			
@@ -1296,7 +1344,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		if(result1>0) {
 			
 			//지원 포트폴리오가 있는 경우
-			if(portId!=null) {
+			if(portId.length!=0) {
 			for(int i=0;i<portId.length;i++) {
 			result3=pService.addApplyPofol(application.getPortfolio().get(i));
 			}
@@ -1340,29 +1388,59 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	}
 	
 	@RequestMapping(value = "selectApplyProject.do")
-	public ModelAndView selectApplyProject(HttpServletRequest request,ModelAndView mv,@RequestParam(value = "page", required = false) Integer page) {
+	public ModelAndView selectApplyProject(HttpServletRequest request,ModelAndView mv,@RequestParam(value = "page", required = false) Integer page,
+			@ModelAttribute ProjectSearch search, @RequestParam(value="sorting", required=false) String sorting
+			) {
+		
+		
+		String category="";
+		String keyword="";
+		
+		if(search!=null) {
+			category=search.getCategory();
+			keyword=search.getKeyword();
+		}
+		
+		System.out.println("프로젝트 지원 리스트 컨트롤러로 진입");
 		
 		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
 		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
 		int memId=loginUser.getMemId();
+		
+		System.out.println("memId:"+memId);
+		System.out.println("sorting:"+sorting);
+		System.out.println("search:"+search);
 				
 		//페이지네이션
 		int currentPage=1;
 		if(page!=null) {
 			currentPage=page;
 		}
+		
+		//조회를 위해 hash map 준비
+		HashMap condition=new HashMap();
+		condition.put("memId", memId);
+		condition.put("sorting",sorting);
+		condition.put("category",category);
+		condition.put("keyword",keyword);
+				
+		System.out.println("condition"+condition);
 				
 		//전체 지원 프로젝트 수
-		int listCount=pService.getapplyListCount(memId);
+		int listCount=pService.getapplyListCount(condition);
 		PageInfo pi=getPageInfo(currentPage, listCount);
 				
 		//프로젝트 리스트를 가져오자
-		ArrayList<Application> applyList=pService.selectApplyProject(memId,pi);
+		ArrayList<Application> applyList=pService.selectApplyProject(condition,pi);
 				
 		System.out.println("화면단 가기전 지원 프로젝트 리스트:"+applyList);
+		System.out.println("화면단 가기전 sorting:"+sorting);
+		System.out.println("화면단 가기전 search:"+search);
 		
 		mv.addObject("apply", applyList);
 		mv.addObject("pi", pi);
+		mv.addObject("sorting", sorting);
+		mv.addObject("search", search);
 		
 		mv.setViewName("partnerSubMenu/appliedProjectView");
 		return mv;
@@ -1375,13 +1453,18 @@ public ModelAndView applyUpdate(ModelAndView mv,
 			@RequestParam(value="aPayment", required=false) Integer aPayment,
 			@RequestParam(value="aDuration", required=false) Integer aDuration,
 			@RequestParam(value="aContent", required=false) String aContent,
-			@RequestParam(value="aqId", required=false) Integer[] aqId,
-			@RequestParam(value="aaContent",required=false) String[] aaContent,
+			@RequestParam(value="aqId", required=false) ArrayList<Integer> aqId,
+			@RequestParam(value="aaContent",required=false) ArrayList<String> aaContent,
 			@RequestParam(value="resume",required=false) MultipartFile resume,
-			@RequestParam(value="portId",required=false) Integer[] portId,
+			@RequestParam(value="portId",required=false) ArrayList<Integer> portId,
 			@RequestParam(value="portContent",required=false) String portContent) throws IllegalStateException, IOException {
 		
 		System.out.println("임시저장 컨트롤러에 진입!");
+		
+		
+		System.out.println("aqId"+aqId);
+		System.out.println("aaContent"+aaContent);
+		System.out.println("portId"+portId);
 		
 		//최종 결과
 		int result=0;
@@ -1397,10 +1480,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		application.put("aContent", aContent);
 		
 		int count=pService.getTempSave(application);
+		System.out.println("저장된 지원서 숫자"+count);
 		
-		
-			
-			
 			String reNameResume="";
 			String originalResume="";
 			//이력서를 저장하자
@@ -1409,19 +1490,20 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				originalResume=resume.getOriginalFilename();
 			}
 			
-			application.put("reNameResume",reNameResume);
-			application.put("originalResume",originalResume);
+		application.put("reNameResume",reNameResume);
+		application.put("originalResume",originalResume);
 			
 			
 			//답변 리스트
 			ArrayList<ApplyAnswer> answer=new ArrayList<>();
 			
-			if(aqId!=null&&aaContent!=null) {
+			if(aaContent!=null) {
 			
-			for(int i=0;i<aaContent.length;i++) {
+			for(int i=0;i<aaContent.size();i++) {
+				System.out.println("답변 인덱스"+i);
 				ApplyAnswer a=new ApplyAnswer();
-				a.setAqId(aqId[i]);
-				a.setAaContent(aaContent[i]);
+				a.setAqId(aqId.get(i));
+				a.setAaContent(aaContent.get(i));
 				answer.add(a);
 			}
 			
@@ -1434,12 +1516,11 @@ public ModelAndView applyUpdate(ModelAndView mv,
 			ArrayList<ApplyPortfolio> pofo=new ArrayList<>();
 			if(portId!=null) {
 			
-			for(int i=0;i<portId.length;i++) {
+			for(int i=0;i<portId.size();i++) {
 				
 				ApplyPortfolio ap=new ApplyPortfolio();
-				ap.setPortId(portId[i]);
+				ap.setPortId(portId.get(i));
 				ap.setApContent(portContent);
-				
 				pofo.add(ap);
 			}
 			
@@ -1453,6 +1534,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 			//이미 저장된 지원서가 있는지 여부에 따라 2가지 선택
 			
 			if(count>0) {
+				System.out.println("이미 저장된 지원서가 있다.");
+				
 				//update 이미 저장된 지원서가 있다면, 기존의 임시 저장 파일에 업데이트
 				int result1=0;
 				int result2=0;
@@ -1480,13 +1563,14 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				//임시저장 파일 아이디를 참조하여 업데이트 한다.
 				result1=pService.updateTempApplication(application);
 				
+				System.out.println("기존 답변 확인하자.");
 				//답변을 업데이트 하기 전, 기존의 답변이 있는지 확인한다.
 				int answerCount=0;
-				if(!answer.isEmpty()) {
+				if(answer.size()!=0) {
 				for(int i=0;i<answer.size();i++) {
 					
 					answer.get(i).setaId(aId);
-					application.put("answer", answer.get(i));
+					application.put("each", answer.get(i));
 					answerCount=pService.isAnswerExist(application);
 					
 					if(answerCount>0) {
@@ -1504,7 +1588,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				
 				//포트폴리오 업데이트 하기 전, 기존에 등록한 포트폴리오가 있는지 확인한다.
 				int pofoCount=0;
-				if(!pofo.isEmpty()) {
+				if(pofo.size()!=0) {
 					
 						pofoCount=pService.isPofoExist(application);
 						
@@ -1528,6 +1612,7 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				
 			}else {
 				
+				System.out.println("기존의 지원서가 없다.");
 				//기존에 임시저장된 지원서가 없다면, insert
 				int result1=0;
 				int result2=0;
@@ -1540,8 +1625,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				if(result1>0) {
 					
 					//지원답변이 있을 경우,
-					if(aqId!=null) {
-					for(int i=0;i<aqId.length;i++) {
+					if(answer.size()!=0) {
+					for(int i=0;i<answer.size();i++) {
 					result2=pService.addApplyAnswer(answer.get(i));
 					}
 					}
@@ -1553,8 +1638,8 @@ public ModelAndView applyUpdate(ModelAndView mv,
 				if(result1>0) {
 					
 					//지원 포트폴리오가 있는 경우
-					if(portId!=null) {
-					for(int i=0;i<portId.length;i++) {
+					if(pofo.size()!=0) {
+					for(int i=0;i<pofo.size();i++) {
 					result3=pService.addApplyPofol(pofo.get(i));
 					}
 					
@@ -1605,30 +1690,57 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	
 	
 	@RequestMapping(value="selectTempApplicationList.do")
-	public ModelAndView tempApplicationList(HttpServletRequest request,ModelAndView mv,@RequestParam(value = "page", required = false) Integer page) {
+	public ModelAndView tempApplicationList(HttpServletRequest request,ModelAndView mv,@RequestParam(value = "page", required = false) Integer page,
+			@ModelAttribute ProjectSearch search, @RequestParam(value="sorting", required=false) String sorting) {
 		
+		
+		String category="";
+		String keyword="";
+		
+		if(search!=null) {
+			category=search.getCategory();
+			keyword=search.getKeyword();
+		}
 				
 		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
 		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
 		int memId=loginUser.getMemId();
+		
+		System.out.println("memId:"+memId);
+		System.out.println("sorting:"+sorting);
+		System.out.println("search:"+search);
 						
 		//페이지네이션
 		int currentPage=1;
 		if(page!=null) {
 			currentPage=page;
 			}
+		
+		
+		//조회를 위해 hash map 준비
+		HashMap condition=new HashMap();
+		condition.put("memId", memId);
+		condition.put("sorting",sorting);
+		condition.put("category",category);
+		condition.put("keyword",keyword);
+				
+		System.out.println("condition"+condition);
 						
 		//전체 지원 프로젝트 수
-		int listCount=pService.getTempApplyListCount(memId);
+		int listCount=pService.getTempApplyListCount(condition);
 		PageInfo pi=getPageInfo(currentPage, listCount);
 						
 		//프로젝트 리스트를 가져오자
-		ArrayList<ProjectList> applyList=pService.selectTempApplyProject(memId,pi);
+		ArrayList<ProjectList> applyList=pService.selectTempApplyProject(condition,pi);
 						
 		System.out.println("화면단 가기전 임시 저장된 지원 프로젝트 리스트:"+applyList);
+		System.out.println("화면단 가기전 sorting:"+sorting);
+		System.out.println("화면단 가기전 search:"+search);
 				
 		mv.addObject("apply", applyList);
 		mv.addObject("pi", pi);
+		mv.addObject("sorting", sorting);
+		mv.addObject("search", search);
 				
 		mv.setViewName("partnerSubMenu/TempAppliedProjectView");
 		return mv;
@@ -1654,11 +1766,12 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		int memId=((Member)(request.getSession().getAttribute("loginUser"))).getMemId();
 		ArrayList<Portfolio> pf=pService.selectPortfolio(memId);
 		
-		
+		System.out.println("지원서 id:"+aId);
 		//임시저장된 지원서(포트폴리오,답변 포함) 가져오기
+		
 		Application application=pService.selectTempApplication(aId);
+		System.out.println("임시저장 지원서 가져오기"+application);
 		mv.addObject("app", application);
-				
 		mv.addObject("page", currentPage);
 		mv.addObject("pofol", pf);
 		
@@ -1846,29 +1959,58 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	
 	@RequestMapping(value = "ongoingProjectList.do")
 	public ModelAndView ongoingProjectList(ModelAndView mv, HttpServletRequest request,
-			@RequestParam(value="page", required = false) Integer page) {
+			@RequestParam(value="page", required = false) Integer page,
+			@ModelAttribute ProjectSearch search, @RequestParam(value="sorting", required=false) String sorting
+			) {
 		
-		//세션에서 로그인 유저의 정보를 가져온다.
+		String category="";
+		String keyword="";
+		
+		if(search!=null) {
+			category=search.getCategory();
+			keyword=search.getKeyword();
+		}
+		
+		System.out.println("진행중 프로젝트 리스트 컨트롤러로 진입");
+		
+		//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
 		Member loginUser=(Member)request.getSession().getAttribute("loginUser");
 		int memId=loginUser.getMemId();
+		
+		
+		System.out.println("memId:"+memId);
+		System.out.println("sorting:"+sorting);
+		System.out.println("search:"+search);
 		
 		//페이지네이션
 		int currentPage=1;
 		if(page!=null) {
 			currentPage=page;
-				}
+		}
+		
+		//조회를 위해 hash map 준비
+		HashMap condition=new HashMap();
+		condition.put("memId", memId);
+		condition.put("sorting",sorting);
+		condition.put("category",category);
+		condition.put("keyword",keyword);
+		
+		System.out.println("condition"+condition);
 		
 		//전체 진행중 프로젝트 수
-		int listCount=pService.getOngoingListCount(memId);
+		int listCount=pService.getOngoingListCount(condition);
 		PageInfo pi=getPageInfo(currentPage, listCount);
 		
 		//진행중 프로젝트 리스트 가져오기
-		ArrayList<ProjectList> ongoing=pService.selectOngoingList(memId,pi);
+		ArrayList<ProjectList> ongoing=pService.selectOngoingList(condition,pi);
 		
 		System.out.println("화면단 가기 전 진행중 리스트"+ongoing);
 		
 		mv.addObject("ongoing", ongoing);
 		mv.addObject("pi", pi);
+		mv.addObject("sorting", sorting);
+		mv.addObject("search", search);
+		
 		mv.setViewName("partnerSubMenu/ongoingProjectView");
 		
 		
@@ -1881,30 +2023,58 @@ public ModelAndView applyUpdate(ModelAndView mv,
 	
 	@RequestMapping(value="completeProjectList.do")
 	public ModelAndView completeProjectList(ModelAndView mv, HttpServletRequest request,
-			@RequestParam(value="page", required = false) Integer page) {
+			@RequestParam(value="page", required = false) Integer page,
+			@ModelAttribute ProjectSearch search, @RequestParam(value="sorting", required=false) String sorting
+			
+			) {
 		
 		
-				//세션에서 로그인 유저의 정보를 가져온다.
+				String category="";
+				String keyword="";
+				
+				if(search!=null) {
+					category=search.getCategory();
+					keyword=search.getKeyword();
+				}
+				
+				System.out.println("종료 프로젝트 리스트 컨트롤러로 진입");
+				
+				//세션에서 로그인 유저의 정보를 가져와야 한다 (id)
 				Member loginUser=(Member)request.getSession().getAttribute("loginUser");
 				int memId=loginUser.getMemId();
+				
+				
+				System.out.println("memId:"+memId);
+				System.out.println("sorting:"+sorting);
+				System.out.println("search:"+search);
 				
 				//페이지네이션
 				int currentPage=1;
 				if(page!=null) {
 					currentPage=page;
-						}
+				}
 				
+				//조회를 위해 hash map 준비
+				HashMap condition=new HashMap();
+				condition.put("memId", memId);
+				condition.put("sorting",sorting);
+				condition.put("category",category);
+				condition.put("keyword",keyword);
+		
 				//전체 종료 프로젝트 리스트 수
-				int listCount=pService.getCompleteListCount(memId);
+				int listCount=pService.getCompleteListCount(condition);
 				PageInfo pi=getPageInfo(currentPage, listCount);
 				
 				//
-				ArrayList<ProjectList> complete=pService.selectCompleteList(memId,pi);
+				ArrayList<ProjectList> complete=pService.selectCompleteList(condition,pi);
 				
 				System.out.println("화면단 가기 전 완료 프로젝트"+complete);
 				
 				mv.addObject("complete", complete);
 				mv.addObject("pi", pi);
+				mv.addObject("sorting", sorting);
+				mv.addObject("search", search);
+				
 				mv.setViewName("partnerSubMenu/completeProjectView");
 				
 		return mv;
@@ -1945,6 +2115,27 @@ public ModelAndView applyUpdate(ModelAndView mv,
 		
 	}
 
-
+	@RequestMapping(value = "deleteSuggestion.do")
+	public void deleteThisSuggest(HttpServletResponse response, @RequestParam(value = "sgId",required=false) Integer sgId) throws IOException {
+		
+		
+		//지원 아이디를 가지고 삭제
+		int result=pService.deleteThisSuggest(sgId);
+		
+		
+		PrintWriter out=response.getWriter();
+		
+		if(result>0) {
+			out.append("success");
+			out.flush();
+			out.close();
+		}else {
+			out.append("fail");
+			out.flush();
+			out.close();
+		}
+		
+	
+	}
+	
 }
-

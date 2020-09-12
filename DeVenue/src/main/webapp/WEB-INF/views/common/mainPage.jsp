@@ -16,6 +16,7 @@ header.masthead {
 	padding-bottom: 8rem;
 	height: 50rem;
 }
+
 header.masthead .overlay {
 	position: absolute;
 	background-color: #212529;
@@ -25,9 +26,11 @@ header.masthead .overlay {
 	left: 0;
 	opacity: 0.3;
 }
+
 header.masthead h1 {
 	font-size: 2rem;
 }
+
 @media ( min-width : 768px) {
 	header.masthead {
 		padding-top: 12rem;
@@ -37,29 +40,35 @@ header.masthead h1 {
 		font-size: 3rem;
 	}
 }
+
 .showcase .showcase-text {
 	padding: 3rem;
 }
+
 .showcase .showcase-img {
 	min-height: 30rem;
 	background-size: cover;
 }
+
 @media ( min-width : 768px) {
 	.showcase .showcase-text {
 		padding: 7rem;
 	}
 }
+
 /* 프로세스 관련 style */
 .wizard .nav-tabs {
 	position: relative;
 	margin-bottom: 0;
 	border-bottom-color: transparent;
 }
+
 .wizard>div.wizard-inner {
 	position: relative;
 	margin-bottom: 50px;
 	text-align: center;
 }
+
 .connecting-line {
 	height: 4px;
 	background: #e0e0e0;
@@ -71,6 +80,7 @@ header.masthead h1 {
 	top: 0px;
 	z-index: 1;
 }
+
 .wizard .nav-tabs>li.active>a, .wizard .nav-tabs>li.active>a:hover,
 	.wizard .nav-tabs>li.active>a:focus {
 	color: #555555;
@@ -78,6 +88,7 @@ header.masthead h1 {
 	border: 0;
 	border-bottom-color: transparent;
 }
+
 span.round-tab {
 	width: 60px;
 	height: 60px;
@@ -96,25 +107,31 @@ span.round-tab {
 	font-weight: 700;
 	border: 1px solid #ddd;
 }
+
 span.round-tab i {
 	color: #fff;
 	font-size: 30px !important;
 	text-indent:-5px;
 }
+
 .wizard li.active span.round-tab {
 	background: #117a8b;
 	color: #fff;
 	border-color: #117a8b;
 }
+
 .wizard li.active span.round-tab i {
 	color: #5bc0de;
 }
+
 .wizard .nav-tabs>li.active>a i {
 	color: #117a8b;
 }
+
 .wizard .nav-tabs>li {
 	width: 25%;
 }
+
 .wizard li:after {
 	content: " ";
 	position: absolute;
@@ -126,6 +143,7 @@ span.round-tab i {
 	border-bottom-color: red;
 	transition: 0.1s ease-in-out;
 }
+
 .wizard .nav-tabs>li a {
 	width: 30px;
 	height: 30px;
@@ -136,6 +154,7 @@ span.round-tab i {
 	position: relative;
 	top: 0;
 }
+
 .wizard .nav-tabs>li a i {
 	position: absolute;
 	top: -53px;
@@ -150,10 +169,13 @@ span.round-tab i {
 	font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP',
 		'Sans-serif' !important;
 }
+
 .wizard .nav-tabs>li a:hover {
 	background: transparent;
 }
+
 /* 프로세스 style 끝 */
+
 /* 채팅 iframe css */
 .chatIframe {
 	background-color: transparent;
@@ -286,14 +308,17 @@ span.round-tab i {
 						$("#p2").css("color", "white");
 						$("#p3").css("color", "white");
 					})
+
 					function giveInfo(value) {
 						console.log(value);
+
 						if (value == 1) {
 							$("#p1").addClass("btn-secondary").css("box-shadow",
 									"none");
 							$("#p2").removeClass("btn-secondary");
 							$("#p3").removeClass("btn-secondary");
 						} else if (value == 2) {
+
 							$("#p1").removeClass("btn-secondary");
 							$("#p2").addClass("btn-secondary").css("box-shadow",
 									"none");
@@ -635,7 +660,7 @@ span.round-tab i {
 	<!-- 프로세스 끝 -->
 	
 	<!-- 채팅 불러오기 -->
-	<%-- <jsp:include page="../chat/testIframe.jsp"/> --%>
+	<jsp:include page="../chat/testIframe.jsp"/>
 	
 	<!-- footer -->
 	<jsp:include page="footer.jsp"/>

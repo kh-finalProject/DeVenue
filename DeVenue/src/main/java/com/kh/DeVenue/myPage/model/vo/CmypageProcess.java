@@ -100,5 +100,4 @@ public class CmypageProcess implements Serializable {
 				+ ", proPayment=" + proPayment + ", proStartDate=" + proStartDate + ", proEndDate=" + proEndDate + "]";
 	}
 	
-	 
 }

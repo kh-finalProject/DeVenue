@@ -75,15 +75,14 @@
                     <ul class="metismenu" id="menu1">
                         <li class="active">
                             <a class="has-arrow" href="#">
-                                <span class="mini-click-non">항목1</span>
+                                <span class="mini-click-non">채팅</span>
                             </a>
                             <ul class="submenu-angle" aria-expanded="true">
                                 <li><a title="Dashboard v.1" href="gotoChatOption.do"><span class="mini-sub-pro">채팅 설정</span></a></li>
                                 <li><a title="Dashboard v.2" href="gotoChatBotManage.do"><span class="mini-sub-pro">챗봇 데이터 설정</span></a></li>
-                                <li><a title="Dashboard v.3" href="#"><span class="mini-sub-pro">sadf</span></a></li>
-                                <li><a title="Analytics" href="#"><span class="mini-sub-pro">asdf</span></a></li>
-                                <li><a title="Widgets" href="#"><span class="mini-sub-pro">asdf</span></a>
-                                </li>
+                                <li><a title="Dashboard v.3" href="goChatListManage.do"><span class="mini-sub-pro">채팅목록 관리</span></a></li>
+                                <li><a title="Dashboard v.3" href="gotoIdenManage.do"><span class="mini-sub-pro">신원인증 관리</span></a></li>
+                                <li><a title="Dashboard v.3" href="gotoDeclareManage.do"><span class="mini-sub-pro">신고 관리</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -96,8 +95,8 @@
                                 <span class="mini-click-non">항목3</span>
                             </a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="#"><span class="mini-sub-pro">asdf</span></a></li>
-                                <li><a title="Add Professor" href="#"><span class="mini-sub-pro">sadf</span></a></li>
+                                <li><a title="All Professors" href="gotoCalculation.do"><span class="mini-sub-pro">프로젝트 정산</span></a></li>
+                                <li><a title="Add Professor" href="gotoContract.do"><span class="mini-sub-pro">프로젝트 계약관리</span></a></li>
                                 <li><a title="Edit Professor" href="#"><span class="mini-sub-pro">asdf</span></a></li>
                                 <li><a title="Professor Profile" href="#"><span class="mini-sub-pro">asdf</span></a>
                                 </li>

@@ -270,6 +270,7 @@
 				<result property="proLocation" column="LOCATION"/>
 				<result property="proRecruit" column="RECRUIT"/>
 				<result property="proCreateDate" column="CDATE"/>
+				<result property="proREndDate" column="RENDDATE"/>
 			</association>
 			
 		</association>
@@ -1002,20 +1003,61 @@
 		(SEQ_LIKEID.NEXTVAL,#{memId},#{pId},SYSDATE)
 	</insert>
 	
-	<select id="getLikeCount" parameterType="int" resultType="_int">
+<select id="getLikeCount" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
 		WHERE L.MEM_ID=#{memId}
+		<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (NAME LIKE '%'||#{keyword}||'%' OR SUMMARY LIKE '%'||#{search}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+		</if>
 	</select>
 	
-	<select id="getLikeList" parameterType="int" resultMap="likeResultSet">
+	<select id="getLikeList" parameterType="hashmap" resultMap="likeResultSet">
 		SELECT L.*,P.*,M.MEM_NICK,M.MEM_EMAIL
 		FROM P_LIKE L
 		LEFT JOIN PROJECTLIST_VIEW P ON (L.PRO_ID=P.ID)
 		LEFT JOIN MEMBER M ON (L.MEM_ID=M.MEM_ID)
 		WHERE L.MEM_ID=#{memId}
-	
+		
+		<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (NAME LIKE '%'||#{keyword}||'%' OR SUMMARY LIKE '%'||#{search}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+		</if>
+		
+		<if test="sorting!=null">
+		<choose>
+		<when test="sorting =='PAYMENT'">
+		ORDER BY 10 DESC
+		</when>
+		<when test="sorting =='CDATE'">
+		ORDER BY 13 DESC
+		</when>
+		<when test="sorting =='RENDDATE'">
+		ORDER BY 14 ASC
+		</when>
+		</choose>
+		</if>
+		
 	</select>
 	
 	<delete id="deleteLikeProject" parameterType="int">
@@ -1043,16 +1085,17 @@
 	<if test="memId !=null">
 	AND F.MEM_ID=#{memId}
 	</if>
-	
-	<if test="mCate!=''">
-	<choose>
-	<when test="mCate='M3'">
-	AND MC_ID IN('MC1','MC2')
-	</when>
-	<otherwise>
+		
+	<if test="mCate == 'MC1'">
 	AND MC_ID=#{mCate}
-	</otherwise>
-	</choose>
+	</if>
+	
+	<if test="mCate == 'MC2'">
+	AND MC_ID=#{mCate}
+	</if>
+	
+	<if test="mCate == 'MC3'">
+	AND MC_ID IN ('MC1','MC2')
 	</if>
 	
 	<if test="dCate!=''">
@@ -1061,6 +1104,7 @@
 	</where>
 	
 	</select>
+	
 	
 	<insert id="insertApplication" parameterType="Application">
 	
@@ -1091,13 +1135,27 @@
 	INTO PORT_APPLY VALUES(#{apId},SEQ_APPLY.CURRVAL,#{portId},#{apContent})
 	</insert>
 	
-	<select id="getApplyCount" parameterType="_int" resultType="_int">
+	<select id="getApplyCount" parameterType="hashmap" resultType="_int">
 	SELECT COUNT(*)
-	FROM P_APPLY 
+	FROM P_APPLY A
+	LEFT JOIN PROJECTLIST_VIEW P ON (A.PRO_ID=P.ID)
 	WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='N' AND PRO_ASTATUS='0'
+	<if test="keyword!=null and category!=null">
+	<choose>
+	<when test="category=='전체'">
+	AND (NAME LIKE '%'||#{keyword}||'%' OR SUMMARY LIKE '%'||#{search}||'%')
+	</when>
+	<when test="category=='제목'">
+	AND NAME LIKE '%'||#{keyword}||'%'
+	</when>
+	<when test="category=='프로젝트내용'">
+	AND SUMMARY LIKE '%'||#{keyword}||'%'
+	</when>
+	</choose>
+	</if>
 	</select>
 	
-	<select id="selectApplyProject" parameterType="_int" resultMap="applyResultSet">
+	<select id="selectApplyProject" parameterType="hashmap" resultMap="applyResultSet">
 		SELECT A.*,P.*,
 		PRO_AA_ID,PRO_AA_CONTENT,PRO_AAC_DATE,
 		W.PRO_AQ_ID AS "PRO_AQ_ID", PRO_AQ_CONTENT,
@@ -1110,7 +1168,37 @@
 		LEFT JOIN PORT_APPLY PA ON (PA.PRO_AID=A.PRO_AID)
 		LEFT JOIN PORTFOLIO F ON (PA.PORT_ID=F.PORT_ID)
 		WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='N' AND PRO_ASTATUS='0'
-		ORDER BY PRO_AID DESC
+		<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (NAME LIKE '%'||#{keyword}||'%' OR SUMMARY LIKE '%'||#{search}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+		</if>
+		
+		<if test="sorting!=null">
+		<choose>
+		<when test="sorting =='PAYMENT'">
+		ORDER BY 17 DESC
+		</when>
+		<when test="sorting =='CDATE'">
+		ORDER BY 20 DESC
+		</when>
+		<when test="sorting =='RENDDATE'">
+		ORDER BY 21 ASC
+		</when>
+		<otherwise>
+		ORDER BY 1 DESC
+		</otherwise>
+		</choose>
+		</if>
+		
 	</select>
 	
 	<select id="getTempSaveNum" parameterType="hashmap" resultType="_int">
@@ -1153,14 +1241,14 @@
 	<select id="isAnswerExist" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM P_ANSWER
-		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{each.aqId}
 	</select>
 	
 	<update id="updateTempAnswer" parameterType="hashmap">
 		UPDATE P_ANSWER
-		SET PRO_AA_CONTENT=#{answer.aaContent},
+		SET PRO_AA_CONTENT=#{each.aaContent},
 		PRO_AAC_DATE=SYSDATE
-		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{answer.aqId}
+		WHERE PRO_AID=#{aId} AND PRO_AQ_ID=#{each.aqId}
 	</update>
 	
 	<select id="isPofoExist" parameterType="hashmap" resultType="_int">
@@ -1186,7 +1274,6 @@
 	
 	</insert>
 	
-	
 	<insert id="insertTempPofo" parameterType="ApplyPF">
 	
 	<selectKey resultType="int" keyProperty="apId" order="BEFORE">
@@ -1203,17 +1290,63 @@
 	WHERE PRO_AID=#{aId}
 	</select>
 	
-	<select id="getTempApplyCount" parameterType="_int" resultType="_int">
+	<select id="getTempApplyCount" parameterType="hashmap" resultType="_int">
 	SELECT COUNT(*)
-	FROM P_APPLY 
+	FROM P_APPLY A
+	LEFT JOIN PROJECTLIST_VIEW P ON (A.PRO_ID=P.ID)
 	WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS='0'
+	<if test="keyword!=null and category!=null">
+	<choose>
+	<when test="category=='전체'">
+	AND (NAME LIKE '%'||#{keyword}||'%' OR SUMMARY LIKE '%'||#{keyword}||'%')
+	</when>
+	<when test="category=='제목'">
+	AND NAME LIKE '%'||#{keyword}||'%'
+	</when>
+	<when test="category=='프로젝트내용'">
+	AND SUMMARY LIKE '%'||#{keyword}||'%'
+	</when>
+	</choose>
+	</if>
+	
 	</select>
 	
-	<select id="selectTempApplyProject" parameterType="_int" resultMap="applyResultSet">
+	<select id="selectTempApplyProject" parameterType="hashmap" resultMap="applyResultSet">
 		SELECT A.*,P.*
 		FROM P_APPLY A
 		LEFT JOIN PROJECTLIST_VIEW P ON (A.PRO_ID=P.ID)
 		WHERE MEM_PID=#{memId} AND PRO_ASAVE_STATUS='Y' AND PRO_ASTATUS='0'
+		<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (NAME LIKE '%'||#{keyword}||'%' OR SUMMARY LIKE '%'||#{keyword}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+		</if>
+		
+		<if test="sorting!=null">
+		<choose>
+		<when test="sorting =='PAYMENT'">
+		ORDER BY 17 DESC
+		</when>
+		<when test="sorting =='CDATE'">
+		ORDER BY 20 DESC
+		</when>
+		<when test="sorting =='RENDDATE'">
+		ORDER BY 21 ASC
+		</when>
+		<otherwise>
+		ORDER BY 1 DESC
+		</otherwise>
+		</choose>
+		</if>
+		
 	</select>
 	
 	<select id="selectTempApplication" parameterType="_int" resultMap="applyResultSet">
@@ -1228,8 +1361,8 @@
 		LEFT JOIN P_QUESTION Q ON (W.PRO_AQ_ID=Q.PRO_AQ_ID)
 		LEFT JOIN PORT_APPLY PA ON (PA.PRO_AID=A.PRO_AID)
 		LEFT JOIN PORTFOLIO F ON (PA.PORT_ID=F.PORT_ID)
-		WHERE PRO_AID=#{aId}
-		ORDER BY PRO_AID DESC
+		WHERE A.PRO_AID=#{aId} AND A.PRO_ASAVE_STATUS='Y' AND A.PRO_ASTATUS='0'
+		
 	</select>
 	
 	<update id="deleteTempApplication" parameterType="Application">
@@ -1285,7 +1418,7 @@
 	
 	</select>
 	
-	<select id="getOngoingCount" parameterType="_int" resultType="_int">
+	<select id="getOngoingCount" parameterType="hashmap" resultType="_int">
 	SELECT COUNT(*)
 	FROM P_PROCESS C
 	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
@@ -1293,22 +1426,72 @@
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
 	WHERE P.PRO_STA_ID='PST4' AND CH.MEM_ID=#{memId}
+	
+	<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (PRO_NAME LIKE '%'||#{keyword}||'%' OR PRO_SUMMARY LIKE '%'||#{keyword}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND PRO_NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND PRO_SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+	</if>
+	
+	
 	</select>
 	
-	<select id="selectOngoingList" parameterType="_int" resultMap="projectListResultSet">
+	<select id="selectOngoingList" parameterType="hashmap" resultMap="projectListResultSet">
 	SELECT c.pro_pid AS "ID",
 	P.PRO_ID AS "PROID",P.PRO_NAME AS "NAME",P.PRO_DURATION AS "DURATION",
 	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",P.PRO_CONTRACT AS "CONTRACT",
 	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY"
+	,P.PRO_CREATE_DATE AS "CDATE",P.PRO_R_END_DATE AS "RENDDATE"
 	FROM P_PROCESS C
 	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
 	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
 	WHERE P.PRO_STA_ID='PST4' AND CH.MEM_ID=#{memId}
+	
+	<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (PRO_NAME LIKE '%'||#{keyword}||'%' OR PRO_SUMMARY LIKE '%'||#{keyword}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND PRO_NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND PRO_SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+	</if>
+	
+	<if test="sorting!=null">
+		<choose>
+		<when test="sorting =='PAYMENT'">
+		ORDER BY 5 DESC
+		</when>
+		<when test="sorting =='CDATE'">
+		ORDER BY 10 DESC
+		</when>
+		<when test="sorting =='RENDDATE'">
+		ORDER BY 11 DESC
+		</when>
+		<otherwise>
+		ORDER BY 1 DESC
+		</otherwise>
+		</choose>
+	</if>
+	
+	
 	</select>
 	
-	<select id="getCompleteCount" parameterType="_int" resultType="_int">
+	<select id="getCompleteCount" parameterType="hashmap" resultType="_int">
 	SELECT COUNT(*)
 	FROM P_PROCESS C
 	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
@@ -1316,20 +1499,66 @@
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
 	WHERE P.PRO_STA_ID IN ('PST5','PST6') AND CH.MEM_ID=#{memId}
+	
+	<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (PRO_NAME LIKE '%'||#{keyword}||'%' OR PRO_SUMMARY LIKE '%'||#{keyword}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND PRO_NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND PRO_SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+	</if>
+	<if test="sorting=='PST5'">
+	AND P.PRO_STA_ID ='PST5'
+	</if>
+	<if test="sorting=='PST6'">
+	AND P.PRO_STA_ID ='PST6'
+	</if>
+	
 	</select>
 	
-	<select id="selectCompleteList" parameterType="_int" resultMap="projectListResultSet">
+	<select id="selectCompleteList" parameterType="hashmap" resultMap="projectListResultSet">
 	SELECT c.pro_pid AS "ID",
 	P.PRO_ID AS "PROID",P.PRO_NAME AS "NAME",P.PRO_DURATION AS "DURATION",
     P.PRO_STA_ID AS "STATUS",
 	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",P.PRO_CONTRACT AS "CONTRACT",
-	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY"
+	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY",
+	P.PRO_END_DATE, P.MEM_ID AS "CLIENTID"
 	FROM P_PROCESS C
 	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
 	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
 	WHERE P.PRO_STA_ID IN ('PST5','PST6') AND CH.MEM_ID=#{memId}
+	
+	<if test="keyword!=null and category!=null">
+		<choose>
+		<when test="category=='전체'">
+		AND (PRO_NAME LIKE '%'||#{keyword}||'%' OR PRO_SUMMARY LIKE '%'||#{keyword}||'%')
+		</when>
+		<when test="category=='제목'">
+		AND PRO_NAME LIKE '%'||#{keyword}||'%'
+		</when>
+		<when test="category=='프로젝트내용'">
+		AND PRO_SUMMARY LIKE '%'||#{keyword}||'%'
+		</when>
+		</choose>
+	</if>
+	<if test="sorting=='PST5'">
+	AND P.PRO_STA_ID ='PST5'
+	</if>
+	<if test="sorting=='PST6'">
+	AND P.PRO_STA_ID ='PST6'
+	</if>
+	
+	<if test="sorting=='ENDDATE'">
+	ORDER BY 11 DESC
+	</if>
 	
 	</select>
 	
@@ -1353,7 +1582,17 @@
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	WHERE S.MEM_ID=#{memId} AND P.PRO_STA_ID='PST3'
 	
+	</select>
+	
+	<delete id="deleteThisSuggest" parameterType="_int">
+	DELETE FROM P_SUGGEST
+	WHERE PS_ID=#{sgId}
+	</delete>
 
+
+	<select id="selectLikeId" parameterType="hashmap" resultType="_int">
+	SELECT MAX(PRO_LID)
+	FROM P_LIKE
 	</select>
 
 

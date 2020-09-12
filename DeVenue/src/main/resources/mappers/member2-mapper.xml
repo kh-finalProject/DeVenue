@@ -39,4 +39,23 @@
 		FROM CHATUSER_INFO
 		WHERE USER_TYPE IN ('UT1', 'UT2')
 	</select>
+	
+	<!--decCount와 death와 modifydate를 불러옴(제재판단)  -->
+	<select id="isDeathOrSanctions" parameterType="string" resultType="map">
+		SELECT DEC_COUNT, DEATH, MEM_MODIFY_DATE
+		FROM MEMBER
+		WHERE MEM_EMAIL = #{memEmail}
+	</select>
+	<!-- 제재 자동종료되었을 시 (이땐 death를 증가시킴, 관리자는 억울한 경우에 해제 시키므로 DEATH를 늘리지 않고 지운다)-->
+	<update id="updateDecAndDeath" parameterType="string">
+		UPDATE MEMBER
+		SET DEC_COUNT = 0, MEM_MODIFY_DATE = NULL, DEATH = (SELECT NVL(DEATH,0) + 1 FROM MEMBER WHERE MEM_EMAIL = #{memEmail})
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
+	<!-- 자동 회원 탈퇴처리(지금은 로그인마다 실행되게 해놨음 -->
+	<update id="toDeath" parameterType="string">
+		UPDATE MEMBER
+		SET MEM_STATUS = 'N', MEM_MODIFY_DATE = SYSDATE, DEATH = 3
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
 </mapper>

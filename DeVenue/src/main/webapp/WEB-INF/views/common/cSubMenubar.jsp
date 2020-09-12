@@ -7,6 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.bg-light{
+		background: #7F7FD5;
+	    background: -webkit-linear-gradient(to bottom, #2a2f38, #272b31, #26292c);
+	    background: linear-gradient(to bottom, #2a2f38, #272b31,#26292c);
+		border-bottom:1px solid #2a2f38;
+	}
+</style>
 </head>
 <body>
 <c:url var="check" value="check.do"/>
@@ -31,22 +39,19 @@
 					
 					
 				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="${check}">검수 중</a></li>
+					class="nav-link ml-4 hvr-underline-from-center" href="${check}"  style="color:white !important;">검수 중</a></li>
 				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="${recruit}">지원자 모집
+					class="nav-link ml-4 hvr-underline-from-center" href="${recruit}"  style="color:white !important;">지원자 모집
 						중</a></li>
 				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="${underway}">진행 중인
+					class="nav-link ml-4 hvr-underline-from-center" href="${underway}"  style="color:white !important;">진행 중인
 						프로젝트</a></li>
 				<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="${end}">종료된
+					class="nav-link ml-4 hvr-underline-from-center" href="${end}"  style="color:white !important;">종료된
 						프로젝트</a></li>
-						<li class="nav-item"><a
-					class="nav-link ml-4 hvr-underline-from-center" href="proAdmin.do">프로젝트 관리자</a></li>
 			</ul>
 			</div>
 			</form>
 	</nav>
-
 </body>
 </html>

@@ -857,6 +857,9 @@ ul li input {
 		})
 	</script>
 
+	<!-- sidebar -->
+	<jsp:include page="../common/sideMenubarAll.jsp" />
+
 
 	<!-- Section -->
 	<section>
@@ -1169,7 +1172,8 @@ ul li input {
 						<div class="col-12 partnes-info-container">
 							<div class="col-12 inner">
 								<!-- 하나의 파트너스 정보 -->
-								<c:forEach var="mem" items="${mList }">
+								<c:forEach var="fp" items="${fpList }">
+								<input type="text" name="memId" value="${fp.memId }">
 									<div class="col-12 partnes-info">
 										<div class="left">
 											<div class="img">
@@ -1177,28 +1181,35 @@ ul li input {
 													style="width: 100%; height: 100%;">
 											</div>
 											<div class="nickname">
-												<span style="font-size: 20px;">${mem.memNick }</span> <span
+												<span style="font-size: 20px;">${fp.memNick }</span> <span
 													class="btn btn-info btn-sm">활동가능</span>
 											</div>
 										</div>
 										<div class="center">
 											<div class="personal-info">
-												<span>개발자</span>
+												<c:choose>
+													<c:when test="${fp.ideStatus eq 'COMPLETE' }">
+														<span>신원인증</span>	
+													</c:when>
+													<c:otherwise>
+														<span style="color: grey;">신원인증</span>										
+													</c:otherwise>
+												</c:choose>
 												<%-- <span>${mem.memType }</span> --%>
 												<c:choose>
-													<c:when test="${mem.memType eq 'MT1'}">
+													<c:when test="${fp.memType eq 'MT1'}">
 														<span>개인</span>
 													</c:when>
-													<c:when test="${mem.memType eq 'MT2'}">
+													<c:when test="${fp.memType eq 'MT2'}">
 														<span>법인</span>
 													</c:when>
-													<c:when test="${mem.memType eq 'MT3'}">
+													<c:when test="${fp.memType eq 'MT3'}">
 														<span>팀</span>
 													</c:when>
-													<c:when test="${mem.memType eq 'MT4'}">
+													<c:when test="${fp.memType eq 'MT4'}">
 														<span>개인사업자</span>
 													</c:when>
-													<c:when test="${mem.memType eq 'MT5'}">
+													<c:when test="${fp.memType eq 'MT5'}">
 														<span>법인사업자</span>
 													</c:when>
 													<c:otherwise>
@@ -1207,7 +1218,7 @@ ul li input {
 												</c:choose>
 												<span>신원인증</span>
 												<c:choose>
-													<c:when test="${empty mem.cellPhone }">																			
+													<c:when test="${empty fp.cellPhone }">																			
 														<span style="border: none; color: gray;">연락처 없음</span>										
 													</c:when>
 													<c:otherwise>
@@ -1216,14 +1227,7 @@ ul li input {
 												</c:choose>
 											</div>
 											<div class="self-introduction">
-												<p>자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서
-													가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴 자기소개 DB에서
-													가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴
-													자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개
-													DB에서 가져옴 자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서
-													가져옴자기소개 DB에서 가져옴 자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서
-													가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴 자기소개 DB에서 가져옴자기소개 DB에서
-													가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴자기소개 DB에서 가져옴</p>
+												<p>${fp.introduction }</p>
 											</div>
 											<div class="skill">
 												<span>JAVA</span><span>JQUERY</span>
@@ -1260,38 +1264,7 @@ ul li input {
 
 
 	<!-- Footer -->
-	<footer class="footer" style="background-color: #212426;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-					<ul class="list-inline mb-2">
-						<li class="list-inline-item"><a href="#">고객센터</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">운영시간</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">이용약관</a></li>
-						<li class="list-inline-item">&sdot;</li>
-						<li class="list-inline-item"><a href="#">공지사항</a></li>
-					</ul>
-					<p class="text-muted small mb-4 mb-lg-0">&copy; Your Website
-						2020. All Rights Reserved.</p>
-				</div>
-				<div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-					<ul class="list-inline mb-0">
-						<li class="list-inline-item mr-3"><a href="#"> <i
-								class="fab fa-facebook fa-2x fa-fw"></i>
-						</a></li>
-						<li class="list-inline-item mr-3"><a href="#"> <i
-								class="fab fa-twitter-square fa-2x fa-fw"></i>
-						</a></li>
-						<li class="list-inline-item"><a href="#"> <i
-								class="fab fa-instagram fa-2x fa-fw"></i>
-						</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</footer>
+	<jsp:include page="../common/footer.jsp" />
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->

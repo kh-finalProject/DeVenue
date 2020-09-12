@@ -41,53 +41,68 @@ body {
 /* 	font-family: 'Do Hyeon', sans-serif; */
 	background-color: #212426;
 }
+
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 /* 	font-family: 'Do Hyeon', sans-serif !important; */
 	font-weight: 700;
 }
+
 #navbarMain>ul>li>a {
 	color: white;
 }
+
 #navbarMain>ul>li>a:hover {
 	color: lightblue;
 }
+
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+
 * {
 	margin: 0;
 	padding: 0;
 }
+
 i {
 	margin-right: 10px;
 }
+
 /*------------------------*/
+
 /*----------step-wizard------------*/
 .d-flex {
 	display: flex;
 }
+
 .justify-content-center {
 	justify-content: center;
 }
+
 .align-items-center {
 	align-items: center;
 }
+
 /*---------signup-step-------------*/
 .signup-step-container {
 	padding: 150px 0px;
 	padding-bottom: 60px;
 }
+
 .wizard .tab-pane {
 	position: relative;
 	padding-top: 20px;
 }
+
 .list-inline li {
 	display: inline-block;
 }
+
 @media ( max-width : 767px) {
 	.wizard .nav-tabs>li a i {
 		display: none;
 	}
 }
+
 .back-to-top {
 	position: fixed;
 	bottom: 110px;
@@ -95,6 +110,7 @@ i {
 	display: none;
 	z-index: 100;
 }
+
 /* 메인메뉴 마우스 호버 효과 */
 .hvr-underline-from-center {
 	display: inline-block;
@@ -105,6 +121,7 @@ i {
 	position: relative;
 	overflow: hidden;
 }
+
 .hvr-underline-from-center:before {
 	content: "";
 	position: absolute;
@@ -121,29 +138,34 @@ i {
 	-webkit-transition-timing-function: ease-out;
 	transition-timing-function: ease-out;
 }
+
 .hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before,
 	.hvr-underline-from-center:active:before {
 	left: 0;
 	right: 0;
 }
 /* 마우스 호버 끝 */
+
 /* 메뉴바 폰트 */
 #navbarSub ul li a, #navbarMain ul li a {
 /* 	font-family: 'Jua', sans-serif; */
 	font-family: 'Do Hyeon', sans-serif !important;
 }
 /* 메뉴바 폰트 끝 */
+
 /* 회원찾기 드롭다운 메뉴 */
 .dropbtn {
   color: white;
   font-size: 16px;
   border: none;
 }
+
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
   display: inline-block;
 }
+
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   display: none;
@@ -153,6 +175,7 @@ i {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
+
 /* Links inside the dropdown */
 .dropdown-content a {
   color: black;
@@ -160,10 +183,13 @@ i {
   text-decoration: none;
   display: block;
 }
+
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: #ddd;}
+
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
+
 /*  */
 .btn-info{
 /* 	background-color: rgb(11,15,66) !important; */
@@ -192,7 +218,7 @@ $(document).ready(function(){
 	}
 });
 </script>
-<body>
+<body id="mainMenubar">
 	
 
 	<c:set var="contextPath"
@@ -206,8 +232,10 @@ $(document).ready(function(){
 			$(window).scroll(function() {
 				if ($(this).scrollTop() > 10) {
 					$('#back-to-top').css("display", "block")
+
 				} else {
 					$('#back-to-top').css("display", "none")
+
 				}
 			});
 			// scroll body to 0px on click
@@ -331,6 +359,7 @@ $(document).ready(function(){
 			$("#navbarMain .nav-link").mouseenter(function() {
 // 				$(this).css("font-size", "120%");
 			})
+
 			$("#navbarMain .nav-link").mouseleave(function() {
 // 				$(this).css("font-size", "115%");
 			})

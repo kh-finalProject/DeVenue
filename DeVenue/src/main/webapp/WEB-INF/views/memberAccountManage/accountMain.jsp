@@ -433,6 +433,8 @@
 <body>
 
   	<jsp:include page="../common/menubar.jsp"/>
+	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp"/>
   	<jsp:include page="../common/pSideMenubar.jsp"/>
     <!-- 메뉴바 끝----------------------------------------------------------- -->
 
@@ -463,21 +465,22 @@
                     <label>기본 정보</label>
                     <button type="button" class="btn btn-info editBtn" id="basicEditBtn">수정</button>
                 </div>
-                <form action="basicInfoUpdate.do" method="post" enctype="multipart/form-data">
+                <form action="basicInfoUpdate.do" method="post" enctype="multipart/form-data" accept-charset="UTF-8
+                ">
                     <table class="basic_inform_content_table" border="0" style="border-radius: 5px;">
                         <tr>
                             <td colspan="2">
                                 <div class="text-center">
                                 	<c:if test="${mbi.proImgName != null}">
-	                                    <img style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/${mbi.proImgName}" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="35%" height="auto" style="max-width: 100%;">
+	                                    <img id="changeImg" style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/${mbi.proImgName}" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="200px" height="200px" style="max-width: 100%;">
                                 	</c:if>
                                 	<c:if test="${mbi.proImgName == null}">
-	                                    <img style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="35%" height="auto" style="max-width: 100%;">
+	                                    <img id="changeImg" style="margin-bottom:5px;" src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" class="avatar img-circle img-thumbnail" id="profileImg" alt="avatar" width="200px" height="200px" style="max-width: 100%;">
 	                                    <br>&nbsp;&nbsp;<label class="bHasNoInfo">프로필 사진 등록이 필요합니다!</label>
                                 	</c:if>
-                                    <br><button type="button" class="btn btn-info uploadFileBtn" onclick="$('#profileImg_upload_input').click();">Upload Profile</button>
+                                    <br><button type="button" class="btn btn-info uploadFileBtn" onclick="newProfileImg();">Upload Profile</button>
                                     <label class="fileNameLabel"></label>
-                                    <input id="profileImg_upload_input" type="file" name="profileImg" class="text-center center-block file-upload" style="visibility: hidden; position: absolute;">
+                                    <input id="profileImg_upload_input" type="file" name="profileImg" class="text-center center-block file-upload" style="visibility: hidden; position: absolute;" accept="image/x-png,image/gif,image/jpeg">
                                 </div>
                             </td>
                         </tr>
@@ -790,9 +793,9 @@
             </div>
         </div>
     </div>
-
  	<!-- 풋터 가져오기  -->
     <jsp:include page="../common/footer.jsp"/>
+	
     
 
     <!-- 개인 스크립트 -->
@@ -822,22 +825,15 @@
     	$('input[name=profileImg]').change(function(){
     		var fileValue = $(this).val().split("\\");
 			var originFileName = fileValue[fileValue.length-1];
-    		$('.avatar').prop('alt', originFileName)
     	});
 	 	
         $(document).ready(function(){
             // 파일 업로드하면 파일경로를 확인할 수 있게
             // 웹단에선 사진이 저장이 안되니 구현하기 힘듬
-            $('#profileImg_upload_input').change(function(){
-                $('#profileImg').prop('src', $(this).val());
-                $('.fileNameLabel').text($('#profileImg').prop('src'));
-            });
         })
         $(function(){
             // 파일 업로드하면 파일경로를 확인할 수 있게
             $('#profileImg_upload_input').change(function(){
-                $('#profileImg').prop('src', $(this).val());
-                $('.fileNameLabel').text($('#profileImg').prop('src'));
             });
 
             // 기본정보 수정버튼 누르면 수정 폼으로 변화
@@ -884,7 +880,6 @@
                     $('.basicView').hide();
                     $('.img-thumbnail').parent().find('.bHasNoInfo').hide();
                 }else{
-                	$('.avatar').prop('src', "${pageContext.servletContext.contextPath }/resources/proImg/${mbi.proImgName}")
                     $(this).text('수정');
                     $('.uploadFileBtn').hide();
                     $('.fileNameLabel').hide();
@@ -997,9 +992,40 @@
         });
         
      // 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
-        $(function(){
-	        $('.myPage_sideNav_area').height($('.allWrap').height());
-        })
+     $(function(){
+     	$('.myPage_sideNav_area').height($('.allWrap').height());
+     })
+     
+     function newProfileImg(){
+    	 $('#profileImg_upload_input').click();
+     }
+     
+     $('#profileImg_upload_input').change(function(e){
+    	 var get_file = e.target.files;
+    	 
+         var image = $('#noneImg');
+  
+         /* FileReader 객체 생성 */
+         var reader = new FileReader();
+  
+         /* reader 시작시 함수 구현 */
+         reader.onload = (function (aImg) {
+             console.log(1);
+  
+             return function (e) {
+                 console.log(3);
+                 /* base64 인코딩 된 스트링 데이터 */
+                 aImg.src = e.target.result
+                 $('#changeImg').prop('src', aImg.src);
+             }
+         })(image)
+  
+         if(get_file){
+             reader.readAsDataURL(get_file[0]);
+             console.log(2);
+         }
+     })
+    	 
     </script>
     	<!-- Postcodify를 로딩하자 -->
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
