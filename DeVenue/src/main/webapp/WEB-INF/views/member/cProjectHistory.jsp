@@ -56,7 +56,7 @@
 		<div class="row">
 			<jsp:include page="../common/pSideMenubar.jsp"/>
 			</div>
-			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:20%">
+			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:20%;  min-height:900px;">
 				<br>
 				<h4 style="margin-left: 3%; padding-bottom: 1%; width: 85%; border-bottom: 1px solid lightgray;">
 					프로젝트 히스토리
@@ -103,7 +103,7 @@
 										</td>
 										<td>
 											<div style="text-align: right;">
-												${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}%<br>
+												<fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}"/>%<br>
 												${ph.ingProject }개<br>
 												${ph.completeProject }개
 											</div>
@@ -647,8 +647,11 @@
 			</div>
 		</div>
 		
-	</div>
-
+	<script>
+	 $(function(){
+       $('.myPage_sideNav_area').height(window.innerHeight-$('#mainMenubar').height()-$('#subMenubar').height()-$('footer').height());
+   })
+	</script>
 
 	<jsp:include page="../common/footer.jsp" />
 </body>

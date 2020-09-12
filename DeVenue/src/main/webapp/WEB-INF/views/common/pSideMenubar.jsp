@@ -293,66 +293,12 @@ $(document).ready(function(){
 						class="fas fa-angle-right"></i>
 				</div>
 				<div id="subInfoMenu" class="myPage_sideNav_serveC">
-
-					<%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
-					<%-- <div id="userTypeInfo">${clOrPt } 정보</div> --%>
-					<%-- <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/profile.do'">프로필</div> --%>
-					<form method="GET" action="profile.do">
-						<input type="hidden" name="profileId"
-							value="${profile.profileId }">
-						<button class="aTag" style="cursor: text;">프로필 정보</button>
-					</form>
-					<form method="GET" action="partInfo.do">
-						<input type="hidden" name="profileId"
-							value="${profile.profileId }">
-						<%-- <button class="aTag" style="cursor: text;">${clOrPt } 정보</button> --%>
-						<button class="aTag" style="cursor: text;">파트너스 정보</button>
-					</form>
-
-					<div id="pPrfile"
-						onclick="location.href='${pageContext.servletContext.contextPath}/clientProfile.do?cId=${loginUser.memId}'">마이
-						페이지</div>
+					<div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/clientProfile.do?cId=${loginUser.memId}'">마이페이지</div>
 					<form method="GET" action="clientInfo.do">
 						<input type="hidden" name="cId" value="${loginUser.memId}">
 						<button class="aTag" style="cursor: text;">${clOrPt }정보</button>
 					</form>
-					<button class="aTag" style="cursor: text;">${clOrPt }정보</button>
-					<!-- <div id="pPR">자기소개</div> -->
-					<form method="GET" action="PR.do">
-						<input type="hidden" name="profileId"
-							value="${profile.profileId }">
-						<button class="aTag" style="cursor: text;">자기소개</button>
-					</form>
-					<div id="pPrfile"
-						onclick="location.href='${pageContext.servletContext.contextPath}/cMyPageProjectHistory.do?cId=${loginUser.memId}'">프로젝트
-						히스토리</div>
-					<%-- <!-- <div id="pPR">자기소개</div> -->
-               <!-- <div id="pPortfolio">포트폴리오</div> -->
-               <form method="GET" action="portfolioAll.do">
-                  <input type="hidden" name="profileId" value="${profile.profileId }">
-                  <button class="aTag" style="cursor: text;">포트폴리오</button>
-               </form>
-               <!-- <div id="pSkill">보유기술</div> -->
-               <form method="GET" action="skill.do">
-                  <input type="hidden" name="profileId" value="${profile.profileId }">
-                  <button class="aTag" style="cursor: text;">보유 기술</button>
-               </form>
-               <!-- <div id="pCareer">경력</div> -->
-               <form method="GET" action="career.do">
-                  <input type="hidden" name="profileId" value="${profile.profileId }">
-                  <button class="aTag" style="cursor: text;">경력</button>
-               </form>
-               <!-- <div id="pLicense">학력ㆍ자격증</div> -->
-               <form method="GET" action="academic.do">
-                  <input type="hidden" name="profileId" value="${profile.profileId }">
-                  <button class="aTag" style="cursor: text;">학력</button>
-               </form>
-               <form method="GET" action="certificate.do">
-                  <input type="hidden" name="profileId" value="${profile.profileId }">
-                  <button class="aTag" style="cursor: text;">자격증</button>
-               </form>
-               <!-- <div id="pProjectHistory">프로젝트 히스토리</div> -->
-               <div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/PH.do'">프로젝트히스토리</div> --%>
+					<div id="pPrfile" onclick="location.href='${pageContext.servletContext.contextPath}/cMyPageProjectHistory.do?cId=${loginUser.memId}'">프로젝트 히스토리</div>
 				</div>
 				<div id="accountMenu" class="myPage_sideNav_mainC">
 					계정 관리<i style="float: right; margin-right: 5%;"

@@ -494,8 +494,17 @@ public class MemberController {
 
 		if (!mpList.isEmpty()) {
 //			int result = mService.insertEval(id);
+			
+			int result = mService.checkReEval(id);
+			
+			if(result >0) {
+				int msg=3;
+				mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
+			}else {
+				mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
+				
+			}
 
-			mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
 		} else {
 			int msg = 0;
 			mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
