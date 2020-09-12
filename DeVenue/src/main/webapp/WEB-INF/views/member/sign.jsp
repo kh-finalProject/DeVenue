@@ -382,6 +382,7 @@ section {
 	border: 2px dashed white;
 	display: inline-block;
 	margin-left: 30px;
+
 }
 
 /* input 서브 설명 */
@@ -417,6 +418,7 @@ section {
 	height: 120px;
 	border-bottom: 2px dashed white;
 	margin-top: 20px;
+	padding: 5px 5px 5px 5px;
 }
 
 /* 로그인하러가기/카카오로 로그인 button */
@@ -488,7 +490,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								<p>
 									프로젝트를 의뢰하고<br>싶습니다.
 								</p>
-								<img src="../image/client.png">
+								<i class="far fa-file-alt" style="font-size: 50px; margin-left: 10px;"></i>
+									
 							</div>
 							<div class="partnes-radio">
 								<br> <input type="radio" id="partnes" name="purpose"
@@ -496,7 +499,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								<p>
 									프리랜서가 일거리를<br>찾고 있습니다.
 								</p>
-								<img src="../image/client.png">
+									<i class="far fa-handshake" style="font-size: 50px; margin-left: 10px;"></i>
+								<!-- <img src="../image/client.png"> -->
 							</div>
 						</div>
 					</div>
@@ -888,18 +892,18 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					<br>
 					<div class="form-btn">
 						<button type="submit" id="sign" class="btn btn-info btn-lg"
-							disabled="true">가입하기</button>
+							disabled="true" style="margin-left: -80px;">가입하기</button>
 					</div>
 			</div>
 			</form>
 			<div class="area-right">
-				<div class="sns">
+				<!-- <div class="sns">
 					<p>
 						<b>카카오톡 계정이 있으신가요?</b>
 					</p>
 					<button type="button" class="btn btn-warning btn-lg">카카오톡으로
 						회원가입</button>
-				</div>
+				</div> -->
 				<div class="login">
 					<p>
 						<b>이미 회원이신가요?</b>

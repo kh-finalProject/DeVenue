@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -485,7 +487,12 @@ section {
 									</tr>
 									<tr>
 										<td class="career-title">근무시간</td>
-										<td colspan="2">${career.cStartDate }</td>
+										<td colspan="2">
+											<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cStartDate }" var="startDate" />
+											<fmt:formatDate value="${startDate}" pattern="yyyy년 MM월 " /> ~ 
+											<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cEndDate }" var="endDate" />
+											<fmt:formatDate value="${endDate}" pattern="yyyy년 MM월 " />
+										</td>
 									</tr>
 									<tr>
 										<td class="career-title">설명</td>

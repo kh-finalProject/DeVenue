@@ -122,6 +122,10 @@ public interface MyPageService {
 
 	ArrayList<PortTecView> tNameList(int ptId);
 
+	int portCount(int profileId);
+
+	Profile selectIntroduce(int profileId);
+
 	int getPaymentListCount(Integer cId);
 
 	ArrayList<CmypagePayment> getPaymentList(Integer cId, PageInfo pi);
@@ -133,6 +137,7 @@ public interface MyPageService {
 	int insertApplyMatch(int id);
 
 	int insertProcess(int id);
+
 
 	
 

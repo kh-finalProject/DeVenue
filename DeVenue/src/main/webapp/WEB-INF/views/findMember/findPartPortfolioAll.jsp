@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -354,6 +352,67 @@ section {
 	margin-left: 40px;
 }
 
+/* 어느페이지인지 보여줄 div */
+.main-title {
+	width: 100%;
+	height: 60px;
+	margin-left: 5%;
+	padding-right: 0;
+	border-bottom: 2px dashed white;
+}
+
+/* 포트폴리오전부를 보여줄 div*/
+.portfolio-view {
+	width: 100%;
+	height: 350px;
+	margin-left: 5%;
+	margin-top: 2%;
+	position: relative;
+}
+
+/* 포트폴리오 전체 보여줄 테이블 */
+.pTable {
+	width: 100%;
+	/* border: 1px solid white; */
+	/* border-collapse: separate;
+            border-spacing: 20px 10px; */
+}
+
+/* 포트폴리오 td */
+.pTable tr td {
+	border: 1px solid white;
+	/* width: 25%; */
+	/* height: 300px; */
+	font-size: 20px;
+}
+
+/* 이미지 보여주기 */
+.img {
+	width: 30%;
+	height: 200px;
+}
+
+/* 포트폴리오 내용 */
+.category {
+	width: 20%;
+	text-align: center;
+	vertical-align: middle;
+	height: 30%;
+}
+
+/* 포트폴리오 제목 */
+.title {
+	width: 50%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 참여율 과 기술 */
+.join, .tec {
+	text-align: center;
+	vertical-align: middle;
+}
+
 /* a태그 밑줄없애기 */
 #subInfoMenu p a {
 	text-decoration-line: none;
@@ -418,113 +477,93 @@ section {
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
 
-
 	<!-- Section -->
 	<section>
 		<div class="container">
-			<div class="row text-white"
-				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<div class="col-2"
-					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-					${loginUser.memNick } 마이페이지</div>
-			</div>
-			<div class="row">
-				<!-- 구 sideMenubar -->
-				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
-				<!-- 새 sidMenubar -->
-				<jsp:include page="../common/pSideMenubar.jsp" />
-			</div>
-			<div class="col-8 text-white"
-				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
-				<br>
+			<div class="row text-white">
 				<div class="row">
-					<div class="col-12"
-						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
-						<p style="float: left; font-size: 30px;">마이페이지 - 학력</p>
-						<a href="mypagePortfolioAll.html" class="btn btn-info"
-							style="float: right;">전체포트폴리오 보기</a>
-					</div>
-					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
-						<h3>
-							학력 <a href="academicUpdate.do" class="btn btn-info"
-								style="float: right;">추가하기</a>
-						</h3>
-					</div>
-					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<c:forEach var="sc" items="${sccareerList }">
-							<form method="get" action="delacademic.do">
-								<table class="table">
-									<tr class="table-secondary" style="text-align: center;">
-										<td>학교명</td>
-										<td>전공</td>
-										<td>분류</td>
-										<td>상태</td>
-										<td>입학일</td>
-										<td>졸업일</td>
-										<td>도구</td>
-									</tr>
-									<tr class="table-light"
-										style="text-align: center; vertical-align: middle; font-size: 15px">
+					<!-- 새 sidMenubar -->
+					<jsp:include page="../common/findPartSideMenubar.jsp" />
+				</div>
+				<div class="col-8 text-white"
+					style="font-family: 'Jua', sans-serif; margin-left: 240px;">
+					<br>
+					<div class="row">
+						<div class="col-12 main-title">
+							<p style="float: left; font-size: 30px;">${mem.memNick }님의
+								포트폴리오</p>
+						</div>
 
-										<td>${sc.scName }</td>
-										<td>${sc.scMajor }</td>
-										<c:choose>
-											<c:when test="${sc.sgId eq 'SG1'}">
-												<td>중학교</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG2'}">
-												<td>고등학교</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG3'}">
-												<td>전문대(2~3)</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG4'}">
-												<td>대학교(4)</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG5'}">
-												<td>대학원</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG6'}">
-												<td>박사과정</td>
-											</c:when>	
-										</c:choose>
-										<c:choose>
-											<c:when test="${sc.ssId eq 'SS1'}">
-												<td>재학</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS2'}">
-												<td>휴학</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS3'}">
-												<td>졸업</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS4'}">
-												<td>자퇴</td>
-											</c:when>
-										</c:choose>
-										
-										<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
-													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
-													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
-										<td><input type="hidden" name="scId" value="${sc.scId }">
-											<input type="hidden" name="profileId"
-											value="${sc.profileId }">
-											<button id="del" class="btn btn-info">삭제</button></td>
+						<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
+							<h4>
+								포트폴리오<span id="num" style="color: grey;"> / ${portCount }개
+								</span> <a href="portfolioInsert.do" class="btn btn-info"
+									style="float: right;">추가하기</a>
+							</h4>
+						</div>
+						<div class="col-12 portfolio-view">
+							<!-- 하나의 포트폴리오 시작 -->
+							<c:forEach var="port" items="${portList }">
+								<!-- <form method="POST" action="delPort.do"> -->
+								<%-- <c:forEach begin="0" end="2"> --%>
+								<table class="pTable">
+									<tr>
+										<td class="img" rowspan="2"><img src="../image/test.png"
+											style="max-width: 100%; height: auto;"></td>
+										<td class="category">
+											<!-- port.mcId에 따른 출력 --> <c:choose>
+												<c:when test="${port.mcId eq 'MC1'}">
+													<span>개발자</span>
+													<br>
+												</c:when>
+												<c:when test="${port.mcId eq 'MC2'}">
+													<span>디자인</span>
+													<br>
+												</c:when>
+												<c:otherwise>
+													<span>개발/디자인</span>
+													<br>
+												</c:otherwise>
+											</c:choose> <!-- port.dcId에 따른 출력 --> <c:choose>
+												<c:when test="${port.dcId eq 'DC1'}">
+													<span>웹</span>
+												</c:when>
+												<c:when test="${port.dcId eq 'DC2'}">
+													<span>어플리케이션</span>
+												</c:when>
+												<c:when test="${port.dcId eq 'DC3'}">
+													<span>퍼블리싱</span>
+												</c:when>
+												<c:otherwise>
+													<span>기타</span>
+												</c:otherwise>
+											</c:choose>
+										</td>
+										<td class="title">${port.portName }</td>
+									</tr>
+									<tr>
+										<td colspan="2" rowspan="2" class="text">
+											<p style="margin-left: 3%;">${port.content }</p>
+										</td>
+									</tr>
+									<tr></tr>
+									<tr>
+										<td></td>
+										<td class="join">참여율 : ${port.portJoin }%</td>
+										<td class="tec"><c:forEach var="pt" items="${portTec }">
+												<span>${pt.tName }</span>
+											</c:forEach></td>
 									</tr>
 								</table>
-							</form>
-						</c:forEach>
+								<br>
+							</c:forEach>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		</div>
-
-		</div>
-		</div>
 	</section>
 	<br>
+
 
 	<!-- Footer -->
 	<jsp:include page="../common/footer.jsp" />
@@ -533,8 +572,8 @@ section {
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
 		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script> -->
-	<!-- <script
+		crossorigin="anonymous"></script>
+	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
 		crossorigin="anonymous"></script>

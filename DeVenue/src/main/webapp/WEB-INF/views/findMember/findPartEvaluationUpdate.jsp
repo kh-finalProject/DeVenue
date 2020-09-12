@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
 
@@ -346,12 +348,11 @@
 
         /* 메뉴바 폰트 끝 */
 
-        /*--------------------- Section -----------------------------*/
-
+        /* 글자색 */
         section {
             background-color: #212426;
             width: 100%;
-            height: 600px;
+            height: 1600px;
             padding: 50px 0 30px 0;
             color: white;
         }
@@ -362,168 +363,175 @@
             height: 50px;
             margin-left: 40px;
         }
-
-        /* label div */
-        .form-label {
-            width: 200px;
-            margin-left: 100px;
-            text-align: right;
-            font-size: x-large;
-            position: absolute;
-        }
-
-        /* 각 가로 한줄 */
-        .form-title{
-            height: 80px;
-            margin-top: 10px;
-        }
-
-        /* input div */
-        .form-input{
-            position: absolute;
-            margin-left: 300px;
-        }
-
-        /* 로그인 유지 div */
-        .login-keeping{
-            width: 200px;
-            height: 40px;
-            position: absolute;
-            margin-left: 150px;
-            margin-top: 10px;
-        }
-
-        /* 로그인하기 div */
-        .form-login{
-            margin-top: 10px;
-            margin-left: 20px;
-        }
-
-        /* pwd찾기 div */
-        .pwd-forget{
-            width: 400px;
-            text-align: center;
-            margin-top: 20px;
-            margin: auto;
-            margin-left: 340px;
-        }
-        /* pwd찾기 div 이동 */
-        .pwd-forget label{
-            margin-top: 20px;
-        }
-
-        /* 카카오톡회원가입 div */
-        .kakao-login{
-            height: 150px;
-            border-bottom: 2px dashed white;
-            margin-top: 50px;
-        }
-
-        /* 회원가입하러 가기 div */
-        .sign{
-            width: 200px;
-            height: 100px;
-            margin: auto;
-            margin-top: 20px;
-            padding: 5px 5px 5px 5px;
-            border-bottom: 2px dashed white;
-        }
-
     </style>
     <script src="https://kit.fontawesome.com/4b6b63d8f6.js" crossorigin="anonymous"></script>
 
     <!--font-->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
 <body>
-    
     <!-- menubar -->
-    <jsp:include page="../common/menubar.jsp"/>
+	<!-- 버튼클릭 script가 안먹는다. -->
+	<jsp:include page="../common/menubar.jsp" />
 
-    <!-- Section -->
-    <br>
-    <section>
-        <!-- 왼쪽 공백 -->
-        <div class="left-null" style="width: 20%; float: left;"></div>
-        <!-- 실제 들어갈 값 -->
-        <div class="login" style="width: 1140px; margin: auto; text-align: center;">
-            <!-- 제목 -->
-            <div class="login-title">
-                <div class="title">
-                    <h1>로그인</h1>
-                    <h5>DEVENUE에 오신것을 환영합니다~</h5>
+	<!-- sideMenubar -->
+	<jsp:include page="../common/sideMenubarAll.jsp" />
+
+	<!-- Section -->
+	<section>
+		<div class="container">
+			<div class="row text-white"
+				style="border-bottom: 1px solid lightgray; width: 1000px;"></div>
+			<div class="row">
+				<!-- 구 sideMenubar -->
+				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새버전을 쓸꺼면 로그인 했을시 그거 빼야함 -->
+				<!-- 새 sidMenubar -->
+				<jsp:include page="../common/findPartSideMenubar.jsp" />
+			</div>
+			<div class="col-12 text-white" style="font-family: 'Jua', sans-serif; margin-left: 210px;">
+				<br>
+				<div class="row">
+					<div class="col-7"
+						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
+						<p style="float: left; font-size: 30px;">${mem.memNick }님의 평가 등록</p>
+					</div>
+                <div class="col-8 text-white" style="font-family: 'Jua', sans-serif;">
                     <br>
-                </div>
-            </div>
-            <div class="area" style="position: relative;">
-                <div class="area-left" style="width: 100%; position: absolute;">
-                <form method="POST" action="login.do">
-                    <div class="form-title">
-                        <div class="form-label">
-                            <label for="email">* 이메일</label>
+                    <div class="row">
+                        <div class="col-12" style="font-size: 20px;">
+                            <form method="GET" action="fpEvalInsert.do">
+                                <div class="col-12" style="width: 100%; height: 700px; margin-left: 5%; border-bottom: 2px dashed white;">
+                                    <div class="col-12">
+                                    <input type="hidden" name="clientId" value="${loginUser.memId }">
+                                    <input type="hidden" name="proId" value="${profileId }">
+	                  				<input type="hidden" name="memId" value="${memId}">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <span>* 프로젝트명</span>
+                                        </div>
+                                        <div class="col-4" style="display: inline-block;margin-top: 5%;">
+                                            <select name="projectName">
+                                            	<c:forEach var="pro" items="${project }">
+	                                            	<option value="${pro.proName }">${pro.proName }</option>                                            	
+                                            	</c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <span>* 평균평점</span>
+                                        </div>
+                                        <div class="col-4" style="display: inline-block; margin-top: 5%;">
+                                        	<select name="eAgv" style="width: 100px">
+                                        		<option value="1">1</option>
+                                        		<option value="2">2</option>
+                                        		<option value="3">3</option>
+                                        		<option value="4">4</option>
+                                        		<option value="5">5</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <label>* 내용</label>
+                                        </div>
+                                        <div class="col-5" style="display: inline-block; margin-top: 5%;">
+                                            <textarea name="content" cols="45" rows="5" style="height: auto;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <span>전문성</span>
+                                        </div>
+                                        <div class="col-5" style="display: inline-block; margin-top: 5%;">
+                                            <select name="eStart1" style="width: 100px">
+                                        		<option value="1">1</option>
+                                        		<option value="2">2</option>
+                                        		<option value="3">3</option>
+                                        		<option value="4">4</option>
+                                        		<option value="5">5</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <span>적극성</span>
+                                        </div>
+                                        <div class="col-5" style="display: inline-block; margin-top: 5%;">
+                                            <select name="eStart2" style="width: 100px">
+                                        		<option value="1">1</option>
+                                        		<option value="2">2</option>
+                                        		<option value="3">3</option>
+                                        		<option value="4">4</option>
+                                        		<option value="5">5</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <span>일정준수</span>
+                                        </div>
+                                        <div class="col-5" style="display: inline-block; margin-top: 5%;">
+                                            <select name="eStart3" style="width: 100px">
+                                        		<option value="1">1</option>
+                                        		<option value="2">2</option>
+                                        		<option value="3">3</option>
+                                        		<option value="4">4</option>
+                                        		<option value="5">5</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <span>의사소통</span>
+                                        </div>
+                                        <div class="col-5" style="display: inline-block; margin-top: 5%;">
+                                            <select name="eStart4" style="width: 100px">
+                                        		<option value="1">1</option>
+                                        		<option value="2">2</option>
+                                        		<option value="3">3</option>
+                                        		<option value="4">4</option>
+                                        		<option value="5">5</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-3" style="display: inline-block; margin-top: 5%;">
+                                            <span>만족도</span>
+                                        </div>
+                                        <div class="col-5" style="display: inline-block; margin-top: 5%;">
+                                            <select name="eStart5" style="width: 100px">
+                                        		<option value="1">1</option>
+                                        		<option value="2">2</option>
+                                        		<option value="3">3</option>
+                                        		<option value="4">4</option>
+                                        		<option value="5">5</option>
+                                        	</select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="width: 100%; height: 50px; text-align: right; margin-top: 5%;">
+                                    <button type="button" class="btn btn-info">취소</button>
+                                    <button type="submit" class="btn btn-info">등록</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-input">
-                            <input type="text" class="input-size" id="email" name="email" required="required">
-                        </div>
-                    </div>
-                    <div class="form-title">
-                        <div class="form-label">
-                            <label for="pwd">* 비밀번호</label>
-                        </div>
-                        <div class="form-input">
-                            <input type="password" class="input-size" id="pwd" name="pwd" required="required">
-                        </div>
-                    </div>
-                    <div class="login-keeping">
-                        <input type="checkbox" name="logincheck" id="checkbox" value="true">&nbsp;&nbsp;&nbsp;<label for="checkbox">로그인 유지</label>
-                    </div>
-                    <div class="form-btn">
-                        <button type="submit" id="login" class="btn btn-info btn-lg"
-                            style="font-size: 25px; width: 400px; margin-left: -60px;">로그인하기</button>
-                    </div>
-                </form>
-                
-                <!-- <script type="text/javascript">
-                	$("#login").on("click",function(){
-                		var email = $("#email").val();
-                		var pwd = $("#pwd").val();
-                		console.log(email);
-                		console.log(pwd);
-                		
-                		$.ajax({
-                			url:"login.do",
-                			data:{email:email,pwd:pwd},
-                			success : function(data){
-                				
-                			},error:function(request, status, errorData){
-                				alert("error code: " + request.status + "\n"
-    									+"message: " + request.responseText
-    									+"error: " + errorData);
-    						}
-                		})
-                		
-                	})
-                </script> -->
-                    <div class="pwd-forget">
-                        <label>비밀번호를 잊으셨나요?&nbsp;&nbsp;<a href="forgetPwd.do">비밀번호 찾기</a></label>
-                    </div>
-            </div>
-                <div class="area-right" style="margin-left: 900px; position: absolute;">
-                    <!-- <div class="kakao-login">
-                        <p><b>이미 카카오톡계정으로 가입하셨나요?</b></p>
-                        <button type="button" class="btn btn-warning btn-lg" style="font-size: 15px; width: 200px;">카카오톡으로 로그인</button>
-                    </div> -->
-                    <div class="sign">
-                        <p>아직 회원이 아니신가요?<br><a href="signpage.do">회원가입 하기</a></p>
                     </div>
                 </div>
             </div>
         </div>
 
+        </div>
+        </div>
+        <!-- </div> -->
+
         <!-- 오른쪽 공백 -->
-        <div class="right-null" style="width: 20%; float: right;"></div>
+        <!-- <div class="right-null" style="width: 15%; height: 800px; border: 1px solid yellow; float: right;"></div> -->
     </section>
+    <br>
 
 
     <!-- Footer -->
@@ -531,15 +539,15 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <<!-- script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script> -->
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
 </body>
 
 </html>

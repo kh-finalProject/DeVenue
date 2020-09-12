@@ -228,6 +228,15 @@ public class MyPageDao {
 		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.getCountPartners", cId);
 	}
 
+	public int portCount(int profileId) {
+
+		return sqlSessionTemplate.selectOne("myPageMapper.portCount",profileId);
+	}
+
+	public Profile fpselectIntroduce(int profileId) {
+		
+		return sqlSessionTemplate.selectOne("memberMapper.fpselectIntroduce",profileId);
+	}
 	
 
 	public int updateClientInfo(HashMap map) {

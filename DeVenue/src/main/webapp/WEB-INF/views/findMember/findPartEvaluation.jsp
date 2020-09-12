@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -354,52 +354,69 @@ section {
 	margin-left: 40px;
 }
 
-/* a태그 밑줄없애기 */
-#subInfoMenu p a {
-	text-decoration-line: none;
-	color: white;
+/* 총평가가 나오는 div */
+.all-evaluation {
+	width: 100%;
+	margin-left: 5%;
+	margin-top: 3%;
+	font-size: 25px;
 }
 
-/* 회원찾기 드롭다운 메뉴 */
-.dropbtn {
-	color: white;
-	font-size: 16px;
-	border: none;
+/* 총평가 갯수 input */
+.all-evaluation input {
+	border-radius: 20px 20px 20px 20px;
+	text-align: right;
+	margin-right: 10px;
+	padding-right: 10px;
 }
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-	position: relative;
-	display: inline-block;
+/* 평가 테이블 */
+.evalTable {
+	width: 100%;
+	border: 1px solid white;
+	margin-left: 50px;
 }
 
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f1f1f1;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
+/* 평가 제목 */
+.evalTitle {
+	font-size: 20px;
+	color: #2099bb;
+	padding: 20px 0 10px 20px;
 }
 
-/* Links inside the dropdown */
-.dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
+/* 평가 전체 padding */
+.evalPadding {
+	padding: 10px 0 10px 20px;
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-	background-color: #ddd;
+/* 별점 li */
+.evalPadding .agv li {
+	list-style-type: none;
+	float: left;
+	margin-left: 10px;
+	text-align: center;
+	width: 18%;
+}
+/* 별점 */
+.fa-star {
+	margin-right: 0;
 }
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-	display: block;
+/* 클라이언트 이미지 */
+.client-img {
+	width: 70px;
+	height: 70px;
+	border-radius: 50px 50px 50px 50px;
+	border: 1px solid white;
 }
+
+/* 클라이언트 정보 li */
+.evalPadding .client li {
+	list-style-type: none;
+	float: left;
+	margin-left: 10px;
+}
+
 </style>
 <script src="https://kit.fontawesome.com/4b6b63d8f6.js"
 	crossorigin="anonymous"></script>
@@ -412,109 +429,146 @@ section {
 </head>
 
 <body>
-	<!-- munubar -->
+
+	<!-- menubar -->
+	<!-- 버튼클릭 script가 안먹는다. -->
 	<jsp:include page="../common/menubar.jsp" />
 
-	<!-- sidebar -->
+	<!-- sideMenubar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
-
 
 	<!-- Section -->
 	<section>
 		<div class="container">
 			<div class="row text-white"
-				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<div class="col-2"
-					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-					${loginUser.memNick } 마이페이지</div>
-			</div>
+				style="border-bottom: 1px solid lightgray; width: 1000px;"></div>
 			<div class="row">
 				<!-- 구 sideMenubar -->
 				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
+				<!-- 새버전을 쓸꺼면 로그인 했을시 그거 빼야함 -->
 				<!-- 새 sidMenubar -->
-				<jsp:include page="../common/pSideMenubar.jsp" />
+				<jsp:include page="../common/findPartSideMenubar.jsp" />
 			</div>
-			<div class="col-8 text-white"
-				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
+			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12"
 						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
-						<p style="float: left; font-size: 30px;">마이페이지 - 학력</p>
-						<a href="mypagePortfolioAll.html" class="btn btn-info"
-							style="float: right;">전체포트폴리오 보기</a>
+						<p style="float: left; font-size: 30px;">평가 - 평가 조회</p>
 					</div>
-					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
-						<h3>
-							학력 <a href="academicUpdate.do" class="btn btn-info"
-								style="float: right;">추가하기</a>
-						</h3>
+					<div class="col-12 all-evaluation">
+						<span>총 평가 한 갯수</span> <input type="text" size="3" readonly
+							value="1">건
 					</div>
-					<div class="col-12" style="margin-left: 5%; margin-top: 2%;">
-						<c:forEach var="sc" items="${sccareerList }">
-							<form method="get" action="delacademic.do">
-								<table class="table">
-									<tr class="table-secondary" style="text-align: center;">
-										<td>학교명</td>
-										<td>전공</td>
-										<td>분류</td>
-										<td>상태</td>
-										<td>입학일</td>
-										<td>졸업일</td>
-										<td>도구</td>
-									</tr>
-									<tr class="table-light"
-										style="text-align: center; vertical-align: middle; font-size: 15px">
+					<div class="col-12" style="font-size: 15px;">
+						<c:forEach var="eval" items="${PartEval }">
+										<!-- 평가 시작 -->
+										<table class="evalTable">
+											<tr>
+												<td class="evalTitle" colspan="3"><a href="#">${eval.proName }</a></td>
+											</tr>
+											<tr>
+												<td class="evalPadding" colspan="3">${eval.mcType }|
+													${eval.dcType }</td>
+											</tr>
+											<tr>
+												<td class="evalPadding" style="width: 230px;"><i
+													class="fas fa-won-sign">계약금액 : </i>${eval.proPayment }원</td>
+												<td style="padding-bottom: 10px; padding-top: 10px;"><i
+													class="far fa-clock">프로젝트 기간 : </i>${eval.proDuration }일</td>
+												<td style="padding-bottom: 10px; padding-top: 10px;"><i
+													class="far fa-calendar-alt">계약일자 : </i>
+												<fmt:parseDate pattern="yyyy-MM-dd"
+														value="${eval.proStartDate }" var="parsedDate" /> <fmt:formatDate
+														value="${parsedDate}" pattern="yyyy년 MM월 dd일" /></td>
+											</tr>
 
-										<td>${sc.scName }</td>
-										<td>${sc.scMajor }</td>
-										<c:choose>
-											<c:when test="${sc.sgId eq 'SG1'}">
-												<td>중학교</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG2'}">
-												<td>고등학교</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG3'}">
-												<td>전문대(2~3)</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG4'}">
-												<td>대학교(4)</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG5'}">
-												<td>대학원</td>
-											</c:when>
-											<c:when test="${sc.sgId eq 'SG6'}">
-												<td>박사과정</td>
-											</c:when>	
-										</c:choose>
-										<c:choose>
-											<c:when test="${sc.ssId eq 'SS1'}">
-												<td>재학</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS2'}">
-												<td>휴학</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS3'}">
-												<td>졸업</td>
-											</c:when>
-											<c:when test="${sc.ssId eq 'SS4'}">
-												<td>자퇴</td>
-											</c:when>
-										</c:choose>
-										
-										<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
-													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
-													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
-										<td><input type="hidden" name="scId" value="${sc.scId }">
-											<input type="hidden" name="profileId"
-											value="${sc.profileId }">
-											<button id="del" class="btn btn-info">삭제</button></td>
-									</tr>
-								</table>
-							</form>
-						</c:forEach>
+											<tr>
+												<td class="evalPadding" colspan="3"
+													style="text-align: center; font-size: 20px; border-bottom: 2px dashed white;">평균
+													평점 : <c:choose>
+														<c:when test="${eval.eAgv eq 1}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 2}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 3}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 4}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+														</c:when>
+														<c:when test="${eval.eAgv eq 5}">
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+														</c:when>
+													</c:choose>
+												</td>
+											</tr>
+											<tr>
+												<td class="evalPadding" colspan="3"
+													style="border-bottom: 2px dashed white;">
+													<ul class="agv">
+														<li>전문성(${eval.eStar1 })</li>
+														<li>결과물 만족도(${eval.eStar2 })</li>
+														<li>의사소통(${eval.eStar3 })</li>
+														<li>일정 준수(${eval.eStar4 })</li>
+														<li>적극성(${eval.eStar5 })</li>
+													</ul>
+													<ul class="agv">
+														<li><c:forEach begin="1" end="${eval.eStar1 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar2 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar3 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar4 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar5 }">
+																<i class="fas fa-star" style="color: yellow;"></i>
+															</c:forEach></li>
+													</ul>
+												</td>
+											</tr>
+											<tr>
+												<td class="evalPadding" colspan="3">
+													<ul class="client">
+														<li><img class="client-img"></li>
+														<li><span class="btn btn-secondary btn-sm"
+															style="margin-right: 5px; margin-bottom: 5px;">클라이언트</span><span>${eval.memNick }</span>
+															<br>
+															<p>${eval.eContent }</p></li>
+													</ul>
+												</td>
+											</tr>
+										</table>
+									</c:forEach>
+									<!-- 평가 div끝-->
+						</div>
 					</div>
 				</div>
 			</div>
@@ -524,24 +578,23 @@ section {
 		</div>
 		</div>
 	</section>
-	<br>
+
 
 	<!-- Footer -->
 	<jsp:include page="../common/footer.jsp" />
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script> -->
-	<!-- <script
-		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-		crossorigin="anonymous"></script> -->
+	<
+	<!-- script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script> -->
 </body>
 
 </html>

@@ -1610,6 +1610,42 @@
 	WHERE PS_ID=#{sgId}
 	</delete>
 
+	<!-- 호준추가 -->
+	
+	<!-- 파트너스 찾기에서 클라이언트에 대한 프로젝트를 조회한다. -->
+	<select id="projectList" parameterType="_int" resultMap="projectResultSet">
+		SELECT * FROM PROJECT
+		WHERE MEM_ID = #{memId}
+	</select>
+	
+	<!-- 종료된 프로젝트 -->
+	<resultMap type="ProjectEnd" id="projedctEnd">
+		<id property="epId" column="EP_ID"/>
+		
+		<result property="proId" column="PRO_ID"/>
+		<result property="proPmId" column="PRO_PM_ID"/>
+	</resultMap>
+	
+	<!-- 매칭 파트너스 -->
+	<resultMap type="ProjectMatch" id="projectMatchResult">
+		<id property="proPmId" column="PRO_PM_ID"/>
+		
+		<result property="proPid" column="PRO_PID"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="sigId" column="SIG_ID"/>
+	</resultMap>
+	
+	<!-- 진행중인 프로젝트 -->
+	<resultMap type="ProjectProcess" id="projectProcessResultSet">
+		<id property="proPid" column="PRO_PID"/>
+		<result property="proId" column="PRO_ID"/>
+	</resultMap>
+	
+	<!-- 진행중인 프로젝트 조회 -->
+	<select id="ppList" parameterType="_int" resultMap="projectProcessResultSet">
+		SELECT * FROM P_PROCESS
+		WHERE PRO_ID = #{proId}
+	</select>
 
 	<select id="selectLikeId" parameterType="hashmap" resultType="_int">
 	SELECT MAX(PRO_LID)
@@ -1620,7 +1656,7 @@
 	SELECT *
 	FROM EVAL
 	WHERE E_WRITER=#{memId}
-	
+
 	</select>
 	
 	<select id="selectFourWeb" resultMap="projectListResultSet">

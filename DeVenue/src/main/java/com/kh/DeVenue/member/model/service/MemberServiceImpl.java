@@ -208,5 +208,4 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.reportCheck(report);
 	}
 
-
 }
