@@ -66,6 +66,7 @@
 		<result property="workType" column="WORKTYPE"/>
 		<result property="identify" column="IDENTIFY"/>
 		<result property="evaluation" column="EVALUATION"/>
+		<result property="calculateStatus" column="CAL_STATUS"/>
 
 	<association property="project" javaType="Project">
 		<result property="proId" column="PROID"/>
@@ -338,8 +339,26 @@
 		<collection property="answer" javaType="java.util.ArrayList" resultMap="AnswerResultSet" />
 	
 	</resultMap>
-
 	
+	<resultMap type="CPeval" id="cpEvalListResult">
+  	<id property="eId" column="E_ID"/>
+  	<result property="proName" column="PRO_NAME"/>
+  	<result property="mcId" column="MC_ID"/>
+  	<result property="dcType" column="DC_TYPE"/>
+  	<result property="eWriter" column="E_WRITER"/>
+  	<result property="eTarget" column="E_TARGET"/>
+  	<result property="epId" column="EP_ID"/>
+  	<result property="eAgv" column="E_AGV"/>
+  	<result property="eContent" column="E_CONTENT"/>
+  	<result property="star1" column="E_STAR1"/>
+  	<result property="star2" column="E_STAR2"/>
+  	<result property="star3" column="E_STAR3"/>
+  	<result property="star4" column="E_STAR4"/>
+  	<result property="star5" column="E_STAR5"/>
+  	<result property="eCreateDate" column="E_CREATE_DATE"/>
+  	<result property="eStatus" column="E_STATUS"/>
+  </resultMap>
+
 
 	<insert id = "addProject" parameterType ="Project">
 		INSERT INTO PROJECT VALUES(
@@ -792,7 +811,7 @@
 		LEFT JOIN P_TEC PT ON (P.ID=PT.PRO_ID)
 		LEFT JOIN TECH T ON (PT.T_ID=T.T_ID)
 		WHERE P.ID=#{id}
-		ORDER BY PRO_AQ_ID ASC, RP_CDATE DESC
+		ORDER BY PRO_AQ_ID
 	</select>
 	
 	<select id="getProjectNumber" parameterType="int" resultMap="pNumberResultSet">
@@ -1431,12 +1450,13 @@
     P.PRO_STA_ID AS "STATUS",
 	P.PRO_PAYMENT AS "PAYMENT",P.PRO_LOCATION AS "LOCATION",P.PRO_CONTRACT AS "CONTRACT",
 	M.MC_TYPE AS "MCATEGORY", D.DC_TYPE AS "DCATEGORY",
-	P.PRO_END_DATE, P.MEM_ID AS "CLIENTID"
+	P.PRO_END_DATE, P.MEM_ID AS "CLIENTID", CAL.CAL_STATUS AS "CAL_STATUS"
 	FROM P_PROCESS C
 	LEFT JOIN PROJECT P ON (C.PRO_ID=P.PRO_ID)
 	LEFT JOIN MCATE M ON (P.MC_ID=M.MC_ID)
 	LEFT JOIN DCATE D ON (P.DC_ID=D.DC_ID)
 	LEFT JOIN P_MATCH CH ON (CH.PRO_PID=C.PRO_PID)
+    LEFT JOIN CALCULATE CAL ON (CAL.PRO_ID=P.PRO_ID)
 	WHERE P.PRO_STA_ID IN ('PST5','PST6') AND CH.MEM_ID=#{memId}
 	
 	<if test="keyword!=null and category!=null">
@@ -1496,6 +1516,13 @@
 	<select id="selectLikeId" parameterType="hashmap" resultType="_int">
 	SELECT MAX(PRO_LID)
 	FROM P_LIKE
+	</select>
+	
+	<select id="selectEvaluation" parameterType="hashmap" resultMap="cpEvalListResult">
+	SELECT *
+	FROM EVAL
+	WHERE E_WRITER=#{memId}
+	
 	</select>
 
 </mapper>

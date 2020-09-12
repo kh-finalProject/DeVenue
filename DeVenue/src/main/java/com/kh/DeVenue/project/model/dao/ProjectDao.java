@@ -8,9 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
+import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
+import com.kh.DeVenue.myPage.model.vo.Eval;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
 import com.kh.DeVenue.project.model.vo.ApplyPortfolio;
@@ -558,6 +559,12 @@ public ArrayList<Tech> selectTechList() {
 	public int selectLikeId(HashMap ids) {
 		
 		return sqlSessionTemplate.selectOne("projectMapper.selectLikeId", ids);
+	}
+
+
+	public ArrayList<CPeval> selectEvaluation(HashMap condition) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("projectMapper.selectEvaluation", condition);
 	}
 
 

@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 
 import com.kh.DeVenue.member.model.dao.MemberDao;
+import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.Member;
 
 import com.kh.DeVenue.member.model.vo.Portfolio;
-
+import com.kh.DeVenue.myPage.model.vo.Eval;
 import com.kh.DeVenue.project.model.dao.ProjectDao;
 import com.kh.DeVenue.project.model.vo.Application;
 import com.kh.DeVenue.project.model.vo.ApplyAnswer;
@@ -632,6 +633,14 @@ public class ProjectServiceImpl implements ProjectService {
 	public int getLikeId(HashMap ids) {
 		
 		return proDao.selectLikeId(ids);
+	}
+
+
+
+	@Override
+	public ArrayList<CPeval> selectEvaluation(HashMap condition) {
+		
+		return proDao.selectEvaluation(condition);
 	}
 
 

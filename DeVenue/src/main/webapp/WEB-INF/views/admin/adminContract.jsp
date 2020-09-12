@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
 
 <script src="http://code.jquery.com/jquery-Latest.min.js"></script>
-<title>Insert title here</title>
+<title>계약서 관리</title>
 
 
 <script>

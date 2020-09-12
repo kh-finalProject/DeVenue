@@ -36,6 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.kh.DeVenue.member.model.vo.CPeval;
 import com.kh.DeVenue.member.model.vo.Member;
 import com.kh.DeVenue.member.model.vo.Portfolio;
 import com.kh.DeVenue.project.model.exception.ProjectException;
@@ -1868,15 +1869,22 @@ ProjectService pService;
 				int listCount=pService.getCompleteListCount(condition);
 				PageInfo pi=getPageInfo(currentPage, listCount);
 				
-				//
+				//종료 프로젝트 리스트 조회
 				ArrayList<ProjectList> complete=pService.selectCompleteList(condition,pi);
 				
+				
+				//로그인 유저가 작성한 후기 조회(상태 확인을 위해)
+				ArrayList<CPeval> evaluation=pService.selectEvaluation(condition);
+				
+				
 				System.out.println("화면단 가기 전 완료 프로젝트"+complete);
+				System.out.println("화면단 가기 전 평가"+evaluation);
 				
 				mv.addObject("complete", complete);
 				mv.addObject("pi", pi);
 				mv.addObject("sorting", sorting);
 				mv.addObject("search", search);
+				mv.addObject("eval", evaluation);
 				
 				mv.setViewName("partnerSubMenu/completeProjectView");
 				
