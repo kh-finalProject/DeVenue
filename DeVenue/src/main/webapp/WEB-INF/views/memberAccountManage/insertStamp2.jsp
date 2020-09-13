@@ -348,7 +348,7 @@
 
             //이미지 콘트라스트 변경
             $('#rangeCont').change(function(){
-                alert($(this).val())
+//                 alert($(this).val())
                 var contPer = 100 + Number($(this).val());
                 $('#img_preview').css('filter', 'contrast('+contPer+'%)');
 				

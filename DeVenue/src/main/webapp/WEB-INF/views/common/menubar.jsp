@@ -1,25 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	import="com.kh.DeVenue.member.model.vo.Member, javax.servlet.http.Cookie"%>
-<%
-	Member loginUser = (Member)request.getSession().getAttribute("loginUser");
-	
-	Cookie[] cookies = request.getCookies();
-	if(cookies!=null&&cookies.length>0){
-		for(int i = 0; i < cookies.length; i++){
-			if(cookies[i].getName().equals("loginCookie")){
-				if(loginUser==null){
-					//자동로그인시 loginUser나 세션에 id만 들어있도록 해놨으므로
-					//추후 모든건 회원 아이디(userId라는 이름의 세션값)로만 데이터를 불러오게 해야한다
-					request.getSession().setAttribute("memEmail", cookies[i].getValue());
-					loginUser = new Member();
-					loginUser.setMemEmail(cookies[i].getValue());
-					System.out.println(loginUser);
-				}
-			}
-		}
-	}
-%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
@@ -329,7 +309,6 @@ $(document).ready(function(){
 					<c:if test="${loginUser.userType eq 'UT3'}">
 						<h3 align="right" style="color: white">
 							<div class="btn-group">
-
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
 							    <img src="" height="30px" width="30px" style="border-radius: 50%" onerror="this.style.visibility='hidden';">									  
@@ -339,7 +318,7 @@ $(document).ready(function(){
 			                    	<c:param name="cId" value="${loginUser.memId }"/>
 			                    </c:url>
 							  
-							    <a href="${clientProfile }" class="dropdown-item">profile</a>
+							    <a href="${clientProfile }" class="dropdown-item">myPage</a>
 							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>
@@ -361,7 +340,7 @@ $(document).ready(function(){
 							  <c:url var="partnersProfile" value="partnersProfile.do">
 						      	<c:param name="pId" value="${loginUser.memId }"/>
 						      </c:url>
-							    <a href="${partnersProfile }" class="dropdown-item">profile</a>
+							    <a href="${partnersProfile }" class="dropdown-item">myPage</a>
 							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>

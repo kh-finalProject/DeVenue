@@ -36,6 +36,14 @@
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
 
+	<c:if test="${msg eq 1 }">
+		<script>
+			$(document).ready(function(){
+				alert("파트너스가 정보가 부족합니다.");
+			})
+		</script>
+	</c:if>
+	
 	<div class="container">
 		<div class="row text-white"	style="border-bottom: 1px solid lightgray;">
 			<div class="col-2" style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">마이페이지</div>
@@ -159,12 +167,12 @@
 					&emsp; <input type="hidden" value="선택한 회원 ID">
 					<div class="row" style="margin-left: 3%; margin-right: 3%; padding-bottom: 3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
 						<div class="col-12">
-							<div style="margin-left: 1%; margin-bottom: 2%; margin-top: 2%; width: 80%;">
+							<div style="margin-left: 1%; margin-bottom: 2%; margin-top: 2%; width: 90%;">
 								<b>진행중인 프로젝트</b>
 								<button class="btn-info" type="button" style="float: right; border-radius: 0.3rem;">+ 더보기</button>
 							</div>
 							<div style="margin-left: 3%;">
-								<table border="1px solid white"	style="text-align: center; width: 80%;">
+								<table border="1px solid white"	style="text-align: center; width: 90%;">
 								<c:if test="${!process.isEmpty() }">
 									<tr>
 										<th>프로젝트 명</th>

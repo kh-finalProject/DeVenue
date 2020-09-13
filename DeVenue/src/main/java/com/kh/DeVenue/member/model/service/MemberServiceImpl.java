@@ -223,6 +223,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	public ArrayList<Member> memberList() {
+		
+		return mDao.memberList();
+	}
+
 	public int checkReEval(HashMap id) {
 		return mDao.checkReEval(id);
 	}

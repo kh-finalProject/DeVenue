@@ -851,11 +851,13 @@ try {
             <div class="memberInform_header">
                 <h4>회원 정보</h4>
                 <!-- 채팅방 참여자 정보 중 상대 고객정보 따로 저장해두기 -->
-                <c:forEach var="i" begin="0" end="${chatUserInfos.size()-1 }" step="1">
-                	<c:if test="${eachChatInfos.get(0).getClientId() == chatUserInfos.get(i).getmId() }">
-                		<c:set var="customerInfo" value="${ chatUserInfos.get(i) }"/>
-                	</c:if>
-                </c:forEach>
+                <c:if test="${chatUserInfos!= null && ! empty chatUserInfos && eachChatInfos != null && ! empty eachChatInfos}">
+	                <c:forEach var="i" begin="0" end="${chatUserInfos.size()-1 }" step="1">
+	                	<c:if test="${eachChatInfos.get(0).getClientId() == chatUserInfos.get(i).getmId() }">
+	                		<c:set var="customerInfo" value="${ chatUserInfos.get(i) }"/>
+	                	</c:if>
+	                </c:forEach>
+                </c:if>
             </div>
             <div class="memberInform_Content">
                 <table class="table table-sm table-dark" border="0">
@@ -1101,16 +1103,18 @@ try {
                     <div class="Messenger_header">
                         <div class="Messenger_header_wrap"></div>
                         <h4 class="Messenger_prompt">디베뉴(DeVenue)</h4>
+                        <c:if test="${eachChatInfos != null && ! empty eachChatInfos }">
                         <h6 class="Messenger_prompt2">${eachChatInfos.get(0).getRoomName() }</h6>
+                        </c:if>
                     </div>
                     <!-- 채팅방 메시지 뷰 -->
                     <div class="Messenger_content">
                         <div class="Messages Messages2">
                             <div class="Messenger_content_wrap"></div>
                             <div class="Messages_list">
+                            	<c:if test="${eachChatInfos != null && !empty eachChatInfos}">
                            		<c:set var="eachChatRoomId" value="${eachChatInfos.get(0).roomId }"/>
                            		<c:set var="eachChatRoomMemId" value="${eachChatInfos.get(0).clientId }"/>
-                            	<c:if test="${eachChatInfos != null && !empty eachChatInfos}">
                             		<!-- 스크립트에서 쓰기위한 선언(방번호, 고객번호) -->
                             		<c:forEach var="i" begin="0" end="${eachChatInfos.size()-1 }" step="1">
                             			<!-- 날짜 구분선의 내용이될 변수 만들기  -->
@@ -1206,7 +1210,7 @@ try {
 					                                        <!-- 여기도 일단은 임시로 하고, 나중에 뷰랑 쿼리랑 dto 객체 수정해서 프사리네임이름까지 조인시키자  -->
 					                                        <div class="img_cont_msg">
 					                                        	<c:if test="${msgUserInfo.getProImgName() == null || msgUserInfo.getProImgName() == '' }">
-						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="30" height="30">
+						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="30" height="30">
 					                                        	</c:if>
 					                                        	<c:if test="${msgUserInfo.getProImgName() != null && msgUserInfo.getProImgName() != '' }">
 						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/${msgUserInfo.getProImgName()}" width="30" height="30">
@@ -1224,7 +1228,7 @@ try {
 					                                        <span class="user_me">${msgUserInfo.getmNick() } ${msgUserInfo.getmName() }</span>
 					                                        <div class="img_cont_msg">
 					                                            <c:if test="${msgUserInfo.getProImgName() == null || msgUserInfo.getProImgName() == '' }">
-						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="30" height="30">
+						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="30" height="30">
 					                                        	</c:if>
 					                                        	<c:if test="${msgUserInfo.getProImgName() != null && msgUserInfo.getProImgName() != '' }">
 						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/${msgUserInfo.getProImgName()}" width="30" height="30">
@@ -1243,7 +1247,7 @@ try {
 					                                    <div class="name_with_profile">
 					                                        <div class="img_cont_msg">
 					                                            <c:if test="${msgUserInfo.getProImgName() == null || msgUserInfo.getProImgName() == '' }">
-						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="30" height="30">
+						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="30" height="30">
 					                                        	</c:if>
 					                                        	<c:if test="${msgUserInfo.getProImgName() != null && msgUserInfo.getProImgName() != '' }">
 						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/${msgUserInfo.getProImgName()}" width="30" height="30">
@@ -1261,7 +1265,7 @@ try {
 					                                    <div class="name_with_profile">
 					                                        <div class="img_cont_msg">
 					                                            <c:if test="${msgUserInfo.getProImgName() == null || msgUserInfo.getProImgName() == '' }">
-						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="30" height="30">
+						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="30" height="30">
 					                                        	</c:if>
 					                                        	<c:if test="${msgUserInfo.getProImgName() != null && msgUserInfo.getProImgName() != '' }">
 						                                            <img src="${pageContext.servletContext.contextPath }/resources/proImg/${msgUserInfo.getProImgName()}" width="30" height="30">
@@ -1691,19 +1695,22 @@ try {
 						$('.Messages_list').append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 					}
 				}else if($('.Messages_list').find('.msg_unit').length < 1){
-					consol.log("??")
+					console.log("??")
 					// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
 					$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 				}
 				
-				var proImgName = 'user3.png';
+				var proImgName = 'user7.png';
+				<c:if test="${chatUserInfos!=null && !empty chatUserInfos}">
 				<c:forEach var="i" begin="0" end="${chatUserInfos.size()-1}" step="1">
 					if(msgSendMemNick == '${chatUserInfos.get(i).getmNick()} ${chatUserInfos.get(i).getmName()}'){
-						if('${chatUserInfos.get(i).getProImgName()}'!=''||'${chatUserInfos.get(i).getProImgName()}'!=null){
+						if('${chatUserInfos.get(i).getProImgName()}'!=''&&'${chatUserInfos.get(i).getProImgName()}'!=null){
 							proImgName = '${chatUserInfos.get(i).getProImgName()}'
 						}
 					}
 				</c:forEach>
+				</c:if>
+				
 				var isFile = String(messageContent).indexOf("$$$$");
 				console.log(isFile)
 				if(isFile!=-1){
@@ -1830,8 +1837,8 @@ try {
 			$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 		}
 		
-		var proImgName = 'user3.png'
-		if('${me.proImgName}' != null || '${me.proImgName}' != ''){
+		var proImgName = 'user7.png'
+		if('${me.proImgName}' != null && '${me.proImgName}' != ''){
 			proImgName = '${me.proImgName}'
 		}
 		$fromMeMsgContent = $('<div class="message_from_me msg_unit"><div class="name_with_profile"><span class="msg_time">'+viewDate+'</span> <span class="user_me">${me.getmNick()} ${me.getmName()}</span><div class="img_cont_msg"><img src="${pageContext.servletContext.contextPath}/resources/proImg/'+proImgName+'" width="30" height="30"></div></div><div class="msg_text_me">'+message+'</div></div>');
@@ -2006,8 +2013,8 @@ try {
 			$('.Messages_list').append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 		}
 		
-		var proImgName = 'user3.png'
-		if('${me.proImgName}' != null || '${me.proImgName}' != ''){
+		var proImgName = 'user7.png'
+		if('${me.proImgName}' != null && '${me.proImgName}' != ''){
 			proImgName = '${me.proImgName}'
 		}
 		$fromMeMsgContent = $('<div class="message_from_me msg_unit file_message"><div class="name_with_profile"><span class="msg_time">'+viewDate+'</span> <span class="user_me">${me.getmNick()} ${me.getmName()}</span><div class="img_cont_msg"><img src="${pageContext.servletContext.contextPath}/resources/proImg/'+proImgName+'" width="30" height="30"></div></div><div class="msg_text_me fileDown_msg"></div></div>');

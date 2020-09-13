@@ -93,6 +93,8 @@ public interface MemberService {
 
 	ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter);
 
+	ArrayList<Member> memberList();
+	
 	int checkReEval(HashMap id);
 
 	int getAddressListCount(HashMap addressMap);

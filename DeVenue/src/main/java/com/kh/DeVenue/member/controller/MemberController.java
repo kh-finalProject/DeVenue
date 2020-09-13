@@ -86,12 +86,14 @@ public class MemberController {
 		PrintWriter out = response.getWriter();
 		
 		Member member = mService.selectMmber(email,pwd);
-		System.out.println(member);
+		System.out.println("member"+member);
 		
 		if(member != null) {
 			out.append("true");
+			System.out.println("로그인 가능");
 		}else {
 			out.append("false");
+			System.out.println("로그인 불가");
 		}
 		out.flush();
 		out.close();
@@ -114,7 +116,7 @@ public class MemberController {
 		Member m = new Member(memEmail, memPwd);
 //		System.out.println(m);
 		Member loginUser = mService.loginUserMember(m);
-		System.out.println(loginUser);
+//		System.out.println("loginUSer",loginUser);
 //		System.out.println(loginUser.getMemId());
 		
 		
@@ -748,5 +750,19 @@ public class MemberController {
 		return mv;
 
 	}
+	
+	// 관리자 페이지 회원정보 조회
+		@RequestMapping(value="adminMember.do")
+			public ModelAndView adminMember(HttpServletRequest request, ModelAndView mv) {
+
+			ArrayList<Member> memberList = mService.memberList();
+			
+			mv.addObject("memberList", memberList);
+			mv.setViewName("admin/adminMember");
+			
+			return mv;
+
+		}
+	
 
 }

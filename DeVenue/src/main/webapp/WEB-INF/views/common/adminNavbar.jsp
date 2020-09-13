@@ -131,7 +131,7 @@
                                             <ul class="nav navbar-nav2 mai-top-nav">
                                                 <li class="nav-item"><a href="#" class="nav-link">Home</a>
                                                 </li>
-                                                <li class="nav-item"><a href="#" class="nav-link">회원</a>
+                                                <li class="nav-item"><a href="adminMember.do" class="nav-link">회원</a>
                                                 </li>
                                                 <li class="nav-item dropdown res-dis-nn">
                                                     <a href="#" data-toggle="dropdown" role="button"
