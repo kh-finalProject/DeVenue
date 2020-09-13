@@ -205,11 +205,11 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.reportCheck", report);
 	}
 
-	public ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress) {
+	public ArrayList<FindClient> addressList(PageInfo pi, HashMap addressMap) {
 		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.addressList", mapAddress, rowBounds);
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.addressList", addressMap, rowBounds);
 	}
 
 	public ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter) {
@@ -235,6 +235,10 @@ public class MemberDao {
 
 	public int checkReEval(HashMap id) {
 		return sqlSessionTemplate.selectOne("memberMapper.checkReEval", id);
+	}
+
+	public int getAddressListCount(HashMap addressMap) {
+		return sqlSessionTemplate.selectOne("memberMapper.getAddressListCount", addressMap);
 	}
 
 	

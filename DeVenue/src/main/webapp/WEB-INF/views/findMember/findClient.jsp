@@ -135,10 +135,10 @@ hr {
                         클라이언트 형태
                         <br>
                         <div style="margin-top:2%; margin-left: 5%;">
-                            <label for="personal"><input id="personal" type="checkbox" name="client">&nbsp;개인</label>
+                            <label for="personal"><input id="personal" type="checkbox" name="client" value="personal">&nbsp;개인</label>
                             <input id="filterVal1" type="hidden" value="개인">
                             <br>
-                            <label for="company"><input id="company" type="checkbox" name="client">&nbsp;기업</label>
+                            <label for="company"><input id="company" type="checkbox" name="client" value="company">&nbsp;기업</label>
                             <input id="filterVal2" type="hidden" value="기업">
                         </div>
                     </div>
@@ -147,9 +147,9 @@ hr {
                         검증된 클라이언트
                         <br>
                         <div style="margin-top:2%; margin-left: 5%;">
-                            <label for="greatUser"><input id="greatUser" type="checkbox" name="client" value="">&nbsp;평가 우수</label>
+                            <label for="greatUser"><input id="greatUser" type="checkbox" name="client" value="great">&nbsp;평가 우수</label>
                             <br>
-                            <label for="identify"><input id="identify" type="checkbox" name="client" value="">&nbsp;인증 완료</label>
+                            <label for="identify"><input id="identify" type="checkbox" name="client" value="identify">&nbsp;인증 완료</label>
                         </div>
                     </div>
                     <br>
@@ -345,7 +345,7 @@ hr {
                         	}
                         
                         
-                            	$("#personal").on("click", function () {
+                            	/* $("#personal").on("click", function () {
                             		if($(this).is(":checked") && $("#company").is(":checked") && $("#greatUser").is(":checked") && $("#identify").is(":checked")){
                             			var personal = $("#filterVal1").val();
                             			var company = $("#filterVal2").val();
@@ -899,7 +899,36 @@ hr {
                             			clientFilter(filter);
 
                             		}
-                            	})
+                            	}) */
+                            	
+                            	
+                            $("#personal").on("click",function(){
+                            	/* var lists = new Array();
+                            	 $("input[name='client']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+                            	   lists.push($(this).val());
+                            	 });
+                            	
+                            	 for(var i=0; i<lists.length; i++){
+                            	console.log(i +":"+lists[i]);
+                            	 } */
+                            	
+                            	/* clientFilter(filter); */
+                            });
+                            	
+                            $("#company").on("click",function(){
+                            	
+                            	/* clientFilter(filter); */                            	
+                            });
+                            
+                            $("#greatUser").on("click",function(){
+                            	
+                            	/* clientFilter(filter); */
+                            });
+                            
+                            $("#identify").on("click",function(){
+                            	
+                            	clientFilter(filter);
+                            });
                             	
                             	//personal company greatUser identify
                         	function clientFilter(filter){

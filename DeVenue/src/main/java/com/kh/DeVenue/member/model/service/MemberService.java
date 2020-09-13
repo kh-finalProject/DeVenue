@@ -89,11 +89,13 @@ public interface MemberService {
 
 	Member selectMmber(String email, String pwd);
 	
-	ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress);
+	ArrayList<FindClient> addressList(PageInfo pi, HashMap addressMap);
 
 	ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter);
 
 	int checkReEval(HashMap id);
+
+	int getAddressListCount(HashMap addressMap);
 	
 
 	

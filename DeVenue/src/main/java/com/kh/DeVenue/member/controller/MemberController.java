@@ -418,6 +418,43 @@ public class MemberController {
 		System.out.println("gson : " + gson);
 
 	}
+	
+	@RequestMapping("addressFilter.do")
+	public void getaddressFilter(HttpServletResponse response, String address,
+			@RequestParam(value = "page", required = false) Integer page) throws JsonIOException, IOException {
+		response.setContentType("application/json;charset=utf-8");
+
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = page;
+		}
+
+		System.out.println(address);
+
+		HashMap addressMap = new HashMap();
+		addressMap.put("address",address);
+
+		int listCount = mService.getAddressListCount(addressMap);
+		System.out.println("listCount : " + listCount);
+
+		PageInfo pi = getPageInfo(currentPage, listCount);
+
+		ArrayList<FindClient> list = mService.addressList(pi, addressMap);
+		System.out.println("list : " + list);
+		System.out.println("pi : " + pi);
+
+		String msg = null;
+
+		HashMap map = new HashMap();
+		map.put("msg", msg);
+		map.put("list", list);
+		map.put("pi", pi);
+
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(map, response.getWriter());
+		System.out.println("gson : " + gson);
+
+	}
 
 	@RequestMapping(value = "cDetail.do")
 	public ModelAndView clientDetail(ModelAndView mv, Integer cId, String check) {

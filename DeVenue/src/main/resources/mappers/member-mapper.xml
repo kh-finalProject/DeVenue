@@ -455,6 +455,15 @@
 		WHERE FROM_ID=#{pId} AND TO_ID=#{reportCid}
 	</select>
 	
+	<!-- 지역별 리스트카운트 -->
+	<select id="getAddressListCount" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(MEM_ID)
+		FROM CLIENTLIST_VIEW
+		<if test='address != "전체"'>
+		WHERE ADDRESS LIKE '%'||#{address}||'%'
+		</if>
+	</select>
+	
 	<!-- 지역조회 -->
 	<select id="addressList" parameterType="hashmap" resultMap="selectListResult">
 		SELECT *

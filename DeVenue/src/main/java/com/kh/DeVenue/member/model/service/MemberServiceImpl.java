@@ -213,8 +213,8 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.selectMember(email,pwd);
 	}
 
-	public ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress) {
-		return mDao.addressList(pi, mapAddress);
+	public ArrayList<FindClient> addressList(PageInfo pi, HashMap addressMap) {
+		return mDao.addressList(pi, addressMap);
 	}
 
 	@Override
@@ -225,6 +225,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int checkReEval(HashMap id) {
 		return mDao.checkReEval(id);
+	}
+
+	@Override
+	public int getAddressListCount(HashMap addressMap) {
+		return mDao.getAddressListCount(addressMap);
 	}
 
 
