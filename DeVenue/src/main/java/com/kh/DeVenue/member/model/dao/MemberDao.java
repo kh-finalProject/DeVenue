@@ -233,5 +233,9 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.memberChk",map);
 	}
 
+	public int checkReEval(HashMap id) {
+		return sqlSessionTemplate.selectOne("memberMapper.checkReEval", id);
+	}
+
 	
 }

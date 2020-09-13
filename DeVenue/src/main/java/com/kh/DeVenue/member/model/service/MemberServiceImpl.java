@@ -228,5 +228,9 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.memberList();
 	}
 
+	public int checkReEval(HashMap id) {
+		return mDao.checkReEval(id);
+	}
+
 
 }

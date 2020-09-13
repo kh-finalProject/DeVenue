@@ -95,6 +95,8 @@ public interface MemberService {
 
 	ArrayList<Member> memberList();
 	
+	int checkReEval(HashMap id);
+	
 
 	
 }

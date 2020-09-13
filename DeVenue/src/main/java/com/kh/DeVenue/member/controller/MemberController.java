@@ -272,65 +272,64 @@ public class MemberController {
 				cellPhone);
 		System.out.println(m);
 		int result = mService.insertMember(m);
-//		if (result > 0) {
-//			System.out.println("회원가입 성공");
-//			Member mEmail = new Member(m.getMemEmail());
-////				System.out.println(mEmail);
-//			Member memberId = mService.selectMember(mEmail);
-//			System.out.println(memberId);
-//
-//			// 회원별 채팅설정 id 생성
-//			MemChatSet mc = new MemChatSet(memberId.getMemId());
-////				System.out.println(mc);
-//			int insertMc = mService.insertChatSet(mc);
-//
-//			if (insertMc > 0) {
-//				System.out.println("회원채팅설정 기본생성 성공");
-//				System.out.println(memberId.getUserType());
-//
-//				// 신원인증 기본 테이블 생성
-//				int insertIden = mService.insertIden(memberId.getMemId());
-//				if (insertIden > 0) {
-//					System.out.println("신원인증 생성 성공");
-//
-//					// 만약 파트너스 일경우 (파트너스 기본정보와 포트폴리오id 생성하고)
-//					String UT4 = "UT4";
-//					if (memberId.getUserType().equals("UT4")) {
-//						int proId = mService.profileInsert(memberId.getMemId());
-//
-//						if (proId > 0) {
-//							System.out.println("프로필 정보 생성 ");
-//
-//							Profile memId = new Profile(memberId.getMemId());
-//							Profile profile = mService.profile(memId);
-//							System.out.println(profile);
-//							PartInfo partInfo = new PartInfo(profile.getProfileId());
-//							int portId = mService.insertPartInfo(partInfo);
-//
-//							if (portId > 0) {
-//								System.out.println("파트너스 정보 생성 ");
-//							} else {
-//								throw new MemberException("파트너스 정보 생성 실패!");
-//							}
-//
-//						} else {
-//							throw new MemberException("프로필 생성 실패!");
-//						}
-//					}
-//
-//				} else {
-//					System.out.println("신원인증 생성 실패");
-//				}
-//
-//			} else {
-//				throw new MemberException("회원태칭설정 기본생성 실패!");
-//			}
-//
-//			return "member/login";
-//		} else {
-//			throw new MemberException("회원가입실패!");
-//		}
-		return null;
+		if (result > 0) {
+			System.out.println("회원가입 성공");
+			Member mEmail = new Member(m.getMemEmail());
+//				System.out.println(mEmail);
+			Member memberId = mService.selectMember(mEmail);
+			System.out.println(memberId);
+
+			// 회원별 채팅설정 id 생성
+			MemChatSet mc = new MemChatSet(memberId.getMemId());
+//				System.out.println(mc);
+			int insertMc = mService.insertChatSet(mc);
+
+			if (insertMc > 0) {
+				System.out.println("회원채팅설정 기본생성 성공");
+				System.out.println(memberId.getUserType());
+
+				// 신원인증 기본 테이블 생성
+				int insertIden = mService.insertIden(memberId.getMemId());
+				if (insertIden > 0) {
+					System.out.println("신원인증 생성 성공");
+
+					// 만약 파트너스 일경우 (파트너스 기본정보와 포트폴리오id 생성하고)
+					String UT4 = "UT4";
+					if (memberId.getUserType().equals("UT4")) {
+						int proId = mService.profileInsert(memberId.getMemId());
+
+						if (proId > 0) {
+							System.out.println("프로필 정보 생성 ");
+
+							Profile memId = new Profile(memberId.getMemId());
+							Profile profile = mService.profile(memId);
+							System.out.println(profile);
+							PartInfo partInfo = new PartInfo(profile.getProfileId());
+							int portId = mService.insertPartInfo(partInfo);
+
+							if (portId > 0) {
+								System.out.println("파트너스 정보 생성 ");
+							} else {
+								throw new MemberException("파트너스 정보 생성 실패!");
+							}
+
+						} else {
+							throw new MemberException("프로필 생성 실패!");
+						}
+					}
+
+				} else {
+					System.out.println("신원인증 생성 실패");
+				}
+
+			} else {
+				throw new MemberException("회원태칭설정 기본생성 실패!");
+			}
+
+			return "member/login";
+		} else {
+			throw new MemberException("회원가입실패!");
+		}
 
 	}
 
@@ -495,8 +494,17 @@ public class MemberController {
 
 		if (!mpList.isEmpty()) {
 //			int result = mService.insertEval(id);
+			
+			int result = mService.checkReEval(id);
+			
+			if(result >0) {
+				int msg=3;
+				mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
+			}else {
+				mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
+				
+			}
 
-			mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
 		} else {
 			int msg = 0;
 			mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");

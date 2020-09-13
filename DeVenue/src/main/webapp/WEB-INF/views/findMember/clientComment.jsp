@@ -64,6 +64,8 @@
 	<!-- 
 		msg의 값이 0일때 : 평가 대상 아님
 		msg의 값이 1일때 : 평가 가능한 대상
+		msg의 값이 2일때 : 
+		msg의 값이 3일때 : 이미 평가한 대상
 	-->
 	<c:if test="${msg eq 0 }">
 		<script>
@@ -81,6 +83,13 @@
         		$("#pagination").css("display","");
         		$("#cate").css("display","");
 			});
+		</script>
+	</c:if>
+	<c:if test="${msg eq 3 }">
+		<script>
+			$(document).ready(function(){
+				alert("이미 평가한 회원입니다.");
+			})
 		</script>
 	</c:if>
 	
@@ -104,9 +113,6 @@
                 <br>
                 <div class="row">
                     <div class="col-8" style="margin-left:5%;">
-                        <!-- &emsp;<b>user01(닉네임)</b>&emsp;<a class="badge badge-info">개인</a><br>
-                        &emsp;<i class="far fa-address-card"></i>&nbsp;신원인증
-                        &emsp;<i class="fas fa-phone-alt"></i>&nbsp;연락처 등록 -->
                         &emsp;<b>${fc.memNick }</b>&emsp;<a class="badge badge-info">${fc.memTypeKind }</a><br>
                         <c:if test="${fc.ideStatus eq 'COMPLETE' }">
                         &emsp;<i class="far fa-address-card"></i>&nbsp;신원인증
@@ -116,7 +122,9 @@
                         </c:if>
                     </div>
                     <div class="col-2" style="margin:0 auto; margin-right: 5%;">
-                        <button class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
+                    <c:if test="${!empty sessionScope.loginUser }">
+                        <button id="reportBtn" class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
+                    </c:if>
                     </div>
 					  <!-- 신고 모달 -->
 					  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -161,10 +169,10 @@
                 <div style="padding-bottom: 5.5%;">
                     <div class="image-container">
                         <c:if test="${!empty fc.profileImg }">
-                        <img src="${contextPath }/resources/proImg/${fc.profileImg}" style="object-fit: cover;">
+                        <img src="${contextPath }/resources/proImg/${fc.profileImg}" style="object-fit: cover; width:80px;">
 	                    </c:if>
 	                    <c:if test="${empty fc.profileImg }">
-	                        <img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover;">
+	                        <img src="${contextPath }/resources/proImg/user3.png" style="object-fit: cover; width:80px">
 	                    </c:if>
                     </div>
                     <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
@@ -254,7 +262,6 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <!-- <p>4.5점</p>&emsp; -->
                                                 <p>${fc.avgEagv }점</p>&emsp;
                                             </div>
                                         </td>
@@ -263,17 +270,149 @@
                             </div>
                         </div>
                     </div>
-                    <div class="point col-12" style="margin-left:2%;">
+<%--                     <div class="point col-12" style="margin-left:2%;">
                         <table style="width: 95%; vertical-align: middle; text-align: center;">
                             <tr>
-                                <td>
+                                <td colspan="2">
                                     <h4>파트너스 평가</h4>
                                 </td>
                             </tr>
                         </table>
 	                        <c:forEach var="cp" items="${cp }" varStatus="status"  end="0">
-	                        <table id="cp${status.count }"
-	                            style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
+	                        <table id="cp${status.count }"  border="0" style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
+		                        <tr>
+		                        	<td style="height: 15%;padding:0px;">
+	                                    <p>프로젝트명</p>
+	                                </td>
+	                                <td style="padding:0px;">
+	                                	<p>${cp.proName }&nbsp;<a class="badge badge-info">${cp.dcType }</a></p>
+	                                </td>
+	                                <td rowspan="3" style="border-left: 1px solid lightgray;padding:0px;">
+	                                	<div class="row">
+	                                		<div class="col-0" style="margin-right: 0;visibility:hidden;width:0px;">
+	                                			<p>전문성</p>
+	                                            <p>적극성</p>
+	                                            <p>일정 준수</p>
+	                                            <p>의사 소통</p>
+	                                            <p>만족도</p>
+	                                		</div>
+	                                		<div class="col-0" style="margin-left: 0; margin-right: 0;visibility:hidden">
+	                                			<p>${cp.star1 }점</p>
+	                                            <p>${cp.star2 }점</p>
+	                                            <p>${cp.star3 }점</p>
+	                                            <p>${cp.star4 }점</p>
+	                                            <p>${cp.star5 }점</p>
+	                                		</div>
+	                                		<div id="graphs" class="col-10">
+	                                			<canvas id="myChart"></canvas>
+	                                            <script>
+	                                                var ctx = document.getElementById('myChart').getContext('2d');
+	                                                var myRadarChart = new Chart(ctx, {
+	                                                    type: 'radar',
+	                                                    data: {
+	                                                        labels: ['전문성', '적극성', '일정준수', '의사소통', '만족도'],
+	                                                        datasets: [{
+	                                                            label: '',
+	                                                            scaleOverride: true,
+	                                                            strokeColor: "rgba(255,255,255,1)",
+	                                                            backgroundColor: 'rgba(23, 162, 184,0.5)',
+	                                                            borderColor: 'rgba(23, 162, 184)',
+	                                                            /* data: [4.0, 4.0, 4.0, 4.0, 4.0] */
+	                                                            data: [${cp.star1 },${cp.star2 },${cp.star3 },${cp.star4 },${cp.star5 }]
+	                                                        }]
+	                                                    },
+	                                                    options: {
+	                                                        maintainAspectRatio: false,
+	                                                        legend: {
+	                                                            display: false
+	                                                        },
+	                                                        tooltips: {
+	                                                            callbacks: {
+	                                                                label: function (tooltipItem) {
+	                                                                    return tooltipItem.yLabel;
+	                                                                }
+	                                                            }
+	                                                        },
+	                                                        animation: {
+	                                                            duration: 0 // general animation time
+	                                                        },
+	                                                        hover: {
+	                                                            animationDuration: 0 // duration of animations when hovering an item
+	                                                        },
+	                                                        responsiveAnimationDuration: 0, // animation duration after a resize
+	                                                        scale: {
+	                                                            gridLines: {
+	                                                                color: ['white', 'white', 'white', 'white', 'white']
+	                                                            },
+	                                                            angleLines: {
+	                                                                display: false,
+	                                                                color: 'white'
+	                                                            },
+	                                                            ticks: {
+	                                                                beginAtZero: true,
+	                                                                min: 0,
+	                                                                max: 5,
+	                                                                stepSize: 1
+	                                                            }
+	                                                        }
+	                                                    }
+	                                                });
+	                                            </script>
+	                                		
+	                                		</div>
+	                                	</div>
+	                                </td>
+		                        </tr>
+		                        <tr>
+		                        	<td style="width: 20%; height: 10%;padding:0px;">
+	                                    <p>평가 점수</p>
+	                                </td>
+	                                <td  style="padding:0px;">
+	                                	<p>${cp.eAgv }점</p>
+	                                </td>
+		                        </tr>
+		                        <tr>
+	                                <td style="padding:0px;"><div class="point" style="margin-bottom: 0;"><b>세부 평가</b></div></td>
+	                                <td style="padding:0px;">
+	                                	<div class="row">
+	                                        <div class="point col-5" style="margin-right: 0;">
+	                                            <p>전문성</p>
+	                                            <p>적극성</p>
+	                                            <p>일정 준수</p>
+	                                            <p>의사 소통</p>
+	                                            <p>만족도</p>
+	                                        </div>
+	                                        <div class="point col-4" style="margin-left: 0; margin-right: 0;">
+	                                        	<p>${cp.star1 }점</p>
+	                                            <p>${cp.star2 }점</p>
+	                                            <p>${cp.star3 }점</p>
+	                                            <p>${cp.star4 }점</p>
+	                                            <p>${cp.star5 }점</p>
+	                                        </div>
+	                                    </div>
+	                             	</td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width: 20%;padding:0px;">
+	                                    <p>평가 내용</p>
+	                                </td>
+	                                <td style="padding:0px;" colspan="2"> 
+	                                	<p>${cp.eContent }</p>
+	                                	<a id="showMoreComment" href="#" style="float: right;">파트너스 평가  더 보기 ></a>
+	                                    					                
+						                <script>
+						                	$("#showMoreComment").on("click", function(){
+						                		$("#cp1").css("display", "none");
+						                		$("#showMoreComment").css("display","none");
+						                		$("#moreComment").css("display","");
+						                		$("#pagination").css("display","");
+						                		$("#cate").css("display","");
+						                	})
+						                </script>
+	                                </td>
+	                            </tr>
+	                        </table>
+	                        <table id="cp${status.count }" style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
 	                            <tr>
 	                                <td style="height: 15%;">
 	                                    <p>프로젝트명</p>
@@ -293,11 +432,6 @@
 	                                            <p>만족도</p>
 	                                        </div>
 	                                        <div class="point col-2" style="margin-left: 0; margin-right: 0;">
-	                                            <!-- <p>4점</p>
-	                                            <p>4점</p>
-	                                            <p>4점</p>
-	                                            <p>4점</p>
-	                                            <p>4점</p> -->
 	                                            <p>${cp.star1 }점</p>
 	                                            <p>${cp.star2 }점</p>
 	                                            <p>${cp.star3 }점</p>
@@ -600,5 +734,344 @@
     </div>
 	
 	<jsp:include page="../common/footer.jsp"/>
+</body>
+</html> --%>
+<div class="point col-12" style="margin-left:2%;">
+                        <table style="width: 95%; vertical-align: middle; text-align: center;">
+                            <tr>
+                                <td>
+                                    <h4>파트너스 평가</h4>
+                                </td>
+                            </tr>
+                        </table>
+                           <c:forEach var="cp" items="${cp }" varStatus="status"  end="0">
+                           <table id="cp${status.count }"
+                               style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
+                               <tr>
+                                   <td style="height: 15%;">
+                                       <p>프로젝트명</p>
+                                   </td>
+                                   <td>
+                                       <!-- <p>finalProject&nbsp;<a class="badge badge-info">WEB</a></p> -->
+                                       <p>${cp.proName }&nbsp;<a class="badge badge-info">${cp.dcType }</a></p>
+                                   </td>
+                                   <td rowspan="3" style="border-left: 1px solid lightgray">
+                                       <div class="point" style="margin-bottom: 0;"><b>세부 평가</b></div>
+                                       <div class="row">
+                                           <div class="point col-3" style="margin-right: 0;">
+                                               <p>전문성</p>
+                                               <p>적극성</p>
+                                               <p>일정 준수</p>
+                                               <p>의사 소통</p>
+                                               <p>만족도</p>
+                                           </div>
+                                           <div class="point col-2" style="margin-left: 0; margin-right: 0;">
+                                               <!-- <p>4점</p>
+                                               <p>4점</p>
+                                               <p>4점</p>
+                                               <p>4점</p>
+                                               <p>4점</p> -->
+                                               <p>${cp.star1 }점</p>
+                                               <p>${cp.star2 }점</p>
+                                               <p>${cp.star3 }점</p>
+                                               <p>${cp.star4 }점</p>
+                                               <p>${cp.star5 }점</p>
+                                           </div>
+                                           <div id="graphs" class="col-6">
+                                               <canvas id="myChart"></canvas>
+                                               <script>
+                                                   var ctx = document.getElementById('myChart').getContext('2d');
+                                                   var myRadarChart = new Chart(ctx, {
+                                                       type: 'radar',
+                                                       data: {
+                                                           labels: ['전문성', '적극성', '일정준수', '의사소통', '만족도'],
+                                                           datasets: [{
+                                                               label: '',
+                                                               scaleOverride: true,
+                                                               strokeColor: "rgba(255,255,255,1)",
+                                                               backgroundColor: 'rgba(23, 162, 184,0.5)',
+                                                               borderColor: 'rgba(23, 162, 184)',
+                                                               /* data: [4.0, 4.0, 4.0, 4.0, 4.0] */
+                                                               data: [${cp.star1 },${cp.star2 },${cp.star3 },${cp.star4 },${cp.star5 }]
+                                                           }]
+                                                       },
+                                                       options: {
+                                                           maintainAspectRatio: false,
+                                                           legend: {
+                                                               display: false
+                                                           },
+                                                           tooltips: {
+                                                               callbacks: {
+                                                                   label: function (tooltipItem) {
+                                                                       return tooltipItem.yLabel;
+                                                                   }
+                                                               }
+                                                           },
+                                                           animation: {
+                                                               duration: 0 // general animation time
+                                                           },
+                                                           hover: {
+                                                               animationDuration: 0 // duration of animations when hovering an item
+                                                           },
+                                                           responsiveAnimationDuration: 0, // animation duration after a resize
+                                                           scale: {
+                                                               gridLines: {
+                                                                   color: ['white', 'white', 'white', 'white', 'white']
+                                                               },
+                                                               angleLines: {
+                                                                   display: false,
+                                                                   color: 'white'
+                                                               },
+                                                               ticks: {
+                                                                   beginAtZero: true,
+                                                                   min: 0,
+                                                                   max: 5,
+                                                                   stepSize: 1
+                                                               }
+                                                           }
+                                                       }
+                                                   });
+   
+                                               </script>
+                                           </div>
+                                       </div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td style="width: 20%; height: 10%;">
+                                       <p>평가 점수</p>
+                                   </td>
+                                   <td>
+                                       <!-- <p>4점</p> -->
+                                       <p>${cp.eAgv }점</p>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td>&nbsp;</td>
+                               </tr>
+                               <tr>
+                                   <td style="width: 20%;">
+                                       <p>평가 내용</p>
+                                   </td>
+                                   <td>&nbsp;</td>
+                               </tr>
+                               <tr>
+                                   <td style="width: 20%;" colspan="3">
+                                       <p style="margin-top: 1%;">
+   <!--                                         당시 마르셀리노 감독이 경질될 때 유스 선수들을 중용하지 않는 점이 이유 중 하나로 꼽힌 바 있다. 새롭게 부임한 그라시아 감독 역시
+                                           수뇌부로부터 유스 선수들을 많이 기용하라는 주문을 받은 것로 알려졌다.
+   
+                                           이어 페란은 “마르셀리노는 훌륭한 감독이다. 나는 그에게 많은 빚을 졌다”면서 “이강인을 정말 좋아한다. 그 역시 알고 있다. 나와 소브리노가
+                                           이강인에게 많은 도움을 줬다. 이강인은 위대한 선수가 될 것이다. 발렌시아가 나와 같은 실수를 하지 않기를 바란다. 이강인은 매우 힘들고
+                                           외로움을 느꼈기 때문에 사랑과 신뢰가 필요하다”고 덧붙였다.
+   
+                                           한편 이강인은 2022년 6월이면 발렌시아와의 계약이 만료된다. 발렌시아는 올해 혹은 내년 이강인이 떠나지 않도록 하기 위해 재계약 제안을 건넨
+                                           것으로 알려졌다. 하지만 다수 스페인 매체들은 “이강인이 출전 기회를 잡고자 이적을 원한다”고 보도 중이다. -->
+                                           ${cp.eContent }
+                                       </p>
+                                       <a id="showMoreComment" href="#" style="float: right;">파트너스 평가  더 보기 ></a>
+                                                                      
+                                  <script>
+                                     $("#showMoreComment").on("click", function(){
+                                        $("#cp1").css("display", "none");
+                                        $("#showMoreComment").css("display","none");
+                                        $("#moreComment").css("display","");
+                                        $("#pagination").css("display","");
+                                        $("#cate").css("display","");
+                                     })
+                                  </script>
+                                   </td>
+                               </tr>
+                           </table>
+                           </c:forEach>
+                           
+                           <!-- 평가 더보기 눌렀을 때 -->
+                           <div id="moreComment" style="display:none;">
+                           <c:forEach var="cp" items="${cp }" varStatus="status">
+                           <table id="cp${status.count }" border="0" style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
+                               <tr>
+                                   <td style="height: 15%;padding:0px;">
+                                       <p>프로젝트명</p>
+                                   </td>
+                                   <td style="padding:0px;">
+                                       <p>${cp.proName }&nbsp;<a class="badge badge-info">${cp.dcType }</a></p>
+                                   </td>
+                                   <td rowspan="3" style="border-left: 1px solid lightgray;padding:0px;">
+                                       <div class="row">
+                                           <div class="col-0" style="margin-right: 0;visibility:hidden;width:0px;">
+                                               <p>전문성</p>
+                                               <p>적극성</p>
+                                               <p>일정 준수</p>
+                                               <p>의사 소통</p>
+                                               <p>만족도</p>
+                                           </div>
+                                           <div class="col-0" style="margin-left: 0; margin-right: 0;visibility:hidden">
+                                               <p>${cp.star1 }점</p>
+                                               <p>${cp.star2 }점</p>
+                                               <p>${cp.star3 }점</p>
+                                               <p>${cp.star4 }점</p>
+                                               <p>${cp.star5 }점</p>
+                                           </div>
+                                           <div id="graphs" class="col-10"  >
+                                               <canvas id="myChart${status.count }"></canvas>
+                                               <script>
+                                                   var ctx${status.count} = document.getElementById('myChart${status.count}').getContext('2d');
+                                                   
+                                                   var myRadarChart = new Chart(ctx${status.count}, {
+                                                       type: 'radar',
+                                                       data: {
+                                                           labels: ['전문성('+${cp.star1}+')', '적극성('+${cp.star2}+")", '일정준수('+${cp.star3}+')', '의사소통('+${cp.star4}+')', '만족도('+${cp.star5}+')'],
+                                                           datasets: [{
+                                                               label: '',
+                                                               scaleOverride: true,
+                                                               strokeColor: "rgba(255,255,255,1)",
+                                                               backgroundColor: 'rgba(23, 162, 184,0.5)',
+                                                               borderColor: 'rgba(23, 162, 184)',
+                                                               /* data: [4.0, 4.0, 4.0, 4.0, 4.0] */
+                                                               data: [${cp.star1 },${cp.star2 },${cp.star3 },${cp.star4 },${cp.star5 }]
+                                                           }]
+                                                       },
+                                                       options: {
+                                                           maintainAspectRatio: false,
+                                                           legend: {
+                                                               display: false
+                                                           },
+                                                           tooltips: {
+                                                               callbacks: {
+                                                                   label: function (tooltipItem) {
+                                                                       return tooltipItem.yLabel;
+                                                                   }
+                                                               }
+                                                           },
+                                                           animation: {
+                                                               duration: 0 // general animation time
+                                                           },
+                                                           hover: {
+                                                               animationDuration: 0 // duration of animations when hovering an item
+                                                           },
+                                                           responsiveAnimationDuration: 0, // animation duration after a resize
+                                                           scale: {
+                                                               gridLines: {
+                                                                   color: ['white', 'white', 'white', 'white', 'white']
+                                                               },
+                                                               angleLines: {
+                                                                   display: false,
+                                                                   color: 'white'
+                                                               },
+                                                               ticks: {
+                                                                  display : false,
+                                                                   beginAtZero: true,
+                                                                   min: 0,
+                                                                   max: 5,
+                                                                   stepSize: 1
+                                                               }
+                                                           }
+                                                       }
+                                                   });
+   
+                                               </script>
+                                           </div>
+                                       </div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td style="width: 20%; height: 10%;padding:0px;">
+                                       <p>평가 점수</p>
+                                   </td>
+                                   <td  style="padding:0px;">
+                                       <!-- <p>4점</p> -->
+                                       <p>${cp.eAgv }점</p>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td style="padding:0px;"><div class="point" style="margin-bottom: 0;"><b>세부 평가</b></div></td>
+                                   <td style="padding:0px;">
+                                      <div class="row">
+                                           <div class="point col-5" style="margin-right: 0;">
+                                               <p>전문성</p>
+                                               <p>적극성</p>
+                                               <p>일정 준수</p>
+                                               <p>의사 소통</p>
+                                               <p>만족도</p>
+                                           </div>
+                                           <div class="point col-4" style="margin-left: 0; margin-right: 0;">
+                                               <p>${cp.star1 }점</p>
+                                               <p>${cp.star2 }점</p>
+                                               <p>${cp.star3 }점</p>
+                                               <p>${cp.star4 }점</p>
+                                               <p>${cp.star5 }점</p>
+                                           </div>
+                                        </div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td style="width: 20%;padding:0px;">
+                                       <p>평가 내용</p>
+                                   </td>
+                                   <td style="padding:0px;" colspan="2"> <p style="margin-top: 1%;">
+                                           ${cp.eContent }
+                                       </p></td>
+                               </tr>
+                           </table>
+                           </c:forEach>
+                           </div>
+                    </div>
+                </div>
+                <section class="mt-5 mb-5" id="pagination" style="display:none;">
+               <div class="row d-flex justify-content-around align-items-center">
+                 <!--페이지네이션-->
+                 <div class="col-12 col-md-4 text-center">
+                   <nav aria-label="Page navigation example">
+                     <ul class="pagination justify-content-center mb-0 text-dark">
+                        <c:if test="${pi.currentPage eq 1 }">
+                       <li class="page-item"><a class="page-link"><i class="fas fa-chevron-left"></i></a></li>
+                       </c:if>
+                       <c:if test="${pi.currentPage gt 1}">
+                       <c:url var="plistBack" value="cEvalSelect.do">
+                          <c:param name="page" value="${pi.currentPage-1}"/>
+                          <c:param name="msg" value="2"/>
+                          <c:param name="cId" value="${fc.memId }"/>
+                       </c:url>
+                       <li class="page-item"><a class="page-link" href="${plistBack}"><i class="fas fa-chevron-left"></i></a></li>
+                       </c:if>
+                       
+                       <c:forEach begin="${pi.startPage}" end="${pi.endPage}" step="1" var="pn">
+                       <c:if test="${pi.currentPage eq pn}">
+                       <li class="page-item active"><a class="page-link">${pn}</a></li>
+                       </c:if>
+                       <c:if test="${pi.currentPage ne pn}">
+                       <c:url var="plistCheck" value="cEvalSelect.do">
+                       <c:param name="page" value="${pn}"/>
+                       <c:param name="cId" value="${fc.memId }"/>
+                       <c:param name="msg" value="2"/>
+                       </c:url>
+                       <li class="page-item"><a class="page-link" href="${plistCheck}">${pn}</a></li>
+                       </c:if>
+                       </c:forEach>
+                      
+                       <c:if test="${pi.currentPage eq pi.maxPage}">
+                       <li class="page-item"><a class="page-link"><i class="fas fa-chevron-right"></i></a></li>
+                        </c:if>
+                        <c:if test="${pi.currentPage lt pi.maxPage}">
+                        <c:url var="plistFront" value="cEvalSelect.do">
+                          <c:param name="page" value="${pi.currentPage+1}"/>
+                          <c:param name="msg" value="2"/>
+                          <c:param name="cId" value="${fc.memId }"/>
+                       </c:url>
+                       <li class="page-item"><a class="page-link" href="${plistFront}"><i class="fas fa-chevron-right"></i></a></li>
+                        </c:if>
+                     </ul>
+                   </nav>
+                 </div>
+               </div>
+   
+             </section>
+                
+            </div>
+        </div>
+
+    </div>
+   
+   <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

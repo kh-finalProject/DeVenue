@@ -99,7 +99,9 @@
                         </c:if>
                     </div>
                     <div class="col-2" style="margin:0 auto; margin-right: 5%;">
-                        <button class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
+                    <c:if test="${!empty sessionScope.loginUser }">
+                        <button id="reportBtn" class="btn-lg btn-info" style="float:right;" type="button"  data-toggle="modal" data-target="#exampleModal">신고</button>
+                    </c:if>
                     </div>
 					  <!-- 신고 모달 -->
 					  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -144,10 +146,10 @@
                 <div style="padding-bottom: 5.5%;">
                     <div class="image-container">
                         <c:if test="${!empty ph.proImg }">
-                        <img src="${contextPath }/resources/proImg/${ph.proImg}" style="object-fit: cover;">
+                        <img src="${contextPath }/resources/proImg/${ph.proImg}" style="object-fit: cover; width:80px;">
 	                    </c:if>
 	                    <c:if test="${empty ph.proImg }">
-	                        <img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover;">
+	                        <img src="${contextPath }/resources/proImg/user3.png" style="object-fit: cover; width:80px;">
 	                    </c:if>
                     </div>
                     <hr style=" margin:0px auto; margin-top:5%; margin-bottom:10%;">
@@ -256,9 +258,9 @@
                                                 <!-- 100%<br>
                                                 10개<br>
                                                 12개 -->
-                                                <fmt:formatNumber type="number" maxFractionDigits="1" value="${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}"/>%<br>
-                                                ${ph.ingProject }개<br>
-                                                ${ph.completeProject }개
+                                                <p style="text-align:right;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${(ph.stopProject + ph.ingProject + ph.completeProject)/ph.addProject * 100}"/>%</p>
+                                                <p style="text-align:right;">${ph.ingProject }개</p>
+                                                <p style="text-align:right;">${ph.completeProject }개</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -789,7 +791,7 @@
 										</c:when>
                                     </c:choose>
 										</td>
-										<td style="text-align: center;"><fmt:formatNumber type="number" maxFractionDigits="1" value="${ph.star5 }"/></td>
+										<td style="text-align: center;"><fmt:formatNumber type="number" pattern=".0" maxFractionDigits="1" value="${ph.star5 }"/></td>
 									</tr>
 								</table>
                             </div>

@@ -42,7 +42,7 @@
 
 		<div class="row">
 			<jsp:include page="../common/pSideMenubar.jsp"/>
-			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:20%;">
+			<div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:20%; min-height:900px;">
 				<br>
 				<div class="row">
 					<div class="col-5" style="margin-left: 5%; padding-right: 0;">
@@ -51,10 +51,10 @@
 								<td>
 									<div class="image-profile">
 									<c:if test="${!empty ph.proImg }">
-										<img src="${contextPath }/resources/proImg/${ph.proImg}" style="object-fit: cover; width: 100px;">
+										<img src="${contextPath }/resources/proImg/${ph.proImg}" style="object-fit: cover; width: 80px;">
 									</c:if>
 									<c:if test="${empty ph.proImg }">
-										<img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover; width: 100px;">
+										<img src="${contextPath }/resources/proImg/user3.png" style="object-fit: cover; width: 80px;">
 									</c:if>
 									</div>
 								</td>
@@ -282,6 +282,12 @@
 			</div>
 		</div>
 	</div>
+	<script>
+	 $(function(){
+       $('.myPage_sideNav_area').height(window.innerHeight-$('#mainMenubar').height()-$('#subMenubar').height()-$('footer').height());
+   })
+	</script>
+	
 	
 	<jsp:include page="../common/footer.jsp" />
 </body>
