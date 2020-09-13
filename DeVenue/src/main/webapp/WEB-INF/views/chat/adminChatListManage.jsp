@@ -434,24 +434,6 @@
 	             </c:if>
             </table>
          </div>
-		    <!-- 페이지네이션 -->
-		    <nav aria-label="Page navigation example" style="margin:auto; text-align: center;">
-		        <ul class="pagination">
-		            <li class="page-item">
-		            <a class="page-link" href="#" aria-label="Previous">
-		                <span aria-hidden="true">&laquo;</span>
-		            </a>
-		            </li>
-		            <li class="page-item"><a class="page-link" href="#">1</a></li>
-		            <li class="page-item"><a class="page-link" href="#">2</a></li>
-		            <li class="page-item"><a class="page-link" href="#">3</a></li>
-		            <li class="page-item">
-		            <a class="page-link" href="#" aria-label="Next">
-		                <span aria-hidden="true">&raquo;</span>
-		            </a>
-		            </li>
-		        </ul>
-		    </nav>
         </div>
         </div>
         <!-- 검색 조건에 해당하지만 채팅방이 없는 회원들을 조회하여 채팅방을 생성할 수 있도록 한다. -->
@@ -538,7 +520,7 @@
             var hidden =  $('#summerValue');
             var sHTML = hidden.next().summernote('code');
             hidden.val(sHTML)
-            alert(hidden.val());
+//             alert(hidden.val());
         };
         // 해당 회원들에게 단체메시지 전송(모달창에서)
         function sendGroupMessage(){
@@ -590,11 +572,11 @@
         	})
         	if(roomIds[roomIds.length]==','){
         		roomIds = roomIds.substring(0, roomIds.length);
-        		alert(roomIds)
+//         		alert(roomIds)
         	}
         	if(roomIds[0]==','){
         		roomIds = roomIds.substring(1, roomIds.length);
-        		alert(roomIds);alert('asdf');
+//         		alert(roomIds);alert('asdf');
         	}
         	// 중복제거
         	var idArr = roomIds.split(',');
@@ -626,7 +608,7 @@
 				data:{roomIds:roomIds},
 				type:"get",
 				success:function(data){
-					alert(data);
+// 					alert(data);
 		        	// 삭제 완료하면 리스트 갱신 버튼을 눌러 갱신
 		        	$('#refreshBtn').click();
 				},
@@ -997,9 +979,9 @@
        	// (생성 후 리스트 갱신을 통해 확인하고, 선택전송을 통해 단체메시지)
      	function createNewChat(){
        		var mIds = collectMemberIds();
-			alert(mIds);
+// 			alert(mIds);
 			var mNicks = collectMemberNicks();
-			alert(mNicks);
+// 			alert(mNicks);
 			
 	   		$.ajax({
 	   			url:"createNewChat.do",
@@ -1017,7 +999,7 @@
 					alert(data)
 				},
 				complete:function(){
-					alert('이거 실행완료')
+// 					alert('이거 실행완료')
 				}
 	      	});
        	}

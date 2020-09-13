@@ -71,14 +71,7 @@ public class MainAdminWebSocket {
 					NewChatClient.returnUserSession().getBasicRemote().sendText(message + ',' + adminRoomId);
 					return "Y";
 				}else {
-					System.out.println("클라이언트가 접속하지 않아있다.");
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH/mm/ss/SSS");
-					sdf.format(new Date());
-					String currentDate = sdf.format(new Date());
-					String outMsg = "고객님이 접속을 해제한 상태입니다.,"+currentDate + ",채팅알림 서비스" +",N";
-					// 관리자는 제이슨 형태로 받아주기 때문에 리턴도 제이슨 형태로
-					String jsonMessage = ("{\"status\":\"message\", \"key\":\"" + this.chatUser.getMemEmail() + "\", \"message\":\"" + outMsg + "\"}");
-					return jsonMessage;
+					return null;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

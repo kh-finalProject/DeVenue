@@ -222,26 +222,6 @@
              </tbody>
          </table>
      </div>
-      <!-- 페이지네이션 -->
-      <div id="paginationArea_wrap">
-          <nav id="paginationArea" aria-label="Page navigation example">
-              <ul class="pagination">
-                  <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                  </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                  </a>
-                  </li>
-              </ul>
-          </nav>
-      </div>
  </div>
    <!-- 숨겨놓은 삽입용 summernote -->
    <div id="hideSummernoteDiv" style="display: none;">
@@ -305,7 +285,7 @@
                 $('#hideSummernoteDiv').insertAfter($('#appendSummernote'));
                 $('#hideSummernoteDiv').show();
 
-                alert();
+//                 alert();
                 
                 $('.cancelBtn').on('click', function(){
                     $('#hideSummernoteDiv').insertAfter($('.all-content-wrapper'));
@@ -383,7 +363,7 @@
             hidden.each(function (index, item) {
                 var sHTML = $($(item).next()).summernote('code');
                 $(item).val(sHTML)
-                alert($(item).val());
+//                 alert($(item).val());
             });
             
 			// 값을 가지고 있는 인풋태그 값을 제출할 폼태그에 옮긴다.

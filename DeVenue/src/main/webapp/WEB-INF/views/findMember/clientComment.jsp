@@ -11,7 +11,6 @@
         hr {
             background-color: lightgray;
         }
-
         #starPoint b {
             /* margin-right:10%; */
             float: right;
@@ -23,24 +22,20 @@
 		.far{
 			margin-right:0;
 		}
-
         .point {
             margin-top: 3%;
             margin-bottom: 3%;
             margin-left: 5%;
             margin-right: 10%;
         }
-
         .point p {
             margin-bottom: 2%;
             margin-left: 2%;
         }
-
         .point div ul li {
             margin: 0;
             margin-top: 2%;
         }
-
         /* 이미지 사이즈 맞추기 */
         .image-container {
             width: auto;
@@ -50,13 +45,11 @@
             align-items: center;
             justify-content: center;
         }
-
         .image-container img {
             object-fit: fill;
         }
         
         /*페이지네이션*/
-
       #pagination>div{
         margin-top: 1rem;
       }
@@ -213,19 +206,15 @@
                         }).on("mouseenter", function(){
                             
                         });
-
                         $("#projectHistory").on("click", function(){
                             location.href="${cProjectHistory }";
                         });
-
                         $("#clientEvaluate").click(function() {
                             $("#subClientEva").toggle();
                         });
-
                         $("#clientComment").on("click", function(){
                             location.href="${cEvalSelect }";
                         });
-
                         $("#insertCComment").on("click", function(){
                             location.href="${cEvalInsert }";
                         });
@@ -317,7 +306,6 @@
                                         $("#develop").on("click", function () {
                                             $("#dropdownMenuOffset").text($(this).text());
                                         });
-
                                         $("#design").on("click", function () {
                                             $("#dropdownMenuOffset").text($(this).text());
                                         })
@@ -469,33 +457,31 @@
 	                        <!-- 평가 더보기 눌렀을 때 -->
 	                        <div id="moreComment" style="display:none;">
 	                        <c:forEach var="cp" items="${cp }" varStatus="status">
-	                        <table id="cp${status.count }"
-	                            style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
+	                        <table id="cp${status.count }" border="0" style="margin-left: 5%; margin-top: 2%; width:90%; border-top:1px solid lightgray; border-bottom: 1px solid lightgray;">
 	                            <tr>
-	                                <td style="height: 15%;">
+	                                <td style="height: 15%;padding:0px;">
 	                                    <p>프로젝트명</p>
 	                                </td>
-	                                <td>
+	                                <td style="padding:0px;">
 	                                    <p>${cp.proName }&nbsp;<a class="badge badge-info">${cp.dcType }</a></p>
 	                                </td>
-	                                <td rowspan="3" style="border-left: 1px solid lightgray">
-	                                    <div class="point" style="margin-bottom: 0;"><b>세부 평가</b></div>
+	                                <td rowspan="3" style="border-left: 1px solid lightgray;padding:0px;">
 	                                    <div class="row">
-	                                        <div class="point col-3" style="margin-right: 0;">
+	                                        <div class="col-0" style="margin-right: 0;visibility:hidden;width:0px;">
 	                                            <p>전문성</p>
 	                                            <p>적극성</p>
 	                                            <p>일정 준수</p>
 	                                            <p>의사 소통</p>
 	                                            <p>만족도</p>
 	                                        </div>
-	                                        <div class="point col-2" style="margin-left: 0; margin-right: 0;">
+	                                        <div class="col-0" style="margin-left: 0; margin-right: 0;visibility:hidden">
 	                                            <p>${cp.star1 }점</p>
 	                                            <p>${cp.star2 }점</p>
 	                                            <p>${cp.star3 }점</p>
 	                                            <p>${cp.star4 }점</p>
 	                                            <p>${cp.star5 }점</p>
 	                                        </div>
-	                                        <div id="graphs" class="col-6">
+	                                        <div id="graphs" class="col-10"  >
 	                                            <canvas id="myChart${status.count }"></canvas>
 	                                            <script>
 	                                                var ctx${status.count} = document.getElementById('myChart${status.count}').getContext('2d');
@@ -503,7 +489,7 @@
 	                                                var myRadarChart = new Chart(ctx${status.count}, {
 	                                                    type: 'radar',
 	                                                    data: {
-	                                                        labels: ['전문성', '적극성', '일정준수', '의사소통', '만족도'],
+	                                                        labels: ['전문성('+${cp.star1}+')', '적극성('+${cp.star2}+")", '일정준수('+${cp.star3}+')', '의사소통('+${cp.star4}+')', '만족도('+${cp.star5}+')'],
 	                                                        datasets: [{
 	                                                            label: '',
 	                                                            scaleOverride: true,
@@ -542,6 +528,7 @@
 	                                                                color: 'white'
 	                                                            },
 	                                                            ticks: {
+	                                                            	display : false,
 	                                                                beginAtZero: true,
 	                                                                min: 0,
 	                                                                max: 5,
@@ -557,29 +544,42 @@
 	                                </td>
 	                            </tr>
 	                            <tr>
-	                                <td style="width: 20%; height: 10%;">
+	                                <td style="width: 20%; height: 10%;padding:0px;">
 	                                    <p>평가 점수</p>
 	                                </td>
-	                                <td>
+	                                <td  style="padding:0px;">
 	                                    <!-- <p>4점</p> -->
 	                                    <p>${cp.eAgv }점</p>
 	                                </td>
 	                            </tr>
 	                            <tr>
-	                                <td>&nbsp;</td>
+	                                <td style="padding:0px;"><div class="point" style="margin-bottom: 0;"><b>세부 평가</b></div></td>
+	                                <td style="padding:0px;">
+	                                	<div class="row">
+	                                        <div class="point col-5" style="margin-right: 0;">
+	                                            <p>전문성</p>
+	                                            <p>적극성</p>
+	                                            <p>일정 준수</p>
+	                                            <p>의사 소통</p>
+	                                            <p>만족도</p>
+	                                        </div>
+	                                        <div class="point col-4" style="margin-left: 0; margin-right: 0;">
+	                                            <p>${cp.star1 }점</p>
+	                                            <p>${cp.star2 }점</p>
+	                                            <p>${cp.star3 }점</p>
+	                                            <p>${cp.star4 }점</p>
+	                                            <p>${cp.star5 }점</p>
+	                                        </div>
+	                                     </div>
+	                                </td>
 	                            </tr>
 	                            <tr>
-	                                <td style="width: 20%;">
+	                                <td style="width: 20%;padding:0px;">
 	                                    <p>평가 내용</p>
 	                                </td>
-	                                <td>&nbsp;</td>
-	                            </tr>
-	                            <tr>
-	                                <td style="width: 20%;" colspan="3">
-	                                    <p style="margin-top: 1%;">
+	                                <td style="padding:0px;" colspan="2"> <p style="margin-top: 1%;">
 	                                        ${cp.eContent }
-	                                    </p>
-	                                </td>
+	                                    </p></td>
 	                            </tr>
 	                        </table>
 	                        </c:forEach>

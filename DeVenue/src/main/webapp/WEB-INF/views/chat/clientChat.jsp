@@ -1773,7 +1773,7 @@ try {
             <div class="during_oper" style="display:none">
     	       	<c:forEach var="i" begin="0" end="${admins.size()-1 }" step="1">
     	       		  <c:if test="${admins.get(i).getProImgName() == null || admins.get(i).getProImgName() == '' }">
-	    	          	<img class="operIcon" src="resources/proImg/user3.png" width="40px" height="40px">
+	    	          	<img class="operIcon" src="resources/proImg/user7.png" width="40px" height="40px">
 	    	          </c:if>
     	       		  <c:if test="${admins.get(i).getProImgName() != null && admins.get(i).getProImgName() != '' }">
 	    	          	<img class="operIcon" src="${pageContext.servletContext.contextPath }/resources/proImg/${admins.get(i).getProImgName() }" width="40px" height="40px">
@@ -1788,8 +1788,11 @@ try {
                 <tr>
                   <td style="vertical-align: baseline; padding-top: 3px;">
                   	<c:forEach var="i" begin="0" end="${admins.size()-1 }" step="1">
-                  		<c:if test="${admins.get(i).userType =='UT1' }">
+                  		<c:if test="${admins.get(i).userType =='UT1' && admins.get(i).getProImgName() != null}">
                     		<img class="charge_adminIcon" src="resources/proImg/${admins.get(i).proImgName }" width="35px" height="35px">
+                    	</c:if>
+                    	<c:if test="${admins.get(i).userType =='UT1' && admins.get(i).getProImgName() == null}">
+                    		<img class="charge_adminIcon" src="resources/proImg/user7.png" width="35px" height="35px">
                     	</c:if>
                     </c:forEach>
                   </td>
@@ -2030,11 +2033,12 @@ try {
                     <tr class="chatRoom">
                         <td rowspan="2"align="center">
 <!--                             대화상대(주상대) 프사 -->
+							<c:if test="${chatRels != null && ! empty chatRels }">
 							<c:forEach var="i" begin="0" end="${chatRels.size()-1}" step="1">
 	                            <c:forEach var="k" begin="0" end="${admins.size()-1 }" step="1">
 		                            <c:if test="${room.roomId eq chatRels.get(i).roomId && chatRels.get(i).toId eq admins.get(k).mId}">
 				                        <c:if test="${admins.get(k).getProImgName() == null || admins.get(k).getProImgName() == '' }">
-		                                    <img class="memProfileIcon" src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="45" height="45">
+		                                    <img class="memProfileIcon" src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="45" height="45">
 		                               	</c:if>
 		                               	<c:if test="${admins.get(k).getProImgName() != null && admins.get(k).getProImgName() != '' }">
 		                                    <img class="memProfileIcon" src="${pageContext.servletContext.contextPath }/resources/proImg/${admins.get(k).getProImgName()}" width="45" height="45">
@@ -2042,11 +2046,13 @@ try {
 		                            </c:if>
 	                            </c:forEach>
                             </c:forEach>
+                            </c:if>
                         </td>
                         <td colspan="3" align="left">
 <!--                             회원 이름or닉네임 +- 회원/비회원 여부 + 안읽은 메시지 표시(수까지) -->
                             <label>${room.roomName }</label>
 							 <fmt:formatNumber value="0" var="countUnRead"/>
+							 <c:if test="${messages!= null && ! empty messages }">
                              <c:forEach var="i" begin="0" end="${messages.size()-1}" step="1">
 	                            <c:if test="${room.roomId eq messages.get(i).roomId }">
 		                            <c:if test="${messages.get(i).read == 'N' && messages.get(i).fromId != loginUser.memId}">
@@ -2054,6 +2060,7 @@ try {
 		                            </c:if>
 	                            </c:if>
                             </c:forEach>
+                            </c:if>
                             <c:if test="${countUnRead != 0}">
                             	<span class="alertRead">${countUnRead }</span>
                             </c:if>
@@ -2092,6 +2099,7 @@ try {
 <!--                       마지막 채팅 -->
                       <td colspan="3" align="left">
                         <span class="lastChatContent">
+                        	<c:if test="${messages!= null && ! empty messages }">
 							<c:forEach var="i" begin="0" end="${messages.size()-1}" step="1">
 	                            <c:if test="${room.roomId eq messages.get(i).roomId }">
 	                            	<c:set var="lCContent" value="${messages.get(i).chatContent }"/>
@@ -2099,11 +2107,13 @@ try {
                             </c:forEach>
                             <label class="lChatContent">${lCContent}</label>
                             <c:set var="lCContent" value=""/>
+                            </c:if>
                         </span>
                       </td>
                       <td style="text-align:right;padding-right:10px;">
                         <c:set var="lastChatTimeSave" value=""/>
                         <c:set var="oriLastTime" value=""/>
+                        <c:if test="${messages!= null && ! empty messages }">
                    		<c:forEach var="i" begin="0" end="${messages.size()-1}" step="1">
                            <c:if test="${room.roomId eq messages.get(i).roomId }">
                            		<c:set var="oriLastTime" value="${messages.get(i).msgCreaetDate }"/>
@@ -2112,6 +2122,7 @@ try {
 		                        <c:set var="lastChatTimeSave" value="${lastChatTime }"/>
                            </c:if>
                         </c:forEach>
+                        </c:if>
                         <!-- 마지막 채팅 시간 -->
                         <input type="hidden" class="oriLastTimeHidden" value="${oriLastTime }"/>
 <%--                         <input type="hidden" class="LastTimeHidden" value="${oriLastTime }"/> --%>
@@ -2181,7 +2192,7 @@ try {
                     </c:forEach>
                     </c:if>
                     <c:if test="${empty chatRooms }">
-                    	채팅방 없뜸 이어서 채팅버튼 안보이게 해야 함
+                    	
                     </c:if>
                 </table>
               </div>
@@ -2231,6 +2242,7 @@ try {
 		          <!-- 하나의 채팅방에 주어질 채팅방 번호 -->
 		          <input type="hidden" name="room_id" class="chatRoom_room_id" value="<%=chatRooms.get(i).getRoomId()%>"/>
 		          <!-- 하나의 채팅방에 상대방 정보 담는 히든 태그들 -->
+		          <c:if test="${messages!= null && ! empty messages }">
 		          <c:forEach var="k" begin="0" end="${chatRels.size()-1 }" step="1">
 		          	<c:set var="roomIdForHidden" value="<%=chatRooms.get(i).getRoomId() %>"/>
 		          	<c:if test="${ roomIdForHidden eq chatRels.get(k).roomId}">
@@ -2245,6 +2257,7 @@ try {
 			          </c:forEach>
 		          	</c:if>
 		          </c:forEach>
+		          </c:if>
 		         <%boolean startedUnRead = false; %>
 				 <%for(int j = 0; j < messages.size(); j++){ %>
 				 	<%if(messages.get(j).getRoomId() == chatRooms.get(i).getRoomId()){ System.out.println("룸아이디 : " + chatRooms.get(i).getRoomId());
@@ -2412,7 +2425,7 @@ try {
 				                      <%} %>
 				                      <div class="img_cont_msg">
 				                        <c:if test="${me.proImgName == null || me.proImgName == ''}">
-		                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="30" height="30">
+		                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="30" height="30">
 		                               	</c:if>
 		                               	<c:if test="${me.proImgName != null && me.proImgName != '' }">
 		                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/${me.proImgName}" width="30" height="30">
@@ -2432,7 +2445,7 @@ try {
 		                      <%} %>
 		                      <div class="img_cont_msg">
 		                        <c:if test="${me.proImgName == null || me.proImgName == ''}">
-                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="30" height="30">
+                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="30" height="30">
                                	</c:if>
                                	<c:if test="${me.proImgName != null && me.proImgName != '' }">
                                     <img src="${pageContext.servletContext.contextPath }/resources/proImg/${me.proImgName}" width="30" height="30">
@@ -2451,7 +2464,7 @@ try {
 		                      		<c:set var="msgFromId" value="<%=messages.get(j).getFromId() %>"/>
 		                      		<c:if test="${admins.get(k).getmId()==msgFromId}">
 				                        <c:if test="${admins.get(k).getProImgName() == null || admins.get(k).getProImgName() == '' }">
-		                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/user3.png" width="30" height="30">
+		                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/user7.png" width="30" height="30">
 		                               	</c:if>
 		                               	<c:if test="${admins.get(k).getProImgName() != null && admins.get(k).getProImgName() != '' }">
 		                                    <img src="${pageContext.servletContext.contextPath }/resources/proImg/${admins.get(k).getProImgName()}" width="30" height="30">
@@ -2587,7 +2600,7 @@ try {
           텍스트 들에게만 적용 되고 button, combobox 같은 ui 컴퍼넌트들은 적용이 되지 않음
         -->
           </span>
-          <img src="resources/proImg/user3.png" width="55" height="50" style="margin-left: -5px; margin-top: -5px;" />
+          <img src="resources/proImg/user7.png" width="55" height="50" style="margin-left: -5px; margin-top: -5px;" />
           <c:if test="${!(alertReadResult eq 0)&&alertReadResult != null}">
 	          <div class="allAlertRead" style="font-weight:600;font-size:14px; background-color:red;color:white;position:relative;position:absolute;top:0px;right:-1px;border-radius:50%;padding:7px;padding-bottom:1px;padding-top:1px;">
 	        	${alertReadResult}
@@ -3320,11 +3333,13 @@ try {
 	     	// 띄운 채팅창목록 내부의 히든태그에 방번호와 상대 정보의 값을 넣어야 함(채팅관계 테이블에 들어있는 대표자 한명만 넣음)
     		for(var key in gson){
 		     	var mainOtherId = '';
+		     	<c:if test="${chatRels!= null && ! empty chatRels }">
     			<c:forEach var="i" begin="0" end="${chatRels.size()-1}" step="1">
 	    			if(Number(${chatRels.get(i).getRoomId()}) == roomId){
 	    				mainOtherId = Number(${chatRels.get(i).getToId()});
 	    			}
     			</c:forEach>
+    			</c:if>
     			if(gson[key].mId == mainOtherId){
 					$(chatRoom).find('.chatRoom_room_id').val(roomId);
 					$(chatRoom).find('.chatRoom_to_id').val(gson[key].mId);
@@ -3828,20 +3843,16 @@ function getInputDayLabel() {
 				var chatRoom = null;
 				var eachChatRoomArea = null;
 				$('.Messages_list').each(function(index, item){//기존채팅방들은 하나의 텍스트창을 공유하고 새채팅방만 다르므로 그와만 구분하면 된다.
-					if(acceptRoomId == 'roomId'){
 						if($(item).css('display') != 'none'){
 							chatRoom = $(item).parents('.Layout-chatRoom');
 							message = $(chatRoom).find("#textMessage");
 							filBtn = $(chatRoom).find("#file");
 							eachChatRoomArea = $(item);
-						}
 					}else{
-						if($(item).find('.chatRoom_room_id').val() == acceptRoomId){
 							chatRoom = $(item).parents('.Layout-chatRoom');
 							message = $(chatRoom).find("#textMessage");
 							filBtn = $(chatRoom).find("#file");
 							eachChatRoomArea = $(item);
-						}
 					}
 				});
 				$(eachChatRoomArea).find('#sendingShow').css('display', 'none');
@@ -3881,6 +3892,7 @@ function getInputDayLabel() {
 					$(eachChatRoomArea).append(sendingShow);
 					$(eachChatRoomArea).find('#sendingShow').css('display', 'block');
 				}else{
+					$(eachChatRoomArea).find('#sendingShow').css('display', 'block');
 				}
 				showRecentChatView();
 				
@@ -3904,10 +3916,7 @@ function getInputDayLabel() {
 		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(2)').css('visibility', 'hidden').css('opacity', 0);
 		            	 $(eachChatRoomArea).find('#sendingShow').find('span:nth-of-type(3)').css('visibility', 'visible').css('opacity', 1);
 		             },1000);
-		             endSendingTimeout = setTimeout(function(){
-// 							clearInterval(sendingInterval);
-							$(eachChatRoomArea).find('#sendingShow').css('display', 'none');
-					},1200);
+
 			}else{
 			console.log('메세지 왔다')
 			// 내가 메시지 보낼때 상대가 비접속시 반환되는 메시지 형태에 따라 저장할 읽음 여부 상태값 바꿈 
@@ -3963,9 +3972,9 @@ function getInputDayLabel() {
 			var submitDate = DateTransForm(currentDateTime);
 			
 			if($(eachChatRoomArea).find('.msgDate').length > 0){
-				var msgDate = eachChatRoomArea.find('.msgDate:last').val().trim();
+				var msgDate = eachChatRoomArea.find('.msgDate:last').val()
 				console.log('날짜 : '+ msgDate);
-				var todayDate = submitDate.substring(0, 9).trim();
+				var todayDate = submitDate.substring(0, 9)
 				console.log('오늘날짜 : ' + todayDate);
 				var mDArr = msgDate.split('/');
 				var mY = mDArr[0];
@@ -3994,7 +4003,7 @@ function getInputDayLabel() {
 			}
 			
 			// 아래에 메시지를 추가한다.
-			var proImgName = 'user3.png';
+			var proImgName = 'user7.png';
 			<c:forEach var="i" begin="0" end="${admins.size()-1}" step="1">
 			console.log('여긴 들어오냐')
 				if(msgSendAdminNick == '디베뉴 매니저 ${admins.get(i).getmNick()}'){
@@ -4109,9 +4118,9 @@ function getInputDayLabel() {
 			// 삽입할 내가보낸 메시지 영역
 			// 마지막 메시지의 날짜와 오늘 날짜 비교
 			if($(eachChatRoomArea).find('.msg_unit').length > 0||$('#newChatRoom').css('display')=='none'){
-				var msgDate = eachChatRoomArea.find('.msgDate:last').val().trim();
+				var msgDate = eachChatRoomArea.find('.msgDate:last').val()
 				console.log('날짜 : '+ msgDate);
-				var todayDate = submitDate.substring(0, 9).trim();
+				var todayDate = submitDate.substring(0, 9)
 				console.log('오늘날짜 : ' + todayDate);
 				var mDArr = msgDate.split('/');
 				var mY = mDArr[0];
@@ -4142,7 +4151,7 @@ function getInputDayLabel() {
 				$(eachChatRoomArea).append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 			}
 			
-			var proImgName = 'user3.png';
+			var proImgName = 'user7.png';
 			if('${me.getProImgName()}'!=''&&'${me.getProImgName()}'!=null){
 				proImgName = '${me.getProImgName()}'
 				console.log("프로필 이미지 매칭 들왔나");
@@ -4317,9 +4326,9 @@ function getInputDayLabel() {
 			// 삽입할 내가보낸 메시지 영역
 			// 마지막 메시지의 날짜와 오늘 날짜 비교
 			if($(eachChatRoomArea).find('.msg_unit').length > 0||$('#newChatRoom').css('display')=='none'){
-				var msgDate = eachChatRoomArea.find('.msgDate:last').val().trim();
+				var msgDate = eachChatRoomArea.find('.msgDate:last').val()
 				console.log('날짜 : '+ msgDate);
-				var todayDate = submitDate.substring(0, 9).trim();
+				var todayDate = submitDate.substring(0, 9)
 				console.log('오늘날짜 : ' + todayDate);
 				var mDArr = msgDate.split('/');
 				var mY = mDArr[0];
@@ -4350,7 +4359,7 @@ function getInputDayLabel() {
 				$(eachChatRoomArea).append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 			}
 			
-			var proImgName = 'user3.png';
+			var proImgName = 'user7.png';
 			if('${me.getProImgName()}'!=''&&'${me.getProImgName()}'!=null){
 				proImgName = '${me.getProImgName()}'
 					console.log("프로필 이미지 매칭 들왔나");
@@ -4636,7 +4645,7 @@ function getInputDayLabel() {
 	                    
 	                    // 관리자쪽은 프로필도 붙여주자
 	                    // 아래에 메시지를 추가한다.
-	                    var proImgName = 'user3.png';
+	                    var proImgName = 'user7.png';
 	                    var currentDateTime = new Date();
 	                    var hour = currentDateTime.getHours();
 	                    var minu = currentDateTime.getMinutes();

@@ -145,32 +145,13 @@
 	       	<tr align="center">
 	            <th scope="row"></th>
 	            <td style="max-width: 400px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"></td>
-	             <td>인증 요청 내역이 존재하지 않습니다.</td>
+	             <td colspan="3">인증 요청 내역이 존재하지 않습니다.</td>
 	             <td></td>
 	             <td></td>
 	         </tr>
 	        </c:if>
 	    </tbody>
 	</table>
-		<div style="text-align:center;margin-left:1%;;max-width:98%;min-width:98%;">
-		<nav aria-label="Page navigation example" style="margin:auto;display: inline-block;">
-		  <ul class="pagination">
-		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		      </a>
-		    </li>
-		    <li class="page-item"><a class="page-link" href="#">1</a></li>
-		    <li class="page-item"><a class="page-link" href="#">2</a></li>
-		    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		      </a>
-		    </li>
-		  </ul>
-		</nav>
-	   </div>
    </div>
 </div>
  

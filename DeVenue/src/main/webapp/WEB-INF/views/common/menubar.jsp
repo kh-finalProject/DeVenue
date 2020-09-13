@@ -215,10 +215,6 @@ i {
 /* 	background-color: rgb(11,15,66) !important; */
 /* 	outline:none !important; */
 }
-
-
-
-
 </style>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -297,7 +293,7 @@ $(document).ready(function(){
 				<li class="nav-item dropdown">
 					<a class="nav-link hvr-underline-from-center dropbtn" href="#" style="font-size:18px;">회원 찾기</a>
 					<div class="dropdown-content">
-						<a href="clientList.do">클라이언트 찾기</a>
+						<a href="clientList.do ">클라이언트 찾기</a>
 						<a href="partnersList.do">파트너스 찾기</a>
 					</div>
 		        </li>
@@ -333,7 +329,6 @@ $(document).ready(function(){
 					<c:if test="${loginUser.userType eq 'UT3'}">
 						<h3 align="right" style="color: white">
 							<div class="btn-group">
-
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
 							    <img src="" height="30px" width="30px" style="border-radius: 50%" onerror="this.style.visibility='hidden';">									  
@@ -354,7 +349,6 @@ $(document).ready(function(){
 					</c:if>
 					<c:if test="${loginUser.userType eq 'UT4'}">
 						<h3 align="right" style="color: white">
-							
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							  <!-- 파트너스 기본 이미지 -->

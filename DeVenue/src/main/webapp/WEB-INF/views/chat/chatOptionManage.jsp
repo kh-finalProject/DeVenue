@@ -396,7 +396,7 @@
             hidden.each(function (index, item) {
                 var sHTML = $(item).next().summernote('code');
                 $(item).val(sHTML)
-                alert($(item).val());
+//                 alert($(item).val());
             });
         };
         // summernote의 내용 submit
@@ -510,7 +510,7 @@
 				},
 				complete : function(data) {
 		        	// 실패했어도 완료가 되었을 때 처리
-		        	alert('DB에 채팅 설정 넣어부는 에이작스 끝남')
+		        	alert('변경되었습니다.')
 				}
 			});
         	

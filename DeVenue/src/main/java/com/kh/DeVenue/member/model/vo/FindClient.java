@@ -18,6 +18,7 @@ public class FindClient implements Serializable {
 	private String memTypeKind;
 	private String profileImg;
 	private String introduction;
+	private String address;
 	private double avgEagv;
 	private int countEagv;
 	private int countProId;
@@ -31,8 +32,8 @@ public class FindClient implements Serializable {
 	}
 
 	public FindClient(int memId, String memNick, String memEmail, String memTypeName, String memTypeKind,
-			String profileImg, String introduction, double avgEagv, int countEagv, int countProId, String maxDcType,
-			String ideStatus, String phone, String createDate) {
+			String profileImg, String introduction, String address, double avgEagv, int countEagv, int countProId,
+			String maxDcType, String ideStatus, String phone, String createDate) {
 		super();
 		this.memId = memId;
 		this.memNick = memNick;
@@ -41,6 +42,7 @@ public class FindClient implements Serializable {
 		this.memTypeKind = memTypeKind;
 		this.profileImg = profileImg;
 		this.introduction = introduction;
+		this.address = address;
 		this.avgEagv = avgEagv;
 		this.countEagv = countEagv;
 		this.countProId = countProId;
@@ -104,6 +106,14 @@ public class FindClient implements Serializable {
 
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public double getAvgEagv() {
@@ -170,9 +180,10 @@ public class FindClient implements Serializable {
 	public String toString() {
 		return "FindClient [memId=" + memId + ", memNick=" + memNick + ", memEmail=" + memEmail + ", memTypeName="
 				+ memTypeName + ", memTypeKind=" + memTypeKind + ", profileImg=" + profileImg + ", introduction="
-				+ introduction + ", avgEagv=" + avgEagv + ", countEagv=" + countEagv + ", countProId=" + countProId
-				+ ", maxDcType=" + maxDcType + ", ideStatus=" + ideStatus + ", phone=" + phone + ", createDate="
-				+ createDate + "]";
+				+ introduction + ", address=" + address + ", avgEagv=" + avgEagv + ", countEagv=" + countEagv
+				+ ", countProId=" + countProId + ", maxDcType=" + maxDcType + ", ideStatus=" + ideStatus + ", phone="
+				+ phone + ", createDate=" + createDate + "]";
 	}
+	
 	
 }

@@ -445,7 +445,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 <body>
 
 	<!-- munubar -->
-	<jsp:include page="../common/menubar.jsp"/>
+	<jsp:include page="../common/menubar.jsp" />
 
 	<!-- sidebar -->
 	<jsp:include page="../common/sideMenubarAll.jsp" />
@@ -465,9 +465,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				<!-- 구 sideMenubar -->
 				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
 				<!-- 새 sidMenubar -->
-				<jsp:include page="../common/pSideMenubar.jsp"/>
+				<jsp:include page="../common/pSideMenubar.jsp" />
 			</div>
-			<div class="col-8 text-white" style="font-family: 'Jua', sans-serif; margin-left: 210px;">
+			<div class="col-8 text-white"
+				style="font-family: 'Jua', sans-serif; margin-left: 210px;">
 				<br>
 				<div class="row">
 					<div class="col-12"
@@ -477,18 +478,17 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					<div class="col-12" style="width: 100%; height: 1200px;">
 						<form method="POST" action="piInsert.do"
 							enctype="multipart/form-data">
-							<input type="hidden" id="profileId" name="profileId" value=${profile.profileId }>
+							<input type="hidden" id="profileId" name="profileId"
+								value=${profile.profileId }>
 							<table
 								style="border-collapse: separate; border-spacing: 0 15px; margin-left: 5%; margin-top: 3%;">
 								<tr>
 									<td class="port-title">* 제목</td>
 									<td><input type="text" id="title" name="title"
-										style="width: 380px; height: 40px;">
-										<!-- <button type="button" id="title-chk" class="btn btn-info btn-lg"
-								style="margin-left: 5px;">중복체크</button> -->
-								</td>
+										style="width: 380px; height: 40px;"> <!-- <button type="button" id="title-chk" class="btn btn-info btn-lg"
+								style="margin-left: 5px;">중복체크</button> --></td>
 								</tr>
-								
+
 								<script type="text/javascript">
 									$("#title").focusout(function(){
 										
@@ -817,8 +817,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								</tr>
 								<tr>
 									<td></td>
-									<td style="float: right;"><a
-										href="profile.do" class="btn btn-info">취소</a>
+									<td style="float: right;"><a href="profile.do"
+										class="btn btn-info">취소</a>
 										<button type="submit" class="btn btn-info">수정완료</button></td>
 								</tr>
 							</table>

@@ -62,6 +62,7 @@
             width: 70%;
             margin: auto;
             margin-left:17%;
+            padding-bottom:5%;
         }
         /* 오버플로우 처리를 할까말까(귀찮.. 다시 여백조정해야해) */
         .allWrap *{
@@ -272,6 +273,15 @@
 				return false;
 			}
 		}
+		
+		// 마이페이지 사이드 메뉴바 길이맞춰주는 함수(이 함수를 각페이지에 넣어주면 됨. .allWrap부분이 자신의 섹션 영역 선택자)
+        $(function(){
+           $('.myPage_sideNav_area').height($('.allWrap').height());
+           
+           $('.myPage_sideNav_area').click(function(){
+        	   $('.allWrap').height($(this).height());
+           })
+        })
 	</script>
 </body>
 

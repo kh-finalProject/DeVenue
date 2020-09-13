@@ -612,7 +612,7 @@
 	
 	<delete id ="deleteProject" parameterType ="Project">
 	UPDATE SET 
-		PRO_STA_ID = 'PST6'
+		PRO_STA_ID = 'PST8'
 	WHERE PRO_ID = #{proId}
 	
 	</delete>
@@ -1696,5 +1696,13 @@
 	 ]]>
 	
 	</select>
+	
+	<update id="updateRecruitStatus">
+	<![CDATA[
+	UPDATE PROJECT
+ 	SET PRO_RECRUIT='N'
+ 	WHERE PRO_R_END_DATE <SYSDATE
+	]]>
+	</update>
 
 </mapper>

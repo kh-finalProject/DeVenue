@@ -209,9 +209,18 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public ArrayList<Member> memberList() {
-		
-		return mDao.memberList();
+	public Member selectMmber(String email, String pwd) {
+		return mDao.selectMember(email,pwd);
 	}
+
+	public ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress) {
+		return mDao.addressList(pi, mapAddress);
+	}
+
+	@Override
+	public ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter) {
+		return mDao.filterList(pi, mapFilter);
+	}
+
 
 }
