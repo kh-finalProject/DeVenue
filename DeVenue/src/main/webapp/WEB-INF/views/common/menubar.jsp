@@ -318,7 +318,7 @@ $(document).ready(function(){
 			                    	<c:param name="cId" value="${loginUser.memId }"/>
 			                    </c:url>
 							  
-							    <a href="${clientProfile }" class="dropdown-item">profile</a>
+							    <a href="${clientProfile }" class="dropdown-item">myPage</a>
 							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>
@@ -340,7 +340,7 @@ $(document).ready(function(){
 							  <c:url var="partnersProfile" value="partnersProfile.do">
 						      	<c:param name="pId" value="${loginUser.memId }"/>
 						      </c:url>
-							    <a href="${partnersProfile }" class="dropdown-item">profile</a>
+							    <a href="${partnersProfile }" class="dropdown-item">myPage</a>
 							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>
 							    <c:url var="logout" value="logout.do"/>

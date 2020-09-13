@@ -851,10 +851,11 @@ public class MyPageController {
 		System.out.println("진행중인 프로젝트 : " + process);
 
 		if (partnersInfo != null) {
-			mv.addObject("info", partnersInfo).addObject("apply", applyCount).addObject("contract", contractCount)
-					.addObject("suggest", suggest).addObject("process", process).setViewName("member/partnersMyPage");
+			
 		} else {
-			throw new MemberException("프로젝트 히스토리 조회 실패!");
+			int msg=1;	// 파트너스 정보 없음
+			mv.addObject("info", partnersInfo).addObject("apply", applyCount).addObject("contract", contractCount)
+			.addObject("msg",msg).addObject("suggest", suggest).addObject("process", process).setViewName("member/partnersMyPage");
 		}
 
 		return mv;

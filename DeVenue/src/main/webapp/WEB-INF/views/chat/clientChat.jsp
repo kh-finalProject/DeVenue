@@ -2130,6 +2130,23 @@ try {
                         <c:out value="${lastChatTimeSave }"/>
                         </label>
                         <script>
+	                        function getYYYYMMDD(){
+	                    		var today = new Date();
+	                    		var Y = today.getFullYear();
+	                    		var M = today.getMonth() + 1;
+	                    		var D = today.getDate();
+	
+	                    		if(String(M).length == 1){
+	                    			M = '0'+M;
+	                    		}
+	                    		if(String(D).length == 1){
+	                    			D = '0'+D;
+	                    		}
+	                    		var YMD = Y+"-"+M+"-"+D;
+	//                     	 	console.log('YMD : ' + YMD)
+	                    	 	
+	                    	 	return YMD;
+	                    	}
                         	$(function(){
                         		// 채팅방 목록 안읽은 메시지에 관한 함수
                         		$('.alertRead').each(function(index, item){
@@ -2169,23 +2186,6 @@ try {
                         		});
                         	 	
                         	});
-                        	function getYYYYMMDD(){
-                        		var today = new Date();
-                        		var Y = today.getFullYear();
-                        		var M = today.getMonth() + 1;
-                        		var D = today.getDate();
-
-                        		if(String(M).length == 1){
-                        			M = '0'+M;
-                        		}
-                        		if(String(D).length == 1){
-                        			D = '0'+D;
-                        		}
-                        		var YMD = Y+"-"+M+"-"+D;
-//                         	 	console.log('YMD : ' + YMD)
-                        	 	
-                        	 	return YMD;
-                        	}
                         </script>
                       </td>
                     </tr>
