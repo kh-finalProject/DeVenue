@@ -215,7 +215,7 @@
   		,#{address1}
   		,#{address2}
   		,#{address3}
-  		,#{phone}
+  		,#{cellPhone}
   		,null
   		,null
   		,null
@@ -494,5 +494,10 @@
 		</choose>
 		</where>
 	</select> -->
+	
+	<!-- 관리자 회원정보 리스트 -->
+	<select id="memberList" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+	</select>
 	
 </mapper>

@@ -2,6 +2,9 @@ package com.kh.DeVenue;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "home.do", method = RequestMethod.GET)
 	public ModelAndView home(ModelAndView mv,Locale locale, Model model) {
-
+		
 		//자동 업데이트, 모집 마감일이 SYSDATE보다 작은 프로젝트를 업데이트한다.
 		int result=pService.updateProjectRecruitStatus();
 		System.out.println("모집마감 업데이트 결과"+result);
@@ -57,7 +60,7 @@ public class HomeController {
 		mv.addObject("pub", pub);
 		
 		mv.setViewName("common/mainPage");
-		
+//		mv.setViewName("admin/adminMember");
 		
 		
 		return mv;

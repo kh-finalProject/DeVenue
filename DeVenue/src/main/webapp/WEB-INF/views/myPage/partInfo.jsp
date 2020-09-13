@@ -439,8 +439,10 @@ section {
 					<div class="col-12"
 						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
 						<p style="float: left; font-size: 30px;">마이페이지 - 파트너스 정보</p>
-						<a href="mypageDetaillnfo.html" class="btn btn-info"
-							style="float: right;">내 프로필에서 보기</a>
+						<form method="get" action="">
+							<a href="mypageDetaillnfo.html" class="btn btn-info"
+								style="float: right;">내 프로필에서 보기</a>
+						</form>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<form method="GET" action="#"></form>

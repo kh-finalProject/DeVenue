@@ -1,25 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	import="com.kh.DeVenue.member.model.vo.Member, javax.servlet.http.Cookie"%>
-<%
-	Member loginUser = (Member)request.getSession().getAttribute("loginUser");
-	
-	Cookie[] cookies = request.getCookies();
-	if(cookies!=null&&cookies.length>0){
-		for(int i = 0; i < cookies.length; i++){
-			if(cookies[i].getName().equals("loginCookie")){
-				if(loginUser==null){
-					//자동로그인시 loginUser나 세션에 id만 들어있도록 해놨으므로
-					//추후 모든건 회원 아이디(userId라는 이름의 세션값)로만 데이터를 불러오게 해야한다
-					request.getSession().setAttribute("memEmail", cookies[i].getValue());
-					loginUser = new Member();
-					loginUser.setMemEmail(cookies[i].getValue());
-					System.out.println(loginUser);
-				}
-			}
-		}
-	}
-%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
@@ -329,9 +309,6 @@ $(document).ready(function(){
 					<c:if test="${loginUser.userType eq 'UT3'}">
 						<h3 align="right" style="color: white">
 							<div class="btn-group">
-
-							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
 							    <img src="" height="30px" width="30px" style="border-radius: 50%" onerror="this.style.visibility='hidden';">									  
@@ -352,7 +329,6 @@ $(document).ready(function(){
 					</c:if>
 					<c:if test="${loginUser.userType eq 'UT4'}">
 						<h3 align="right" style="color: white">
-							<span style="font-size:16px; font-weight:550;">${loginUser.memName }</span>&nbsp;&nbsp;
 							<div class="btn-group">
 							  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							  <!-- 파트너스 기본 이미지 -->

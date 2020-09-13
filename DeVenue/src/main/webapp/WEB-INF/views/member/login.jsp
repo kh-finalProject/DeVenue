@@ -473,33 +473,41 @@
                             <input type="password" class="input-size" id="pwd" name="pwd">
                         </div>
                     </div>
-                    <div class="login-keeping">
-                        <input type="checkbox" name="logincheck" id="checkbox" value="true">&nbsp;&nbsp;&nbsp;<label for="checkbox">로그인 유지</label>
-                    </div>
                     <div class="form-btn">
                         <button type="submit" id="login" class="btn btn-info btn-lg"
                             style="font-size: 25px; width: 400px; margin-left: -60px;">로그인하기</button>
                     </div>
                     <script type="text/javascript">
-                    	function loginCheck() {
-							var email = $("#email").val();
-							var pwd = $("#pwd").val();
-							$.ajax({
-								url:"loginChk.do",
-								data:{email:email,pwd:pwd},
-								success:function(data){
-	            					if(data == 'true'){
-	            						return true;
-	            					}else{
-	            						alert("이메일과 비밀번호를 다시 한번 확인해 주세요.");
-	            						return false;
-	            					}
-	            				}
-	            				, error:function(request, status, error){
-	            					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	            				}
-							})
-						}
+                       function loginCheck() {
+                          idCheckAjax();
+                          
+                     if(isExist=="false"){
+                        alert("이메일과 비밀번호를 다시 한번 확인해 주세요.");
+                        $("#email").val("");
+                        $("#pwd").val("");
+                        return false;
+                     }
+                  }
+                       
+                       isExist = "false";
+                       function idCheckAjax(){
+                          var email = $("#email").val();
+                     var pwd = $("#pwd").val();
+                          $.ajax({
+                        url:"loginChk.do",
+                        data:{email:email,pwd:pwd},
+                        success:function(data){
+                              if(data == 'true'){
+                                 isExist = "true";
+                              }else if(data =='false'){
+                                 isExist = "false";
+                              }
+                           }
+                           , error:function(request, status, error){
+                              alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                           }
+                     });
+                       }
                     </script>
                </form>
                     <div class="pwd-forget">
@@ -507,12 +515,9 @@
                     </div>
             </div>
                 <div class="area-right" style="margin-left: 900px; position: absolute;">
-                    <div class="kakao-login">
-                        <p><b>이미 카카오톡계정으로 가입하셨나요?</b></p>
-                        <button type="button" class="btn btn-warning btn-lg" style="font-size: 15px; width: 200px;">카카오톡으로 로그인</button>
-                    </div>
                     <div class="sign">
                         <p>아직 회원이 아니신가요?<br><a href="signpage.do">회원가입 하기</a></p>
+                        <img src="${contextPath }/resources/images/login.png" style="width: 300px; margin-left: -50px;">
                     </div>
                 </div>
             </div>

@@ -269,48 +269,6 @@
                                 <td>
                                     <h4>파트너스 평가</h4>
                                 </td>
-                                <td>
-                                    <div style="float:right; margin-right: 2%; display:none;" id="cate">
-                                        <div class="d-flex">
-                                            <div class="dropdown mr-1">
-                                                <button type="button" class="btn btn-light dropdown-toggle"
-                                                    id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false" data-offset="10,20">
-                                                    	전체보기
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                                                    <a id="allMenu" class="dropdown-item" href="#">전체보기</a>
-                                                    <a id="develop" class="dropdown-item" href="#">개발</a>
-                                                    <a id="design" class="dropdown-item" href="#">디자인</a>
-                                                </div>
-                                            </div>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-light">세부 카테고리</button>
-                                                <button type="button"
-                                                    class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                                                    id="dropdownMenuReference" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                                    <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                                                    <a class="dropdown-item" href="#">Web</a>
-                                                    <a class="dropdown-item" href="#">Application</a>
-                                                    <a class="dropdown-item" href="#">Publishing</a>
-                                                    <a class="dropdown-item" href="#">기타</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <script>
-                                        $("#develop").on("click", function () {
-                                            $("#dropdownMenuOffset").text($(this).text());
-                                        });
-                                        $("#design").on("click", function () {
-                                            $("#dropdownMenuOffset").text($(this).text());
-                                        })
-                                    </script>
-                                </td>
                             </tr>
                         </table>
 	                        <c:forEach var="cp" items="${cp }" varStatus="status"  end="0">
