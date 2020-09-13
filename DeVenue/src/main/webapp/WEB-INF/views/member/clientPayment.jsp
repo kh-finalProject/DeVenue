@@ -57,12 +57,9 @@
 				<br>
 				<div class="row">
 				
-					<div class="col-11" style="margin-left: 5%;">
+					<div class="col-11" style="margin-left: 5%; min-height:900px;">
 						<p>
 							결제 대기 프로젝트
-							<button id="suggestProject" class="btn-info" type="button"
-								style="float: right; border-radius: 0.3rem; margin-bottom: 1%;">+
-								더보기</button>
 						</p>
 						<table border="1px solid lightgray;"
 							style="width: 100%; text-align: center;">
@@ -224,75 +221,15 @@
 
 					</div>
 				</div>
-
-				<div class="userBoard">
-					&emsp; <input type="hidden" value="선택한 회원 ID">
-
-					<div class="row"
-						style="margin-left: 3%; margin-right: 3%; padding-bottom: 3%; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
-						<div class="col-12">
-							<div
-								style="margin-left: 1%; margin-bottom: 2%; margin-top: 2%; width: 100%;">
-								<b>모집중인 프로젝트</b>
-								<button id="ingProject" class="btn-info" type="button"
-									style="float: right; border-radius: 0.3rem;">+ 더보기</button>
-								<c:url var="recruit" value="recruitProjectList.do">
-									<c:param name="memId" value="${loginUser.memId}"></c:param>
-								</c:url>
-								<c:url var="underway" value="underwayProjectList.do">
-									<c:param name="memId" value="${loginUser.memId}"></c:param>
-								</c:url>
-								<script>
-									$("#ingProject").on("click",function(){
-										location.href="${underway}";
-									})
-									$("#suggestProject").on("click",function(){
-										location.href="${recruit}";
-									})
-								</script>
-							</div>
-							<div style="margin-left: 3%;">
-								<table border="1px solid white"
-									style="text-align: center; width: 100%;">
-									<tr>
-										<c:if test="${!process.isEmpty() }">
-											<th>프로젝트 명</th>
-											<th>카테고리/분류</th>
-											<th>예상 예산</th>
-											<th>시작일</th>
-											<th>예상 마감일</th>
-											<th>참여 파트너스 수</th>
-										</c:if>
-										<c:if test="${process.isEmpty() }">
-											<td>진헹 중인 프로젝트가 없습니다.</td>
-										</c:if>
-									</tr>
-									<c:forEach var="p" items="${process }" begin="0" end="4"
-										varStatus="status">
-										<tr>
-											<td>${p.proName }</td>
-											<td><a class="badge badge-info">${p.mcType }</a> &nbsp;/
-												<a class="badge badge-info">${p.dcType }</a></td>
-											<td><fmt:formatNumber value="${p.proPayment }"
-													type="number" groupingUsed="true" />원</td>
-											<td>${p.proStartDate }</td>
-											<td>${p.proEndDate }</td>
-											<c:forEach var="cp" items="${cp }" begin="${status.index }"
-												end="${status.index }">
-												<td>${cp.countPartners }명</td>
-											</c:forEach>
-										</tr>
-									</c:forEach>
-
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
-
+	
+	<script>
+	 $(function(){
+	    $('.myPage_sideNav_area').height(window.innerHeight-$('#mainMenubar').height()-$('#subMenubar').height()-$('footer').height());
+   })
+	</script>
 	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

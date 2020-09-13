@@ -86,7 +86,7 @@ public class MemberController {
 		PrintWriter out = response.getWriter();
 		
 		Member member = mService.selectMmber(email,pwd);
-		System.out.println(member);
+		System.out.println("member"+member);
 		
 		if(member != null) {
 			out.append("true");
@@ -116,7 +116,7 @@ public class MemberController {
 		Member m = new Member(memEmail, memPwd);
 //		System.out.println(m);
 		Member loginUser = mService.loginUserMember(m);
-		System.out.println(loginUser);
+//		System.out.println("loginUSer",loginUser);
 //		System.out.println(loginUser.getMemId());
 		
 		
@@ -496,8 +496,17 @@ public class MemberController {
 
 		if (!mpList.isEmpty()) {
 //			int result = mService.insertEval(id);
+			
+			int result = mService.checkReEval(id);
+			
+			if(result >0) {
+				int msg=3;
+				mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
+			}else {
+				mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
+				
+			}
 
-			mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
 		} else {
 			int msg = 0;
 			mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
@@ -704,5 +713,19 @@ public class MemberController {
 		return mv;
 
 	}
+	
+	// 관리자 페이지 회원정보 조회
+		@RequestMapping(value="adminMember.do")
+			public ModelAndView adminMember(HttpServletRequest request, ModelAndView mv) {
+
+			ArrayList<Member> memberList = mService.memberList();
+			
+			mv.addObject("memberList", memberList);
+			mv.setViewName("admin/adminMember");
+			
+			return mv;
+
+		}
+	
 
 }

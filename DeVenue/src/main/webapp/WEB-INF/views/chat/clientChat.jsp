@@ -3855,10 +3855,10 @@ function getInputDayLabel() {
 							eachChatRoomArea = $(item);
 					}
 				});
-				$(eachChatRoomArea).find('#sendingShow').css('display', 'none');
+				$(eachChatRoomArea).find('#sendingShow').remove();
 				gifOk = false;
 			}	
-		},1001);
+		},1200);
 		
 		// 서버로부터 메시지가 도착하면 콘솔 화면에 메시지를 남긴다.(리턴한 것)
 		webSocket.onmessage = function(message) {
@@ -4657,8 +4657,8 @@ function getInputDayLabel() {
 	                    }
 	                    hour = hour % 12;
 	        		  	hour = hour != 0 ? hour : 12;
-	        			if(minu.length<2){
-	        				minu = "0"+minu;
+	        			if(String(minu).length==1){
+	        				minu = "0"+String(minu);
 	        			}
 	        			var viewDate = hour + ":" + minu + " " + ampm;
 	                    $fromOtherMsgContent = $('<div class="message_from_other msg_unit"><div class="name_with_profile"><div class="img_cont_msg"><img src="${pageContext.servletContext.contextPath}/resources/proImg/'+ proImgName +'" width="30" height="30"></div><span class="user_other">디베뉴 고객센터</span><span class="msg_time_send">'+viewDate+'</span></div></div>');

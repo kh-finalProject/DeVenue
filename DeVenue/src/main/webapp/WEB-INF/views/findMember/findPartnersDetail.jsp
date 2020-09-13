@@ -1028,7 +1028,12 @@ section {
 											</tr>
 											<tr>
 												<td class="career-title" style="border: none">근무시간</td>
-												<td>: ${career.cStartDate }</td>
+												<td>: 
+													<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cStartDate }" var="startDate" />
+													<fmt:formatDate value="${startDate}" pattern="yyyy년 MM월 " /> ~ 
+													<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cEndDate }" var="endDate" />
+													<fmt:formatDate value="${endDate}" pattern="yyyy년 MM월 " />
+												</td>
 											</tr>
 											<tr>
 												<td><input type="hidden" name="cId"
@@ -1092,8 +1097,10 @@ section {
 															<td>자퇴</td>
 														</c:when>
 													</c:choose>
-													<td>2020년 1월</td>
-													<td>2020년 3월</td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
+													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
+													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
 												</tr>
 											</c:forEach>
 										</table>
@@ -1119,7 +1126,8 @@ section {
 													style="text-align: center; vertical-align: middle;">
 													<td>${certi.ccName }</td>
 													<td>${certi.ccPlace }</td>
-													<td>2020년 09월 03일</td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${certi.ccCreateDate }" var="ccStartDate" />
+													<fmt:formatDate value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
 													<td>${certi.ccNumber }</td>
 												</tr>
 											</c:forEach>

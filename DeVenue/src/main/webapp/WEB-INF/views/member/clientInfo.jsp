@@ -46,11 +46,9 @@
         <p href="${clientProfile }">마이페이지</p>
       </div>
     </div>
-
-
     <div class="row">
-    	<jsp:include page="../common/pSideMenubar.jsp"/>
-      <div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:25%;">
+    <jsp:include page="../common/pSideMenubar.jsp"/>
+      <div class="col-10 text-white" style="font-family: 'Jua', sans-serif; margin-left:20%; min-height:900px;">
         <br>
         <div class="row">
           <div class="col-5" style="margin-left:5%; padding-right: 0;">
@@ -59,10 +57,10 @@
                 <td>
                   <div class="image-profile">
                     <c:if test="${!empty info.proImg }">
-						<img src="${contextPath }/resources/proImg/${info.proImg}" style="object-fit: cover; width: 100px;">
+						<img src="${contextPath }/resources/proImg/${info.proImg}" style="object-fit: cover; width: 80px;">
 					</c:if>
 					<c:if test="${empty info.proImg }">
-						<img src="${contextPath }/resources/proImg/user1.png" style="object-fit: cover; width: 100px;">
+						<img src="${contextPath }/resources/proImg/user3.png" style="object-fit: cover; width: 80px;">
 					</c:if>
                   </div>
                 </td>
@@ -132,7 +130,7 @@
                 </div>
                 <div style="margin-left: 3%;">
                   <div id="urlDiv" style=" width:100%;">
-                    <a id="url" href="http://www.naver.com" style="color:white;">http://${info.url }</a>
+                    <a id="url" href="http://www.naver.com" style="color:white;">${info.url }</a>
 		              <button id="clientInfoUpdate" class="btn-info" type="button" style="float: right; border-radius: 0.3rem; padding: 1%;">수정하기</button>
 		              
 		              <script>
@@ -187,7 +185,12 @@
         </div>
       </div>
     </div>
-	
+    </div>
+	<script>
+	 $(function(){
+       $('.myPage_sideNav_area').height(window.innerHeight-$('#mainMenubar').height()-$('#subMenubar').height()-$('footer').height());
+	 })
+	</script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

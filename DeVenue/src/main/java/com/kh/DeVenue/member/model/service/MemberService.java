@@ -92,6 +92,10 @@ public interface MemberService {
 	ArrayList<FindClient> addressList(PageInfo pi, HashMap mapAddress);
 
 	ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter);
+
+	ArrayList<Member> memberList();
+	
+	int checkReEval(HashMap id);
 	
 
 	

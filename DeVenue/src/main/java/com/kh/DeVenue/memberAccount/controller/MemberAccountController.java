@@ -1,12 +1,12 @@
 package com.kh.DeVenue.memberAccount.controller;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -498,8 +498,14 @@ public class MemberAccountController {
 		if(!file.getOriginalFilename().equals("")) {
 			// 버퍼이미지로 변환
 			BufferedImage image = ImageIO.read(file.getInputStream());
+			// 사용할 크기로 변환(250*250)
+			BufferedImage outPutImage = new BufferedImage(250,250,image.getType());
+			Graphics2D graphics2D = outPutImage.createGraphics();
+			graphics2D.drawImage(image, 0, 0, 250, 250, null);
+			graphics2D.dispose();
+			
 			// 색상변환 및 저장
-			String renameFileName = changeToRedExceptWhite(image, request);
+			String renameFileName = changeToRedExceptWhite(outPutImage, request);
 			if(renameFileName != null) {
 				// 변환 및 저장이 잘 되었으면 이 이름을 대비조정 단계페이지로 넘겨주고, 그곳에서 대비조정하게 한다.
 				request.setAttribute("renameFileName", renameFileName);

@@ -222,5 +222,15 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.filterList(pi, mapFilter);
 	}
 
+	@Override
+	public ArrayList<Member> memberList() {
+		
+		return mDao.memberList();
+	}
+
+	public int checkReEval(HashMap id) {
+		return mDao.checkReEval(id);
+	}
+
 
 }

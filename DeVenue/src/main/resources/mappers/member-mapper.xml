@@ -215,7 +215,7 @@
   		,#{address1}
   		,#{address2}
   		,#{address3}
-  		,#{phone}
+  		,#{cellPhone}
   		,null
   		,null
   		,null
@@ -494,5 +494,17 @@
 		</choose>
 		</where>
 	</select> -->
+	
+	<!-- 관리자 회원정보 리스트 -->
+	<select id="memberList" resultMap="memberResultSet">
+		SELECT * FROM MEMBER
+	</select>	
+		
+	<!-- 이미 평가한 회원인지 확인 -->
+	<select id="checkReEval" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(E_ID)
+		FROM EVAL
+		WHERE E_TARGET=#{cId} AND E_WRITER=#{pId}
+	</select>
 	
 </mapper>

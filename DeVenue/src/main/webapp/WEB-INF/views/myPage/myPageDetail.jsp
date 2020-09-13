@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -671,9 +671,9 @@ section {
 	<jsp:include page="../common/menubar.jsp" />
 
 	<!-- sideMenubar -->
-	
-	<jsp:include page="../common/sideMenubarAll.jsp"/>
-	
+
+	<jsp:include page="../common/sideMenubarAll.jsp" />
+
 
 
 	<!-- Section -->
@@ -681,23 +681,23 @@ section {
 		<div class="container">
 			<div class="row text-white"
 				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<c:if test ="${loginUser.userType eq 'UT4'}" >
-				<div class="col-12"
-					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
-					${loginUser.memNick }님의 마이페이지 <input type="hidden" id="userType"
-						value="${loginUser.userType }">
-				</div>
+				<c:if test="${loginUser.userType eq 'UT4'}">
+					<div class="col-12"
+						style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
+						${loginUser.memNick }님의 마이페이지 <input type="hidden" id="userType"
+							value="${loginUser.userType }">
+					</div>
 				</c:if>
 			</div>
 			<div class="row">
 				<!-- 구 sideMenubar -->
 				<%-- <jsp:include page="../common/myPageMenubar.jsp" /> --%>
 				<!-- 새 sidMenubar -->
-				<c:if test ="${loginUser.userType eq 'UT4'}" >
-				<jsp:include page="../common/pSideMenubar.jsp" />
+				<c:if test="${loginUser.userType eq 'UT4'}">
+					<jsp:include page="../common/pSideMenubar.jsp" />
 				</c:if>
-				<c:if test ="${loginUser.userType eq 'UT3'}" >
-				
+				<c:if test="${loginUser.userType eq 'UT3'}">
+
 				</c:if>
 			</div>
 			<div class="col-8 text-white"
@@ -711,12 +711,6 @@ section {
 						<div class="col-12 content-memberinfo">
 							<h2>
 								<span>${fp.memNick }</span>
-								<%-- <c:if test="${loginUser.memAction eq 'Y'}">
-									<span class="btn btn-success">활동가능</span>
-								</c:if>
-								<c:if test="${loginUser.memAction eq 'N'}">
-									<span class="btn btn-success">활동불가능</span>
-								</c:if> --%>
 								<c:if test="${fp.piType eq 1}">
 									<span class="btn btn-success">활동 가능</span>
 								</c:if>
@@ -726,10 +720,14 @@ section {
 								<c:if test="${fp.piType eq 3}">
 									<span class="btn btn-secondary">활동 불가능</span>
 								</c:if>
-									<c:if test ="${loginUser.userType eq 'UT4'}">
-								<a href="partInfo.do" class="btn btn-info"
-									style="float: right; margin-top: 30px;">업데이트 하기</a>
-							</c:if>
+								<c:if test="${loginUser.userType eq 'UT4'}">
+									<form method="get" action="partInfo.do">
+										<input type="hidden" name="profileId"
+											value="${profile.profileId }">
+										<button type="submit" class="btn btn-info"
+											style="float: right;">업데이트 하기</button>
+									</form>
+								</c:if>
 							</h2>
 							<h5>
 								<span>${fp.mcType }</span> <span class="bar">|</span> <span>${fp.memTypeKind }</span>
@@ -868,29 +866,34 @@ section {
 						<br> <br>
 						<div class="col-12 partition">
 							<div class="col-12 page-title">
-								<h4>
-									자기소개
-				<c:if test ="${loginUser.userType eq 'UT4'}" >
-				
-				 <a href="PR.do" class="btn btn-info" style="float: right;">업데이트
-										하기</a>
+								<form method="get" action="PR.do">
+									<h4>
+										자기소개
+										<c:if test="${loginUser.userType eq 'UT4'}">
+											<input type="hidden" name="profileId"
+												value="${profile.profileId }">
+											<button type="submit" class="btn btn-info"
+												style="float: right;">업데이트 하기</button>
 										</c:if>
-								</h4>
+									</h4>
+								</form>
 								<p style="overflow: hidden; height: 200px;">${fp.introduction }</p>
 							</div>
-							<!-- <dlv class="detail-view">
-                                    <h6><a href="#">자기소개 더보기 ></a></h6>
-                                </dlv> -->
 						</div>
 						<div class="col-12 partition">
-							<div class="col-12 page-title">
-								<h4 style="height: 50px;">
-									포트폴리오
-									<c:if test ="${loginUser.userType eq 'UT4'}" >
-									 <a href="portfolioAll.do" class="btn btn-info"
-										style="float: right;">업데이트 하기</a>
-									</c:if>
-								</h4>
+							<div class="col-12 page-title"
+								style="border-bottom: 2px dashed white;">
+								<form method="get" action="portfolioAll.do">
+									<h4 style="height: 50px;">
+										포트폴리오
+										<c:if test="${loginUser.userType eq 'UT4'}">
+											<input type="hidden" name="profileId"
+												value="${profile.profileId }">
+											<button type="submit" class="btn btn-info"
+												style="float: right;">업데이트 하기</button>
+										</c:if>
+									</h4>
+								</form>
 								<!-- 포트폴리오 -->
 								<c:forEach var="port" items="${portfolio }">
 									<table class="pTable">
@@ -935,12 +938,13 @@ section {
 										</tr>
 										<tr></tr>
 										<tr>
-										
-				
-											<td><c:if test ="${loginUser.userType eq 'UT3'}" >
-				
-											<button type="submit" id="${port.portId }"
-													class="btn btn-info delPort" style="width: 100%;">삭제</button></c:if></td>
+
+
+											<td><c:if test="${loginUser.userType eq 'UT3'}">
+
+													<button type="submit" id="${port.portId }"
+														class="btn btn-info delPort" style="width: 100%;">삭제</button>
+												</c:if></td>
 
 											<td class="join">참여율 : ${port.portJoin }%</td>
 											<td class="tec"><c:forEach var="pt" items="${portTec }">
@@ -948,22 +952,24 @@ section {
 												</c:forEach></td>
 										</tr>
 									</table>
+									<br>
 								</c:forEach>
 								<br>
-								<!-- <dlv class="detail-view">
-                                    <h6><a href="#">포트폴리오 더보기 ></a></h6>
-                                </dlv> -->
 							</div>
 							<!-- 보유 기술 -->
 							<div class="col-12 partition">
 								<div class="col-12 page-title">
-									<h4 style="height: 50px;">
-										보유 기술
-											<c:if test ="${loginUser.userType eq 'UT4'}">
-										 <a href="skill.do" class="btn btn-info"
-											style="float: right;">업데이트 하기</a>
-									</c:if>
-									</h4>
+									<form method="get" action="skill.do">
+										<h4 style="height: 50px;">
+											보유 기술
+											<c:if test="${loginUser.userType eq 'UT4'}">
+												<input type="hidden" name="profileId"
+													value="${profile.profileId }">
+												<button type="submit" class="btn btn-info"
+													style="float: right;">업데이트 하기</button>
+											</c:if>
+										</h4>
+									</form>
 									<div class="skill">
 										<table class="table">
 											<tr class="table-secondary"
@@ -988,19 +994,22 @@ section {
 										</table>
 									</div>
 								</div>
-								<!-- <dlv class="detail-view">
-                                    <h6><a href="#">보유기술 더보기 ></a></h6>
-                                </dlv> -->
 							</div>
 							<!-- 경력 -->
 							<div class="col-12" style="margin-top: 2%;">
-								<div class="col-12 page-title">
-									<h4 style="height: 50px;">
-										경력 
-										<c:if test ="${loginUser.userType eq 'UT4'}">
-											<a href="career.do" class="btn btn-info" style="float: right;">업데이트 하기</a>
-										</c:if>
-									</h4>
+								<div class="col-12 page-title"
+									style="border-bottom: 2px dashed white;">
+									<form method="get" action="career.do">
+										<h4 style="height: 50px;">
+											경력
+											<c:if test="${loginUser.userType eq 'UT4'}">
+												<input type="hidden" name="profileId"
+													value="${profile.profileId }">
+												<button type="submit" class="btn btn-info"
+													style="float: right;">업데이트 하기</button>
+											</c:if>
+										</h4>
+									</form>
 
 									<c:forEach var="career" items="${careerList }">
 										<table class="Ctable">
@@ -1018,14 +1027,15 @@ section {
 											</tr>
 											<tr>
 												<td class="career-title" style="border: none">근무시간</td>
-												<td>: 
-													<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cStartDate }" var="startDate" />
-													<fmt:formatDate value="${startDate}" pattern="yyyy년 MM월 " /> ~ 
-													<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cEndDate }" var="endDate" />
-													<fmt:formatDate value="${endDate}" pattern="yyyy년 MM월 " />
+												<td>: <fmt:parseDate pattern="yyyy-MM-dd"
+														value="${career.cStartDate }" var="startDate" /> <fmt:formatDate
+														value="${startDate}" pattern="yyyy년 MM월 " /> ~ <fmt:parseDate
+														pattern="yyyy-MM-dd" value="${career.cEndDate }"
+														var="endDate" /> <fmt:formatDate value="${endDate}"
+														pattern="yyyy년 MM월 " />
 												</td>
 											</tr>
-											
+
 											<tr>
 												<td><input type="hidden" name="cId"
 													value="${career.cId }"> <input type="hidden"
@@ -1038,13 +1048,17 @@ section {
 							</div>
 							<div class="col-12 partition">
 								<div class="col-12 page-title">
-									<h4 style="height: 50px;">
-										학력
-											<c:if test ="${loginUser.userType eq 'UT4'}">
-										 <a href="academic.do" class="btn btn-info"
-											style="float: right;">업데이트 하기</a>
-										</c:if>
-									</h4>
+									<form method="get" action="accademic.do">
+										<h4 style="height: 50px;">
+											학력
+											<c:if test="${loginUser.userType eq 'UT4'}">
+												<input type="hidden" name="profileId"
+													value="${profile.profileId }">
+												<button type="submit" class="btn btn-info"
+													style="float: right;">업데이트 하기</button>
+											</c:if>
+										</h4>
+									</form>
 									<div class="academic">
 										<table class="table">
 											<tr class="table-secondary" style="text-align: center;">
@@ -1094,28 +1108,31 @@ section {
 															<td>자퇴</td>
 														</c:when>
 													</c:choose>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
-													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
-													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd"
+															value="${sc.scStartDate }" var="scStartDate" /> <fmt:formatDate
+															value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd"
+															value="${sc.scEndDate }" var="scEndDate" /> <fmt:formatDate
+															value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
 												</tr>
 											</c:forEach>
 										</table>
 									</div>
 								</div>
-								<!-- <dlv class="detail-view">
-                                    <h6><a href="#">학력 더보기 ></a></h6>
-                                </dlv> -->
 							</div>
 							<div class="col-12 partition">
 								<div class="col-12 page-title">
-									<h4 style="height: 50px;">
-										자격증 
-											<c:if test ="${loginUser.userType eq 'UT4'}">
-											<a href="certificate.do" class="btn btn-info"
-											style="float: right;">업데이트 하기</a>
-									</c:if>
-									</h4>
+									<form method="get" action="certificate.do">
+										<h4 style="height: 50px;">
+											자격증
+											<c:if test="${loginUser.userType eq 'UT4'}">
+												<input type="hidden" name="profileId"
+													value="${profile.profileId }">
+												<button type="submit" class="btn btn-info"
+													style="float: right;">업데이트 하기</button>
+											</c:if>
+										</h4>
+									</form>
 									<div class="certificate">
 										<table class="table">
 											<tr class="table-secondary" style="text-align: center;">
@@ -1129,17 +1146,15 @@ section {
 													style="text-align: center; vertical-align: middle;">
 													<td>${certi.ccName }</td>
 													<td>${certi.ccPlace }</td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${certi.ccCreateDate }" var="ccStartDate" />
-													<fmt:formatDate value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd"
+															value="${certi.ccCreateDate }" var="ccStartDate" /> <fmt:formatDate
+															value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
 													<td>${certi.ccNumber }</td>
 												</tr>
 											</c:forEach>
 										</table>
 									</div>
 								</div>
-								<!-- <dlv class="detail-view">
-                                    <h6><a href="#">자격증 더보기 ></a></h6>
-                                </dlv> -->
 							</div>
 							<div class="col-12 partition" style="border: none;">
 								<h4 style="height: 50px;">평가</h4>
@@ -1151,7 +1166,8 @@ section {
 												<td class="evalTitle" colspan="3"><a href="#">${eval.proName }</a></td>
 											</tr>
 											<tr>
-												<td class="evalPadding" colspan="3">${eval.mcType } | ${eval.dcType }</td>
+												<td class="evalPadding" colspan="3">${eval.mcType }|
+													${eval.dcType }</td>
 											</tr>
 											<tr>
 												<td class="evalPadding" style="width: 230px;"><i
@@ -1159,50 +1175,50 @@ section {
 												<td style="padding-bottom: 10px; padding-top: 10px;"><i
 													class="far fa-clock">프로젝트 기간 : </i>${eval.proDuration }일</td>
 												<td style="padding-bottom: 10px; padding-top: 10px;"><i
-													class="far fa-calendar-alt">계약일자 : </i><fmt:parseDate pattern="yyyy-MM-dd" value="${eval.proStartDate }" var="parsedDate" />
-													<fmt:formatDate value="${parsedDate}" pattern="yyyy년 MM월 dd일" />
-													</td>
+													class="far fa-calendar-alt">계약일자 : </i> <fmt:parseDate
+														pattern="yyyy-MM-dd" value="${eval.proStartDate }"
+														var="parsedDate" /> <fmt:formatDate value="${parsedDate}"
+														pattern="yyyy년 MM월 dd일" /></td>
 											</tr>
 
 											<tr>
 												<td class="evalPadding" colspan="3"
 													style="text-align: center; font-size: 20px; border-bottom: 2px dashed white;">평균
-													평점 : 
-													<c:choose>
+													평점 : <c:choose>
 														<c:when test="${eval.eAgv eq 1}">
 															<i class="fas fa-star" style="color: yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
 														</c:when>
 														<c:when test="${eval.eAgv eq 2}">
 															<i class="fas fa-star" style="color: yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
 														</c:when>
 														<c:when test="${eval.eAgv eq 3}">
 															<i class="fas fa-star" style="color: yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
 														</c:when>
 														<c:when test="${eval.eAgv eq 4}">
 															<i class="fas fa-star" style="color: yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="far fa-star" style="color:yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="far fa-star" style="color: yellow;"></i>
 														</c:when>
 														<c:when test="${eval.eAgv eq 5}">
 															<i class="fas fa-star" style="color: yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
-															<i class="fas fa-star" style="color:yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
+															<i class="fas fa-star" style="color: yellow;"></i>
 														</c:when>
 													</c:choose>
 												</td>
@@ -1218,31 +1234,21 @@ section {
 														<li>적극성(${eval.eStar5 })</li>
 													</ul>
 													<ul class="agv">
-														<li>
-															<c:forEach begin="1" end="${eval.eStar1 }">
+														<li><c:forEach begin="1" end="${eval.eStar1 }">
 																<i class="fas fa-star" style="color: yellow;"></i>
-															</c:forEach>
-														</li>
-														<li>
-															<c:forEach begin="1" end="${eval.eStar2 }">
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar2 }">
 																<i class="fas fa-star" style="color: yellow;"></i>
-															</c:forEach>
-														</li>
-														<li>
-															<c:forEach begin="1" end="${eval.eStar3 }">
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar3 }">
 																<i class="fas fa-star" style="color: yellow;"></i>
-															</c:forEach>
-														</li>
-														<li>
-															<c:forEach begin="1" end="${eval.eStar4 }">
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar4 }">
 																<i class="fas fa-star" style="color: yellow;"></i>
-															</c:forEach>
-														</li>
-														<li>
-															<c:forEach begin="1" end="${eval.eStar5 }">
+															</c:forEach></li>
+														<li><c:forEach begin="1" end="${eval.eStar5 }">
 																<i class="fas fa-star" style="color: yellow;"></i>
-															</c:forEach>
-														</li>
+															</c:forEach></li>
 													</ul>
 												</td>
 											</tr>
@@ -1251,7 +1257,8 @@ section {
 													<ul class="client">
 														<li><img class="client-img"></li>
 														<li><span class="btn btn-secondary btn-sm"
-															style="margin-right: 5px; margin-bottom: 5px;">클라이언트</span><span>${eval.memNick }</span> <br>
+															style="margin-right: 5px; margin-bottom: 5px;">클라이언트</span><span>${eval.memNick }</span>
+															<br>
 															<p>${eval.eContent }</p></li>
 													</ul>
 												</td>
