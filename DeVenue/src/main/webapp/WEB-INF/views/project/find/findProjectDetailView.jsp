@@ -278,6 +278,13 @@
 
 <jsp:include page="../../common/menubar.jsp"></jsp:include>
 
+<c:if test="${loginUser.userType eq 'UT3'}">
+<jsp:include page="../../common/cSubMenubar.jsp"></jsp:include>
+</c:if>
+<c:if test="${loginUser.userType eq 'UT4'}">
+<jsp:include page="../../common/pSubMenubar.jsp"></jsp:include>
+</c:if>
+
 
 <!--project detail 시작-->
 
@@ -721,8 +728,10 @@
                                 <div class="float-right">
                                 	<input type="hidden" class="myRId" value="${r.rId}">
                                     <input type="hidden" class="myRPId" value="${r.parentRId}">
+                                    <c:if test="${loginUser.memId eq r.writer.memId}">
                                     <a class="replyModify mr-2">수정</a>
                                     <a class="replyCancel"><i class="fas fa-times"></i></a>
+                                    </c:if>
                                 </div>
                             </div>
                               
@@ -782,8 +791,10 @@
                                     <div class="float-right">
                                     	<input type="hidden" class="myRId" value="${rc.rId}">
                                     	<input type="hidden" class="myRPId" value="${rc.parentRId}">
+                                        <c:if test="${loginUser.memId eq rc.writer.memId}">
                                         <a class="replyModify mr-2">수정</a>
                                         <a class="replyCancel"><i class="fas fa-times"></i></a>
+                                        </c:if>
                                     </div>
                                 </div>
                                 
@@ -970,8 +981,12 @@
         						
         						$edit.append($hidden);
         						$edit.append($hiddenp);
-        						$edit.append($modify);
-        						$edit.append($delete);
+        						
+        						if($parent[i].writer.memId==memId){
+        	                          $edit.append($modify);
+        	                          $edit.append($delete);
+        	                          }
+        						
         						$title.append($userImg);
         						$title.append($userName);
         						$title.append($userId);
@@ -1066,8 +1081,11 @@
         								
         								$aedit.append($ahidden);
         								$aedit.append($ahiddenp);
-        								$aedit.append($amodify);
-        								$aedit.append($adelete);
+        								
+        								if("${detail.project.memId}"==memId){
+        	                                $aedit.append($amodify);
+        	                                $aedit.append($adelete);
+        	                                }
         								
         								$atitle.append($auserImg);
         								$atitle.append($auserName);
@@ -1205,7 +1223,7 @@
         		var rContent=$("#reply_textarea").val();
     			var pId=${detail.pId};
     			var parent=$(this).parent().find(".myRId").val();
-    			var memId=3;
+    			var memId="${loginUser.memId}";
         		
     			var rSecret="";
     			if($("#reply_private").prop("checked")){

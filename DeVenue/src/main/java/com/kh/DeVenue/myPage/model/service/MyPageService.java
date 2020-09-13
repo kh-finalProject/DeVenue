@@ -138,6 +138,10 @@ public interface MyPageService {
 
 	int insertProcess(int id);
 
+	int insertCareerIng(Career c);
+
+	ArrayList<PortImg> piList(int portId);
+
 
 	
 

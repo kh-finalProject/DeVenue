@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -424,7 +424,7 @@ section {
 		<div class="container">
 			<div class="row text-white"
 				style="border-bottom: 1px solid lightgray; width: 1000px;">
-				<div class="col-2"
+				<div class="col-12"
 					style="padding: 3%; font-size: 150%; font-family: 'Jua', sans-serif;">
 					${loginUser.memNick } 마이페이지</div>
 			</div>
@@ -441,8 +441,6 @@ section {
 					<div class="col-12"
 						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
 						<p style="float: left; font-size: 30px;">마이페이지 - 학력</p>
-						<a href="mypagePortfolioAll.html" class="btn btn-info"
-							style="float: right;">전체포트폴리오 보기</a>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h3>
@@ -486,7 +484,7 @@ section {
 											</c:when>
 											<c:when test="${sc.sgId eq 'SG6'}">
 												<td>박사과정</td>
-											</c:when>	
+											</c:when>
 										</c:choose>
 										<c:choose>
 											<c:when test="${sc.ssId eq 'SS1'}">
@@ -502,11 +500,13 @@ section {
 												<td>자퇴</td>
 											</c:when>
 										</c:choose>
-										
-										<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
-													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
-													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
+
+										<td><fmt:parseDate pattern="yyyy-MM-dd"
+												value="${sc.scStartDate }" var="scStartDate" /> <fmt:formatDate
+												value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
+										<td><fmt:parseDate pattern="yyyy-MM-dd"
+												value="${sc.scEndDate }" var="scEndDate" /> <fmt:formatDate
+												value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
 										<td><input type="hidden" name="scId" value="${sc.scId }">
 											<input type="hidden" name="profileId"
 											value="${sc.profileId }">

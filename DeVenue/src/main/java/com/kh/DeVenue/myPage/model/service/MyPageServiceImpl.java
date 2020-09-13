@@ -316,6 +316,18 @@ public class MyPageServiceImpl implements MyPageService{
 		return myPageDao.insertProcess(id);
 	}
 
+	@Override
+	public int insertCareerIng(Career c) {
+		
+		return myPageDao.insertCareerIng(c);
+	}
+
+	@Override
+	public ArrayList<PortImg> piList(int portId) {
+		
+		return myPageDao.piList(portId);
+	}
+
 
 
 

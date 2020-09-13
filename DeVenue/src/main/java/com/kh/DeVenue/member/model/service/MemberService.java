@@ -97,6 +97,8 @@ public interface MemberService {
 
 	int getAddressListCount(HashMap addressMap);
 	
+	int memStatus(int memId);
 
+	  ArrayList<Member> memOrder();
 	
 }

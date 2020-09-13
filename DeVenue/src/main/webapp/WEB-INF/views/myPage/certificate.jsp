@@ -440,8 +440,6 @@ section {
 					<div class="col-12"
 						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
 						<p style="float: left; font-size: 30px;">마이페이지 - 자격증</p>
-						<a href="mypagePortfolioAll.html" class="btn btn-info"
-							style="float: right;">전체포트폴리오 보기</a>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h3>
@@ -469,9 +467,7 @@ section {
 												value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
 										<td>${certi.ccNumber }</td>
 										<td><input type="hidden" name="ccId"
-											value="${certi.ccId }"> <input type="hidden"
-											name="profileId" value="${certi.profileId }"> <a
-											href="certificateUpdate.html" class="btn btn-info">수정</a>
+											value="${certi.ccId }">
 											<button id="del" class="btn btn-info">삭제</button></td>
 									</tr>
 								</table>

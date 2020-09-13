@@ -14,14 +14,14 @@ public class Career implements Serializable{
 	private String cName;
 	private String cDept;
 	private String cPosition;
-	private Date cStartDate;
-	private Date cEndDate;
+	private String cStartDate;
+	private String cEndDate;
 	private String cContent;
 	private int profileId;
 	public Career() {
 		super();
 	}
-	public Career(int cId, String cName, String cDept, String cPosition, Date cStartDate, Date cEndDate,
+	public Career(int cId, String cName, String cDept, String cPosition, String cStartDate, String cEndDate,
 			String cContent, int profileId) {
 		super();
 		this.cId = cId;
@@ -35,7 +35,7 @@ public class Career implements Serializable{
 	}
 	
 	// 경력 insert
-	public Career(String cName, String cDept, String cPosition, Date cStartDate, Date cEndDate, String cContent,
+	public Career(String cName, String cDept, String cPosition, String cStartDate, String cEndDate, String cContent,
 			int profileId) {
 		super();
 		this.cName = cName;
@@ -46,6 +46,18 @@ public class Career implements Serializable{
 		this.cContent = cContent;
 		this.profileId = profileId;
 	}
+	
+	// 현재 제직중일때
+	public Career(String cName, String cDept, String cPosition, String cStartDate, String cContent, int profileId) {
+		super();
+		this.cName = cName;
+		this.cDept = cDept;
+		this.cPosition = cPosition;
+		this.cStartDate = cStartDate;
+		this.cContent = cContent;
+		this.profileId = profileId;
+	}
+	
 	
 	public int getcId() {
 		return cId;
@@ -73,16 +85,16 @@ public class Career implements Serializable{
 	public void setcPosition(String cPosition) {
 		this.cPosition = cPosition;
 	}
-	public Date getcStartDate() {
+	public String getcStartDate() {
 		return cStartDate;
 	}
-	public void setcStartDate(Date cStartDate) {
+	public void setcStartDate(String cStartDate) {
 		this.cStartDate = cStartDate;
 	}
-	public Date getcEndDate() {
+	public String getcEndDate() {
 		return cEndDate;
 	}
-	public void setcEndDate(Date cEndDate) {
+	public void setcEndDate(String cEndDate) {
 		this.cEndDate = cEndDate;
 	}
 	public String getcContent() {

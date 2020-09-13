@@ -174,6 +174,13 @@ if(session!=null){
 
 <jsp:include page="../../common/menubar.jsp"></jsp:include>
 
+<c:if test="${loginUser.userType eq 'UT3'}">
+<jsp:include page="../../common/cSubMenubar.jsp"></jsp:include>
+</c:if>
+<c:if test="${loginUser.userType eq 'UT4'}">
+<jsp:include page="../../common/pSubMenubar.jsp"></jsp:include>
+</c:if>
+
 <main>
     <div class="container-fluid">
 
@@ -2007,14 +2014,29 @@ if(session!=null){
       						var ago = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000));
       						
       						console.log("ago?"+ago);
-      						
-      						if($list[i].project.proCreateDate==today){
-      							$badgeDiv.append($today);
-      						}
-      						
-      						if(ago<$list[i].project.proCreateDate){
-      							$badgeDiv.append($new);
-      						}
+                            console.log("today?"+today);
+                            var y=today.getFullYear();
+                            var m=""+(today.getMonth()+1);
+                            var d=""+today.getDate();
+                            
+                            if(m.length<2){
+                               m='0'+m;
+                            }
+                            if(d.length<2){
+                               d='0'+d;
+                            }
+                            
+                            
+                            var combine=y+"-"+m+"-"+d;
+                            console.log(combine);
+                            
+                            console.log($list[i].project.proCreateDate)
+                            
+                            if($list[i].project.proCreateDate==combine){
+                               $badgeDiv.append($today);
+                            }else if(ago<$list[i].project.proCreateDate<today){
+                               $badgeDiv.append($new);
+                            }
       						
       						$cardBody.append($badgeDiv);
       						

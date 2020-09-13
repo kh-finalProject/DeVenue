@@ -1,6 +1,5 @@
 package com.kh.DeVenue.member.model.dao;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,20 +29,18 @@ public class MemberDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
-
 	public Member loginMember(Member m) {
 
-		return sqlSessionTemplate.selectOne("memberMapper.loginMember",m);
+		return sqlSessionTemplate.selectOne("memberMapper.loginMember", m);
 	}
 
 	public int insertMember(Member m) {
-		
-		return sqlSessionTemplate.insert("memberMapper.insertMember",m);
+
+		return sqlSessionTemplate.insert("memberMapper.insertMember", m);
 	}
 
-
 	public int updatePwdMember(Member pwdchange) {
-		
+
 		return sqlSessionTemplate.update("memberMapper.updatePwdMember", pwdchange);
 	}
 
@@ -51,40 +48,37 @@ public class MemberDao {
 
 		return sqlSessionTemplate.selectOne("memberMapper.selectProfile", memId);
 	}
-	
+
 	public int insertProfile(int memId) {
-		
+
 		return sqlSessionTemplate.insert("memberMapper.insertProfile", memId);
 	}
-
-	
 
 	public int getListCount() {
 		return sqlSessionTemplate.selectOne("memberMapper.getListCount");
 	}
 
-
 	public ArrayList<FindClient> selectList(PageInfo pi) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectList", null, rowBounds);
 	}
 //	public ArrayList<FindClient> selectList() {
 //		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList");
 //	}
 
 	public int insertPartInfo(PartInfo partInfo) {
-		
-		return sqlSessionTemplate.insert("myPageMapper.insertPartInfo",partInfo);
+
+		return sqlSessionTemplate.insert("myPageMapper.insertPartInfo", partInfo);
 	}
 
 	public ArrayList<FindClientDetail> selectClientDetail(Integer cId) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectClientDetail", cId);
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectClientDetail", cId);
 	}
 
 	public FCprojectHistory selectProjectHistory(Integer cId) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectProjectHistory",cId);
+		return sqlSessionTemplate.selectOne("memberMapper.selectProjectHistory", cId);
 	}
 
 	public int getCPevalCount(Integer cId) {
@@ -92,10 +86,10 @@ public class MemberDao {
 	}
 
 	public ArrayList<CPeval> selectCPeval(Integer cId, PageInfo pi) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectCPeval", cId, rowBounds);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectCPeval", cId, rowBounds);
 	}
 
 	public FCeval getFCeval(Integer cId) {
@@ -103,11 +97,11 @@ public class MemberDao {
 	}
 
 	public ArrayList<EvalProjectList> getClientInfo(Integer cId) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.getClientInfo", cId);
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.getClientInfo", cId);
 	}
 
 	public ArrayList<MatchingPartnersList> getMatchingPartners(HashMap id) {
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.getMatchingPartners", id);
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.getMatchingPartners", id);
 	}
 
 	public int insertEval(HashMap id) {
@@ -115,22 +109,22 @@ public class MemberDao {
 	}
 
 	public Member selectMemberId(Member mEmail) {
-		
+
 		return sqlSessionTemplate.selectOne("memberMapper.selectMemId", mEmail);
 	}
 
 	public int insertChatSet(MemChatSet mc) {
-		
-		return sqlSessionTemplate.insert("memberMapper.insertcharSet",mc);
+
+		return sqlSessionTemplate.insert("memberMapper.insertcharSet", mc);
 	}
 
 	public int membernick(String nick) {
-		
+
 		return sqlSessionTemplate.selectOne("memberMapper.membernick", nick);
 	}
 
 	public int memberemail(String email) {
-		
+
 		return sqlSessionTemplate.selectOne("memberMapper.memberemail", email);
 	}
 
@@ -139,25 +133,26 @@ public class MemberDao {
 	}
 
 	public ArrayList<FindClient> selectList(PageInfo pi, String memNick) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.searchMemNickClientList", memNick, rowBounds);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.searchMemNickClientList", memNick, rowBounds);
 	}
 
 	public int getListCount2(String introduction) {
 		return sqlSessionTemplate.selectOne("memberMapper.countClientList2", introduction);
 	}
-	
+
 	public ArrayList<FindClient> selectList2(PageInfo pi, String introduction) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.searchIntroductionClientList", introduction, rowBounds);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.searchIntroductionClientList", introduction,
+				rowBounds);
 	}
-	
+
 	public int insertIden(int memId) {
-		
+
 		return sqlSessionTemplate.insert("memberAccountMapper.signInsert", memId);
 
 	}
@@ -173,19 +168,19 @@ public class MemberDao {
 	public int toDeath(String memEmail) {
 		return sqlSessionTemplate.update("memberMapper2.toDeath", memEmail);
 	}
-	
+
 	public ArrayList<FindClient> selectList(PageInfo pi, int status) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-		
-		if(status == 1) {
-			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList1", status, rowBounds);
-		}else if(status ==2) {
-			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList2", status, rowBounds);
-		}else if(status ==3) {
-			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList3", status, rowBounds);
-		}else{
-			return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectList4", status, rowBounds);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		if (status == 1) {
+			return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectList1", status, rowBounds);
+		} else if (status == 2) {
+			return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectList2", status, rowBounds);
+		} else if (status == 3) {
+			return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectList3", status, rowBounds);
+		} else {
+			return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectList4", status, rowBounds);
 		}
 	}
 
@@ -206,24 +201,24 @@ public class MemberDao {
 	}
 
 	public ArrayList<FindClient> addressList(PageInfo pi, HashMap addressMap) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.addressList", addressMap, rowBounds);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.addressList", addressMap, rowBounds);
 	}
 
 	public ArrayList<Member> memberList() {
 
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.memberList");
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.memberList");
 	}
 
 	public Member selectMember(String email, String pwd) {
-		
+
 		Map map = new HashMap();
 		map.put("email", email);
 		map.put("pwd", pwd);
-		
-		return sqlSessionTemplate.selectOne("memberMapper.memberChk",map);
+
+		return sqlSessionTemplate.selectOne("memberMapper.memberChk", map);
 	}
 
 	public int checkReEval(HashMap id) {
@@ -234,5 +229,14 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.getAddressListCount", addressMap);
 	}
 
-	
+	public int memStatus(int memId) {
+
+		return sqlSessionTemplate.update("memberMapper.memStatus", memId);
+	}
+
+	public ArrayList<Member> memOrder() {
+
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.memOrder");
+	}
+
 }

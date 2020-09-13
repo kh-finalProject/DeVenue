@@ -518,7 +518,7 @@ section {
 							</div>
 							<div class="col-12 working"
 								style="height: 30px; margin-left: 27%; color: grey;">
-								<input type="checkbox" class="working-check">&nbsp;&nbsp;&nbsp;
+								<input type="checkbox" class="working-check" name="working-check" value="ing">&nbsp;&nbsp;&nbsp;
 								<label>현재 재직중 입니다.</label>
 							</div>
 							<div class="col-12 end-date"

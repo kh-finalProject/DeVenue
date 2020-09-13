@@ -567,4 +567,16 @@
 		WHERE PRO_ID = #{id}
 	</update>
 	
+	<!-- 현재 제직중일경우 경력 insert -->
+	<insert id="insertCareerIng" parameterType="Career">
+		INSERT INTO CAREER
+		VALUES(C_SEQ.NEXTVAL,#{cName},#{cDept},#{cPosition},TO_DATE(#{cStartDate},'YYYY-MM'),SYSDATE,#{cContent},#{profileId})
+	</insert>
+	
+	<!-- 포트폴리오 이미지 -->
+	<select id="piList" parameterType="int" resultMap="portImgResultset">
+		SELECT * FROM PORT_IMG
+		WHERE PORT_ID=#{portId}
+	</select>
+	
 </mapper>

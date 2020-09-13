@@ -446,7 +446,7 @@
                                   <input type="hidden" class="myLike" value="${like.proLId}">
                                   <div class="likeCancel mt-2 mb-4"><i class="fas fa-times float-right">삭제</i></div>
                                   <button type="button" onclick="location.href='${pdetail}'" class="btn btn-secondary btn-block">상세보기</button>
-                                  <button type="button" class="btn btn-info btn-block" onclick="location.href='${papply}'">지원하기</button>
+                                  
                                 </div>
                               </div>
                             </div>

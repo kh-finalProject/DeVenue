@@ -24,20 +24,20 @@ import com.kh.DeVenue.member.model.vo.PageInfo;
 
 @Service("mService")
 
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	MemberDao mDao;
 
 	@Override
 	public Member loginUserMember(Member m) {
-		
+
 		return mDao.loginMember(m);
 	}
-	
+
 	@Override
 	public int insertMember(Member m) {
-		
+
 		return mDao.insertMember(m);
 	}
 
@@ -54,13 +54,12 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int profileInsert(int memId) {
-		
+
 		return mDao.insertProfile(memId);
 	}
 
-	
 	public int getListCount() {
-		
+
 		return mDao.getListCount();
 	}
 
@@ -110,38 +109,38 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int insertPartInfo(PartInfo partInfo) {
-		
+
 		return mDao.insertPartInfo(partInfo);
 	}
 
 	@Override
 	public Member selectMember(Member mEmail) {
-		
+
 		return mDao.selectMemberId(mEmail);
 	}
 
 	@Override
 	public int insertChatSet(MemChatSet mc) {
-		
+
 		return mDao.insertChatSet(mc);
 	}
 
 	@Override
 	public int membernick(String nick) {
-		
+
 		return mDao.membernick(nick);
 	}
 
 	@Override
 	public int memberemail(String email) {
-		
+
 		return mDao.memberemail(email);
 	}
 
 	@Override
 
 	public int insertIden(int memId) {
-		
+
 		return mDao.insertIden(memId);
 	}
 
@@ -210,7 +209,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member selectMmber(String email, String pwd) {
-		return mDao.selectMember(email,pwd);
+		return mDao.selectMember(email, pwd);
 	}
 
 	public ArrayList<FindClient> addressList(PageInfo pi, HashMap addressMap) {
@@ -219,7 +218,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public ArrayList<Member> memberList() {
-		
+
 		return mDao.memberList();
 	}
 
@@ -232,5 +231,16 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.getAddressListCount(addressMap);
 	}
 
+	@Override
+	public int memStatus(int memId) {
+
+		return mDao.memStatus(memId);
+	}
+
+	@Override
+	public ArrayList<Member> memOrder() {
+
+		return mDao.memOrder();
+	}
 
 }

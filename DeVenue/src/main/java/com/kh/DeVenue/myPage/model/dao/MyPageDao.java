@@ -270,4 +270,14 @@ public class MyPageDao {
 		return sqlSessionTemplate.insert("myPageMapper.insertProcess", id);
 	}
 
+	public int insertCareerIng(Career c) {
+		
+		return sqlSessionTemplate.insert("myPageMapper.insertCareerIng", c);
+	}
+
+	public ArrayList<PortImg> piList(int portId) {
+		
+		return (ArrayList)sqlSessionTemplate.selectList("myPageMapper.piList",portId);
+	}
+
 }

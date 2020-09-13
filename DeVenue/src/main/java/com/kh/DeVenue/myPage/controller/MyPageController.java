@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -188,8 +189,12 @@ public class MyPageController {
 
 			ArrayList<PortTecView> portTec = myPageService.ptList(portId);
 			System.out.println(portTec);
-
+			
+			ArrayList<PortImg> portImg = myPageService.piList(portId);
+			System.out.println(portImg);
+			
 			mv.addObject("portTec", portTec);
+			mv.addObject("portImg", portImg);
 		}
 		
 		// 포트폴리오 이미지
@@ -248,58 +253,6 @@ public class MyPageController {
 		ArrayList<Career> careerlist = myPageService.selectCareerInfo(profileId);
 		System.out.println(careerlist);
 
-		// 입사일가 퇴사일 비교해서 개월로 표시
-		for (int i = 0; i < careerlist.size(); i++) {
-//			System.out.println(careerlist.get(i).getcStartDate());
-//			System.out.println(careerlist.get(i).getcEndDate());
-//			int a = 0;
-//			int b = 0;
-//			a = Integer.valueOf(careerlist.get(i).getcStartDate());
-//			b = Integer.valueOf(careerlist.get(i).getcEndDate());
-//			int comepare = careerlist.get(i).getcEndDate().compareTo(careerlist.get(i).getcStartDate());
-//			System.out.println(i+"번째 " + comepare);
-//			SimpleDateFormat format = new SimpleDateFormat("YYYYDD");
-//			System.out.println(format.format(careerlist.get(i).getcStartDate()));
-
-//			SimpleDateFormat fm = new SimpleDateFormat("yyyyMM");
-//			Date to = fm.parse(careerlist.get(i).getcStartDate());
-//			System.out.println(to);
-//			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//			Date date = format.parse(careerlist.get(i).getcStartDate());
-//			System.out.println(date);
-
-//			DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
-//			Date tempDate = sdFormat.parse("2014-12-22");
-//			System.out.println(tempDate);
-
-//			String date1 = "2017-09-21";
-//		    String date2 = "2016-09-10";
-
-//		    try{ // String Type을 Date Type으로 캐스팅하면서 생기는 예외로 인해 여기서 예외처리 해주지 않으면 컴파일러에서 에러가 발생해서 컴파일을 할 수 없다.
-//		        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-//		        // date1, date2 두 날짜를 parse()를 통해 Date형으로 변환.
-//		        Date FirstDate = format.parse(date1);
-//		        Date SecondDate = format.parse(date2);
-//		        
-//		        // Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
-//		        // 연산결과 -950400000. long type 으로 return 된다.
-//		        long calDate = FirstDate.getTime() - SecondDate.getTime(); 
-//		        
-//		        // Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다. 
-//		        // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
-//		        long calDateDays = calDate / ( 24*60*60*1000); 
-//		 
-//		        calDateDays = Math.abs(calDateDays);
-//		        
-//		        System.out.println("두 날짜의 날짜 차이: "+calDateDays);
-//		        }
-//		        catch(ParseException e)
-//		        {
-//		            // 예외 처리
-//		        }
-
-		}
-
 		mv.addObject("careerlist", careerlist);
 		mv.setViewName("myPage/career");
 
@@ -336,8 +289,20 @@ public class MyPageController {
 
 	// 프로젝트 히스토리 이동
 	@RequestMapping(value = "PH.do")
-	public String PHView() {
-		return "myPage/projectHistory";
+	public ModelAndView PHView(ModelAndView mv, HttpServletRequest request) {
+		
+		String mId = request.getParameter("memId");
+		int eTarget = Integer.valueOf(mId);
+		System.out.println("히스토리"+eTarget);
+//		// memId를 기준으로 파트너스 평가 가져오기
+		ArrayList<PEvalView> PartEval = fmService.partEvalList(eTarget);
+		System.out.println(PartEval);
+//		
+//		
+//		mv.addObject("PartEval", PartEval);
+		mv.setViewName("myPage/projectHistory");
+		
+		return mv;
 	}
 
 	// ----------------------------------------------//
@@ -584,22 +549,38 @@ public class MyPageController {
 
 		String start = sYear + "-" + sMonth;
 		String end = eYear + "-" + eEnd;
-		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		Date cStart = (Date) fm.parse(start);
-		Date cEnd = (Date) fm.parse(end);
 		String content = request.getParameter("content");
-
-		// 퇴사일이 null이냐에따라 다르게 길을 간다.
-		Career c = new Career(cName, cDept, cPosition, cStart, cEnd, content, profileId);
-		System.out.println("경력추가" + c);
-		int careerInfo = myPageService.insertCareer(c);
-		if (careerInfo > 0) {
-			System.out.println("경력 추가 성공");
-			redirectAttributes.addAttribute("profileId", profileId);
-		} else {
-			System.out.println("경력 추가 실패");
+		
+		String workCheck = request.getParameter("working-check");
+		System.out.println(workCheck);
+		
+		// 현재 제직 중일때
+		if(workCheck != null) {
+			
+			Career c = new Career(cName, cDept, cPosition, start, content, profileId);
+			System.out.println("경력추가" + c);
+			
+			int careerInfo = myPageService.insertCareerIng(c);
+			if (careerInfo > 0) {
+				System.out.println("경력 추가 성공");
+			} else {
+				System.out.println("경력 추가 실패");
+			}
+			
+		}else {
+			
+			Career c = new Career(cName, cDept, cPosition, start, end, content, profileId);
+			System.out.println("경력추가" + c);
+			
+			int careerInfo = myPageService.insertCareer(c);
+			if (careerInfo > 0) {
+				System.out.println("경력 추가 성공");
+			} else {
+				System.out.println("경력 추가 실패");
+			}
 		}
+		redirectAttributes.addAttribute("profileId", profileId);
 
 		return "redirect:career.do";
 	}
@@ -647,12 +628,12 @@ public class MyPageController {
 
 		String scStartDate = sYear + "-" + sMonth;
 		String scEndDate = eYear + "-" + eMonth;
-		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//		Date cStart = (Date) fm.parse(scStartDate);
+//		Date cEnd = (Date) fm.parse(scEndDate);
 
-		Date cStart = (Date) fm.parse(scStartDate);
-		Date cEnd = (Date) fm.parse(scEndDate);
-
-		SCCareer sc = new SCCareer(sgId, ssId, scName, scMarjor, cStart, cEnd, profileId);
+		SCCareer sc = new SCCareer(sgId, ssId, scName, scMarjor, scStartDate, scEndDate, profileId);
 		System.out.println(sc);
 		int SCCareerInfo = myPageService.insertSCCareer(sc);
 		if (SCCareerInfo > 0) {
@@ -796,100 +777,108 @@ public class MyPageController {
 //			return "myPage/portfolioAll";
 	}
 
-	// 클라이언트 마이페이지 메인 이동
-	@RequestMapping(value = "clientProfile.do")
-	public ModelAndView clientMypage(ModelAndView mv, Integer cId) {
-		System.out.println("클라이언트 아이디 : " + cId);
+	   // 클라이언트 마이페이지 메인 이동
+	   @RequestMapping(value = "clientProfile.do")
+	   public ModelAndView clientMypage(ModelAndView mv, Integer cId) {
+	      System.out.println("클라이언트 아이디 : " + cId);
 
-		// 기본정보 및 프로젝트 횟수
-		CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
-		System.out.println("projectHistory : " + projectHistory);
+	      // 기본정보 및 프로젝트 횟수
+	      CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
+	      System.out.println("projectHistory : " + projectHistory);
 
-		// 내게온 제안 조회
-		ArrayList<CmypageSuggest> suggest = myPageService.selectSuggest(cId);
-		System.out.println("내게 온 제안 : " + suggest);
+	      // 내게온 제안 조회
+	      ArrayList<CmypageSuggest> suggest = myPageService.selectSuggest(cId);
+	      System.out.println("내게 온 제안 : " + suggest);
 
-		// 진행중인 프로젝트 조회
-		ArrayList<CmypageProcess> process = myPageService.selectProcess(cId);
-		System.out.println("진행중인 프로젝트 : " + process);
+	      // 진행중인 프로젝트 조회
+	      ArrayList<CmypageProcess> process = myPageService.selectProcess(cId);
+	      System.out.println("진행중인 프로젝트 : " + process);
 
-		// 참여 파트너스 카운트
-		ArrayList<CmypageCountPartners> countPartners = myPageService.getCountPartners(cId);
-		System.out.println("참여 파트너스 수 : " + countPartners);
+	      // 참여 파트너스 카운트
+	      ArrayList<CmypageCountPartners> countPartners = myPageService.getCountPartners(cId);
+	      System.out.println("참여 파트너스 수 : " + countPartners);
 
-		if (projectHistory != null) {
-			mv.addObject("ph", projectHistory).addObject("suggest", suggest).addObject("process", process)
-					.addObject("cp", countPartners).setViewName("member/clientMyPage");
-		} else {
-			throw new MemberException("마이페이지 접근 실패!");
-		}
+	      if (projectHistory != null) {
+	         mv.addObject("ph", projectHistory).addObject("suggest", suggest).addObject("process", process)
+	               .addObject("cp", countPartners).setViewName("member/clientMyPage");
+	      } else {
+	         int msg=1;   // 정보없을때
+	         mv.addObject("ph", projectHistory).addObject("suggest", suggest).addObject("process", process)
+	         .addObject("cp", countPartners).addObject("msg", msg).setViewName("member/clientMyPage");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
-	// 파트너스 내 프로필
-	@RequestMapping(value = "partnersProfile.do")
-	public ModelAndView partnersMypage(ModelAndView mv, Integer pId) {
-		System.out.println("파트너스 아이디 : " + pId);
+	   // 파트너스 내 프로필
+	   @RequestMapping(value = "partnersProfile.do")
+	   public ModelAndView partnersMypage(ModelAndView mv, Integer pId) {
+	      System.out.println("파트너스 아이디 : " + pId);
 
-		// 기본정보 및 프로젝트 횟수
-		PmypagePartnersInfo partnersInfo = myPageService.selectPartnersInfo(pId);
-		System.out.println("partnersInfo : " + partnersInfo);
+	      // 기본정보 및 프로젝트 횟수
+	      PmypagePartnersInfo partnersInfo = myPageService.selectPartnersInfo(pId);
+	      System.out.println("partnersInfo : " + partnersInfo);
 
-		ArrayList<PartnersApplyCount> applyCount = myPageService.getApplyCount(pId);
-		System.out.println("지원수 : " + applyCount);
+	      ArrayList<PartnersApplyCount> applyCount = myPageService.getApplyCount(pId);
+	      System.out.println("지원수 : " + applyCount);
 
-		ArrayList<PartnersContractCount> contractCount = myPageService.getContractCount(pId);
-		System.out.println("계약 수 : " + contractCount);
+	      ArrayList<PartnersContractCount> contractCount = myPageService.getContractCount(pId);
+	      System.out.println("계약 수 : " + contractCount);
 
-		// 내게온 제안 조회
-		ArrayList<PmypageSuggest> suggest = myPageService.selectPartnersSuggest(pId);
-		System.out.println("내게 온 제안 : " + suggest);
+	      // 내게온 제안 조회
+	      ArrayList<PmypageSuggest> suggest = myPageService.selectPartnersSuggest(pId);
+	      System.out.println("내게 온 제안 : " + suggest);
 
-		// 진행중인 프로젝트 조회
-		ArrayList<PmypageProcess> process = myPageService.selectPartnersProcess(pId);
-		System.out.println("진행중인 프로젝트 : " + process);
+	      // 진행중인 프로젝트 조회
+	      ArrayList<PmypageProcess> process = myPageService.selectPartnersProcess(pId);
+	      System.out.println("진행중인 프로젝트 : " + process);
 
-		if (partnersInfo != null) {
-			
-		} else {
-			int msg=1;	// 파트너스 정보 없음
-			mv.addObject("info", partnersInfo).addObject("apply", applyCount).addObject("contract", contractCount)
-			.addObject("msg",msg).addObject("suggest", suggest).addObject("process", process).setViewName("member/partnersMyPage");
-		}
+	      if (partnersInfo != null) {
+	    	  int msg=1;   // 파트너스 정보 없음
+		         mv.addObject("info", partnersInfo).addObject("apply", applyCount).addObject("contract", contractCount)
+		         .addObject("msg",msg).addObject("suggest", suggest).addObject("process", process).setViewName("member/partnersMyPage");
+	      } else {
+	         int msg=1;   // 파트너스 정보 없음
+	         mv.addObject("info", partnersInfo).addObject("apply", applyCount).addObject("contract", contractCount)
+	         .addObject("msg",msg).addObject("suggest", suggest).addObject("process", process).setViewName("member/partnersMyPage");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
-	@RequestMapping(value = "clientInfo.do")
-	public ModelAndView cmClientInfo(ModelAndView mv, Integer cId) {
-		System.out.println("클라이언트 아이디 : " + cId);
+	   @RequestMapping(value = "clientInfo.do")
+	   public ModelAndView cmClientInfo(ModelAndView mv, Integer cId) {
+	      System.out.println("클라이언트 아이디 : " + cId);
 
-		CmypageClientInfo clientInfo = myPageService.selectClientInfo(cId);
-		System.out.println("clientInfo : " + clientInfo);
+	      CmypageClientInfo clientInfo = myPageService.selectClientInfo(cId);
+	      System.out.println("clientInfo : " + clientInfo);
 
-		if (clientInfo != null) {
-			mv.addObject("info", clientInfo).setViewName("member/clientInfo");
-		} else {
-		}
+	      if (clientInfo != null) {
+	         mv.addObject("info", clientInfo).setViewName("member/clientInfo");
+	      } else {
+	         int msg=1;
+	         mv.addObject("info", clientInfo).addObject("msg", msg).setViewName("member/clientInfo");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
-	@RequestMapping(value = "cMyPageProjectHistory.do")
-	public ModelAndView cmProjectHistory(ModelAndView mv, Integer cId) {
-		System.out.println("클라이언트 아이디 : " + cId);
+	   @RequestMapping(value = "cMyPageProjectHistory.do")
+	   public ModelAndView cmProjectHistory(ModelAndView mv, Integer cId) {
+	      System.out.println("클라이언트 아이디 : " + cId);
 
-		CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
-		System.out.println("projectHistory : " + projectHistory);
+	      CmypageProjectHistory projectHistory = myPageService.selectProjectHistory(cId);
+	      System.out.println("projectHistory : " + projectHistory);
 
-		if (projectHistory != null) {
-			mv.addObject("ph", projectHistory).setViewName("member/cProjectHistory");
-		} else {
-		}
+	      if (projectHistory != null) {
+	         mv.addObject("ph", projectHistory).setViewName("member/cProjectHistory");
+	      } else {
+	         int msg=1;
+	         mv.addObject("ph", projectHistory).addObject("msg", msg).setViewName("member/cProjectHistory");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
 	// 마이페이지 서브메뉴바 로딩시 에이작스로 프로필 이미지 네임 가져오기(원한다면 일반 로딩시 가져오는 걸로 바꿀 수도 있음 <c:import
 	// url="/mapping한 url"/> 코드로)
@@ -904,8 +893,8 @@ public class MyPageController {
 			out.print(proImgName);
 		} else {
 			// 프사가 없는경우엔 기본프사로(나중에 이미지 바꿀거임)
-			System.out.println("프사 못불러옴");
-			out.print("user3.png");
+//			System.out.println("프사 못불러옴");
+			out.print("user7.png");
 		}
 		out.flush();
 		out.close();
@@ -913,29 +902,29 @@ public class MyPageController {
 	}
 
 	@RequestMapping(value = "cMypageInfoUpdate.do")
-	public ModelAndView cMypageInfoUpdate(ModelAndView mv, HttpServletRequest request, Integer cId) {
-		String introduce = request.getParameter("introduce");
-		String url = request.getParameter("url");
+	   public ModelAndView cMypageInfoUpdate(ModelAndView mv, HttpServletRequest request, Integer cId) {
+	      String introduce = request.getParameter("introduce");
+	      String url = request.getParameter("url");
 
-		System.out.println("introduce : " + introduce);
-		System.out.println("url : " + url);
+	      System.out.println("introduce : " + introduce);
+	      System.out.println("url : " + url);
 
-		HashMap map = new HashMap();
-		map.put("introduce", introduce);
-		map.put("url", url);
-		map.put("cId", cId);
+	      HashMap map = new HashMap();
+	      map.put("introduce", introduce);
+	      map.put("url", url);
+	      map.put("cId", cId);
 
-		int result = myPageService.updateClientInfo(map);
+	      int result = myPageService.updateClientInfo(map);
 
-		if (result > 0) {
-			System.out.println("수정 성공!!");
-			mv.addObject("cId", cId).setViewName("redirect:clientInfo.do");
-		} else {
-			throw new MyPageException("클라이언트 정보 수정 실패");
-		}
+	      if (result > 0) {
+	         System.out.println("수정 성공!!");
+	         mv.addObject("cId", cId).setViewName("redirect:clientInfo.do");
+	      } else {
+	         throw new MyPageException("클라이언트 정보 수정 실패");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
 	// 포트폴리오 닉네임으로 중복값 제거
 	@RequestMapping(value = "portNameChk.do")
@@ -1028,4 +1017,5 @@ public class MyPageController {
 
 		return mv;
 	}
+	
 }

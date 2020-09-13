@@ -267,9 +267,17 @@ $(document).ready(function(){
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center mr-2" href="searchProjectList.do" style="font-size:18px;">프로젝트찾기</a>
 				</li>
+				<c:if test="${loginUser.userType eq 'UT3'}">
 				<li class="nav-item">
 					<a class="nav-link hvr-underline-from-center mr-2" href="addProject.do" style="font-size:18px;">프로젝트등록</a>
 				</li>
+				</c:if>
+					<c:if test="${loginUser.userType ne 'UT3'}">
+				<li class="nav-item">
+					<a class="nav-link hvr-underline-from-center mr-2" id ="reject" style="font-size:18px;">프로젝트등록</a>
+				</li>
+				</c:if>
+			
 				<li class="nav-item dropdown">
 					<a class="nav-link hvr-underline-from-center dropbtn" href="#" style="font-size:18px;">회원 찾기</a>
 					<div class="dropdown-content">
@@ -337,9 +345,9 @@ $(document).ready(function(){
 							  </c:if>
 							  </button>
 							  <div class="dropdown-menu" style="position:absolute;left:-88px;">
-							  <c:url var="partnersProfile" value="partnersProfile.do">
-						      	<c:param name="pId" value="${loginUser.memId }"/>
-						      </c:url>
+								  <c:url var="partnersProfile" value="partnersProfile.do">
+							      	<c:param name="pId" value="${loginUser.memId }"/>
+							      </c:url>
 							    <a href="${partnersProfile }" class="dropdown-item">myPage</a>
 							    <a href="gotoAccountMypage.do" class="dropdown-item">myAccount</a>
 							    <div class="dropdown-divider"></div>

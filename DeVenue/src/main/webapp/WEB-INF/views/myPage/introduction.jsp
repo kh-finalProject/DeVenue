@@ -443,7 +443,6 @@ section {
 				<div class="row">
 					<div class="col-12 main-title">
 						<p style="float: left; font-size: 30px;">마이페이지 - 자기소개</p>
-						<a href="profile.do" class="btn btn-info" style="float: right;">내 프로필에서 보기</a>
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<span>* 자기 소개</span>

@@ -879,10 +879,16 @@ try {
                             <td colspan="2">전화번호</td>
                             <td>
                             	<c:if test="${!empty customerInfo.phone }">
-                            		${customerInfo.phone }
+                            		<c:set var="pSplit" value="${fn:split(customerInfo.phone,',') }"/>
+                            			${pSplit[0] }-${pSplit[1] }
                             	</c:if>
                             	<c:if test="${empty customerInfo.phone }">
-                            		${customerInfo.cellPhone }
+                            		<c:set var="cPSplit" value="${fn:split(customerInfo.cellPhone,',') }"/>
+                            		<c:set var="nation" value="[국내]"/>
+                            		<c:if test="${cPSplit[0] == 'overseas'}">
+	                            		<c:set var="nation" value="[해외]"/>
+                            		</c:if>
+                            			${nation } ${cPSplit[1] }-${cPSplit[2] }-${cPSplit[3] }
                             	</c:if>
                             </td>
                             <td></td>

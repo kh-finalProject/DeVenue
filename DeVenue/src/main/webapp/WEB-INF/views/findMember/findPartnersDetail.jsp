@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -658,7 +658,6 @@ section {
 	margin-left: 10px;
 }
 
-
 /* 회원찾기 드롭다운 메뉴 */
 .dropbtn {
 	color: white;
@@ -755,11 +754,19 @@ section {
 								<c:if test="${fp.piType eq 3}">
 									<span class="btn btn-secondary">활동 불가능</span>
 								</c:if>
-								<button type="button" class="btn btn-danger" style="float: right;">신고하기</button>
-								<button type="button" class="btn btn-primary" style="float: right; margin-right: 10px;">제안하기</button>
+								<button type="button" id="report" class="btn btn-danger"
+									style="float: right;">신고하기</button>
+								<button type="button" id="proposal" class="btn btn-primary"
+									style="float: right; margin-right: 10px;">제안하기</button>
+								<script type="text/javascript">
+									// 신고하기
+									$("#report").on("click", function() {
+										alert("신고하기");
+
+									})
+								</script>
 							</h2>
-							<h2 style="float: right;">
-							</h2>
+							<h2 style="float: right;"></h2>
 							<h5>
 								<span>${fp.mcType }</span> <span class="bar">|</span> <span>${fp.memTypeKind }</span>
 								<span class="bar">|</span>
@@ -1028,11 +1035,12 @@ section {
 											</tr>
 											<tr>
 												<td class="career-title" style="border: none">근무시간</td>
-												<td>: 
-													<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cStartDate }" var="startDate" />
-													<fmt:formatDate value="${startDate}" pattern="yyyy년 MM월 " /> ~ 
-													<fmt:parseDate pattern="yyyy-MM-dd" value="${career.cEndDate }" var="endDate" />
-													<fmt:formatDate value="${endDate}" pattern="yyyy년 MM월 " />
+												<td>: <fmt:parseDate pattern="yyyy-MM-dd"
+														value="${career.cStartDate }" var="startDate" /> <fmt:formatDate
+														value="${startDate}" pattern="yyyy년 MM월 " /> ~ <fmt:parseDate
+														pattern="yyyy-MM-dd" value="${career.cEndDate }"
+														var="endDate" /> <fmt:formatDate value="${endDate}"
+														pattern="yyyy년 MM월 " />
 												</td>
 											</tr>
 											<tr>
@@ -1097,10 +1105,12 @@ section {
 															<td>자퇴</td>
 														</c:when>
 													</c:choose>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scStartDate }" var="scStartDate" />
-													<fmt:formatDate value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${sc.scEndDate }" var="scEndDate" />
-													<fmt:formatDate value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd"
+															value="${sc.scStartDate }" var="scStartDate" /> <fmt:formatDate
+															value="${scStartDate}" pattern="yyyy년 MM월 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd"
+															value="${sc.scEndDate }" var="scEndDate" /> <fmt:formatDate
+															value="${scEndDate}" pattern="yyyy년 MM월 " /></td>
 												</tr>
 											</c:forEach>
 										</table>
@@ -1126,8 +1136,9 @@ section {
 													style="text-align: center; vertical-align: middle;">
 													<td>${certi.ccName }</td>
 													<td>${certi.ccPlace }</td>
-													<td><fmt:parseDate pattern="yyyy-MM-dd" value="${certi.ccCreateDate }" var="ccStartDate" />
-													<fmt:formatDate value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
+													<td><fmt:parseDate pattern="yyyy-MM-dd"
+															value="${certi.ccCreateDate }" var="ccStartDate" /> <fmt:formatDate
+															value="${ccStartDate}" pattern="yyyy년 MM월 dd일 " /></td>
 													<td>${certi.ccNumber }</td>
 												</tr>
 											</c:forEach>
@@ -1157,10 +1168,10 @@ section {
 												<td style="padding-bottom: 10px; padding-top: 10px;"><i
 													class="far fa-clock">프로젝트 기간 : </i>${eval.proDuration }일</td>
 												<td style="padding-bottom: 10px; padding-top: 10px;"><i
-													class="far fa-calendar-alt">계약일자 : </i>
-												<fmt:parseDate pattern="yyyy-MM-dd"
-														value="${eval.proStartDate }" var="parsedDate" /> <fmt:formatDate
-														value="${parsedDate}" pattern="yyyy년 MM월 dd일" /></td>
+													class="far fa-calendar-alt">계약일자 : </i> <fmt:parseDate
+														pattern="yyyy-MM-dd" value="${eval.proStartDate }"
+														var="parsedDate" /> <fmt:formatDate value="${parsedDate}"
+														pattern="yyyy년 MM월 dd일" /></td>
 											</tr>
 
 											<tr>

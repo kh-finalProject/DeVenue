@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	/* 이미지 사이즈 맞추기 */
+   /* 이미지 사이즈 맞추기 */
     .image-profile {
       width: auto;
       height: 5rem;
@@ -33,14 +33,22 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/menubar.jsp" />
-	<jsp:include page="../common/cSubMenubar.jsp" />
-	
-	<div class="container">
+   <jsp:include page="../common/menubar.jsp" />
+   <jsp:include page="../common/cSubMenubar.jsp" />
+   
+   <c:if test="${msg eq 0 }">
+      <script>
+         $(document).ready(function(){
+            alert("평가 대상이 아닙니다.");
+         });
+      </script>
+   </c:if>
+   
+   <div class="container">
     <div class="row text-white" style="border-bottom: 1px solid lightgray;">
       <div class="col-2" style="padding:3%; font-size: 150%; font-family: 'Jua', sans-serif;">
       <c:url var="clientProfile" value="clientProfile.do">
-      	<c:param name="cId" value="${loginUser.memId }"/>
+         <c:param name="cId" value="${loginUser.memId }"/>
       </c:url>
       
         <p href="${clientProfile }">마이페이지</p>
@@ -57,11 +65,11 @@
                 <td>
                   <div class="image-profile">
                     <c:if test="${!empty info.proImg }">
-						<img src="${contextPath }/resources/proImg/${info.proImg}" style="object-fit: cover; width: 80px;">
-					</c:if>
-					<c:if test="${empty info.proImg }">
-						<img src="${contextPath }/resources/proImg/user3.png" style="object-fit: cover; width: 80px;">
-					</c:if>
+                  <img src="${contextPath }/resources/proImg/${info.proImg}" style="object-fit: cover; width: 80px;">
+               </c:if>
+               <c:if test="${empty info.proImg }">
+                  <img src="${contextPath }/resources/proImg/user7.png" style="object-fit: cover; width: 80px;">
+               </c:if>
                   </div>
                 </td>
                 <td>&emsp;&emsp;</td>
@@ -69,11 +77,11 @@
                   ${info.memNick }&emsp;<a class="badge badge-info">${info.memTypeKind }</a><br>
                   <p>${info.memEmail }</p>
                   <c:if test="${info.ideStatus eq 'COMPLETE' }">
-			        <i class="far fa-address-card"></i>&nbsp;신원인증
-			      </c:if>
-			      <c:if test="${!empty info.phone || !empty info.cellPhone }">
-			      	&emsp;<i class="fas fa-phone-alt"></i>연락처등록<br>
-			      </c:if>
+                 <i class="far fa-address-card"></i>&nbsp;신원인증
+               </c:if>
+               <c:if test="${!empty info.phone || !empty info.cellPhone }">
+                  &emsp;<i class="fas fa-phone-alt"></i>연락처등록<br>
+               </c:if>
                   
                 </td>
               </tr>
@@ -131,51 +139,51 @@
                 <div style="margin-left: 3%;">
                   <div id="urlDiv" style=" width:100%;">
                     <a id="url" href="http://www.naver.com" style="color:white;">${info.url }</a>
-		              <button id="clientInfoUpdate" class="btn-info" type="button" style="float: right; border-radius: 0.3rem; padding: 1%;">수정하기</button>
-		              
-		              <script>
-		              	$("#clientInfoUpdate").on("click",function(){
-		              		var introduce=$("#introduce").text();
-		              		var url=$("#url").text();
-		              		console.log(introduce);
-		              		console.log(url);
-		              		
-		              		$("#introduce").css("display","none");
-		              		$("#url").css("display","none");
-		              		
-		              		$urlDiv=$("#urlDiv");
-		              		$introduceDiv = $("#introduceDiv");
-		              		
-		              		var $introduceInput =$("<textarea class='form-control z-depth-1' id='introduceInput' name='introduce' rows='3'>");
-		              		$introduceInput.text(introduce);
-		              		$introduceDiv.append($introduceInput);
-		              		
-		              		var $urlInput=$("<textarea class='form-control z-depth-1' id='urlInput' name='url' rows='1' style='width:50%;'>");
-		              		$urlInput.text(url);
-		              		$urlDiv.append($urlInput);
-		              		
-		              		$("#clientInfoUpdate").css("display","none");
-		              		
-		              		var $submitBtn = $("<button id='updateBtn' class='btn-info type='submit' style='float: right; border-radius: 0.3rem; padding: 1%;'>");
-		              		var $cancelBtn = $("<button id='cancelBtn' class='btn-secondary type='button' style='float: right; border-radius: 0.3rem; padding: 1%;'>");
-		              		$cancelBtn.text("취소하기");
-		              		$submitBtn.text("수정하기");
-		              		$urlDiv.append($submitBtn);
-		              		$urlDiv.append($cancelBtn);
-		              		
-		              		$("#cancelBtn").on("click",function(){
-		              			$introduceInput.css("display","none");
-		              			$urlInput.css("display","none");
-		              			$("#introduce").css("display","");
-			              		$("#url").css("display","");
-			              		
-			              		$("#cancelBtn").css("display","none");
-			              		$("#updateBtn").css("display","none");
-			              		$("#clientInfoUpdate").css("display","");
-		              		})
-		              	})
-		              </script>
-		              
+                    <button id="clientInfoUpdate" class="btn-info" type="button" style="float: right; border-radius: 0.3rem; padding: 1%;">수정하기</button>
+                    
+                    <script>
+                       $("#clientInfoUpdate").on("click",function(){
+                          var introduce=$("#introduce").text();
+                          var url=$("#url").text();
+                          console.log(introduce);
+                          console.log(url);
+                          
+                          $("#introduce").css("display","none");
+                          $("#url").css("display","none");
+                          
+                          $urlDiv=$("#urlDiv");
+                          $introduceDiv = $("#introduceDiv");
+                          
+                          var $introduceInput =$("<textarea class='form-control z-depth-1' id='introduceInput' name='introduce' rows='3'>");
+                          $introduceInput.text(introduce);
+                          $introduceDiv.append($introduceInput);
+                          
+                          var $urlInput=$("<textarea class='form-control z-depth-1' id='urlInput' name='url' rows='1' style='width:50%;'>");
+                          $urlInput.text(url);
+                          $urlDiv.append($urlInput);
+                          
+                          $("#clientInfoUpdate").css("display","none");
+                          
+                          var $submitBtn = $("<button id='updateBtn' class='btn-info type='submit' style='float: right; border-radius: 0.3rem; padding: 1%;'>");
+                          var $cancelBtn = $("<button id='cancelBtn' class='btn-secondary type='button' style='float: right; border-radius: 0.3rem; padding: 1%;'>");
+                          $cancelBtn.text("취소하기");
+                          $submitBtn.text("수정하기");
+                          $urlDiv.append($submitBtn);
+                          $urlDiv.append($cancelBtn);
+                          
+                          $("#cancelBtn").on("click",function(){
+                             $introduceInput.css("display","none");
+                             $urlInput.css("display","none");
+                             $("#introduce").css("display","");
+                             $("#url").css("display","");
+                             
+                             $("#cancelBtn").css("display","none");
+                             $("#updateBtn").css("display","none");
+                             $("#clientInfoUpdate").css("display","");
+                          })
+                       })
+                    </script>
+                    
                   </div>
                 </div>
               </div>
@@ -186,11 +194,11 @@
       </div>
     </div>
     </div>
-	<script>
-	 $(function(){
+   <script>
+    $(function(){
        $('.myPage_sideNav_area').height(window.innerHeight-$('#mainMenubar').height()-$('#subMenubar').height()-$('footer').height());
-	 })
-	</script>
-	<jsp:include page="../common/footer.jsp"/>
+    })
+   </script>
+   <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

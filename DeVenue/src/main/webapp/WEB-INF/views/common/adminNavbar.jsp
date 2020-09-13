@@ -175,7 +175,7 @@
                                                 <li><a href="#"><span
                                                             class="edu-icon edu-settings author-log-ic"></span>설정</a>
                                                 </li>
-                                                <li><a href="#"><span
+                                                <li><a href="adminLogout.do"><span
                                                             class="edu-icon edu-locked author-log-ic"></span>로그아웃</a>
                                                 </li>
                                             </ul>

@@ -340,7 +340,8 @@ span.round-tab i {
 section {
 	background-color: #212426;
 	width: 100%;
-	height: 1600px;
+	/* height: auto; */
+	height:2000px;
 	padding: 50px 0 30px 0;
 	color: white;
 }
@@ -364,7 +365,7 @@ section {
 /* 포트폴리오전부를 보여줄 div*/
 .portfolio-view {
 	width: 100%;
-	height: 350px;
+	height: auto;
 	margin-left: 5%;
 	margin-top: 2%;
 	position: relative;

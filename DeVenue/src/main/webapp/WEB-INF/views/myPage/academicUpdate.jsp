@@ -450,7 +450,6 @@ section {
 									<td class="table-light" colspan="2"
 										style="width: 300px; padding: 5px;"><select
 										name="schoolgrade" style="width: 120px; height: 40px;">
-											<option value="schoolgrade">분류</option>
 											<option value="SG1">중학교</option>
 											<option value="SG2">고등학교</option>
 											<option value="SG3">전문대</option>
@@ -463,7 +462,6 @@ section {
 									<td class="table-light" colspan="2"
 										style="width: 300px; padding: 5px;"><select
 										name="schoolstate" style="width: 120px; height: 40px;">
-											<option value="schoolstate">상태</option>
 											<option value="SS1">재학</option>
 											<option value="SS2">휴학</option>
 											<option value="SS3">졸업</option>

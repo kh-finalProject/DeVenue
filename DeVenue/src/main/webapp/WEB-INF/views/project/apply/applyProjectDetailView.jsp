@@ -470,6 +470,13 @@
 <body>
 <jsp:include page="../../common/menubar.jsp"></jsp:include>
 
+<c:if test="${loginUser.userType eq 'UT3'}">
+<jsp:include page="../../common/cSubMenubar.jsp"></jsp:include>
+</c:if>
+<c:if test="${loginUser.userType eq 'UT4'}">
+<jsp:include page="../../common/pSubMenubar.jsp"></jsp:include>
+</c:if>
+
 <!--project detial 시작-->
 
     <!--project detial 시작-->
@@ -1676,7 +1683,7 @@
                                     	var mCate=mCate;
                                     	var dCate=dCate;
                                     	
-                                    	alert("메인:"+mCate+"서브:"+dCate);
+                                    	//alert("메인:"+mCate+"서브:"+dCate);
                                     	
                                     	$.ajax({
                                     		url:"findPortfolio.do",
@@ -1865,7 +1872,7 @@
                                                       <label class="custom-file-label" for="resumeUpload">이력서 선택</label>
                                                     </div>
                                                 </div>
-                                                <p>.pdf,.dock,.doc,.hwp 파일만 업로드 되며, 최대 40MB까지 가능합니다.<label id="resumeSize">5</label>MB/40MB</p>
+                                                <p>.pdf,.dock,.doc,.hwp 파일만 업로드 되며, 최대 10MB까지 가능합니다.<label id="resumeSize">0</label>MB/10MB</p>
                                                 
                                             </div>
                                             

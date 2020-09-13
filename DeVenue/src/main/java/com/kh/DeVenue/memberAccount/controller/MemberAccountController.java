@@ -721,50 +721,68 @@ public class MemberAccountController {
 
 	@RequestMapping("cutImgAndUpload.do")
 	public String cutImgAndUpload(String x1, String y1, String x2, String y2, String w, String h, String renameFileName, HttpServletRequest request, HttpSession session) throws IOException {
-		System.out.println("커팅좌표 : (" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")");
-		System.out.println("커팅된 크기 : " + w + "," + h);
-		System.out.println("커팅 전 파일 이름 : " + renameFileName);
-		
-		// 좌표를 int형으로 변환
-		int x = Integer.valueOf(x1);
-		int y = Integer.valueOf(y1);
-		int width = Integer.valueOf(w);
-		int height = Integer.valueOf(h);
-		
-		String folderName = "\\sigImg";
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String filePath = root + folderName + "\\" + renameFileName;
-		
+      System.out.println("커팅좌표 : (" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")");
+      System.out.println("커팅된 크기 : " + w + "," + h);
+      System.out.println("커팅 전 파일 이름 : " + renameFileName);
+      
+      // 이미지를 자르지 않고 그냥 송신
+      if(x1.equals("") || y1.equals("") || w.equals("") || h.equals("")) {
+         Map map = new HashedMap();
+         int mId = ((Member)session.getAttribute("loginUser")).getMemId();
+           map.put("mId", mId);
+           map.put("renameFileName", renameFileName);
+           
+           int result = maService.insertStamp(map);
+           
+           if(result > 0) {
+              System.out.println("이미지를 자르지 않아서 바로 대비조정파일 DB에 넣음");
+           }else {
+              System.out.println("이미지를 자르지 않아서 바로 대비조정파일 DB에 넣으려고 했지만 실패");
+           }
+           
+           return "redirect:gotoSignatureList.do";
+      }
+      
+      // 좌표를 int형으로 변환
+      int x = Integer.valueOf(x1);
+      int y = Integer.valueOf(y1);
+      int width = Integer.valueOf(w);
+      int height = Integer.valueOf(h);
+      
+      String folderName = "\\sigImg";
+      String root = request.getSession().getServletContext().getRealPath("resources");
+      String filePath = root + folderName + "\\" + renameFileName;
+      
         File sourceimage = new File(filePath);
         BufferedImage img = ImageIO.read(sourceimage);
-		
+      
         Rectangle rect = new Rectangle(x, y, width, height);
         
         BufferedImage cropImg = cropImage(img, rect);
         
         // 제대로 잘려 반환되었으면 이전 이미지 삭제 후 자른이미지 저장 및 DB로 해당 이미지 날인 정보 송신
         if(cropImg != null) {
-        	deleteFile(renameFileName, folderName, request);
-        	
-        	String finalFileName = saveBufferFile(cropImg, request, folderName);
-        	
-        	int mId = ((Member)session.getAttribute("loginUser")).getMemId();
-        	
-        	Map map = new HashedMap();
-        	map.put("mId", mId);
-        	map.put("renameFileName", finalFileName);
-        	
-        	int result = maService.insertStamp(map);
-        	
-        	if(result > 0) {
-        		System.out.println("성공적으로 도장 날인 업로드를 마무리함");
-        	}else {
-        		System.out.println("커팅 이미지는 있지만 db에 저장을 못함");
-        	}
+           deleteFile(renameFileName, folderName, request);
+           
+           String finalFileName = saveBufferFile(cropImg, request, folderName);
+           
+           int mId = ((Member)session.getAttribute("loginUser")).getMemId();
+           
+           Map map = new HashedMap();
+           map.put("mId", mId);
+           map.put("renameFileName", finalFileName);
+           
+           int result = maService.insertStamp(map);
+           
+           if(result > 0) {
+              System.out.println("성공적으로 도장 날인 업로드를 마무리함");
+           }else {
+              System.out.println("커팅 이미지는 있지만 db에 저장을 못함");
+           }
         }else {
-        	System.out.println("이미지 커팅이 정상적으로 되지 않았음");
+           System.out.println("이미지 커팅이 정상적으로 되지 않았음");
         }
-		return "redirect:gotoSignatureList.do";
+      return "redirect:gotoSignatureList.do";
 	}
 	
 	// 좌표 및 완성 이미지 크기를 담는 내부클래스

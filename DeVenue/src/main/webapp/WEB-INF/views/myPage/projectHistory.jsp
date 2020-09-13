@@ -500,8 +500,7 @@ section {
 				<div class="row">
 					<div class="col-12"
 						style="width: 100%; height: 60px; margin-left: 5%; padding-right: 0; border-bottom: 2px dashed white;">
-						<p style="float: left; font-size: 30px;">마이페이지 - 프로젝트 히스토리</p>
-						<a href="#" class="btn btn-info" style="float: right;">전체보기</a>
+						<p style="float: left; font-size: 30px;">마이페이지 - 프로젝트 히스토리</p>					
 					</div>
 					<div class="col-12" style="margin-left: 5%; margin-top: 5%;">
 						<h3>평가(총 평가 : ??개)</h3>

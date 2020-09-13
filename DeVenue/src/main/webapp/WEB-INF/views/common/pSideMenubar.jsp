@@ -144,14 +144,21 @@ $(document).ready(function(){
       data:{mId:mId},
       type:"get",
       success:function(proImgName){
-         $('.proImg_area').find('img').css('visibility','visible').prop('src', '${pageContext.servletContext.contextPath}/resources/proImg/'+proImgName);
-         $('.dropdown-toggle').find('img').css('visibility','visible').prop('src', '${pageContext.servletContext.contextPath}/resources/proImg/'+proImgName);
+    	  if(proImgName == null || proImgName == ""){
+	         $('.proImg_area').find('img').css('visibility','visible').prop('src', '${pageContext.servletContext.contextPath}/resources/proImg/user7.png');
+	         $('.dropdown-toggle').find('img').css('visibility','visible').prop('src', '${pageContext.servletContext.contextPath}/resources/proImg/user7.png');
+    	  }else{
+	         $('.proImg_area').find('img').css('visibility','visible').prop('src', '${pageContext.servletContext.contextPath}/resources/proImg/'+proImgName);
+	         $('.dropdown-toggle').find('img').css('visibility','visible').prop('src', '${pageContext.servletContext.contextPath}/resources/proImg/'+proImgName);
+    	  }
+    	  
       },
       error:function(error){
          alert('error : ' + error);
       }
    });
 });
+
 
 </script>
 <body>
@@ -261,8 +268,11 @@ $(document).ready(function(){
 						<button class="aTag" style="cursor: text;">자격증</button>
 					</form>
 					<!-- <div id="pProjectHistory">프로젝트 히스토리</div> -->
-					<div id="pPrfile"
-						onclick="location.href='${pageContext.servletContext.contextPath}/PH.do'">프로젝트히스토리</div>
+					<form method="GET" action="PH.do">
+						<input type="text" name="profileId" value="${profile.profileId }">
+						<input type="text" name="memId" value="${loginUser.memId }">
+						<button class="aTag" style="cursor: text;">프로젝트히스토리</button>
+					</form>
 				</div>
 				<div id="accountMenu" class="myPage_sideNav_mainC">
 					계정 관리<i style="float: right; margin-right: 5%;"

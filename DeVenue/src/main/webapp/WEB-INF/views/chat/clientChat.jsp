@@ -1001,28 +1001,33 @@ body{
     background-color:white;
   }
 
-  .operIcon1 {
+  .operIcon:nth-of-type(1) {
+    position: relative;
+    top: 0px;
+    left:-20px;
+    text-indent:-15px !important;
+/*     left: 178px; */
+  }
+
+  .operIcon:nth-of-type(2) {
+    position: relative;
+    top: 0px;
+    left:-5px;
+/*     left: 178px; */
+  }
+
+  .operIcon:nth-of-type(3) {
     position: relative;
     top: -80px;
-    left: 178px;
+    left:40px;
+/*     left: 90px; */
   }
 
-  .operIcon2 {
+  .operIcon:nth-of-type(4) {
     position: relative;
     top: -80px;
-    left: 178px;
-  }
-
-  .operIcon3 {
-    position: relative;
-    top: -40px;
-    left: 90px;
-  }
-
-  .operIcon4 {
-    position: relative;
-    top: -40px;
-    left: 90px;
+    left:40px;
+/*     left: 90px; */
   }
 
   /* 채팅 메인창 안내콘텐트 */
@@ -2130,24 +2135,6 @@ try {
                         <c:out value="${lastChatTimeSave }"/>
                         </label>
                         <script>
-	                        function getYYYYMMDD(){
-	                    		var today = new Date();
-	                    		var Y = today.getFullYear();
-	                    		var M = today.getMonth() + 1;
-	                    		var D = today.getDate();
-	
-	                    		if(String(M).length == 1){
-	                    			M = '0'+M;
-	                    		}
-	                    		if(String(D).length == 1){
-	                    			D = '0'+D;
-	                    		}
-	                    		var YMD = Y+"-"+M+"-"+D;
-	//                     	 	console.log('YMD : ' + YMD)
-	                    	 	
-	                    	 	return YMD;
-	                    	}
-	                        
                         	$(function(){
                         		// 채팅방 목록 안읽은 메시지에 관한 함수
                         		$('.alertRead').each(function(index, item){
@@ -2187,6 +2174,23 @@ try {
                         		});
                         	 	
                         	});
+                        	function getYYYYMMDD(){
+                        		var today = new Date();
+                        		var Y = today.getFullYear();
+                        		var M = today.getMonth() + 1;
+                        		var D = today.getDate();
+
+                        		if(String(M).length == 1){
+                        			M = '0'+M;
+                        		}
+                        		if(String(D).length == 1){
+                        			D = '0'+D;
+                        		}
+                        		var YMD = Y+"-"+M+"-"+D;
+//                         	 	console.log('YMD : ' + YMD)
+                        	 	
+                        	 	return YMD;
+                        	}
                         </script>
                       </td>
                     </tr>
@@ -2615,7 +2619,7 @@ try {
         <!-- 챗봇 데이터 받아놓기 -->
        	<c:if test="${ask != null && ! empty ask }">
        		<c:set var="firstAskLen" value="${ask.size() }"/>
-	        <div style="max-width: 220px;position:relative;margin-bottom:10px;" class="keywordArea">
+	        <div style="max-width: 210px;position:relative;margin-bottom:10px;" class="keywordArea">
 	       		<c:forEach var="i" begin="0" end="${ask.size()-1 }" step="1">
 			        <span class="bot_keyword_me">${ask[i].askKeyword }<input type="hidden" name="" value="${ask[i].askId }"></span>
 		        </c:forEach>
@@ -2667,19 +2671,6 @@ try {
   function sendMsgToParent( msg ) {
       window.parent.postMessage( msg, '*' );
   }
-  
-  // 각 채팅창 입장 시 가장 최근 보낸 메시지 위치에 화면이 위치하게
-  function showRecentChatView() {
-      var firstScrollPosition = 0;
-      $('.Messages').each(function(index, item){
-    	  firstScrollPosition = $(item)[0].scrollHeight-$(item).innerHeight();
-    	  $(item).scrollTop(firstScrollPosition);
-      })
-//       alert('스크롤탐 : ' + firstScrollPosition)
-      $('.Messages').scroll();
-  }
-  
-  
   $(function () {
     // 입력하는 텍스트가 많아지면 창 키우고 아이콘들 위치도 변화
     var inputField = $('.Input_field')
@@ -3092,6 +3083,17 @@ try {
       });
     });
   });
+  
+  // 각 채팅창 입장 시 가장 최근 보낸 메시지 위치에 화면이 위치하게
+  function showRecentChatView() {
+      var firstScrollPosition = 0;
+      $('.Messages').each(function(index, item){
+    	  firstScrollPosition = $(item)[0].scrollHeight-$(item).innerHeight();
+    	  $(item).scrollTop(firstScrollPosition);
+      })
+//       alert('스크롤탐 : ' + firstScrollPosition)
+      $('.Messages').scroll();
+  }
   
  // 채팅 파일 전송하게하는 버튼
  $(function(){
@@ -3975,7 +3977,7 @@ function getInputDayLabel() {
 			var submitDate = DateTransForm(currentDateTime);
 			
 			if($(eachChatRoomArea).find('.msgDate').length > 0){
-				var msgDate = eachChatRoomArea.find('.msgDate:last').val()
+				var msgDate = eachChatRoomArea.find('.msgDate').last().val()
 				console.log('날짜 : '+ msgDate);
 				var todayDate = submitDate.substring(0, 9)
 				console.log('오늘날짜 : ' + todayDate);
@@ -4120,7 +4122,7 @@ function getInputDayLabel() {
 			
 			// 삽입할 내가보낸 메시지 영역
 			// 마지막 메시지의 날짜와 오늘 날짜 비교
-			if($(eachChatRoomArea).find('.msg_unit').length > 0||$('#newChatRoom').css('display')=='none'){
+			if($(eachChatRoomArea).find('.msg_unit').length > 0 && $('#newChatRoom').css('display')=='none'){
 				var msgDate = eachChatRoomArea.find('.msgDate:last').val()
 				console.log('날짜 : '+ msgDate);
 				var todayDate = submitDate.substring(0, 9)
@@ -4149,7 +4151,7 @@ function getInputDayLabel() {
 					$(eachChatRoomArea).append($seperLine);
 					$(eachChatRoomArea).append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 				}
-			}else{
+			}else if(!($(eachChatRoomArea).find('.seperate_date').length>=1&&$(eachChatRoomArea).find('.seperate_date').text()=='오늘')){
 				// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
 				$(eachChatRoomArea).append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 			}
@@ -4328,14 +4330,15 @@ function getInputDayLabel() {
 			
 			// 삽입할 내가보낸 메시지 영역
 			// 마지막 메시지의 날짜와 오늘 날짜 비교
-			if($(eachChatRoomArea).find('.msg_unit').length > 0||$('#newChatRoom').css('display')=='none'){
-				var msgDate = eachChatRoomArea.find('.msgDate:last').val()
+			if($(eachChatRoomArea).find('.msg_unit').length > 0&&$('#newChatRoom').css('display')=='none'){
+				var msgDate = eachChatRoomArea.find('.msgDate').last().val()
 				console.log('날짜 : '+ msgDate);
 				var todayDate = submitDate.substring(0, 9)
 				console.log('오늘날짜 : ' + todayDate);
 				var mDArr = msgDate.split('/');
 				var mY = mDArr[0];
 				var mM = mDArr[1];
+				
 				var mD = mDArr[2];
 				var tDArr = todayDate.split('/');
 				var tY = tDArr[0];
@@ -4357,7 +4360,7 @@ function getInputDayLabel() {
 					$(eachChatRoomArea).append($seperLine);
 					$(eachChatRoomArea).append('<input type="hidden" class="msgDate" value="'+reTodayDate+'"/>');
 				}
-			}else{
+			}else if(!($(eachChatRoomArea).find('.seperate_date').length>=1&&$(eachChatRoomArea).find('.seperate_date').text()=='오늘')){
 				// 아무 메시지도 없었다면, 오늘구분선 하나 넣어주기
 				$(eachChatRoomArea).append('<div class="seperate_content"><div class="seperate_line"></div><p class="seperate_date">오늘</p><div class="seperate_line"></div></div>');
 			}
@@ -4709,7 +4712,7 @@ function getInputDayLabel() {
 	            var contentWidth = $('.Layout-open').width();
 			    var scrollbarWidth = getScrollbarWidth();
 			    var leftVal = contentWidth - scrollbarWidth -  $('.keywordArea').last().width();
-		        $('.keywordArea').last().css('left', leftVal);
+		        $('.keywordArea').last().css('left', leftVal + 10);
 	            
 	            var keywordShowTimeout = setTimeout(function () {
 	                var keywordShowInterval = setInterval(function () {

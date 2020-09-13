@@ -15,14 +15,14 @@ public class SCCareer implements Serializable{
 	private String ssId;
 	private String scName;
 	private String scMajor;
-	private Date scStartDate;
-	private Date scEndDate;
+	private String scStartDate;
+	private String scEndDate;
 	private int profileId;
 	public SCCareer() {
 		super();
 	}
-	public SCCareer(int scId, String sgId, String ssId, String scName, String scMajor, Date scStartDate,
-			Date scEndDate, int profileId) {
+	public SCCareer(int scId, String sgId, String ssId, String scName, String scMajor, String scStartDate,
+			String scEndDate, int profileId) {
 		super();
 		this.scId = scId;
 		this.sgId = sgId;
@@ -35,7 +35,7 @@ public class SCCareer implements Serializable{
 	}
 	
 	// 학력 insert
-	public SCCareer(String sgId, String ssId, String scName, String scMajor, Date scStartDate, Date scEndDate,
+	public SCCareer(String sgId, String ssId, String scName, String scMajor, String scStartDate, String scEndDate,
 			int profileId) {
 		super();
 		this.sgId = sgId;
@@ -76,16 +76,16 @@ public class SCCareer implements Serializable{
 	public void setScMajor(String scMajor) {
 		this.scMajor = scMajor;
 	}
-	public Date getScStartDate() {
+	public String getScStartDate() {
 		return scStartDate;
 	}
-	public void setScStartDate(Date scStartDate) {
+	public void setScStartDate(String scStartDate) {
 		this.scStartDate = scStartDate;
 	}
-	public Date getScEndDate() {
+	public String getScEndDate() {
 		return scEndDate;
 	}
-	public void setScEndDate(Date scEndDate) {
+	public void setScEndDate(String scEndDate) {
 		this.scEndDate = scEndDate;
 	}
 	public int getProfileId() {

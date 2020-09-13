@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -78,35 +79,34 @@ public class MemberController {
 	private ChatService cService;
 
 	// 로그인하기전에 체크해본다.
-	@RequestMapping(value="loginChk.do")
-	public void loginCheck(@RequestParam("email") String email, @RequestParam("pwd") String pwd, HttpServletResponse response
-			, RedirectAttributes redirectAttributes) throws IOException {
+	@RequestMapping(value = "loginChk.do")
+	public void loginCheck(@RequestParam("email") String email, @RequestParam("pwd") String pwd,
+			HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
 		System.out.println(email);
 		System.out.println(pwd);
 		PrintWriter out = response.getWriter();
-		
-		Member member = mService.selectMmber(email,pwd);
-		System.out.println("member"+member);
-		
-		if(member != null) {
-			out.append("true");
+
+		Member member = mService.selectMmber(email, pwd);
+		System.out.println("member" + member);
+
+		if (member != null) {
+			out.print("true");
 			System.out.println("로그인 가능");
-		}else {
-			out.append("false");
+		} else {
+			out.print("false");
 			System.out.println("로그인 불가");
 		}
 		out.flush();
 		out.close();
-		
+
 	}
-	
+
 	// 할일 로그인 유지/ 브라우저 종료시 reload
 	// 로그인 유지할때 request와 session으로 넘겨버리면???
 	// 로그인 값 받아오기
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String memberLogin(HttpSession session, HttpServletRequest request, Model model, ModelAndView mv) {
 
-		
 //		// 자동로그인 checkbox 선택했는지
 //		String logincheck = request.getParameter("logincheck");
 //		System.out.println(logincheck); // true or null(value를 true로 설정했기때문에)
@@ -118,8 +118,7 @@ public class MemberController {
 		Member loginUser = mService.loginUserMember(m);
 //		System.out.println("loginUSer",loginUser);
 //		System.out.println(loginUser.getMemId());
-		
-		
+
 		// 원래는 로그인단이 아닌 상시 돌아가야하는것(접속자도 session invalidate 시켜줘야함)
 		// 로그인 유저 담기 전, 먼저 제재대상 회원인지 확인(DEATH -> DEC_COUNT 순)
 		// 죽일 회원이면(DEATH 수치 3회) 탈퇴처리 후(원랜 즉시 반영되어야겠지만 이렇게해도 상관없음) 제재회원 페이지로
@@ -295,29 +294,25 @@ public class MemberController {
 				if (insertIden > 0) {
 					System.out.println("신원인증 생성 성공");
 
-					// 만약 파트너스 일경우 (파트너스 기본정보와 포트폴리오id 생성하고)
-					String UT4 = "UT4";
-					if (memberId.getUserType().equals("UT4")) {
-						int proId = mService.profileInsert(memberId.getMemId());
+					int proId = mService.profileInsert(memberId.getMemId());
 
-						if (proId > 0) {
-							System.out.println("프로필 정보 생성 ");
+					if (proId > 0) {
+						System.out.println("프로필 정보 생성 ");
 
-							Profile memId = new Profile(memberId.getMemId());
-							Profile profile = mService.profile(memId);
-							System.out.println(profile);
-							PartInfo partInfo = new PartInfo(profile.getProfileId());
-							int portId = mService.insertPartInfo(partInfo);
+						Profile memId = new Profile(memberId.getMemId());
+						Profile profile = mService.profile(memId);
+						System.out.println(profile);
+						PartInfo partInfo = new PartInfo(profile.getProfileId());
+						int portId = mService.insertPartInfo(partInfo);
 
-							if (portId > 0) {
-								System.out.println("파트너스 정보 생성 ");
-							} else {
-								throw new MemberException("파트너스 정보 생성 실패!");
-							}
-
+						if (portId > 0) {
+							System.out.println("파트너스 정보 생성 ");
 						} else {
-							throw new MemberException("프로필 생성 실패!");
+							throw new MemberException("파트너스 정보 생성 실패!");
 						}
+
+					} else {
+						throw new MemberException("프로필 생성 실패!");
 					}
 
 				} else {
@@ -345,272 +340,288 @@ public class MemberController {
 		return "redirect:home.do";
 	}
 
-	// 클라이언트 찾기
-	@RequestMapping(value = "clientList.do")
-	public ModelAndView clientList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
+	   // 클라이언트 찾기
+	   @RequestMapping(value = "clientList.do")
+	   public ModelAndView clientList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
+	      int currentPage = 1;
+	      if (page != null) {
+	         currentPage = page;
+	      }
 
-		int listCount = mService.getListCount();
-		System.out.println("listcount : " + listCount);
+	      int listCount = mService.getListCount();
+	      System.out.println("listcount : " + listCount);
 
-		PageInfo pi = getPageInfo(currentPage, listCount);
+	      PageInfo pi = getPageInfo(currentPage, listCount);
 
-		ArrayList<FindClient> list = mService.selectList(pi);
-		System.out.println("list : " + list);
-		System.out.println("pi" + pi);
+	      ArrayList<FindClient> list = mService.selectList(pi);
+	      System.out.println("list : " + list);
+	      System.out.println("pi" + pi);
 
-		String msg = null;
+	      String msg = null;
 
-		if (list != null) {
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.addObject("msg", msg);
-			mv.setViewName("findMember/findClient");
-		} else {
-			throw new MemberException("게시글 전체 조회 실패!");
-		}
+	      if (list != null) {
+	         mv.addObject("list", list);
+	         mv.addObject("pi", pi);
+	         mv.addObject("msg", msg);
+	         mv.setViewName("findMember/findClient");
+	      } else {
+	         msg="클라이언트가 존재하지 않습니다.";
+	         mv.addObject("list", list);
+	         mv.addObject("pi", pi);
+	         mv.addObject("msg", msg);
+	         mv.setViewName("findMember/findClient");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
-	@RequestMapping("recentList.do")
-	public void getRecentList(HttpServletResponse response, int status,
-			@RequestParam(value = "page", required = false) Integer page) throws JsonIOException, IOException {
-		response.setContentType("application/json;charset=utf-8");
+	   @RequestMapping("recentList.do")
+	   public void getRecentList(HttpServletResponse response, int status,
+	         @RequestParam(value = "page", required = false) Integer page) throws JsonIOException, IOException {
+	      response.setContentType("application/json;charset=utf-8");
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
+	      int currentPage = 1;
+	      if (page != null) {
+	         currentPage = page;
+	      }
 
-		System.out.println(status);
+	      System.out.println(status);
 
-//		if(status == 1) {
-//			int listCount=mService.getRecentListCount();
-//		}else if(status == 2) {
-//			int listCount=mService.getHighPointListCount();
-//		}else if(status == 3) {
-//			int listCount=mService.getManyPointListCount();
-//		}else if(status == 4) {
-//			int listCount=mService.getManyProjectListCount();
-//		}
+//	      if(status == 1) {
+//	         int listCount=mService.getRecentListCount();
+//	      }else if(status == 2) {
+//	         int listCount=mService.getHighPointListCount();
+//	      }else if(status == 3) {
+//	         int listCount=mService.getManyPointListCount();
+//	      }else if(status == 4) {
+//	         int listCount=mService.getManyProjectListCount();
+//	      }
 
-		int listCount = mService.getListCount();
-		System.out.println("listCount : " + listCount);
+	      int listCount = mService.getListCount();
+	      System.out.println("listCount : " + listCount);
 
-		PageInfo pi = getPageInfo(currentPage, listCount);
+	      PageInfo pi = getPageInfo(currentPage, listCount);
 
-		ArrayList<FindClient> list = mService.selectList(pi, status);
-		System.out.println("list : " + list);
-		System.out.println("pi : " + pi);
+	      ArrayList<FindClient> list = mService.selectList(pi, status);
+	      System.out.println("list : " + list);
+	      System.out.println("pi : " + pi);
 
-		String msg = null;
+	      String msg = null;
+	      if(list.isEmpty()) {
+	         msg="클라이언트가 존재하지 않습니다.";   
+	      }
+	      HashMap map = new HashMap();
+	      map.put("msg", msg);
+	      map.put("list", list);
+	      map.put("pi", pi);
 
-		HashMap map = new HashMap();
-		map.put("msg", msg);
-		map.put("list", list);
-		map.put("pi", pi);
+	      Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	      gson.toJson(map, response.getWriter());
+	      System.out.println("gson : " + gson);
 
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		gson.toJson(map, response.getWriter());
-		System.out.println("gson : " + gson);
+	   }
+	   
+	   @RequestMapping("addressFilter.do")
+	   public void getaddressFilter(HttpServletResponse response, String address,
+	         @RequestParam(value = "page", required = false) Integer page) throws JsonIOException, IOException {
+	      response.setContentType("application/json;charset=utf-8");
 
-	}
-	
-	@RequestMapping("addressFilter.do")
-	public void getaddressFilter(HttpServletResponse response, String address,
-			@RequestParam(value = "page", required = false) Integer page) throws JsonIOException, IOException {
-		response.setContentType("application/json;charset=utf-8");
+	      int currentPage = 1;
+	      if (page != null) {
+	         currentPage = page;
+	      }
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
+	      System.out.println(address);
 
-		System.out.println(address);
+	      HashMap addressMap = new HashMap();
+	      addressMap.put("address",address);
 
-		HashMap addressMap = new HashMap();
-		addressMap.put("address",address);
+	      int listCount = mService.getAddressListCount(addressMap);
+	      System.out.println("listCount : " + listCount);
 
-		int listCount = mService.getAddressListCount(addressMap);
-		System.out.println("listCount : " + listCount);
+	      PageInfo pi = getPageInfo(currentPage, listCount);
 
-		PageInfo pi = getPageInfo(currentPage, listCount);
+	      ArrayList<FindClient> list = mService.addressList(pi, addressMap);
+	      System.out.println("list : " + list);
+	      System.out.println("pi : " + pi);
 
-		ArrayList<FindClient> list = mService.addressList(pi, addressMap);
-		System.out.println("list : " + list);
-		System.out.println("pi : " + pi);
+	      String msg = null;
+	      if(list.isEmpty()) {
+	         msg="클라이언트가 존재하지 않습니다.";   
+	      }
+	      HashMap map = new HashMap();
+	      map.put("msg", msg);
+	      map.put("list", list);
+	      map.put("pi", pi);
 
-		String msg = null;
+	      Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	      gson.toJson(map, response.getWriter());
+	      System.out.println("gson : " + gson);
 
-		HashMap map = new HashMap();
-		map.put("msg", msg);
-		map.put("list", list);
-		map.put("pi", pi);
+	   }
 
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		gson.toJson(map, response.getWriter());
-		System.out.println("gson : " + gson);
+	   @RequestMapping(value = "cDetail.do")
+	   public ModelAndView clientDetail(ModelAndView mv, Integer cId, String check) {
+	      System.out.println("cId : " + cId);
+	      ArrayList<FindClientDetail> fc = mService.selectClientDetail(cId);
+	      System.out.println("fc : " + fc);
 
-	}
+	      if (fc != null) {
+	         mv.addObject("fc", fc).addObject("check", check).setViewName("findMember/findClientDetail");
+	      } else {
+	         check="C";
+	         mv.addObject("fc", fc).addObject("check", check).setViewName("findMember/findClientDetail");
+//	         throw new MemberException("게시글 조회 실패!");
+	      }
 
-	@RequestMapping(value = "cDetail.do")
-	public ModelAndView clientDetail(ModelAndView mv, Integer cId, String check) {
-		System.out.println("cId : " + cId);
-		ArrayList<FindClientDetail> fc = mService.selectClientDetail(cId);
-		System.out.println("fc : " + fc);
+	      return mv;
+	   }
 
-		if (fc != null) {
-			mv.addObject("fc", fc).addObject("check", check).setViewName("findMember/findClientDetail");
-		} else {
-			throw new MemberException("게시글 조회 실패!");
-		}
+	   @RequestMapping(value = "cProjectHistory.do")
+	   public ModelAndView projectHistory(ModelAndView mv, Integer cId) {
+	      FCprojectHistory projectHistory = mService.selectProjectHistory(cId);
+	      System.out.println("projectHistory : " + projectHistory);
 
-		return mv;
-	}
+	      if (projectHistory != null) {
+	         mv.addObject("ph", projectHistory).setViewName("findMember/clientProjectHistory");
+	      } else {
+	         String msg="프로젝트 히스토리를 조회할 수 없습니다.";
+	         mv.addObject("ph", projectHistory).addObject("msg", msg).setViewName("findMember/clientProjectHistory");
+	      }
 
-	@RequestMapping(value = "cProjectHistory.do")
-	public ModelAndView projectHistory(ModelAndView mv, Integer cId) {
-		FCprojectHistory projectHistory = mService.selectProjectHistory(cId);
-		System.out.println("projectHistory : " + projectHistory);
+	      return mv;
+	   }
 
-		if (projectHistory != null) {
-			mv.addObject("ph", projectHistory).setViewName("findMember/clientProjectHistory");
-		} else {
-			throw new MemberException("프로젝트 히스토리 조회 실패!");
-		}
+	   @RequestMapping(value = "cEvalSelect.do")
+	   public ModelAndView evalSelect(ModelAndView mv, Integer cId, int msg,
+	         @RequestParam(value = "page", required = false) Integer page) {
 
-		return mv;
-	}
+	      // 페이지네이션 필요
+	      int currentPage = 1;
+	      if (page != null) {
+	         currentPage = page;
+	      }
 
-	@RequestMapping(value = "cEvalSelect.do")
-	public ModelAndView evalSelect(ModelAndView mv, Integer cId, int msg,
-			@RequestParam(value = "page", required = false) Integer page) {
+	      int cpEvalCount = mService.getCPevalCount(cId);
+	      System.out.println("평가 총 개수 : " + cpEvalCount);
 
-		// 페이지네이션 필요
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
+	      PageInfo pi = getPageInfo(currentPage, cpEvalCount);
 
-		int cpEvalCount = mService.getCPevalCount(cId);
-		System.out.println("평가 총 개수 : " + cpEvalCount);
+	      ArrayList<CPeval> cpEval = mService.selectCPeval(cId, pi); // 파트너스 평가 리스트
+	      System.out.println("cpEval : " + cpEval);
 
-		PageInfo pi = getPageInfo(currentPage, cpEvalCount);
+	      FCeval fcEval = mService.getFCeval(cId); // 클라이언트 정보
 
-		ArrayList<CPeval> cpEval = mService.selectCPeval(cId, pi); // 파트너스 평가 리스트
-		System.out.println("cpEval : " + cpEval);
+	      if (!cpEval.isEmpty()) {
+	         mv.addObject("cp", cpEval) // 파트너스 평가 리스트
+	               .addObject("fc", fcEval) // 클라이언트 정보
+	               .addObject("msg", msg).addObject("pi", pi).setViewName("findMember/clientComment");
+	      }else {
+	         msg=4;
+	         mv.addObject("cp", cpEval) // 파트너스 평가 리스트
+	         .addObject("fc", fcEval) // 클라이언트 정보
+	         .addObject("msg", msg).addObject("pi", pi).setViewName("findMember/clientComment");
+	      }
 
-		FCeval fcEval = mService.getFCeval(cId); // 클라이언트 정보
+	      return mv;
+	   }
 
-		if (!cpEval.isEmpty()) {
-			mv.addObject("cp", cpEval) // 파트너스 평가 리스트
-					.addObject("fc", fcEval) // 클라이언트 정보
-					.addObject("msg", msg).addObject("pi", pi).setViewName("findMember/clientComment");
-		}
+	   // 클라이언트 평가등록 페이지
+	   @RequestMapping(value = "cEvalInsert.do")
+	   public ModelAndView evalInsert(ModelAndView mv, Integer cId, Integer pId) {
 
-		return mv;
-	}
+	      ArrayList<EvalProjectList> epList = mService.getClientInfo(cId);
+	      System.out.println("epList" + epList);
 
-	// 클라이언트 평가등록 페이지
-	@RequestMapping(value = "cEvalInsert.do")
-	public ModelAndView evalInsert(ModelAndView mv, Integer cId, Integer pId) {
+	      // 로그인한 유저의 memId가 partnersId와 일치하지 않는다면 에러처리
+	      HashMap id = new HashMap();
+	      id.put("pId", pId);
+	      id.put("cId", cId);
 
-		ArrayList<EvalProjectList> epList = mService.getClientInfo(cId);
-		System.out.println("epList" + epList);
+	      ArrayList<MatchingPartnersList> mpList = mService.getMatchingPartners(id);
+	      System.out.println("매칭파트너 리스트 : " + mpList);
 
-		// 로그인한 유저의 memId가 partnersId와 일치하지 않는다면 에러처리
-		HashMap id = new HashMap();
-		id.put("pId", pId);
-		id.put("cId", cId);
+	      if (!mpList.isEmpty()) {
+//	         int result = mService.insertEval(id);
+	         
+	         int result = mService.checkReEval(id);
+	         
+	         if(result >0) {
+	            int msg=3;
+	            mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
+	         }else {
+	            mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
+	            
+	         }
 
-		ArrayList<MatchingPartnersList> mpList = mService.getMatchingPartners(id);
-		System.out.println("매칭파트너 리스트 : " + mpList);
+	      } else {
+	         int msg = 0;
+	         mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
+	      }
 
-		if (!mpList.isEmpty()) {
-//			int result = mService.insertEval(id);
-			
-			int result = mService.checkReEval(id);
-			
-			if(result >0) {
-				int msg=3;
-				mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
-			}else {
-				mv.addObject("epList", epList).addObject("cId", cId).setViewName("findMember/clientInsertComment");
-				
-			}
+	      return mv;
+	   }
 
-		} else {
-			int msg = 0;
-			mv.addObject("msg", msg).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
-		}
+	   @RequestMapping(value = "cEvalInsert2.do")
+	   public ModelAndView evalInsert(ModelAndView mv, HttpServletRequest request) {
 
-		return mv;
-	}
+	      // cId, pId 추가해야함
+	      int cId = Integer.valueOf(request.getParameter("cId"));
+	      int pId = Integer.valueOf(request.getParameter("pId"));
 
-	@RequestMapping(value = "cEvalInsert2.do")
-	public ModelAndView evalInsert(ModelAndView mv, HttpServletRequest request) {
+	      int proId = Integer.valueOf(request.getParameter("proId"));
+	      String eContent = request.getParameter("eContent");
 
-		// cId, pId 추가해야함
-		int cId = Integer.valueOf(request.getParameter("cId"));
-		int pId = Integer.valueOf(request.getParameter("pId"));
+	      int total = Integer.valueOf(request.getParameter("total"));
+	      int star1 = Integer.valueOf(request.getParameter("professional")); // 전문성
+	      int star2 = Integer.valueOf(request.getParameter("active")); // 적극성
+	      int star3 = Integer.valueOf(request.getParameter("schedule")); // 의사소통
+	      int star4 = Integer.valueOf(request.getParameter("communication")); // 일정준수
+	      int star5 = Integer.valueOf(request.getParameter("satisfaction")); // 만족도
 
-		int proId = Integer.valueOf(request.getParameter("proId"));
-		String eContent = request.getParameter("eContent");
+	      System.out.println("cId : " + cId);
+	      System.out.println("pId : " + pId);
+	      System.out.println("proId : " + proId);
+	      System.out.println("eContent : " + eContent);
+	      System.out.println("total : " + total);
+	      System.out.println("star1 : " + star1);
+	      System.out.println("star2 : " + star2);
+	      System.out.println("star3 : " + star3);
+	      System.out.println("star4 : " + star4);
+	      System.out.println("star5 : " + star5);
 
-		int total = Integer.valueOf(request.getParameter("total"));
-		int star1 = Integer.valueOf(request.getParameter("professional")); // 전문성
-		int star2 = Integer.valueOf(request.getParameter("active")); // 적극성
-		int star3 = Integer.valueOf(request.getParameter("schedule")); // 의사소통
-		int star4 = Integer.valueOf(request.getParameter("communication")); // 일정준수
-		int star5 = Integer.valueOf(request.getParameter("satisfaction")); // 만족도
+	      HashMap id = new HashMap();
+	      id.put("cId", cId);
+	      id.put("pId", pId);
+	      id.put("proId", proId);
 
-		System.out.println("cId : " + cId);
-		System.out.println("pId : " + pId);
-		System.out.println("proId : " + proId);
-		System.out.println("eContent : " + eContent);
-		System.out.println("total : " + total);
-		System.out.println("star1 : " + star1);
-		System.out.println("star2 : " + star2);
-		System.out.println("star3 : " + star3);
-		System.out.println("star4 : " + star4);
-		System.out.println("star5 : " + star5);
+	      EPid epId = mService.getEPid(id);
+	      System.out.println("EPid : " + epId);
 
-		HashMap id = new HashMap();
-		id.put("cId", cId);
-		id.put("pId", pId);
-		id.put("proId", proId);
+	      HashMap map = new HashMap();
+	      map.put("cId", cId);
+	      map.put("pId", pId);
+	      map.put("proId", epId.getProId());
+	      map.put("eContent", eContent);
+	      map.put("total", total);
+	      map.put("star1", star1);
+	      map.put("star2", star2);
+	      map.put("star3", star3);
+	      map.put("star4", star4);
+	      map.put("star5", star5);
 
-		EPid epId = mService.getEPid(id);
-		System.out.println("EPid : " + epId);
+	      int result = mService.insertEval(map);
 
-		HashMap map = new HashMap();
-		map.put("cId", cId);
-		map.put("pId", pId);
-		map.put("proId", epId.getProId());
-		map.put("eContent", eContent);
-		map.put("total", total);
-		map.put("star1", star1);
-		map.put("star2", star2);
-		map.put("star3", star3);
-		map.put("star4", star4);
-		map.put("star5", star5);
+	      if (result > 0) {
+	         System.out.println("평가 등록됨");
+	         mv.addObject("msg", 1).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
+	      } else {
+	         System.out.println("평가 등록 실패");
+	      }
 
-		int result = mService.insertEval(map);
-
-		if (result > 0) {
-			System.out.println("평가 등록됨");
-			mv.addObject("msg", 1).addObject("cId", cId).setViewName("redirect:cEvalSelect.do");
-		} else {
-			System.out.println("평가 등록 실패");
-		}
-
-		return mv;
-	}
+	      return mv;
+	   }
 
 	// 닉네임 중복 확인
 	@RequestMapping(value = "nickCheck.do", method = RequestMethod.GET)
@@ -639,130 +650,178 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "memNickSearch.do")
-	public ModelAndView memNickSearch(ModelAndView mv, String memNick,
-			@RequestParam(value = "page", required = false) Integer page) {
+	   public ModelAndView memNickSearch(ModelAndView mv, String memNick,
+	         @RequestParam(value = "page", required = false) Integer page) {
 
-		System.out.println("닉네임 : " + memNick);
+	      System.out.println("닉네임 : " + memNick);
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
+	      int currentPage = 1;
+	      if (page != null) {
+	         currentPage = page;
+	      }
 
-		int listCount = mService.getListCount(memNick);
-		System.out.println("listcount : " + listCount);
+	      int listCount = mService.getListCount(memNick);
+	      System.out.println("listcount : " + listCount);
 
-		PageInfo pi = getPageInfo(currentPage, listCount);
+	      PageInfo pi = getPageInfo(currentPage, listCount);
 
-		ArrayList<FindClient> list = mService.selectList(pi, memNick);
-		System.out.println("list : " + list);
-		System.out.println("pi" + pi);
+	      ArrayList<FindClient> list = mService.selectList(pi, memNick);
+	      System.out.println("list : " + list);
+	      System.out.println("pi" + pi);
 
-		String msg = null;
+	      String msg = null;
 
-		if (!list.isEmpty()) {
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.addObject("msg", msg);
-			mv.setViewName("findMember/findClient");
-		} else {
-			msg = "검색 결과가 존재하지 않습니다.";
+	      if (!list.isEmpty()) {
+	         mv.addObject("list", list);
+	         mv.addObject("pi", pi);
+	         mv.addObject("msg", msg);
+	         mv.setViewName("findMember/findClient");
+	      } else {
+	         msg = "검색 결과가 존재하지 않습니다.";
 
-			mv.addObject("msg", msg).setViewName("findMember/findClient");
-		}
+	         mv.addObject("msg", msg).setViewName("findMember/findClient");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
-	@RequestMapping(value = "introductionSearch.do")
-	public ModelAndView introductionSearch(ModelAndView mv, String introduction,
-			@RequestParam(value = "page", required = false) Integer page) {
-		System.out.println("내용 : " + introduction);
+	   @RequestMapping(value = "introductionSearch.do")
+	   public ModelAndView introductionSearch(ModelAndView mv, String introduction,
+	         @RequestParam(value = "page", required = false) Integer page) {
+	      System.out.println("내용 : " + introduction);
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
+	      int currentPage = 1;
+	      if (page != null) {
+	         currentPage = page;
+	      }
 
-		int listCount = mService.getListCount2(introduction);
-		System.out.println("listcount : " + listCount);
+	      int listCount = mService.getListCount2(introduction);
+	      System.out.println("listcount : " + listCount);
 
-		PageInfo pi = getPageInfo(currentPage, listCount);
+	      PageInfo pi = getPageInfo(currentPage, listCount);
 
-		ArrayList<FindClient> list = mService.selectList2(pi, introduction);
-		System.out.println("list : " + list);
-		System.out.println("pi" + pi);
+	      ArrayList<FindClient> list = mService.selectList2(pi, introduction);
+	      System.out.println("list : " + list);
+	      System.out.println("pi" + pi);
 
-		String msg = null;
+	      String msg = null;
 
-		if (!list.isEmpty()) {
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.addObject("msg", msg);
-			mv.setViewName("findMember/findClient");
-		} else {
-			msg = "검색 결과가 존재하지 않습니다.";
+	      if (!list.isEmpty()) {
+	         mv.addObject("list", list);
+	         mv.addObject("pi", pi);
+	         mv.addObject("msg", msg);
+	         mv.setViewName("findMember/findClient");
+	      } else {
+	         msg = "검색 결과가 존재하지 않습니다.";
 
-			mv.addObject("msg", msg).setViewName("findMember/findClient");
-		}
+	         mv.addObject("msg", msg).setViewName("findMember/findClient");
+	      }
 
-		return mv;
-	}
+	      return mv;
+	   }
 
-	// 클라이언트 신고
-	@RequestMapping(value = "clientReport.do")
-	public ModelAndView clientReport(ModelAndView mv, HttpServletRequest request) {
-		int reportCid = Integer.valueOf(request.getParameter("reportCid"));
-		int pId = Integer.valueOf(request.getParameter("pId"));
-		String reportContent = request.getParameter("reportContent");
+	   // 클라이언트 신고
+	   @RequestMapping(value = "clientReport.do")
+	   public ModelAndView clientReport(ModelAndView mv, HttpServletRequest request) {
+	      int reportCid = Integer.valueOf(request.getParameter("reportCid"));
+	      int pId = Integer.valueOf(request.getParameter("pId"));
+	      String reportContent = request.getParameter("reportContent");
 
-		System.out.println("reportCid : " + reportCid);
-		System.out.println("pId : " + pId);
-		System.out.println("reportContent : " + reportContent);
+	      System.out.println("reportCid : " + reportCid);
+	      System.out.println("pId : " + pId);
+	      System.out.println("reportContent : " + reportContent);
 
-		HashMap report = new HashMap();
-		report.put("reportCid", reportCid);
-		report.put("pId", pId);
-		report.put("reportContent", reportContent);
+	      HashMap report = new HashMap();
+	      report.put("reportCid", reportCid);
+	      report.put("pId", pId);
+	      report.put("reportContent", reportContent);
 
-		int reportCheck = mService.reportCheck(report);
-		System.out.println("reportCheck : " + reportCheck);
+	      int reportCheck = mService.reportCheck(report);
+	      System.out.println("reportCheck : " + reportCheck);
 
-		String check = "";
+	      String check = "";
 
-		if (reportCheck > 0) {
-			check = "Y";
-			mv.addObject("cId", reportCid).addObject("check", check).setViewName("redirect:cDetail.do");
-		} else {
-			int result = mService.insertClientReport(report);
+	      if (reportCheck > 0) {
+	         check = "Y";
+	         mv.addObject("cId", reportCid).addObject("check", check).setViewName("redirect:cDetail.do");
+	      } else {
+	         int result = mService.insertClientReport(report);
 
-			if (result > 0) {
-				System.out.println("신고 성공!!");
-				int countUpReport = mService.countUpReport(reportCid);
-				check = "N";
+	         if (result > 0) {
+	            System.out.println("신고 성공!!");
+	            int countUpReport = mService.countUpReport(reportCid);
+	            check = "N";
 
-				mv.addObject("cId", reportCid).addObject("check", check).setViewName("redirect:cDetail.do");
-			} else {
-				throw new MemberException("신고 실패!");
-			}
-		}
+	            mv.addObject("cId", reportCid).addObject("check", check).setViewName("redirect:cDetail.do");
+	         } else {
+	            throw new MemberException("신고 실패!");
+	         }
+	      }
 
-		return mv;
+	      return mv;
 
-	}
-	
-	// 관리자 페이지 회원정보 조회
-		@RequestMapping(value="adminMember.do")
-			public ModelAndView adminMember(HttpServletRequest request, ModelAndView mv) {
+	   }
 
-			ArrayList<Member> memberList = mService.memberList();
-			
-			mv.addObject("memberList", memberList);
-			mv.setViewName("admin/adminMember");
-			
-			return mv;
+	   // 관리자 페이지 회원정보 조회
+	      @RequestMapping(value="adminMember.do")
+	         public ModelAndView adminMember(HttpServletRequest request, ModelAndView mv) {
 
-		}
-	
+	         ArrayList<Member> memberList = mService.memberList();
+	         
+	         mv.addObject("memberList", memberList);
+	         mv.setViewName("admin/adminMember");
+	         
+	         return mv;
+
+	      }
+	      
+	   // 관리자 페이지 로그아웃
+	      @RequestMapping(value="adminLogout.do")
+	      public String adminLogout(HttpSession session) {
+
+	         session.invalidate();
+
+	         return "redirect:home.do";
+	      }
+	      
+	   // 관리자 회원정보 update
+	      @RequestMapping(value="memUp.do")
+	      public String memUp(@RequestParam(value="valueArrTest[]") List<String> checkArr, ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	         
+	         for(int a=0;a<checkArr.size();a++) {
+	            System.out.println("탈퇴할 Id"+checkArr.get(a));
+	            String i = checkArr.get(a);
+	            int memId = Integer.valueOf(i);
+	            System.out.println(memId);
+	            int chang = mService.memStatus(memId);
+	            PrintWriter out = response.getWriter();
+	            if(chang > 0) {
+	               out.append("ok");
+	               out.flush();
+	               out.close();
+	            }else {
+	               out.append("fail");
+	               out.flush();
+	               out.close();
+	            }
+	            
+	         }
+	         
+	         return "redirect:adminMember.do";
+//	         return null;
+	      }
+	      
+	      // 관리자 페이지 신고에 따른 정렬
+	      @RequestMapping(value="order.do")
+	      public ModelAndView Order(ModelAndView mv) {
+	         ArrayList<Member> memberList = mService.memOrder();
+	         
+	         mv.addObject("memberList", memberList);
+	         mv.setViewName("admin/adminMember");
+	         
+	         return mv;
+	         
+	      }
+
 
 }
