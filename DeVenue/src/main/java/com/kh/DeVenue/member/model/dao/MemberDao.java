@@ -212,13 +212,6 @@ public class MemberDao {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.addressList", addressMap, rowBounds);
 	}
 
-	public ArrayList<FindClient> filterList(PageInfo pi, HashMap mapFilter) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.filterList", mapFilter, rowBounds);
-	}
-	
 	public ArrayList<Member> memberList() {
 
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.memberList");

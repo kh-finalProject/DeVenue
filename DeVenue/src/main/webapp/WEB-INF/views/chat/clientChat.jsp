@@ -2147,6 +2147,7 @@ try {
 	                    	 	
 	                    	 	return YMD;
 	                    	}
+	                        
                         	$(function(){
                         		// 채팅방 목록 안읽은 메시지에 관한 함수
                         		$('.alertRead').each(function(index, item){
@@ -2666,6 +2667,19 @@ try {
   function sendMsgToParent( msg ) {
       window.parent.postMessage( msg, '*' );
   }
+  
+  // 각 채팅창 입장 시 가장 최근 보낸 메시지 위치에 화면이 위치하게
+  function showRecentChatView() {
+      var firstScrollPosition = 0;
+      $('.Messages').each(function(index, item){
+    	  firstScrollPosition = $(item)[0].scrollHeight-$(item).innerHeight();
+    	  $(item).scrollTop(firstScrollPosition);
+      })
+//       alert('스크롤탐 : ' + firstScrollPosition)
+      $('.Messages').scroll();
+  }
+  
+  
   $(function () {
     // 입력하는 텍스트가 많아지면 창 키우고 아이콘들 위치도 변화
     var inputField = $('.Input_field')
@@ -3078,17 +3092,6 @@ try {
       });
     });
   });
-  
-  // 각 채팅창 입장 시 가장 최근 보낸 메시지 위치에 화면이 위치하게
-  function showRecentChatView() {
-      var firstScrollPosition = 0;
-      $('.Messages').each(function(index, item){
-    	  firstScrollPosition = $(item)[0].scrollHeight-$(item).innerHeight();
-    	  $(item).scrollTop(firstScrollPosition);
-      })
-//       alert('스크롤탐 : ' + firstScrollPosition)
-      $('.Messages').scroll();
-  }
   
  // 채팅 파일 전송하게하는 버튼
  $(function(){
